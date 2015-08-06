@@ -1,5 +1,5 @@
-#ifndef HAL_AVR_GPIO_H_
-#define HAL_AVR_GPIO_H_
+#ifndef AVR_GPIO_H_
+#define AVR_GPIO_H_
 
 #include <stdint.h>
 
@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif  // HAL_AVR_GPIO_H_
+#endif  // AVR_GPIO_H_
