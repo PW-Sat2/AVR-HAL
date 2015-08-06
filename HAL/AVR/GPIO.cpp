@@ -21,10 +21,10 @@ void GPIOPin_t::init(GPIOPin_t::InitTypeDef_t InitTypeDef) {
     if (InitTypeDef.mode == input) {
         cbi((*pin_reg.DDRx), pin_reg.pin);
         cbi((*pin_reg.PORTx), pin_reg.pin);
-        } else if (InitTypeDef.mode == input_pullup) {
+    } else if (InitTypeDef.mode == input_pullup) {
         cbi((*pin_reg.DDRx), pin_reg.pin);
         sbi((*pin_reg.PORTx), pin_reg.pin);
-        } else {
+    } else {
         sbi((*pin_reg.DDRx), pin_reg.pin);
         cbi((*pin_reg.PORTx), pin_reg.pin);
     }
@@ -41,7 +41,7 @@ void GPIOPin_t::reset() {
 void GPIOPin_t::write(bool value) {
     if (value) {
         this->set();
-        } else {
+    } else {
         this->reset();
     }
 }
