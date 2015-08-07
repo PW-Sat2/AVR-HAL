@@ -5,12 +5,12 @@
 #include "GPIO.h"
 
 struct SPIPinDescr_t {
-    uint8_t pin_mosi, pin_miso, pin_sck;
+    uint8_t pin_mosi, pin_miso, pin_sck, pin_ss;
 };
 
 class SPI_t {
  private:
-    GPIOPin_t pin_mosi, pin_miso, pin_sck;
+    GPIOPin_t pin_mosi, pin_miso, pin_sck, pin_ss;
 
  public:
     enum SPI_Polarity {
