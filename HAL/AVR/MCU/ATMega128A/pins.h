@@ -9,12 +9,12 @@
 #ifndef HAL_AVR_MCU_ATMEGA128A_PINS_H_
 #define HAL_AVR_MCU_ATMEGA128A_PINS_H_
 
-#include "avr/pgmspace.h"
+#include <avr/pgmspace.h>
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
-    { 0, 0, 0, 0},  // 0 -- artificial pin
-    { 0, 0, 0, 0},  // 1 -- ~PEN
+    {0, 0, 0, 0},               // 0 -- artificial pin
+    {0, 0, 0, 0},               // 1 -- ~PEN
     {&DDRE, &PORTE, &PINE, 0},  // 2 -- RXD0/(PDI) PE0
     {&DDRE, &PORTE, &PINE, 1},  // 3 -- (TXD0/PDO) PE1
     {&DDRE, &PORTE, &PINE, 2},  // 4 -- (XCK0/AIN0) PE2
@@ -33,11 +33,11 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     {&DDRB, &PORTB, &PINB, 7},  // 17 -- (OC2/OC1C) PB7
     {&DDRG, &PORTG, &PING, 3},  // 18 -- TOSC2/PG3
     {&DDRG, &PORTG, &PING, 4},  // 19 -- TOSC1/PG4
-    { 0, 0, 0, 0},  // 20 -- ~RESET
-    { 0, 0, 0, 0},  // 21 -- VCC
-    { 0, 0, 0, 0},  // 22 -- GND
-    { 0, 0, 0, 0},  // 23 -- XTAL2
-    { 0, 0, 0, 0},  // 24 -- XTAL1
+    {0, 0, 0, 0},               // 20 -- ~RESET
+    {0, 0, 0, 0},               // 21 -- VCC
+    {0, 0, 0, 0},               // 22 -- GND
+    {0, 0, 0, 0},               // 23 -- XTAL2
+    {0, 0, 0, 0},               // 24 -- XTAL1
     {&DDRD, &PORTD, &PIND, 0},  // 25 -- (SCL/INT0) PD0
     {&DDRD, &PORTD, &PIND, 1},  // 26 -- (SDA/INT1) PD1
     {&DDRD, &PORTD, &PIND, 2},  // 27 -- (RXD1/INT2) PD2
@@ -60,12 +60,13 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     {&DDRA, &PORTA, &PINA, 7},  // 44 -- PA7 (AD7)
     {&DDRA, &PORTA, &PINA, 6},  // 45 -- PA6 (AD6)
     {&DDRA, &PORTA, &PINA, 5},  // 46 -- PA5 (AD5)
-    {&DDRA, &PORTA, &PINA, 4},  // 47 -- PA4 (AD4)    {&DDRA, &PORTA, &PINA, 3},  // 48 -- PA3 (AD3)
+    {&DDRA, &PORTA, &PINA, 4},  // 47 -- PA4 (AD4)
+    {&DDRA, &PORTA, &PINA, 3},  // 48 -- PA3 (AD3)
     {&DDRA, &PORTA, &PINA, 2},  // 49 -- PA2 (AD2)
     {&DDRA, &PORTA, &PINA, 1},  // 50 -- PA1 (AD1)
     {&DDRA, &PORTA, &PINA, 0},  // 51 -- PA0 (AD0)
-    { 0, 0, 0, 0},  // 52 -- VCC
-    { 0, 0, 0, 0},  // 53 -- GND
+    {0, 0, 0, 0},               // 52 -- VCC
+    {0, 0, 0, 0},               // 53 -- GND
     {&DDRF, &PORTF, &PINF, 7},  // 54 -- PF7 (ADC7/TDI)
     {&DDRF, &PORTF, &PINF, 6},  // 55 -- PF6 (ADC6/TDO)
     {&DDRF, &PORTF, &PINF, 5},  // 56 -- PF5 (ADC5/TMS)
@@ -74,9 +75,9 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     {&DDRF, &PORTF, &PINF, 2},  // 59 -- PF2 (ADC2)
     {&DDRF, &PORTF, &PINF, 1},  // 60 -- PF1 (ADC1)
     {&DDRF, &PORTF, &PINF, 0},  // 61 -- PF0 (ADC0)
-    { 0, 0, 0, 0},  // 62 -- AREF
-    { 0, 0, 0, 0},  // 63 -- GND
-    { 0, 0, 0, 0}  // 64 -- AVCC
+    {0, 0, 0, 0},               // 62 -- AREF
+    {0, 0, 0, 0},               // 63 -- GND
+    {0, 0, 0, 0}                // 64 -- AVCC
 };
 
 #endif  // HAL_AVR_MCU_ATMEGA128A_PINS_H_
