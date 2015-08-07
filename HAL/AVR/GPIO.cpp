@@ -1,8 +1,9 @@
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 #include "GPIO.h"
 #include "bit_operations.h"
 #include "pins.h"
-#include "avr/pgmspace.h"
+
 
 
 GPIOPin_t::GPIOPin_t() {
