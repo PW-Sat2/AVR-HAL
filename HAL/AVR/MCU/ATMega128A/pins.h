@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef AVR_MCU_ATMEGA128A_PINS_H_
-#define AVR_MCU_ATMEGA128A_PINS_H_
+#ifndef HAL_AVR_MCU_ATMEGA128A_PINS_H_
+#define HAL_AVR_MCU_ATMEGA128A_PINS_H_
 
 #include "avr/pgmspace.h"
 
@@ -79,4 +79,4 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     { 0, 0, 0, 0}  // 64 -- AVCC
 };
 
-#endif  // AVR_MCU_ATMEGA128A_PINS_H_
+#endif  // HAL_AVR_MCU_ATMEGA128A_PINS_H_
