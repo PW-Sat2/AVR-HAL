@@ -10,7 +10,7 @@ tmp:
 tmp/cpplint.py:
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 checkStyle: tmp tmp/cpplint.py	
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | xargs python2 tmp/cpplint.py $(LINTER_PARAMS)
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | xargs python tmp/cpplint.py $(LINTER_PARAMS)
 cppcheck:
 	find . -type f \( -name "*.cpp" -o -name "*.h" \) | xargs cppcheck --enable=all --inconclusive --std=c++11
 
