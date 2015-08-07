@@ -6,10 +6,10 @@
  */ 
 
 
-#ifndef AVR_MCU_ATMEGA128A_PINS_H_
-#define AVR_MCU_ATMEGA128A_PINS_H_
+#ifndef HAL_AVR_MCU_ATMEGA128A_PINS_H_
+#define HAL_AVR_MCU_ATMEGA128A_PINS_H_
 
-#include "avr/pgmspace.h"
+#include <avr/pgmspace.h>
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
@@ -60,7 +60,8 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     {&DDRA, &PORTA, &PINA, 7},  // 44 -- PA7 (AD7)
     {&DDRA, &PORTA, &PINA, 6},  // 45 -- PA6 (AD6)
     {&DDRA, &PORTA, &PINA, 5},  // 46 -- PA5 (AD5)
-    {&DDRA, &PORTA, &PINA, 4},  // 47 -- PA4 (AD4)    {&DDRA, &PORTA, &PINA, 3},  // 48 -- PA3 (AD3)
+    {&DDRA, &PORTA, &PINA, 4},  // 47 -- PA4 (AD4)
+    {&DDRA, &PORTA, &PINA, 3},  // 48 -- PA3 (AD3)
     {&DDRA, &PORTA, &PINA, 2},  // 49 -- PA2 (AD2)
     {&DDRA, &PORTA, &PINA, 1},  // 50 -- PA1 (AD1)
     {&DDRA, &PORTA, &PINA, 0},  // 51 -- PA0 (AD0)
@@ -79,11 +80,4 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     { 0, 0, 0, 0}  // 64 -- AVCC
 };
 
-/* SPI pin map */
-const uint8_t   SPI_MOSI = 12,
-                SPI_MISO = 13,
-                SPI_SCK = 11,
-                SPI_SS = 10;
-
-
-#endif  // AVR_MCU_ATMEGA128A_PINS_H_
+#endif  // HAL_AVR_MCU_ATMEGA128A_PINS_H_
