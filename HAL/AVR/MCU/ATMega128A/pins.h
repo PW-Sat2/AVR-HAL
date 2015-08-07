@@ -79,4 +79,11 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     { 0, 0, 0, 0}  // 64 -- AVCC
 };
 
+/* SPI pin map */
+const uint8_t   SPI_MOSI = 12,
+                SPI_MISO = 13,
+                SPI_SCK = 11,
+                SPI_SS = 10;
+
+
 #endif  // AVR_MCU_ATMEGA128A_PINS_H_
