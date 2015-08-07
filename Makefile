@@ -1,5 +1,5 @@
 
-LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright
+LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright --linelength=120
 
 all: checkStyle cppcheck flawFinder
 
