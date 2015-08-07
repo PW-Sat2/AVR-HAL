@@ -46,7 +46,7 @@ void GPIOPin_t::write(bool value) {
     }
 }
 
-bool GPIOPin_t::read() {
+bool GPIOPin_t::read(void) {
     if (bit_is_clear((*this->pin_reg.PINx), this->pin_reg.pin)) {
         return true;
     }

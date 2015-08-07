@@ -5,8 +5,8 @@
  * @date 2015-07
  */
 
-#ifndef AVR_GPIO_H_
-#define AVR_GPIO_H_
+#ifndef HAL_AVR_GPIO_H_
+#define HAL_AVR_GPIO_H_
 
 #include <stdint.h>
 
@@ -28,7 +28,7 @@ struct GPIOPinDescr_t {
  * @details setting high state, resetting to low state or writing particular state.
  */
 class GPIOPin_t {
-private:
+ private:
     /*
      * @var pin_reg
      * @brief A description of the pin.
@@ -36,7 +36,7 @@ private:
      */
     GPIOPinDescr_t pin_reg;
 
-public:
+ public:
     /*
      * @enum GPIO_Mode
      * @brief Type intended for specifying mode of GPIO operation.
@@ -52,7 +52,7 @@ public:
      * @brief Struct contains members describing all necessary data for pin initialization.
      */
     struct InitTypeDef_t {
-        uint8_t pin_nr;  /**< A physical pin number of particular MCU, in particular package. */
+        uint8_t pin_nr;  /**< A physical pin number of particular MCU and package. */
         GPIO_Mode mode;  /**< Mode wherein the pin will be operating. */
     };
 
@@ -92,8 +92,8 @@ public:
      * @param None
      * @retval State of the pin, i.e. either high or low.
      */    
-    bool read();
+    bool read(void);
 };
 
 
-#endif  // AVR_GPIO_H_
+#endif  // HAL_AVR_GPIO_H_
