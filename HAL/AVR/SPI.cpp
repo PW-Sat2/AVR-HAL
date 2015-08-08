@@ -10,7 +10,7 @@ void SPI_t::init(SPI_t::InitTypeDef_t InitStruct) {
     pin_mosi.init({SPIPin_t_descr.pin_mosi, GPIOPin_t::output});
     pin_miso.init({SPIPin_t_descr.pin_miso, GPIOPin_t::input});
     pin_sck.init({SPIPin_t_descr.pin_sck, GPIOPin_t::output});
-    pin_sck.init({SPIPin_t_descr.pin_ss, GPIOPin_t::output});
+    pin_ss.init({SPIPin_t_descr.pin_ss, GPIOPin_t::output});
 
     SPCR = (1 << SPE) | (1 << MSTR) | (InitStruct.clk_divisor) |
            (InitStruct.phase << CPHA) | (InitStruct.polarity << CPOL) |
