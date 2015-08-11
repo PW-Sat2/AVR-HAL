@@ -15,11 +15,11 @@ void Mux_t::init(InitTypeDef_t InitStruct) {
 }
 
 void Mux_t::enable() {
-    this->EN.write(1);
+    this->EN.set();
 }
 
 void Mux_t::disable() {
-    this->EN.write(0);
+    this->EN.reset();
 }
 
 void Mux_t::select(uint8_t channel) {
