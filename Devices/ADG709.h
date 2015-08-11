@@ -4,18 +4,18 @@
 * @author Micha³ Gumiela
 * @date 2015-07
 */
-#ifndef DEVICES_MUX_H_
-#define DEVICES_MUX_H_
+#ifndef DEVICES_ADG709_H_
+#define DEVICES_ADG709_H_
 
 #include "GPIO.h"
 
 /*
- * @class Mux_t
+ * @class ADG709_t
  * @brief Class is used to provide user-friendly solutions for mux handling.
  * @details Class offers methods for selecting input of the mux, as well as disabling/enabling the device. 
  */
 
-class Mux_t {
+class ADG709_t {
  private:
     GPIOPin_t A0, A1, EN;
 
@@ -28,8 +28,8 @@ class Mux_t {
     struct InitTypeDef_t {
         uint8_t pin_A0, pin_A1, pin_EN;
     };
-    Mux_t();
-    explicit Mux_t(InitTypeDef_t InitStruct);
+    ADG709_t();
+    explicit ADG709_t(InitTypeDef_t InitStruct);
 
     /*
      * @brief Initialization of the device.
@@ -62,4 +62,4 @@ class Mux_t {
 };
 
 
-#endif  // DEVICES_MUX_H_
+#endif  // DEVICES_ADG709_H_
