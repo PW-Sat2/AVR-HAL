@@ -38,8 +38,7 @@
 
 #define REGGEN(NAME) (SERIALNUM == 0 ? REGGEN0_##NAME : REGGEN1_##NAME)
 
-#define SERIAL_0
-#define SERIAL_1
+#define SERIAL_NRs 2
 
 #endif  //  HAL_AVR_MCU_ATMEGA128A_SERIAL_MCU_H_
 
