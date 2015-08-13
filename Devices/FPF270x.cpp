@@ -3,11 +3,11 @@
 LCL_t::LCL_t() {
 }
 
-LCL_t::LCL_t(const InitTypeDef_t InitStruct) {
+LCL_t::LCL_t(const InitTypeDef_t & InitStruct) {
     this->init(InitStruct);
 }
 
-void LCL_t::init(const LCL_t::InitTypeDef_t InitStruct) {
+void LCL_t::init(const LCL_t::InitTypeDef_t & InitStruct) {
     this->pin_on.init({InitStruct.pin_on, GPIOPin_t::output});
     this->pin_flag.init({InitStruct.pin_flag, GPIOPin_t::input_pullup});
     this->pin_pgood.init({InitStruct.pin_pgood, GPIOPin_t::input_pullup});

@@ -27,14 +27,14 @@ class FPF270x_t {
         uint8_t pin_on, pin_flag, pin_pgood;
     };
     LCL_t();
-    explicit LCL_t(const InitTypeDef_t InitStruct);
+    explicit LCL_t(const InitTypeDef_t & InitStruct);
 
     /*
      * @brief Initialization of the device.
      * @param InitStruct: Contains all information needed for device initialization.
      * @retval None
      */
-    void init(const InitTypeDef_t InitStruct);
+    void init(const InitTypeDef_t & InitStruct);
 
     /*
      * @brief Activate the device.
