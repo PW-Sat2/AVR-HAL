@@ -62,6 +62,7 @@ class SPI_Device_t {
     uint8_t shift(uint8_t data);
     uint8_t data_transfer(uint8_t data);
     void init(uint8_t cs_pin);
+    void data_transfer(uint8_t * in_data, uint8_t * out_data, uint8_t len);
 };
 
 #endif  // HAL_AVR_SPI_H_
