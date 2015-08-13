@@ -61,7 +61,7 @@ uint8_t SPI_Device_t::data_transfer(uint8_t data) {
 void SPI_Device_t::data_transfer(uint8_t *in_data, uint8_t *out_data, uint8_t len) {
     this->enable();
     uint8_t tmp;
-    while(len--) {
+    while (len--) {
         tmp = SPI.shift(*in_data);
         (*out_data) = tmp;
         in_data++;
