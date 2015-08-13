@@ -13,10 +13,12 @@
 #include "pins.h"
 #include "serial_mcu.h"
 
+const uint8_t BUFFER_SIZE = 50;
+
 
 template <int SERIALNUM>
 struct SerialX_ {
-    char buffer[34];
+    char buffer[BUFFER_SIZE];
 
     void begin(uint32_t _b) {
         /* Set baud rate */
