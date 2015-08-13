@@ -145,8 +145,7 @@ struct SerialX_ {
         this->newline();
     }
     bool available() {
-        return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0)))) {
-        }
+        return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0))));
     }
     uint8_t read() {
         /* Wait for data to be received */
