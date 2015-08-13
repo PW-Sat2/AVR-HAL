@@ -46,6 +46,13 @@ struct SerialX_ {
             out++;
         }
     }
+    void printf(const char* format, ...) {
+        va_list aptr;
+        va_start(aptr, format);
+        vsnprintf(buffer, BUFFER_SIZE, format, aptr);
+        va_end(aptr);
+
+        this->print(this->buffer);
     }
     bool available() {
         return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0))));
