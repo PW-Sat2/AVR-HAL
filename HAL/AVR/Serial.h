@@ -149,7 +149,7 @@ struct SerialX_ {
     }
     uint8_t read() {
         /* Wait for data to be received */
-        while (!(REGGEN(UCSR0A) & (1 << REGGEN(RXC0)))) {
+        while (!this->available()) {
         }
         /* Get and return received data from buffer */
         return REGGEN(UDR0);
