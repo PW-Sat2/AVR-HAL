@@ -23,9 +23,7 @@ struct SerialX_ {
     void begin(uint32_t _b) {
         /* Set baud rate */
         uint16_t ubrr;
-        ubrr = static_cast<uint16_t>((
-               static_cast<float>(
-               static_cast<float>(F_CPU / 16.)/ (_b))) - 0.5);
+        ubrr = static_cast<uint16_t>(((F_CPU / 16.)/ (_b)) - 0.5);
 
         UBRR0H = static_cast<uint8_t>(ubrr >> 8);
         UBRR0L = static_cast<uint8_t>(ubrr);
