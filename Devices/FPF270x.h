@@ -8,19 +8,60 @@
 
 #include "GPIO.h"
 
-class LCL_t {
+/*
+ * @class FPF270x_t
+ * @brief Class is used to provide user-friendly solutions to communicate with FPF270x over-current protection swtich.
+ * @details Class offers methods for enabling/disabling device, checking for overload and powergood flags.
+ */
+class FPF270x_t {
  private:
     GPIOPin_t pin_on, pin_flag, pin_pgood;
+
  public:
+    /*
+     * @struct InitTypeDef_t
+     * @brief Description of hardware connection of controlling lines of the switch.
+     * @details Contains numbers of mcu leads connected to enable, flag and powergood pins.
+     */
     struct InitTypeDef_t {
         uint8_t pin_on, pin_flag, pin_pgood;
     };
     LCL_t();
     explicit LCL_t(InitTypeDef_t InitStruct);
+
+    /*
+     * @brief Initialization of the device.
+     * @param InitStruct: Contains all information needed for device initialization.
+     * @retval None
+     */
     void init(InitTypeDef_t InitStruct);
+
+    /*
+     * @brief Activate the device.
+     * @param None
+     * @retval None
+     */
     void on();
+
+    /*
+     * @brief Deactivate the device.
+     * @param None
+     * @retval None
+     */
     void off();
+
+    /*
+     * @brief Checks for overload.
+     * @param None
+     * @retval True means overload.
+     */
     bool overload();
+
+    /*
+     * @brief Checks for power good flag.
+     * @param None
+     * @retval True means out voltage is withing limits.
+     */
     bool powergood();
 };
 
