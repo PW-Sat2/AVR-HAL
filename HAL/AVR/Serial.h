@@ -20,7 +20,7 @@ template <int SERIALNUM>
 struct SerialX_ {
     char buffer[BUFFER_SIZE];
 
-    void begin(uint32_t _b) {
+    void begin(const uint32_t _b) {
         /* Set baud rate */
         uint16_t ubrr;
         ubrr = static_cast<uint16_t>(((F_CPU / 16.)/ (_b)) - 0.5);
@@ -36,7 +36,7 @@ struct SerialX_ {
         REGGEN(UCSR0C) = (1 << REGGEN(UCSZ01)) | (1 << REGGEN(UCSZ00));
     }
 
-    void print(char * out) {
+    void print(const char * out) {
         while (*out) {
             /* Wait for empty transmit buffer */
             while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
@@ -54,10 +54,10 @@ struct SerialX_ {
 
         this->print(this->buffer);
     }
-    bool available() {
+    bool available() const {
         return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0))));
     }
-    uint8_t read() {
+    uint8_t read() const {
         /* Wait for data to be received */
         while (!this->available()) {
         }
