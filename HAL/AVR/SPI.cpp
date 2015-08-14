@@ -58,7 +58,7 @@ uint8_t SPI_Device_t::data_transfer(const uint8_t data) {
     return x;
 }
 
-void SPI_Device_t::data_transfer(uint8_t * in_data, uint8_t * out_data, const uint8_t len) {
+void SPI_Device_t::data_transfer(uint8_t * in_data, uint8_t * out_data, uint8_t len) {
     this->enable();
     uint8_t tmp;
     while (len--) {
