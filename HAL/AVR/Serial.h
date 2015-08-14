@@ -9,6 +9,7 @@
 #define HAL_AVR_SERIAL_H_
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "GPIO.h"
 #include "pins.h"
 #include "serial_mcu.h"
