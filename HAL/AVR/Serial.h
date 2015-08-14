@@ -42,14 +42,25 @@ struct SerialX_ {
 		while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
 		}
 	}
+    void print_byte_array(const uint8_t * data, uint8_t len) {
+        while(len--) {
+			this->print_byte(*data);
+			data++;
+		}
     }
+	void print_string(const char * data) {
+		while (*data) {
+			this->print_byte(*data);
+			data++;
+		}
+	}
     void printf(const char* format, ...) {
         va_list aptr;
         va_start(aptr, format);
         vsnprintf(buffer, BUFFER_SIZE, format, aptr);
         va_end(aptr);
 
-        this->print(this->buffer);
+        this->print_string(this->buffer);
     }
     bool available() const {
         return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0))));
