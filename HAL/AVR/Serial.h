@@ -35,15 +35,13 @@ struct SerialX_ {
         REGGEN(UCSR0C) = (1 << REGGEN(UCSZ01)) | (1 << REGGEN(UCSZ00));
     }
 
-    void print(const char * out) {
-        while (*out) {
-            /* Wait for empty transmit buffer */
-            while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
-            }
-            /* Put data into buffer, sends the data */
-            REGGEN(UDR0) = *out;
-            out++;
-        }
+	void print_byte(const uint8_t byte) {
+		/* Put data into buffer, sends the data */
+		REGGEN(UDR0) = byte;
+		/* Wait for empty transmit buffer */
+		while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
+		}
+	}
     }
     void printf(const char* format, ...) {
         va_list aptr;
