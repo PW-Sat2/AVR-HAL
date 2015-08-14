@@ -10,6 +10,7 @@
 #define HAL_AVR_MCU_ATMEGA128A_PINS_H_
 
 #include <avr/pgmspace.h>
+#include "SPI.h"
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
