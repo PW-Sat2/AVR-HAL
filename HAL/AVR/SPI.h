@@ -84,14 +84,14 @@ class SPI_t {
      * @param InitStruct: Contains all information needed for SPI initialization.
      * @retval None
      */
-    void init(SPI_t::InitTypeDef_t InitStruct);
+    void init(const SPI_t::InitTypeDef_t & InitStruct);
 
     /*
      * @brief Shift data via SPI.
      * @param data: Contains 8-bit data to be shifted out of MCU.
      * @retval 8-bit data gathered during the transfer.
      */
-    uint8_t shift(uint8_t data);
+    uint8_t shift(const uint8_t data);
 };
 
 extern SPI_t SPI;
@@ -112,14 +112,14 @@ class SPI_Device_t {
 
  public:
     SPI_Device_t();
-    explicit SPI_Device_t(uint8_t cs_pin);
+    explicit SPI_Device_t(const uint8_t cs_pin);
 
     /*
      * @brief Initialization of the device.
      * @param cs_pin: pin number selecting slave device
      * @retval None
      */
-    void init(uint8_t cs_pin);
+    void init(const uint8_t cs_pin);
 
     /*
      * @brief Enabling slave. Writes logic 0 to SS pin.
@@ -140,14 +140,14 @@ class SPI_Device_t {
      * @param None
      * @retval None
      */
-    uint8_t shift(uint8_t data);
+    uint8_t shift(const uint8_t data);
 
     /*
      * @brief Transferring 1-byte data via SPI bus. Function enables slave and after transfer disables it.
      * @param data: data to be shifted out
      * @retval response from device
      */
-    uint8_t data_transfer(uint8_t data);
+    uint8_t data_transfer(const uint8_t data);
 
     /*
      * @brief Transferring n-byte data via SPI bus. Function enables slave and after transfer disables it.
@@ -155,7 +155,7 @@ class SPI_Device_t {
      * @param out_data: response from device
      * @retval None
      */
-    void data_transfer(uint8_t * in_data, uint8_t * out_data, uint8_t len);
+    void data_transfer(uint8_t * in_data, uint8_t * out_data, const uint8_t len);
 };
 
 #endif  // HAL_AVR_SPI_H_
