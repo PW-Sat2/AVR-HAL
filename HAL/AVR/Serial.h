@@ -62,10 +62,10 @@ struct SerialX_ {
 
         this->print_string(this->buffer);
     }
-    bool available() const {
+    bool available() {
         return ((REGGEN(UCSR0A) & (1 << REGGEN(RXC0))));
     }
-    uint8_t read() const {
+    uint8_t read_byte() {
         /* Wait for data to be received */
         while (!this->available()) {
         }
