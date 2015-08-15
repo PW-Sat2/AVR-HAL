@@ -37,6 +37,7 @@ SPI_Device_t::SPI_Device_t(const uint8_t cs_pin) {
 
 void SPI_Device_t::init(const uint8_t cs_pin) {
     this->pin_cs.init({cs_pin, GPIOPin_t::output});
+    this->disable();
 }
 
 void SPI_Device_t::enable() {
