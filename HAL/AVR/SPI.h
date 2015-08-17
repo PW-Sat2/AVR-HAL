@@ -20,11 +20,6 @@ struct SPIPinDescr_t {
  */
 class SPI_t {
  private:
-    /*
-     * @var spi_descr
-     * @brief A description of the SPI device.
-     * @details The variable stores the pin description assigned during initialization for future use by other methods.
-     */
     GPIOPin_t pin_mosi, pin_miso, pin_sck, pin_ss;
 
  public:
