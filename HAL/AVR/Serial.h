@@ -26,8 +26,8 @@ struct SerialX_ {
         uint16_t ubrr;
         ubrr = static_cast<uint16_t>(((F_CPU / 16.)/ (_b)) - 0.5);
 
-        REGGEN(UBRR0H) = (uint8_t) (ubrr >> 8);
-        REGGEN(UBRR0L) = (uint8_t) (ubrr & 0xFF);
+        REGGEN(UBRR0H) = static_cast<uint8_t> (ubrr >> 8);
+        REGGEN(UBRR0L) = static_cast<uint8_t> (ubrr & 0xFF);
 
         /* Enable receiver and transmitter */
         REGGEN(UCSR0B) = (1 << REGGEN(RXEN0)) | (1 << REGGEN(TXEN0));
