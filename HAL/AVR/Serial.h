@@ -80,15 +80,12 @@ struct SerialX_ {
 	}
 	uint8_t read_byte_array_until_term(uint8_t * out_data, const uint8_t terminator, uint8_t max_length) {
 		uint8_t counter = 0;
-		this->printf("exit!\n\r");
 		while(max_length--) {
 			uint8_t now = this->read_byte();
-			this->printf("now: %d\n\r",now);
 			(*out_data) = now;
 			out_data++;
 			counter++;
 			if( now == terminator ) {
-				this->printf("exit!\n\r");
 				break;
 			}
 		}
