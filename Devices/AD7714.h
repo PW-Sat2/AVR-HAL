@@ -123,10 +123,10 @@ class AD7714_t {
 
     /**
       * @brief Controls input buffer of the device. Enabling buffer increases input impedance of analog inputs. Controlled by asserting state on BUFFER pin.
-      * @param  buff_stat: false -- buffer turned off, true -- buffer turned on
+      * @param  buff_stat: OFF -- buffer turned off, ON -- buffer turned on
       * @retval None
       */
-    void buffer(bool buff_stat);
+    void buffer(Control_State buff_stat);
 
     /**
       * @brief Writes data to Communication Register of the device. 

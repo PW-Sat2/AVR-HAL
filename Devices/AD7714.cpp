@@ -47,7 +47,7 @@ void AD7714_t::init(AD7714_t::InitTypeDef_t InitStruct) {
 
     this->reset();
     this->power_mode(ON);
-    this->buffer(true);
+    this->buffer(ON);
     this->power_mode(ON);
 
     /*    
@@ -78,8 +78,8 @@ void AD7714_t::power_mode(Control_State status) {
     _delay_ms(10);
 }
 
-void AD7714_t::buffer(bool buff_stat) {
     BUFFER_pin.write(buff_stat);
+void AD7714_t::buffer(Control_State buff_stat) {
 }
 
 void AD7714_t::writeToCommReg(ADC_Registers reg, bool read) {
