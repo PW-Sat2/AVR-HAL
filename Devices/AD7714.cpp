@@ -74,12 +74,12 @@ void AD7714_t::reset(void) {
 }
 
 void AD7714_t::power_mode(Control_State status) {
-    STANDBY_pin.write(status);
+    STANDBY_pin.write(static_cast<bool>(status));
     _delay_ms(10);
 }
 
-    BUFFER_pin.write(buff_stat);
 void AD7714_t::buffer(Control_State buff_stat) {
+    BUFFER_pin.write(static_cast<bool>(buff_stat));
 }
 
 void AD7714_t::writeToCommReg(ADC_Registers reg, bool read) {
