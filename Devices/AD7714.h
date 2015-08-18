@@ -116,7 +116,7 @@ class AD7714_t {
 
     /**
       * @brief Controls mode of the device: standby or active by asserting /STANDBY pin.
-      * @param  status: false -- device in active mode, true -- device in standby mode
+      * @param  status: ON -- device in active mode, OFF -- device in standby mode
       * @retval None
       */
     void power_mode(Control_State status);
