@@ -49,21 +49,6 @@ void AD7714_t::init(AD7714_t::InitTypeDef_t InitStruct) {
     this->power_mode(ON);
     this->buffer(ON);
     this->power_mode(ON);
-
-    /*    
-        pol = 0; just tied to GND 
-
-        -- from datasheet --
-        With this input low, the first transition of the serial clock in a data transfer
-        operation is from a low to a high. In microcontroller applications, this means that the serial clock should idle
-        low between data transfers.
-    */
-    /*    
-        sync = 1; just tied to 3v3
-    */
-    /*
-        standby = 1;
-    */
 }
 
 void AD7714_t::reset(void) {
