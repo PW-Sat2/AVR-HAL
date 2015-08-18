@@ -65,6 +65,12 @@ class AD7714_t {
         ZeroScaleSelfCalib = 6,
         FullScaleSelfCalib = 7
     };
+    
+    enum Control_State {
+        OFF = 0,
+        ON  = 1
+    };
+
 
     struct InitTypeDef_t {
         uint8_t CS_pin_nr, DRDY_pin_nr, RESET_pin_nr, STANDBY_pin_nr, BUFFER_pin_nr;
