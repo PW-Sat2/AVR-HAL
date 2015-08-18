@@ -105,12 +105,12 @@ void AD7714_t::writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
 }
 
 
-void AD7714_t::setFilter(bool unipolar, DataLength data_length, uint16_t filter) {
+void AD7714_t::setFilter(Polarity set_polarity, DataLength data_length, uint16_t filter) {
     //  filter: 19-4000
     //  f notch = fclk/128/filter
     dataLen = data_length;
     writeToCommReg(FILTER_HIGH_REG, false);
-    uint8_t val = (unipolar << 7) | (data_length << 6) | (1 << 5) | (filter >> 8);
+    uint8_t val = (static_cast<bool>(set_polarity) << 7) | (data_length << 6) | (1 << 5) | (filter >> 8);
     AD7714_SPI.data_transfer(val);
     writeToCommReg(FILTER_LOW_REG, false);
     val = (filter & 0xFF);

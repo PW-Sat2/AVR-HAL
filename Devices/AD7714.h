@@ -71,6 +71,11 @@ class AD7714_t {
         ON  = 1
     };
 
+    enum Polarity {
+        bipolar = 0,
+        unipolar = 1
+    };
+
 
     struct InitTypeDef_t {
         uint8_t CS_pin_nr, DRDY_pin_nr, RESET_pin_nr, STANDBY_pin_nr, BUFFER_pin_nr;
@@ -154,12 +159,12 @@ class AD7714_t {
 
     /**
       * @brief Controls polarity, filters settings and resolution of A/D conversion.
-      * @param  unipolar: true -- the device works in unipolar mode, false -- bipolar mode.
+      * @param  set_polarity: unipolar -- the device works in unipolar mode, bipolar -- bipolar mode.
       * @param    data_length: sets length of data in Data Register (16/24 bits).
       * @param    filter: sets filtering properties, value in range 19-4000, f_noth = fclk/128/filter
       * @retval None
       */
-    void setFilter(bool unipolar, DataLength data_length, uint16_t filter);
+    void setFilter(Polarity set_polarity, DataLength data_length, uint16_t filter);
 
     AD7714_t();
     explicit AD7714_t(AD7714_t::InitTypeDef_t InitStruct);
