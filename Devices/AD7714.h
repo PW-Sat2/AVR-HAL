@@ -33,10 +33,10 @@ public:
 		AIN2_CH = 1,
 		AIN3_CH = 2, 
 		AIN4_CH = 3,
-		AIN5_CH = 4,
-		AIN1_2_CH = 5,
-		AIN3_4_CH = 6,
-		AIN5_6_CH = 4,
+		AIN5_CH = 6,
+		AIN1_2_CH = 4,
+		AIN3_4_CH = 5,
+		AIN5_6_CH = 6,
 		TEST_CH = 7
 	};
 
