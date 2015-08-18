@@ -35,25 +35,25 @@ struct SerialX_ {
         REGGEN(UCSR0C) = (1 << REGGEN(UCSZ01)) | (1 << REGGEN(UCSZ00));
     }
 
-	void print_byte(const uint8_t byte) {
-		/* Put data into buffer, sends the data */
-		REGGEN(UDR0) = byte;
-		/* Wait for empty transmit buffer */
-		while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
-		}
-	}
-    void print_byte_array(const uint8_t * data, uint8_t len) {
-        while(len--) {
-			this->print_byte(*data);
-			data++;
-		}
+    void print_byte(const uint8_t byte) {
+        /* Put data into buffer, sends the data */
+        REGGEN(UDR0) = byte;
+        /* Wait for empty transmit buffer */
+        while (!(REGGEN(UCSR0A) & (1 << REGGEN(UDRE0)))) {
+        }
     }
-	void print_string(const char * data) {
-		while (*data) {
-			this->print_byte(*data);
-			data++;
-		}
-	}
+    void print_byte_array(const uint8_t * data, uint8_t len) {
+        while (len--) {
+            this->print_byte(*data);
+            data++;
+        }
+    }
+    void print_string(const char * data) {
+        while (*data) {
+            this->print_byte(*data);
+            data++;
+        }
+    }
     void printf(const char* format, ...) {
         va_list aptr;
         va_start(aptr, format);
@@ -72,25 +72,25 @@ struct SerialX_ {
         /* Get and return received data from buffer */
         return REGGEN(UDR0);
     }
-	void read_byte_array(uint8_t * out_data, uint8_t length) {
-		while(length--) {
-			(*out_data) = this->read_byte();
-			out_data++;
-		}
-	}
-	uint8_t read_byte_array_until_term(uint8_t * out_data, const uint8_t terminator, uint8_t max_length) {
-		uint8_t counter = 0;
-		while(max_length--) {
-			uint8_t now = this->read_byte();
-			(*out_data) = now;
-			out_data++;
-			counter++;
-			if( now == terminator ) {
-				break;
-			}
-		}
-		return counter;
-	}
+    void read_byte_array(uint8_t * out_data, uint8_t length) {
+        while (length--) {
+            (*out_data) = this->read_byte();
+            out_data++;
+        }
+    }
+    uint8_t read_byte_array_until_term(uint8_t * out_data, const uint8_t terminator, uint8_t max_length) {
+        uint8_t counter = 0;
+        while (max_length--) {
+            uint8_t now = this->read_byte();
+            (*out_data) = now;
+            out_data++;
+            counter++;
+            if ( now == terminator ) {
+                break;
+            }
+        }
+        return counter;
+    }
 };
 
 
