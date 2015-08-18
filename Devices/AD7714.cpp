@@ -46,8 +46,9 @@ void AD7714_t::init(AD7714_t::InitTypeDef_t InitStruct) {
     this->BUFFER_pin.init({InitStruct.BUFFER_pin_nr, GPIOPin_t::output});
 
     this->reset();
-    this->standby(false);
+    this->power_mode(ON);
     this->buffer(true);
+    this->power_mode(ON);
 
     /*    
         pol = 0; just tied to GND 
@@ -72,8 +73,9 @@ void AD7714_t::reset(void) {
     _delay_ms(10);
 }
 
-void AD7714_t::standby(bool status) {
-    STANDBY_pin.write(!status);
+void AD7714_t::power_mode(Control_State status) {
+    STANDBY_pin.write(status);
+    _delay_ms(10);
 }
 
 void AD7714_t::buffer(bool buff_stat) {

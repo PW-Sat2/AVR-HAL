@@ -119,7 +119,7 @@ class AD7714_t {
       * @param  status: false -- device in active mode, true -- device in standby mode
       * @retval None
       */
-    void standby(bool status);
+    void power_mode(Control_State status);
 
     /**
       * @brief Controls input buffer of the device. Enabling buffer increases input impedance of analog inputs. Controlled by asserting state on BUFFER pin.
