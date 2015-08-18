@@ -81,9 +81,6 @@ class AD7714_t {
         uint8_t CS_pin_nr, DRDY_pin_nr, RESET_pin_nr, STANDBY_pin_nr, BUFFER_pin_nr;
     };
 
-    ADC_Channels actual_channel;
-    DataLength dataLen;
-
     /**
       * @brief    Sets ADC channel configuration.
       * @param    channel: determines ADC's channel configuration.
@@ -171,6 +168,8 @@ class AD7714_t {
 
  private:
     GPIOPin_t DRDY_pin, RESET_pin, STANDBY_pin, BUFFER_pin;
+    ADC_Channels actual_channel;
+    DataLength dataLen;
 };
 
 #endif  // DEVICES_AD7714_H_
