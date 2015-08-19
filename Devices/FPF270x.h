@@ -10,7 +10,7 @@
 
 /*
  * @class FPF270x_t
- * @brief Class is used to provide user-friendly solutions to communicate with FPF270x over-current protection swtich.
+ * @brief Class is used to provide user-friendly solutions to communicate with FPF270x over-current protection switch.
  * @details Class offers methods for enabling/disabling device, checking for overload and powergood flags.
  */
 class FPF270x_t {
@@ -26,8 +26,8 @@ class FPF270x_t {
     struct InitTypeDef_t {
         uint8_t pin_on, pin_flag, pin_pgood;
     };
-    LCL_t();
-    explicit LCL_t(const InitTypeDef_t & InitStruct);
+    FPF270x_t();
+    explicit FPF270x_t(const InitTypeDef_t & InitStruct);
 
     /*
      * @brief Initialization of the device.
@@ -51,11 +51,11 @@ class FPF270x_t {
     void off();
 
     /*
-     * @brief Checks for overload.
+     * @brief Checks for error signal from device.
      * @param None
-     * @retval True means overload.
+     * @retval True means some sort of error have occured.
      */
-    bool overload();
+    bool error_occured();
 
     /*
      * @brief Checks for power good flag.
