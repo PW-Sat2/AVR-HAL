@@ -65,7 +65,7 @@ class AD7714_t {
         ZeroScaleSelfCalib = 6,
         FullScaleSelfCalib = 7
     };
-    
+
     enum Control_State {
         OFF = 0,
         ON  = 1
