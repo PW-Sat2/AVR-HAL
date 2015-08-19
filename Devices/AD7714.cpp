@@ -46,9 +46,8 @@ void AD7714_t::init(AD7714_t::InitTypeDef_t InitStruct) {
     this->BUFFER_pin.init({InitStruct.BUFFER_pin_nr, GPIOPin_t::output});
 
     this->reset();
-    this->power_mode(ON);
     this->buffer(ON);
-    this->power_mode(ON);
+    this->power_mode(OFF);
 }
 
 void AD7714_t::reset(void) {
