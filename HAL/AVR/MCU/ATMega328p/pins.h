@@ -42,7 +42,7 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
     {&DDRC, &PORTC, &PINC, 2},  // 25 -- PC2 (ADC2/PCINT10)
     {&DDRC, &PORTC, &PINC, 3},  // 26 -- PC3 (ADC3/PCINT11)
     {&DDRC, &PORTC, &PINC, 4},  // 27 -- PC4 (ADC4/SDA/PCINT12)
-    {&DDRC, &PORT, &PINC, 5}    // 28 -- PC5 (ADC5/SCL/PCINT13)
+    {&DDRC, &PORTC, &PINC, 5}    // 28 -- PC5 (ADC5/SCL/PCINT13)
 };
 
 /* SPI pin map */
