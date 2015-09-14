@@ -95,19 +95,19 @@ struct SerialX_ {
 
 
 #if SERIAL_NRs > 0
-    SerialX_<0> Serial0;
+    static SerialX_<0> Serial0;
 #endif
 
 #if SERIAL_NRs > 1
-    SerialX_<1> Serial1;
+    static SerialX_<1> Serial1;
 #endif
 
 #if SERIAL_NRs > 2
-    SerialX_<2> Serial2;
+    static SerialX_<2> Serial2;
 #endif
 
 #if SERIAL_NRs > 3
-    SerialX_<3> Serial3;
+    static SerialX_<3> Serial3;
 #endif
 
 #endif  //  HAL_AVR_SERIAL_H_
