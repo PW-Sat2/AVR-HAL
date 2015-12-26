@@ -11,6 +11,7 @@
 
 #include <avr/pgmspace.h>
 #include "SPI.h"
+#include "TWI.h"
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
@@ -47,6 +48,12 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 
 /* SPI pin map */
 const SPIPinDescr_t SPIPin_t_descr = {
-        17, 18, 19, 16};
+	17, 18, 19, 16
+};
+		
+/* TWI pin map */
+const TWIPinDescr_t TWIPin_t_descr = {
+	27, 28
+};
 
 #endif  // HAL_AVR_MCU_ATMEGA328P_PINS_H_
