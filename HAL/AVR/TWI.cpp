@@ -6,8 +6,9 @@
  */ 
 
 #include <util/twi.h>
-#include "GPIO.h"
+
 #include "TWI.h"
+#include "GPIO.h"
 #include "pins.h"
 #include "Serial.h"
 
