@@ -11,7 +11,6 @@
 
 #include <avr/pgmspace.h>
 #include "SPI.h"
-#include "TWI.h"
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
