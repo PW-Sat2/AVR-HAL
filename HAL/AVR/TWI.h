@@ -13,10 +13,6 @@
 #include <stdint.h>
 #include "GPIO.h"
 
-struct TWIPinDescr_t {
-    uint8_t pinSDA, pinSCL;
-};
-
 class TWI_t {
  private:
     GPIOPin_t SDA, SCL;
