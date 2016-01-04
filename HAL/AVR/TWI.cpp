@@ -16,7 +16,7 @@ void TWI_t::init(void) {
 
     // configure clock
     this->speed(100000UL);
-    
+    // enable
     TWCR = (1 << TWEN);
 }
 
