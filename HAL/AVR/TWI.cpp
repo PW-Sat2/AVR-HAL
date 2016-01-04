@@ -13,14 +13,10 @@
 #include "Serial.h"
 
 void TWI_t::init(void) {
-    // Make sure that SDA and SCL are set as output
-    this->SDA.init({TWIPin_t_descr.pinSDA, GPIOPin_t::output});
-    this->SCL.init({TWIPin_t_descr.pinSCL, GPIOPin_t::output});
 
     // configure clock
     this->speed(100000UL);
-
-    // enable TWI
+    
     TWCR = (1 << TWEN);
 }
 
