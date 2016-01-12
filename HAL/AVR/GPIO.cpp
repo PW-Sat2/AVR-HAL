@@ -22,16 +22,7 @@ void GPIOPin_t::init(GPIOPin_t::InitTypeDef_t InitTypeDef) {
     this->pin_reg.PORTx = reinterpret_cast<volatile uint8_t*>
                           pgm_read_byte(&(GPIOPin_t_descr[InitTypeDef.pin_nr].PORTx));
 
-    if (InitTypeDef.mode == input) {
-        cbi((*this->pin_reg.DDRx), this->pin_reg.pin);
-        cbi((*this->pin_reg.PORTx), this->pin_reg.pin);
-    } else if (InitTypeDef.mode == input_pullup) {
-        cbi((*this->pin_reg.DDRx), this->pin_reg.pin);
-        sbi((*this->pin_reg.PORTx), this->pin_reg.pin);
-    } else {
-        sbi((*this->pin_reg.DDRx), this->pin_reg.pin);
-        cbi((*this->pin_reg.PORTx), this->pin_reg.pin);
-    }
+    this->pinmode(InitTypeDef.mode);
 }
 
 void GPIOPin_t::set() {
@@ -55,6 +46,19 @@ bool GPIOPin_t::read(void) {
         return false;
     }
     return true;
+}
+
+void GPIOPin_t::pinmode(GPIOPin_t::GPIO_Mode mode) {
+    if (mode == input) {
+        cbi((*this->pin_reg.DDRx), this->pin_reg.pin);
+        cbi((*this->pin_reg.PORTx), this->pin_reg.pin);
+        } else if (mode == input_pullup) {
+        cbi((*this->pin_reg.DDRx), this->pin_reg.pin);
+        sbi((*this->pin_reg.PORTx), this->pin_reg.pin);
+        } else {
+        sbi((*this->pin_reg.DDRx), this->pin_reg.pin);
+        cbi((*this->pin_reg.PORTx), this->pin_reg.pin);
+    }     
 }
 
 

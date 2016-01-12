@@ -93,6 +93,13 @@ class GPIOPin_t {
      * @retval State of the pin, i.e. either high or low.
      */    
     bool read(void);
+    
+    /*
+     * @brief Changes mode (input/output/input_pullup) of the pin.
+     * @param mode: Determines mode of the pin to be changed.
+     * @retval None.
+     */    
+    void pinmode(GPIOPin_t::GPIO_Mode mode);
 };
 
 
