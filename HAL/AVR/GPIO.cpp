@@ -16,11 +16,11 @@ GPIOPin_t::GPIOPin_t(GPIOPin_t::InitTypeDef_t InitTypeDef) {
 void GPIOPin_t::init(GPIOPin_t::InitTypeDef_t InitTypeDef) {
     this->pin_reg.pin = pgm_read_byte(&(GPIOPin_t_descr[InitTypeDef.pin_nr].pin));
     this->pin_reg.DDRx = reinterpret_cast<volatile uint8_t*>
-                         pgm_read_byte(&(GPIOPin_t_descr[InitTypeDef.pin_nr].DDRx));
+                         pgm_read_word(&(GPIOPin_t_descr[InitTypeDef.pin_nr].DDRx));
     this->pin_reg.PINx = reinterpret_cast<volatile uint8_t*>
-                         pgm_read_byte(&(GPIOPin_t_descr[InitTypeDef.pin_nr].PINx));
+                         pgm_read_word(&(GPIOPin_t_descr[InitTypeDef.pin_nr].PINx));
     this->pin_reg.PORTx = reinterpret_cast<volatile uint8_t*>
-                          pgm_read_byte(&(GPIOPin_t_descr[InitTypeDef.pin_nr].PORTx));
+                          pgm_read_word(&(GPIOPin_t_descr[InitTypeDef.pin_nr].PORTx));
 
     this->pinmode(InitTypeDef.mode);
 }
