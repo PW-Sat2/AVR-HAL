@@ -1,11 +1,3 @@
-/*
- * serial_mcu.h
- *
- * Created: 2015-07-31 22:05:20
- *  Author: begreen
- */ 
-
-
 #ifndef HAL_AVR_MCU_ATMEGA2560_SERIAL_MCU_H_
 #define HAL_AVR_MCU_ATMEGA2560_SERIAL_MCU_H_
 
