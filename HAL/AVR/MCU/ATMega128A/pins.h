@@ -1,11 +1,3 @@
-/*
- * pins.h
- *
- * Created: 2015-07-29 00:07:24
- *  Author: begreen
- */ 
-
-
 #ifndef HAL_AVR_MCU_ATMEGA128A_PINS_H_
 #define HAL_AVR_MCU_ATMEGA128A_PINS_H_
 
