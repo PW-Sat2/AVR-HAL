@@ -74,6 +74,6 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 };
 
 const SPIPinDescr_t SPIPin_t_descr = {
-        12, 13, 11, 10};
+        12, 11, 10};
 
 #endif  // HAL_AVR_MCU_ATMEGA128A_PINS_H_
