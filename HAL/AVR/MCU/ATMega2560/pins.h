@@ -111,7 +111,7 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 
 /* SPI pin map */
 const SPIPinDescr_t SPIPin_t_descr = {
-	0, 0, 0, 0
+    21, 20, 19
 };
 
 #endif  // HAL_AVR_MCU_ATMEGA2560_PINS_H_
