@@ -16,8 +16,8 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRE, &PORTE, &PINE, 5},    // 7 -- PE5 ( OC3C/INT5 )        -- Arduino Mega2560: Digital pin 3 (PWM)
 {&DDRE, &PORTE, &PINE, 6},    // 8 -- PE6 ( T3/INT6 )          -- Arduino Mega2560:  
 {&DDRE, &PORTE, &PINE, 7},    // 9 -- PE7 ( CLKO/ICP3/INT7 )   -- Arduino Mega2560:  
-{ 0, 0, 0, 0},                  // 10 -- VCC                     -- Arduino Mega2560: VCC
-{ 0, 0, 0, 0},                  // 11 -- GND                     -- Arduino Mega2560: GND
+{ 0, 0, 0, 0},                // 10 -- VCC                     -- Arduino Mega2560: VCC
+{ 0, 0, 0, 0},                // 11 -- GND                     -- Arduino Mega2560: GND
 {&DDRH, &PORTH, &PINH, 0},    // 12 -- PH0 ( RXD2 )            -- Arduino Mega2560: Digital pin 17 (RX2)
 {&DDRH, &PORTH, &PINH, 1},    // 13 -- PH1 ( TXD2 )            -- Arduino Mega2560: Digital pin 16 (TX2)
 {&DDRH, &PORTH, &PINH, 2},    // 14 -- PH2 ( XCK2 )            -- Arduino Mega2560:  
@@ -36,11 +36,11 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRH, &PORTH, &PINH, 7},    // 27 -- PH7 ( T4 )              -- Arduino Mega2560:  
 {&DDRG, &PORTG, &PING, 3},    // 28 -- PG3 ( TOSC2 )           -- Arduino Mega2560:  
 {&DDRG, &PORTG, &PING, 4},    // 29 -- PG4 ( TOSC1 )           -- Arduino Mega2560:  
-{ 0, 0, 0, 0},                  // 30 -- RESET                   -- Arduino Mega2560: RESET
-{ 0, 0, 0, 0},                  // 31 -- VCC                     -- Arduino Mega2560: VCC
-{ 0, 0, 0, 0},                  // 32 -- GND                     -- Arduino Mega2560: GND
-{ 0, 0, 0, 0},                  // 33 -- XTAL2                   -- Arduino Mega2560: XTAL2
-{ 0, 0, 0, 0},                  // 34 -- XTAL1                   -- Arduino Mega2560: XTAL1
+{ 0, 0, 0, 0},                // 30 -- RESET                   -- Arduino Mega2560: RESET
+{ 0, 0, 0, 0},                // 31 -- VCC                     -- Arduino Mega2560: VCC
+{ 0, 0, 0, 0},                // 32 -- GND                     -- Arduino Mega2560: GND
+{ 0, 0, 0, 0},                // 33 -- XTAL2                   -- Arduino Mega2560: XTAL2
+{ 0, 0, 0, 0},                // 34 -- XTAL1                   -- Arduino Mega2560: XTAL1
 {&DDRL, &PORTL, &PINL, 0},    // 35 -- PL0 ( ICP4 )            -- Arduino Mega2560: Digital pin 49
 {&DDRL, &PORTL, &PINL, 1},    // 36 -- PL1 ( ICP5 )            -- Arduino Mega2560: Digital pin 48
 {&DDRL, &PORTL, &PINL, 2},    // 37 -- PL2 ( T5 )              -- Arduino Mega2560: Digital pin 47
@@ -67,8 +67,8 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRC, &PORTC, &PINC, 5},    // 58 -- PC5 ( A13 )             -- Arduino Mega2560: Digital pin 32
 {&DDRC, &PORTC, &PINC, 6},    // 59 -- PC6 ( A14 )             -- Arduino Mega2560: Digital pin 31
 {&DDRC, &PORTC, &PINC, 7},    // 60 -- PC7 ( A15 )             -- Arduino Mega2560: Digital pin 30
-{ 0, 0, 0, 0},                  // 61 -- VCC                     -- Arduino Mega2560: VCC
-{ 0, 0, 0, 0},                  // 62 -- GND                     -- Arduino Mega2560: GND
+{ 0, 0, 0, 0},                // 61 -- VCC                     -- Arduino Mega2560: VCC
+{ 0, 0, 0, 0},                // 62 -- GND                     -- Arduino Mega2560: GND
 {&DDRJ, &PORTJ, &PINJ, 0},    // 63 -- PJ0 ( RXD3/PCINT9 )     -- Arduino Mega2560: Digital pin 15 (RX3)
 {&DDRJ, &PORTJ, &PINJ, 1},    // 64 -- PJ1 ( TXD3/PCINT10 )    -- Arduino Mega2560: Digital pin 14 (TX3)
 {&DDRJ, &PORTJ, &PINJ, 2},    // 65 -- PJ2 ( XCK3/PCINT11 )    -- Arduino Mega2560:  
@@ -85,9 +85,9 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRA, &PORTA, &PINA, 2},    // 76 -- PA2 ( AD2 )             -- Arduino Mega2560: Digital pin 24
 {&DDRA, &PORTA, &PINA, 1},    // 77 -- PA1 ( AD1 )             -- Arduino Mega2560: Digital pin 23
 {&DDRA, &PORTA, &PINA, 0},    // 78 -- PA0 ( AD0 )             -- Arduino Mega2560: Digital pin 22
-{&DDRJ, &PORTJ, &PINJ, 7},    // 79 -- PJ7                     -- Arduino Mega2560:  
-{ 0, 0, 0, 0},                  // 80 -- VCC                     -- Arduino Mega2560: VCC
-{ 0, 0, 0, 0},                  // 81 -- GND                     -- Arduino Mega2560: GND
+{&DDRJ, &PORTJ, &PINJ, 7},    // 79 -- PJ7                     -- Arduino Mega2560:
+{ 0, 0, 0, 0},                // 80 -- VCC                     -- Arduino Mega2560: VCC
+{ 0, 0, 0, 0},                // 81 -- GND                     -- Arduino Mega2560: GND
 {&DDRK, &PORTK, &PINK, 7},    // 82 -- PK7 ( ADC15/PCINT23 )   -- Arduino Mega2560: Analog pin 15
 {&DDRK, &PORTK, &PINK, 6},    // 83 -- PK6 ( ADC14/PCINT22 )   -- Arduino Mega2560: Analog pin 14
 {&DDRK, &PORTK, &PINK, 5},    // 84 -- PK5 ( ADC13/PCINT21 )   -- Arduino Mega2560: Analog pin 13
@@ -104,9 +104,9 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRF, &PORTF, &PINF, 2},    // 95 -- PF2 ( ADC2 )            -- Arduino Mega2560: Analog pin 2
 {&DDRF, &PORTF, &PINF, 1},    // 96 -- PF1 ( ADC1 )            -- Arduino Mega2560: Analog pin 1
 {&DDRF, &PORTF, &PINF, 0},    // 97 -- PF0 ( ADC0 )            -- Arduino Mega2560: Analog pin 0
-{ 0, 0, 0, 0},                  // 98 -- AREF                    -- Arduino Mega2560: Analog Reference
-{ 0, 0, 0, 0},                  // 99 -- GND                     -- Arduino Mega2560: GND
-{ 0, 0, 0, 0},                  // 100 -- AVCC                   -- Arduino Mega2560: VCC
+{ 0, 0, 0, 0},                // 98 -- AREF                    -- Arduino Mega2560: Analog Reference
+{ 0, 0, 0, 0},                // 99 -- GND                     -- Arduino Mega2560: GND
+{ 0, 0, 0, 0},                // 100 -- AVCC                   -- Arduino Mega2560: VCC
 };
 
 /* SPI pin map */
