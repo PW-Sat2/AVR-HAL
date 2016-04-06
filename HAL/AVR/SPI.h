@@ -7,10 +7,10 @@
 /*
  * @struct SPIPinDescr_t
  * @brief SPI pin description.
- * @details Contains numbers of MOSI, MISO, SCK and SS pin corresponding to particular MCU, in particular package.
+ * @details Contains numbers of MOSI, SCK and SS pins corresponding to particular MCU, in particular package.
  */
 struct SPIPinDescr_t {
-    uint8_t pin_mosi, pin_miso, pin_sck, pin_ss;
+    uint8_t pin_mosi, pin_sck, pin_ss;
 };
 
 /*
@@ -20,7 +20,7 @@ struct SPIPinDescr_t {
  */
 class SPI_t {
  private:
-    GPIOPin_t pin_mosi, pin_miso, pin_sck, pin_ss;
+    GPIOPin_t pin_mosi, pin_sck, pin_ss;
 
  public:
     /*
