@@ -1,9 +1,3 @@
-/*
-* @brief A driver for Analog Devices ADG709, 4-to-1 differential multiplexer.
-* @author Grzegorz Gajoch
-* @author Micha� Gumiela
-* @date 2015-07
-*/
 #ifndef DEVICES_ADG709_H_
 #define DEVICES_ADG709_H_
 
@@ -60,6 +54,5 @@ class ADG709_t {
      */
     void select(const uint8_t channel);
 };
-
 
 #endif  // DEVICES_ADG709_H_
