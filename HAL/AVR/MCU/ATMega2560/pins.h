@@ -104,9 +104,9 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 {&DDRF, &PORTF, &PINF, 2},    // 95 -- PF2 ( ADC2 )            -- Arduino Mega2560: Analog pin 2
 {&DDRF, &PORTF, &PINF, 1},    // 96 -- PF1 ( ADC1 )            -- Arduino Mega2560: Analog pin 1
 {&DDRF, &PORTF, &PINF, 0},    // 97 -- PF0 ( ADC0 )            -- Arduino Mega2560: Analog pin 0
-{ 0, 0, 0, 0},                // 98 -- AREF                    -- Arduino Mega2560: Analog Reference
-{ 0, 0, 0, 0},                // 99 -- GND                     -- Arduino Mega2560: GND
-{ 0, 0, 0, 0},                // 100 -- AVCC                   -- Arduino Mega2560: VCC
+{0, 0, 0, 0},                 // 98 -- AREF                    -- Arduino Mega2560: Analog Reference
+{0, 0, 0, 0},                 // 99 -- GND                     -- Arduino Mega2560: GND
+{0, 0, 0, 0},                 // 100 -- AVCC                   -- Arduino Mega2560: VCC
 };
 
 /* SPI pin map */
