@@ -1,9 +1,3 @@
-/*
-* @brief A driver for Analog Devices ADG709, 4-to-1 differential multiplexer.
-* @author Grzegorz Gajoch
-* @author Micha³ Gumiela
-* @date 2015-07
-*/
 #ifndef DEVICES_ADG709_H_
 #define DEVICES_ADG709_H_
 
@@ -29,14 +23,14 @@ class ADG709_t {
         uint8_t pin_A0, pin_A1, pin_EN;
     };
     ADG709_t();
-    explicit ADG709_t(InitTypeDef_t InitStruct);
+    explicit ADG709_t(const InitTypeDef_t & InitStruct);
 
     /*
      * @brief Initialization of the device.
      * @param InitStruct: Contains all information needed for device initialization.
      * @retval None
      */
-    void init(InitTypeDef_t InitStruct);
+    void init(const InitTypeDef_t & InitStruct);
 
     /*
      * @brief Activate the device.
@@ -58,8 +52,7 @@ class ADG709_t {
      * @param channel: Determines a number of channel to be chosen. Range 0-3.
      * @retval None
      */
-    void select(uint8_t channel);
+    void select(const uint8_t channel);
 };
-
 
 #endif  // DEVICES_ADG709_H_
