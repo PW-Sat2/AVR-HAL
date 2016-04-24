@@ -2,7 +2,7 @@
 #define ARDUINO_H_
 
 struct Arduino_t {
-    // Digital pins
+    // Arduino D-pins
     static constexpr uint8_t D0 = 2;
     static constexpr uint8_t D1 = 3;
     static constexpr uint8_t D2 = 6;
@@ -57,6 +57,7 @@ struct Arduino_t {
     static constexpr uint8_t D51 = 21;
     static constexpr uint8_t D52 = 20;
     static constexpr uint8_t D53 = 19; 
+    // Arduino A-pins
 };
 
 #endif /* ARDUINO_H_ */
