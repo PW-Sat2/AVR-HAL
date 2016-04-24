@@ -56,8 +56,24 @@ struct Arduino_t {
     static constexpr uint8_t D50 = 22;
     static constexpr uint8_t D51 = 21;
     static constexpr uint8_t D52 = 20;
-    static constexpr uint8_t D53 = 19; 
+    static constexpr uint8_t D53 = 19;
     // Arduino A-pins
+    static constexpr uint8_t A0 = 97;
+    static constexpr uint8_t A1 = 96;
+    static constexpr uint8_t A2 = 95;
+    static constexpr uint8_t A3 = 94;
+    static constexpr uint8_t A4 = 93;
+    static constexpr uint8_t A5 = 92;
+    static constexpr uint8_t A6 = 91;
+    static constexpr uint8_t A7 = 90;
+    static constexpr uint8_t A8 = 89;
+    static constexpr uint8_t A9 = 88;
+    static constexpr uint8_t A10 = 87;
+    static constexpr uint8_t A11 = 86;
+    static constexpr uint8_t A12 = 85;
+    static constexpr uint8_t A13 = 84;
+    static constexpr uint8_t A14 = 83;
+    static constexpr uint8_t A15 = 82;
 };
 
 #endif /* ARDUINO_H_ */
