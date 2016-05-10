@@ -1,11 +1,3 @@
-/*
- * pins.h
- *
- * Created: 2015-09-14 12:10:24
- *  Author: Michał Gumiela
- */ 
-
-
 #ifndef HAL_AVR_MCU_ATMEGA328P_PINS_H_
 #define HAL_AVR_MCU_ATMEGA328P_PINS_H_
 
@@ -47,7 +39,7 @@ const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
 
 /* SPI pin map */
 const SPIPinDescr_t SPIPin_t_descr = {
-	17, 18, 19, 16
+	17, 19, 16
 };
 
 #endif  // HAL_AVR_MCU_ATMEGA328P_PINS_H_
