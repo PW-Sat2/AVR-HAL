@@ -3,6 +3,7 @@
 
 #include <avr/pgmspace.h>
 #include "SPI.h"
+#include "arduino.h"
 
 /* MCU pin map */
 const GPIOPinDescr_t GPIOPin_t_descr[] PROGMEM = {
