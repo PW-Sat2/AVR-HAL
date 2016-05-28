@@ -21,11 +21,11 @@ class DAC121S101_t {
 	 };
 
     /*
-     * @brief Initialization of the device.
+     * @brief Initialization of the device with selected CS_PIN.
      * @param InitStruct: Contains all information needed for device initialization.
      * @retval None
      */
-    void init();
+    void init(uint8_t cs_pin);
 
     /*
      * @brief Set DAC's output value.
@@ -45,6 +45,7 @@ class DAC121S101_t {
 	
  private:
 	 DAC_Mode actual_mode;
+	 GPIOPin_t cs_dac;
 };
 
 #endif /* DAC121S101_H_ */

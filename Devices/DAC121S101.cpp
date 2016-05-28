@@ -8,10 +8,12 @@
 #include "DAC121S101.h"
 
 DAC121S101_t::DAC121S101_t() {
-	this->init();
 }
 
-void DAC121S101_t::init(){
+void DAC121S101_t::init(uint8_t cs_pin){
+	this->cs_dac.init({cs_pin, GPIOPin_t::output});
+	this->cs_dac.set();	
+	
 	this->setMode(POWER_DOWN_100K_TO_GND);
 	this->setOutput(0);
 }
@@ -41,8 +43,10 @@ void DAC121S101_t::setOutput(uint16_t value){
 	mask = 0xFF;
 	l_byte = static_cast<uint8_t>(value & mask);
 	
+	this->cs_dac.reset();
 	SPI.shift(h_byte);
 	SPI.shift(l_byte);
+	this->cs_dac.set();
 }
 
 void DAC121S101_t::setMode(DAC_Mode mode){
