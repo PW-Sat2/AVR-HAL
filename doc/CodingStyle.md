@@ -224,16 +224,4 @@ whereas functions/global variables should be prefixed with module name in upper 
 
 #### Automatic Formatting
 
-For the moment the Pw-Sat2 project is using [clang-format](http://clang.llvm.org/docs/ClangFormat.html) utility for automatic source code formatting. Its mostly complete configuration file that will automatically apply majority of the formatting rules described above is available [here](../.clang-format). Be advised, the minimum supported version of clang format is 3.7.
-
-The source code formatting with the Clang-Format utility has been integrated into Pw-Sat2 build system. Almost every C/C++ module in the repository supports special build target for automatic module wide source code formatting. The build targets for source code formatting contain '.format' suffix i.e. for logger module the target that should be invoked to reformat all of its files would be:
-
-    make logger.format
-
-Alternatively the Clang-Format utility can be invoked manually limited set of files or single file if need be using following command (assuming that clang-format is available somewhere in your PATH):
-
-    clang-format --style=file -i <list of files>
-
-Where \<list of files\> is list of paths to files that should be reformatted.
-
-Clang-Format is already in one way or the other integrated with most of the popular IDEs. The Qt Creator already has built-in support for it, all that has to be done it is enable it in the options menu. If you are using Eclipse you can use [CppStyle](https://github.com/wangzw/CppStyle) plugin to automatically format the code using the clang-format utility and above configuration file.
+Currently the project uses two static code analyzers - cppcheck and cpplint. The code should be analyzed utilizing these tools by running provided makefile.
