@@ -7,6 +7,8 @@
 #include "mcu/mcu.h"
 
 
+
+
 namespace hal {
     
 class DigitalIO { 
@@ -22,25 +24,31 @@ class DigitalIO {
     static DigitalIO init() {
         DigitalIO io = DigitalIO(pin_nr);
         static_assert(reinterpret_cast<int>(GPIOPinMap[pin_nr].DDRx) != 0, "Pin is not GPIO!");
-        io.pinmode(mode);
+        io.init(mode);
         return io;
-    }
+    }			
     
     constexpr DigitalIO(Pin pin) : pin(GPIOPinMap[pin].pin),
                                    DDRx(GPIOPinMap[pin].DDRx), 
                                    PORTx(GPIOPinMap[pin].PORTx), 
                                    PINx(GPIOPinMap[pin].PINx) {
+									   //static_assert((pin!=0,true), "A");
+									   if( pin == 0 ) { x++; }
     }
 	
-    void set() {
+	void init(const DigitalIO::Mode mode) __attribute__((always_inline)) {
+		pinmode(mode);
+	}
+	
+    void set() __attribute__((always_inline)) {
         SBI(*PORTx, pin);
     }
 
-    void reset() {
+    void reset() __attribute__((always_inline)) {
         CBI(*PORTx, pin);
     }
 
-    void write(bool value) {
+    void write(bool value) __attribute__((always_inline)) {
 	    if (value) {
 		    this->set();
 		} else {
@@ -48,14 +56,22 @@ class DigitalIO {
 	    }
     }
     
-    bool read() {
+    bool read() __attribute__((always_inline)) {
 	    if (bit_is_clear(*PINx, pin)) {
 		    return false;
 	    }
 	    return true;
     }
+	
+	void toggle() __attribute__((always_inline)) {
+		if( read() ) {
+			reset();
+		} else {
+			set();
+		}	
+	}
 
-    void pinmode(const DigitalIO::Mode mode) {
+    inline void pinmode(const DigitalIO::Mode mode) __attribute__((always_inline)) {
 		switch(mode) {
 			case OUTPUT:
                 SBI(*DDRx, pin);
@@ -69,14 +85,17 @@ class DigitalIO {
 			default:
 			    CBI(*DDRx, pin);
 			    CBI(*PORTx, pin);
-				
+				break;
 	    }
     }
 
  private:
-    Pin pin;
-    volatile uint8_t *DDRx, *PORTx, *PINx;
+    const Pin pin;
+    volatile uint8_t * const DDRx;
+	volatile uint8_t * const PORTx;
+	volatile uint8_t * const PINx;
 };
 }
+
 
 #endif  // HAL_GPIO_H_

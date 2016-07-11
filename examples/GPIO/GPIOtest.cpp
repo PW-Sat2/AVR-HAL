@@ -2,14 +2,15 @@
 #include "devices/LED.h"
 #include <util/delay.h>
 
-int main() {
+int main() {	
     hal::DigitalIO pin2 = hal::DigitalIO::init<hal::bsp::D2, hal::DigitalIO::OUTPUT>();
     
     hal::DigitalIO pin3(hal::bsp::D3);
     pin3.pinmode(hal::DigitalIO::OUTPUT);
     
     hal::LED led(hal::bsp::LED);
-    
+	led.init();
+	
     while(1) {
         
         led.on();

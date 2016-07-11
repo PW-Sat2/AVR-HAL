@@ -4,9 +4,11 @@
 namespace hal {
 class LED {
  public:
-	LED(const DigitalIO::Pin pin) : led_pin(pin) {
+    constexpr LED(const DigitalIO::Pin pin) : led_pin(pin) {	 
+    }
+    void init() {
         led_pin.pinmode(DigitalIO::OUTPUT);
-	}
+    }
 	
 	void on() {
 		led_pin.set();
