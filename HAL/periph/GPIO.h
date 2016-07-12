@@ -10,7 +10,10 @@
 
 
 namespace hal {
-    
+
+// hack for checking bad pin association
+extern volatile uint8_t* DigitalIO_bad_pin;
+
 class DigitalIO { 
  public:
 	typedef uint8_t Pin;
@@ -28,12 +31,11 @@ class DigitalIO {
         return io;
     }			
     
+    
     constexpr DigitalIO(Pin pin) : pin(GPIOPinMap[pin].pin),
-                                   DDRx(GPIOPinMap[pin].DDRx), 
-                                   PORTx(GPIOPinMap[pin].PORTx), 
-                                   PINx(GPIOPinMap[pin].PINx) {
-									   //static_assert((pin!=0,true), "A");
-									   if( pin == 0 ) { x++; }
+                                   DDRx((GPIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin : GPIOPinMap[pin].DDRx),
+                                   PORTx(GPIOPinMap[pin].DDRx),
+                                   PINx(GPIOPinMap[pin].DDRx) {
     }
 	
 	void init(const DigitalIO::Mode mode) __attribute__((always_inline)) {
