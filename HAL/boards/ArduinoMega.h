@@ -5,86 +5,86 @@
 #include "devices/LED.h"
 
 namespace hal {
+	
 namespace bsp {
 
-enum Pins {
-    D0 = 2,
-    D1 = 3,
-    D2 = 6,
-    D3 = 7,
-    D4 = 1,
-    D5 = 5,
-    D6 = 15,
-    D7 = 16,
-    D8 = 17,
-    D9 = 18,
-    D10 = 23,
-    D11 = 24,
-    D12 = 25,
-    D13 = 26,
-    D14 = 64,
-    D15 = 63,
-    D16 = 13,
-    D17 = 12,
-    D18 = 46,
-    D19 = 45,
-    D20 = 44,
-    D21 = 43,
-    D22 = 78,
-    D23 = 77,
-    D24 = 76,
-    D25 = 75,
-    D26 = 74,
-    D27 = 73,
-    D28 = 72,
-    D29 = 71,
-    D30 = 60,
-    D31 = 59,
-    D32 = 58,
-    D33 = 57,
-    D34 = 56,
-    D35 = 55,
-    D36 = 54,
-    D37 = 53,
-    D38 = 50,
-    D39 = 70,
-    D40 = 52,
-    D41 = 51,
-    D42 = 42,
-    D43 = 41,
-    D44 = 40,
-    D45 = 39,
-    D46 = 38,
-    D47 = 37,
-    D48 = 36,
-    D49 = 35,
-    D50 = 22,
-    D51 = 21,
-    D52 = 20,
-    D53 = 19,
-    
-    
-    A0 = 97,
-    A1 = 96,
-    A2 = 95,
-    A3 = 94,
-    A4 = 93,
-    A5 = 92,
-    A6 = 91,
-    A7 = 90,
-    A8 = 89,
-    A9 = 88,
-    A10 = 87,
-    A11 = 86,
-    A12 = 85,
-    A13 = 84,
-    A14 = 83,
-    A15 = 82,
-    
-    LED = D13
-};
+namespace pins {
+static constexpr DigitalIO::Pin D0 = 2;
+static constexpr DigitalIO::Pin D1 = 3;
+static constexpr DigitalIO::Pin D2 = 6;
+static constexpr DigitalIO::Pin D3 = 7;
+static constexpr DigitalIO::Pin D4 = 1;
+static constexpr DigitalIO::Pin D5 = 5;
+static constexpr DigitalIO::Pin D6 = 15;
+static constexpr DigitalIO::Pin D7 = 16;
+static constexpr DigitalIO::Pin D8 = 17;
+static constexpr DigitalIO::Pin D9 = 18;
+static constexpr DigitalIO::Pin D10 = 23;
+static constexpr DigitalIO::Pin D11 = 24;
+static constexpr DigitalIO::Pin D12 = 25;
+static constexpr DigitalIO::Pin D13 = 26;
+static constexpr DigitalIO::Pin D14 = 64;
+static constexpr DigitalIO::Pin D15 = 63;
+static constexpr DigitalIO::Pin D16 = 13;
+static constexpr DigitalIO::Pin D17 = 12;
+static constexpr DigitalIO::Pin D18 = 46;
+static constexpr DigitalIO::Pin D19 = 45;
+static constexpr DigitalIO::Pin D20 = 44;
+static constexpr DigitalIO::Pin D21 = 43;
+static constexpr DigitalIO::Pin D22 = 78;
+static constexpr DigitalIO::Pin D23 = 77;
+static constexpr DigitalIO::Pin D24 = 76;
+static constexpr DigitalIO::Pin D25 = 75;
+static constexpr DigitalIO::Pin D26 = 74;
+static constexpr DigitalIO::Pin D27 = 73;
+static constexpr DigitalIO::Pin D28 = 72;
+static constexpr DigitalIO::Pin D29 = 71;
+static constexpr DigitalIO::Pin D30 = 60;
+static constexpr DigitalIO::Pin D31 = 59;
+static constexpr DigitalIO::Pin D32 = 58;
+static constexpr DigitalIO::Pin D33 = 57;
+static constexpr DigitalIO::Pin D34 = 56;
+static constexpr DigitalIO::Pin D35 = 55;
+static constexpr DigitalIO::Pin D36 = 54;
+static constexpr DigitalIO::Pin D37 = 53;
+static constexpr DigitalIO::Pin D38 = 50;
+static constexpr DigitalIO::Pin D39 = 70;
+static constexpr DigitalIO::Pin D40 = 52;
+static constexpr DigitalIO::Pin D41 = 51;
+static constexpr DigitalIO::Pin D42 = 42;
+static constexpr DigitalIO::Pin D43 = 41;
+static constexpr DigitalIO::Pin D44 = 40;
+static constexpr DigitalIO::Pin D45 = 39;
+static constexpr DigitalIO::Pin D46 = 38;
+static constexpr DigitalIO::Pin D47 = 37;
+static constexpr DigitalIO::Pin D48 = 36;
+static constexpr DigitalIO::Pin D49 = 35;
+static constexpr DigitalIO::Pin D50 = 22;
+static constexpr DigitalIO::Pin D51 = 21;
+static constexpr DigitalIO::Pin D52 = 20;
+static constexpr DigitalIO::Pin D53 = 19;
 
-constexpr static hal::LED led(LED);
+static constexpr DigitalIO::Pin A0 = 97;
+static constexpr DigitalIO::Pin A1 = 96;
+static constexpr DigitalIO::Pin A2 = 95;
+static constexpr DigitalIO::Pin A3 = 94;
+static constexpr DigitalIO::Pin A4 = 93;
+static constexpr DigitalIO::Pin A5 = 92;
+static constexpr DigitalIO::Pin A6 = 91;
+static constexpr DigitalIO::Pin A7 = 90;
+static constexpr DigitalIO::Pin A8 = 89;
+static constexpr DigitalIO::Pin A9 = 88;
+static constexpr DigitalIO::Pin A10 = 87;
+static constexpr DigitalIO::Pin A11 = 86;
+static constexpr DigitalIO::Pin A12 = 85;
+static constexpr DigitalIO::Pin A13 = 84;
+static constexpr DigitalIO::Pin A14 = 83;
+static constexpr DigitalIO::Pin A15 = 82;
+
+static constexpr DigitalIO::Pin LED = D13;
+}
+
+constexpr static hal::LED led(pins::LED);
 
 }
 }
