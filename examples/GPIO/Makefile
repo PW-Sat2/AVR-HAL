@@ -37,7 +37,7 @@ OBJCOPY  = $(TOOLCHAIN)/avr-objcopy
 OBJDUMP  = $(TOOLCHAIN)/avr-objdump
 SIZE     = $(TOOLCHAIN)/avr-size
 
-CFLAGS =  -O2 -std=gnu++1y -pipe -c -W -Wall -Wextra -pedantic -ffunction-sections 
+CFLAGS =  -O2 -std=gnu++1y -pipe -c -W -Wall -Wextra -Winline -pedantic -ffunction-sections 
   
 # -- Compile --------------------------------------------------------
 
