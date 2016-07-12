@@ -22,16 +22,7 @@ class DigitalIO {
         OUTPUT,
         INPUT_PULLUP
     };
-    
-    template<Pin pin_nr, Mode mode>
-    static DigitalIO init() {
-        DigitalIO io = DigitalIO(pin_nr);
-        static_assert(reinterpret_cast<int>(GPIOPinMap[pin_nr].DDRx) != 0, "Pin is not GPIO!");
-        io.init(mode);
-        return io;
-    }			
-    
-    
+
     constexpr DigitalIO(Pin pin) : pin(GPIOPinMap[pin].pin),
                                    DDRx((GPIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cant_be_evaluated_at_runtime : GPIOPinMap[pin].DDRx),
                                    PORTx(GPIOPinMap[pin].PORTx),

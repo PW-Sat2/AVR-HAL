@@ -4,25 +4,31 @@
 namespace hal {
 class LED {
  public:
-    constexpr LED(const DigitalIO::Pin pin) : led_pin(pin) {	 
+    constexpr LED(const DigitalIO::Pin pin) : led_output_pin(pin) {	 
     }
-    void init() {
-        led_pin.pinmode(DigitalIO::OUTPUT);
+    
+    void init() const {
+        led_output_pin.pinmode(DigitalIO::OUTPUT);
     }
 	
-	void on() {
-		led_pin.set();
+	void on() const {
+		led_output_pin.set();
 	}
 	
-	void off() {
-		led_pin.reset();
+	void off() const {
+		led_output_pin.reset();
 	}
 	
-	void write(bool state) {
-		led_pin.write(state);
+	void write(bool state) const {
+		led_output_pin.write(state);
 	}
+    
+    void toggle() const {
+        led_output_pin.toggle();
+    }
+
  private:
-	DigitalIO led_pin;
+	const DigitalIO led_output_pin;
 };
 }
 
