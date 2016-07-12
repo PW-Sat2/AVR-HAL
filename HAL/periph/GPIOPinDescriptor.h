@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 struct GPIOPinDescriptor {
-    volatile uint8_t *DDRx, *PORTx, *PINx;
+    int DDRx, PORTx, PINx;
     uint8_t pin;
 };
 

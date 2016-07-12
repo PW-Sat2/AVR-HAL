@@ -12,7 +12,7 @@
 namespace hal {
 
 // hack for checking bad pin association
-extern volatile uint8_t* DigitalIO_bad_pin;
+extern int DigitalIO_bad_pin_or_cant_be_evaluated_at_runtime;
 
 class DigitalIO { 
  public:
@@ -33,24 +33,24 @@ class DigitalIO {
     
     
     constexpr DigitalIO(Pin pin) : pin(GPIOPinMap[pin].pin),
-                                   DDRx((GPIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin : GPIOPinMap[pin].DDRx),
-                                   PORTx(GPIOPinMap[pin].DDRx),
-                                   PINx(GPIOPinMap[pin].DDRx) {
+                                   DDRx((GPIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cant_be_evaluated_at_runtime : GPIOPinMap[pin].DDRx),
+                                   PORTx(GPIOPinMap[pin].PORTx),
+                                   PINx(GPIOPinMap[pin].PINx) {
     }
 	
-	void init(const DigitalIO::Mode mode) __attribute__((always_inline)) {
+	void init(const DigitalIO::Mode mode) const __attribute__((always_inline)) {
 		pinmode(mode);
 	}
 	
-    void set() __attribute__((always_inline)) {
-        SBI(*PORTx, pin);
+    void set() const __attribute__((always_inline)) {
+        set_bit(PORTx);
     }
 
-    void reset() __attribute__((always_inline)) {
-        CBI(*PORTx, pin);
+    void reset() const __attribute__((always_inline)) {
+       clear_bit(PORTx);
     }
 
-    void write(bool value) __attribute__((always_inline)) {
+    void write(bool value) const __attribute__((always_inline)) {
 	    if (value) {
 		    this->set();
 		} else {
@@ -58,14 +58,14 @@ class DigitalIO {
 	    }
     }
     
-    bool read() __attribute__((always_inline)) {
-	    if (bit_is_clear(*PINx, pin)) {
+    bool read() const __attribute__((always_inline)) {
+	    if (bit_is_clear(*((volatile uint8_t *)(PINx)), pin)) {
 		    return false;
 	    }
 	    return true;
     }
 	
-	void toggle() __attribute__((always_inline)) {
+	void toggle() const __attribute__((always_inline)) {
 		if( read() ) {
 			reset();
 		} else {
@@ -73,29 +73,35 @@ class DigitalIO {
 		}	
 	}
 
-    inline void pinmode(const DigitalIO::Mode mode) __attribute__((always_inline)) {
+    inline void pinmode(const DigitalIO::Mode mode) const __attribute__((always_inline)) {
 		switch(mode) {
 			case OUTPUT:
-                SBI(*DDRx, pin);
-                CBI(*PORTx, pin);
+                set_bit(DDRx);
+                clear_bit(PORTx);
 				break;
 			case INPUT_PULLUP:
-				CBI(*DDRx, pin);
-				SBI(*PORTx, pin);
+                clear_bit(DDRx);
+                set_bit(PORTx);
 				break;
 			case INPUT:
 			default:
-			    CBI(*DDRx, pin);
-			    CBI(*PORTx, pin);
+                clear_bit(DDRx);
+                clear_bit(PORTx);
 				break;
 	    }
     }
-
+    
  private:
     const Pin pin;
-    volatile uint8_t * const DDRx;
-	volatile uint8_t * const PORTx;
-	volatile uint8_t * const PINx;
+    const int DDRx, PORTx, PINx;
+    
+    void set_bit(int reg) const __attribute__((always_inline)) {
+        SBI(*((volatile uint8_t *)(reg)), pin);
+    }
+    
+    void clear_bit(int reg) const __attribute__((always_inline)) {
+        CBI(*((volatile uint8_t *)(reg)), pin);
+    }
 };
 }
 
