@@ -65,7 +65,7 @@ endif
 
 all: directories images size
 
-images: $(EXE_PATH)/$(APP_NAME).elf $(EXE_PATH)/$(APP_NAME).hex $(EXE_PATH)/$(APP_NAME).srec $(EXE_PATH)/$(APP_NAME).bin
+images: $(EXE_PATH)/$(APP_NAME).elf $(EXE_PATH)/$(APP_NAME).hex
 
 $(OBJ_PATH)/%.o: $(SRCS)
 	$(CPP) $(CFLAGS) $(filter %.cpp, $(SRCS)) -o $@
