@@ -1,7 +1,8 @@
 # usage: 
-# 1) set $PACK definition to directory where tool pack is located
+# 1) have avr compiler and avrdude in $PATH.
 # 2) make all
-# 3) to program with the wiring pass COM=COMn parameter to make
+# 3) to program with the wiring pass COM=COMn parameter to make. 
+# Ensure that avrdude.conf is in the same calatog as avrdude executable
 
 # -- User definitions ----------------------------
 
@@ -24,18 +25,17 @@ SRCS = \
   GPIOtest.cpp
 
 # -- Tools definitions ----------------------------
-TOOLCHAIN = $(PACK)/toolchain/bin
 
-AS       = $(TOOLCHAIN)/avr-as
-LD       = $(TOOLCHAIN)/avr-ld
-CC       = $(TOOLCHAIN)/avr-gcc
-CPP      = $(TOOLCHAIN)/avr-g++
-AR       = $(TOOLCHAIN)/avr-ar
-NM       = $(TOOLCHAIN)/avr-nm
-STRIP    = $(TOOLCHAIN)/avr-strip
-OBJCOPY  = $(TOOLCHAIN)/avr-objcopy
-OBJDUMP  = $(TOOLCHAIN)/avr-objdump
-SIZE     = $(TOOLCHAIN)/avr-size
+AS       = avr-as
+LD       = avr-ld
+CC       = avr-gcc
+CPP      = avr-g++
+AR       = avr-ar
+NM       = avr-nm
+STRIP    = avr-strip
+OBJCOPY  = avr-objcopy
+OBJDUMP  = avr-objdump
+SIZE     = avr-size
 
 CFLAGS =  -O2 -std=gnu++1y -pipe -c -W -Wall -Wextra -Winline -pedantic -ffunction-sections 
   
@@ -98,4 +98,4 @@ fresh: all
 # -- Program --------------------------------------------------------
 
 wiring: $(EXE_PATH)/$(APP_NAME).hex
-	$(PACK)/avrdude -c wiring -F -v -p$(AVRDUDE_TARGET) -cwiring -P$(COM) -b115200 -D -Uflash:w:$(EXE_PATH)/$(APP_NAME).hex:i -C"$(PACK)/avrdude.conf"
+	avrdude -c wiring -F -v -p$(AVRDUDE_TARGET) -cwiring -P$(COM) -b115200 -D -Uflash:w:$(EXE_PATH)/$(APP_NAME).hex:i
