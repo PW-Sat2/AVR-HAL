@@ -11,7 +11,7 @@ OBJCOPY  = avr-objcopy
 OBJDUMP  = avr-objdump
 SIZE     = avr-size
 
-CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections
+CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
 # -- BOARDS -------------------------------------
