@@ -71,6 +71,9 @@ LINKER_FLAGS += $(filter -mmcu%,$(CFLAGS))
 
 all: params directories images size
 
+all_targets: clean
+	$(MAKE) all BOARD=ARDUINOMEGA2560
+	$(MAKE) all BOARD=ARDUINONANO328P
 
 params: directories
 ifdef COM 
