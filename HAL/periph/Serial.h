@@ -6,20 +6,16 @@
 
 #include "mcu/mcu.h"
 
-constexpr static int BUFFER_SIZE = 50;
-
 template<int serial_num>
 class SerialX_ : public SerialImpl<serial_num> {
 public:
-	
-    static char buffer[BUFFER_SIZE];
+    void printf(const char* format, ...) const {
+        va_list aptr;
+        va_start(aptr, format);
+        vsnprintf(buffer, BUFFER_SIZE, format, aptr);
+        va_end(aptr);
 
-    void init(const uint32_t baudrate) const __attribute__((always_inline)) {
-		this->_init(baudrate);
-    }
-
-    void print_byte(const uint8_t byte) const __attribute__((always_inline)) {
-        this->_send(byte);
+        this->print_buffer();
     }
 
     void print_byte_array(const uint8_t * data, uint8_t len) const {
@@ -29,28 +25,11 @@ public:
         }
     }
 
-    void print_string(const char * data) const __attribute__((always_inline)) {
+    void print_string(const char * data) const {
         while (*data) {
             this->print_byte(*data);
             data++;
         }
-    }
-
-    void printf(const char* format, ...) const {
-        va_list aptr;
-        va_start(aptr, format);
-        vsnprintf(buffer, BUFFER_SIZE, format, aptr);
-        va_end(aptr);
-
-        this->print_string(buffer);
-    }
-
-    bool available() const __attribute__((always_inline)) {
-		return this->_available();
-    }
-
-    uint8_t read_byte() const __attribute__((always_inline)) {
-		return this->_read_byte();
     }
 
     void read_byte_array(uint8_t * out_data, uint8_t length) const {
@@ -73,8 +52,33 @@ public:
         }
         return counter;
     }
+
+private:
+    constexpr static int BUFFER_SIZE = 50;
+    static char buffer[BUFFER_SIZE];
+
+    void print_buffer() const {
+        this->print_string(buffer);
+    }
 };
+
 template<int serial_num>
 char SerialX_<serial_num>::buffer[] = {0};
+
+#if SERIALs > 0
+constexpr static SerialX_<0> Serial0;
+#endif
+
+#if SERIALs > 1
+constexpr static SerialX_<1> Serial1;
+#endif
+
+#if SERIALs > 2
+constexpr static SerialX_<2> Serial2;
+#endif
+
+#if SERIALs > 3
+constexpr static SerialX_<3> Serial3;
+#endif
 
 #endif  //  HAL_INC_SERIAL_H_
