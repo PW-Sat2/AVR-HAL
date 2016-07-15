@@ -63,7 +63,7 @@ CFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDES)
 CFLAGS += -DF_CPU=$(F_CPU)
 
-LINKER_FLAGS = -Wl,-Map=$(LIST_PATH)/$(APP_NAME).map -Wl,--gc-sections
+LINKER_FLAGS = -Wl,-Map=$(LIST_PATH)/$(APP_NAME).map -Wl,--gc-sections -Wl,-u,vfprintf -lprintf_flt -lm
 LINKER_FLAGS += $(filter -mmcu%,$(CFLAGS))
 
 
