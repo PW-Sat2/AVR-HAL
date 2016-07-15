@@ -91,14 +91,17 @@ endif
 images: params $(HEX_FILE) $(ELF_FILE)
 
 $(OBJ_PATH)/%.o: $(SRCS)
-	$(CPP) $(CFLAGS) $(filter %.cpp, $(SRCS)) -o $@
+	@echo -e "\nCompiling " $(filter %$(subst .o,.cpp,$(notdir $@)), $(SRCS)) "..."
+	$(CPP) $(CFLAGS) $(filter %$(subst .o,.cpp,$(notdir $@)), $(SRCS)) -o $@
 
 $(OBJS): directories
 
 $(ELF_FILE): $(OBJS)
+	@echo -e "\nLinking..."
 	$(LD) $(LINKER_FLAGS) $(OBJS) -o $@
 
 $(HEX_FILE): $(ELF_FILE)
+	@echo -e "\nCreating HEX..."
 	$(OBJCOPY) -O ihex -R .eeprom $^ $@
 
 clean:
@@ -116,6 +119,7 @@ directories: clean
 endif
 
 size: $(ELF_FILE)
+	@echo -e "\nSize:"
 	@$(SIZE) -td $(ELF_FILE)
 
 fresh: all
