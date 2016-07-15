@@ -1,3 +1,5 @@
-#ifdef BOARD_ARDUINOMEGA2560
-    #include "ArduinoMega.h"
+#if defined(BOARD_ARDUINOMEGA2560)
+    #include "ArduinoMega2560/ArduinoMega2560.h"
+#elif defined(BOARD_ARDUINONANO328P)
+    #include "ArduinoNano328P/ArduinoNano328P.h"
 #endif
