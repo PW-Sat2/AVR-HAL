@@ -1,10 +1,10 @@
 #ifndef HAL_MCU_ATMEGA2560_PINS_H_
 #define HAL_MCU_ATMEGA2560_PINS_H_
 
-#include "periph/GPIOPinDescriptor.h"
+#include "periph/DigitalIOPinDescriptor.h"
 #include <avr/io.h>
 
-constexpr static GPIOPinDescriptor GPIOPinMap[] = {
+constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
 {0, 0, 0, 0},                                //   0 -- artificial pin
 {(int)&DDRG, (int)&PORTG, (int)&PING, 5},    //   1 -- PG5 ( OC0B )
 {(int)&DDRE, (int)&PORTE, (int)&PINE, 0},    //   2 -- PE0 ( RXD0/PCINT8 )

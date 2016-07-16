@@ -1,7 +1,7 @@
 #ifndef HAL_ARDUINOMEGA_H_
 #define HAL_ARDUINOMEGA_H_
 
-#include "periph/GPIO.h"
+#include "periph/DigitalIO.h"
 #include "devices/LED.h"
 
 namespace hal {

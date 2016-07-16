@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-struct GPIOPinDescriptor {
+struct DigitalIOPinDescriptor {
     int DDRx, PORTx, PINx;
     uint8_t pin;
 };

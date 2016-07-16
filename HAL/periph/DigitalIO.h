@@ -3,7 +3,7 @@
 
 #include "libs/bit_operations.h"
 
-#include "GPIOPinDescriptor.h"
+#include "DigitalIOPinDescriptor.h"
 #include "mcu/mcu.h"
 
 
@@ -23,10 +23,10 @@ class DigitalIO {
         INPUT_PULLUP
     };
 
-    constexpr DigitalIO(Pin pin) : pin(GPIOPinMap[pin].pin),
-                                   DDRx((GPIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cant_be_evaluated_at_runtime : GPIOPinMap[pin].DDRx),
-                                   PORTx(GPIOPinMap[pin].PORTx),
-                                   PINx(GPIOPinMap[pin].PINx) {
+    constexpr DigitalIO(Pin pin) : pin(DigitalIOPinMap[pin].pin),
+                                   DDRx((DigitalIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cant_be_evaluated_at_runtime : DigitalIOPinMap[pin].DDRx),
+                                   PORTx(DigitalIOPinMap[pin].PORTx),
+                                   PINx(DigitalIOPinMap[pin].PINx) {
     }
 	
 	void init(const DigitalIO::Mode mode) const __attribute__((always_inline)) {

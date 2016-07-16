@@ -1,5 +1,5 @@
 #include <util/delay.h>
-#include "periph/GPIO.h"
+#include "periph/DigitalIO.h"
 #include "devices/LED.h"
 #include "boards/boards.h"
 

@@ -1,12 +1,12 @@
 #ifndef HAL_MCU_ATMEGA328P_TQFP32_PINS_H_
 #define HAL_MCU_ATMEGA328P_TQFP32_PINS_H_
 
-#include "periph/GPIOPinDescriptor.h"
+#include "periph/DigitalIOPinDescriptor.h"
 #include <avr/io.h>
 
 #define PIN_DEF(port, pin) {(int)&DDR ## port, (int)&PORT ## port, (int)&PIN ## port, pin}
 
-constexpr static GPIOPinDescriptor GPIOPinMap[] = {
+constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
 {0, 0, 0, 0},                              //  0 -- artificial pin
 PIN_DEF(D,3),  //  1 -- (PCINT19/OC2B/INT1) PD3
 PIN_DEF(D,4),  //  2 -- (PCINT20/XCK/T0) PD4

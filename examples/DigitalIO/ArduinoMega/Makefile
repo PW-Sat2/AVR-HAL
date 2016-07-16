@@ -1,7 +1,7 @@
 # -- User definitions ---------------------------
 
 HAL_PATH = ../../../HAL
-APP_NAME = GPIO
+APP_NAME = DigitalIO
 
 BOARD = ARDUINOMEGA2560
 
@@ -9,7 +9,7 @@ INCLUDES = \
   -I .
 
 SRCS = \
-  GPIOtest.cpp
+  DigitalIO.cpp
 
 
 include $(HAL_PATH)/build.make
