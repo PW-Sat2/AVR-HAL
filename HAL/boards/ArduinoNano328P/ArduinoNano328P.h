@@ -1,5 +1,5 @@
-#ifndef HAL_ARDUINOMEGA_H_
-#define HAL_ARDUINOMEGA_H_
+#ifndef HAL_BOARDS_ARDUINONANO328P_ARDUINONANO328P_H_
+#define HAL_BOARDS_ARDUINONANO328P_ARDUINONANO328P_H_
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
@@ -40,4 +40,4 @@ constexpr static hal::LED led(pins::LED);
 
 }
 }
-#endif  // HAL_ARDUINOMEGA_H_
+#endif  // HAL_BOARDS_ARDUINONANO328P_ARDUINONANO328P_H_

@@ -1,5 +1,5 @@
-#ifndef HAL_SERIAL_PORT_H_
-#define HAL_SERIAL_PORT_H_
+#ifndef HAL_MCU_ATMEGA2560_TQFP100_SERIAL_H_
+#define HAL_MCU_ATMEGA2560_TQFP100_SERIAL_H_
 
 #include <stdint.h>
 
@@ -55,4 +55,4 @@ class SerialImpl {
 };
 
 
-#endif  // HAL_SERIAL_PORT_H_
+#endif  // HAL_MCU_ATMEGA2560_TQFP100_SERIAL_H_
