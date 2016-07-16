@@ -1,5 +1,5 @@
-#ifndef HAL_GPIO_H_
-#define HAL_GPIO_H_
+#ifndef HAL_PERIPH_DIGITALIO_H_
+#define HAL_PERIPH_DIGITALIO_H_
 
 #include "libs/bit_operations.h"
 
@@ -97,4 +97,4 @@ class DigitalIO {
 }
 
 
-#endif  // HAL_GPIO_H_
+#endif  // HAL_PERIPH_DIGITALIO_H_

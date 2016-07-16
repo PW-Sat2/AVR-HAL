@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA2560_PINS_H_
-#define HAL_MCU_ATMEGA2560_PINS_H_
+#ifndef HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_
+#define HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_
 
 #include "periph/DigitalIOPinDescriptor.h"
 #include <avr/io.h>
@@ -108,4 +108,4 @@ constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
 {0, 0, 0, 0},                                // 100 -- AVCC
 };
 
-#endif  // HAL_MCU_ATMEGA2560_PINS_H_
+#endif  // HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_

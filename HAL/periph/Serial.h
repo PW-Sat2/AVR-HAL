@@ -1,5 +1,5 @@
-#ifndef HAL_INC_SERIAL_H_
-#define HAL_INC_SERIAL_H_
+#ifndef HAL_PERIPH_SERIAL_H_
+#define HAL_PERIPH_SERIAL_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -81,4 +81,4 @@ constexpr static SerialX_<2> Serial2;
 constexpr static SerialX_<3> Serial3;
 #endif
 
-#endif  //  HAL_INC_SERIAL_H_
+#endif  //  HAL_PERIPH_SERIAL_H_

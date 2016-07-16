@@ -1,5 +1,5 @@
-#ifndef HAL_LED_H_
-#define HAL_LED_H_
+#ifndef HAL_DEVICES_LED_H_
+#define HAL_DEVICES_LED_H_
 
 namespace hal {
 class LED {
@@ -31,5 +31,4 @@ class LED {
 	const DigitalIO led_output_pin;
 };
 }
-
-#endif  // HAL_LED_H_
+#endif  // HAL_DEVICES_LED_H_
