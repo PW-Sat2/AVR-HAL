@@ -23,7 +23,7 @@ class DigitalIO {
         INPUT_PULLUP
     };
 
-    constexpr DigitalIO(Pin pin) : pin(DigitalIOPinMap[pin].pin),
+    constexpr explicit DigitalIO(Pin pin) : pin(DigitalIOPinMap[pin].pin),
                                    DDRx((DigitalIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time : DigitalIOPinMap[pin].DDRx),
                                    PORTx(DigitalIOPinMap[pin].PORTx),
                                    PINx(DigitalIOPinMap[pin].PINx) {
