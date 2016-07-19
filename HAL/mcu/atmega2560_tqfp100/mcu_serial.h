@@ -9,14 +9,22 @@ namespace mcu {
 
 #define SERIALs 4
 
-constexpr static UART_descriptor UART_map[SERIALs] {
-	{(int)&UBRR0H, (int)&UBRR0L, (int)&UCSR0A, (int)&UCSR0B, (int)&UCSR0C, (int)&UDR0},
-	{(int)&UBRR1H, (int)&UBRR1L, (int)&UCSR1A, (int)&UCSR1B, (int)&UCSR1C, (int)&UDR1},
-	{(int)&UBRR2H, (int)&UBRR2L, (int)&UCSR2A, (int)&UCSR2B, (int)&UCSR2C, (int)&UDR2},
-	{(int)&UBRR3H, (int)&UBRR3L, (int)&UCSR3A, (int)&UCSR3B, (int)&UCSR3C, (int)&UDR3}
+#define SERIAL_DEF(nr) { reinterpret_cast<int>(&UBRR ## nr ## H),    \
+                         reinterpret_cast<int>(&UBRR ## nr ## L),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## A),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## B),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## C),    \
+                         reinterpret_cast<int>(&UDR ## nr) }
+
+
+constexpr static UART_descriptor UART_map[SERIALs] = {
+    SERIAL_DEF(0),
+    SERIAL_DEF(1),
+    SERIAL_DEF(2),
+    SERIAL_DEF(3)
 };
 
-}
-}
+}  // namespace mcu
+}  // namespace hal
 
 #endif  // HAL_MCU_ATMEGA2560_TQFP100_MCU_SERIAL_H_

@@ -9,11 +9,18 @@ namespace mcu {
 
 #define SERIALs 1
 
-constexpr static UART_descriptor UART_map[SERIALs] {
-	{(int)&UBRR0H, (int)&UBRR0L, (int)&UCSR0A, (int)&UCSR0B, (int)&UCSR0C, (int)&UDR0}
+#define SERIAL_DEF(nr) { reinterpret_cast<int>(&UBRR ## nr ## H),    \
+                         reinterpret_cast<int>(&UBRR ## nr ## L),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## A),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## B),    \
+                         reinterpret_cast<int>(&UCSR ## nr ## C),    \
+                         reinterpret_cast<int>(&UDR ## nr) }
+
+constexpr static UART_descriptor UART_map[SERIALs] = {
+    SERIAL_DEF(0)
 };
 
-}
-}
+}  // namespace mcu
+}  // namespace hal
 
 #endif  // HAL_MCU_ATMEGA328P_TQFP32_MCU_SERIAL_H_

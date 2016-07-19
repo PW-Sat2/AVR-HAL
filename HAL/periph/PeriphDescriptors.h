@@ -7,8 +7,7 @@ struct DigitalIOPinDescriptor {
 };
 
 struct UART_descriptor {
-	int UBRRnH, UBRRnL, UCSRnA, UCSRnB, UCSRnC, UDRn;
+    int UBRRnH, UBRRnL, UCSRnA, UCSRnB, UCSRnC, UDRn;
 };
-
 
 #endif  // HAL_PERIPH_PERIPHDESCRIPTORS_H_
