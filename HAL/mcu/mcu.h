@@ -5,6 +5,7 @@
 #ifdef MCU_ATMEGA328P_TQFP32
 	#include "atmega328p_tqfp32/atmega328p_tqfp32.h"
 	#include "atmega328p_tqfp32/serial.h"
+	#include "atmega328p_tqfp32/spi_def.h"
 #else
 	#error "Incorrect or no MCU defined"
 #endif
