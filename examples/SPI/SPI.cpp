@@ -1,4 +1,4 @@
-#include "periph/SPI.h"
+#include "SPI.h"
 
 
 int main() {

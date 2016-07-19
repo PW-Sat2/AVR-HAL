@@ -1,7 +1,7 @@
 #ifndef HAL_MCU_ATMEGA328P_TQFP32_SPI_DEF_H_
 #define HAL_MCU_ATMEGA328P_TQFP32_SPI_DEF_H_
 
-#include "periph/PeriphDescriptors.h"
+#include "PeriphDescriptors.h"
 
 namespace hal {
 namespace mcu {

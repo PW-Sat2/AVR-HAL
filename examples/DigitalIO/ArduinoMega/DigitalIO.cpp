@@ -1,6 +1,6 @@
 #include <util/delay.h>
-#include "periph/DigitalIO.h"
-#include "boards/boards.h"
+#include "DigitalIO.h"
+#include "boards.h"
 
 constexpr hal::DigitalIO pin2(2);
 

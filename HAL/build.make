@@ -57,7 +57,12 @@ ELF_FILE = $(EXE_PATH)/$(APP_NAME).elf
 OBJS = $(addprefix $(OBJ_PATH)/, $(notdir %/$(subst .cpp,.o,$(SRCS))))
 
 INCLUDES += \
-  -I$(HAL_PATH)
+  -I$(HAL_PATH) \
+  -I$(HAL_PATH)/mcu \
+  -I$(HAL_PATH)/periph \
+  -I$(HAL_PATH)/boards \
+  -I$(HAL_PATH)/devices \
+  -I$(HAL_PATH)/libs
 
 CFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDES)

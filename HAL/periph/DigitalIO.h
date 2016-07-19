@@ -1,10 +1,10 @@
 #ifndef HAL_PERIPH_DIGITALIO_H_
 #define HAL_PERIPH_DIGITALIO_H_
 
-#include <periph/PeriphDescriptors.h>
-#include "libs/bit_operations.h"
+#include "PeriphDescriptors.h"
+#include "bit_operations.h"
 
-#include "mcu/mcu.h"
+#include "mcu.h"
 
 
 namespace hal {

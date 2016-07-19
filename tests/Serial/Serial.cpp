@@ -1,6 +1,6 @@
 #include <util/delay.h>
-#include "boards/boards.h"
-#include "periph/Serial.h"
+#include "boards.h"
+#include "Serial.h"
 
 int main() {            
 	hal::Serial0.init(9600);

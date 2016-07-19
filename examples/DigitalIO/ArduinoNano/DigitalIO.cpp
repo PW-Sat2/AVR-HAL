@@ -1,7 +1,7 @@
 #include <util/delay.h>
-#include "periph/DigitalIO.h"
-#include "devices/LED.h"
-#include "boards/boards.h"
+#include "DigitalIO.h"
+#include "LED.h"
+#include "boards.h"
 
 constexpr hal::DigitalIO pin3(hal::bsp::pins::D3);
 

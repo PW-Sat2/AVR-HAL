@@ -2,7 +2,7 @@
 #define HAL_MCU_ATMEGA328P_TQFP32_SERIAL_H_
 
 #include <avr/io.h>
-#include "periph/PeriphDescriptors.h"
+#include "PeriphDescriptors.h"
 
 namespace hal {
 namespace mcu {

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <avr/io.h>
 
-#include "mcu/mcu.h"
+#include "mcu.h"
 
 namespace hal {
 

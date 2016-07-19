@@ -2,7 +2,7 @@
 #define HAL_PERIPH_SPI_H_
 
 #include <avr/io.h>
-#include "mcu/mcu.h"
+#include "mcu.h"
 #include "DigitalIO.h"
 
 namespace hal {
