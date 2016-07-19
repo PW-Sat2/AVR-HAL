@@ -1,5 +1,5 @@
 node('linux') {
-	stage 'checkout'
+	stage 'checkout '
 	checkout scm
 	stage 'checkStyle'
 	sh 'make checkStyle'
