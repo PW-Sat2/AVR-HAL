@@ -1,4 +1,4 @@
 node('linux') {
-	stage 'Checkout'
-	sh 'echo Test!'
+	stage 'checkStyle'
+	sh 'make checkStyle'
 }
