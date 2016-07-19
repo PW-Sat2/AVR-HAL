@@ -54,12 +54,10 @@ class SPI {
     }
 
  private:
-    static const DigitalIO pin_mosi, pin_sck, pin_ss;
+    static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
+                               pin_sck{mcu::pin_sck},
+                               pin_ss{mcu::pin_ss};
 };
-
-constexpr DigitalIO SPI::pin_sck(mcu::pin_sck);
-constexpr DigitalIO SPI::pin_mosi(mcu::pin_mosi);
-constexpr DigitalIO SPI::pin_ss(mcu::pin_ss);
 
 class SPI_Device {
  private:
