@@ -1,8 +1,11 @@
-#ifndef HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_
-#define HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_
+#ifndef HAL_MCU_ATMEGA2560_TQFP100_MCU_DIGITALIO_H_
+#define HAL_MCU_ATMEGA2560_TQFP100_MCU_DIGITALIO_H_
 
-#include "periph/DigitalIOPinDescriptor.h"
 #include <avr/io.h>
+#include "PeriphDescriptors.h"
+
+namespace hal {
+namespace mcu {
 
 #define PIN_DEF(port, pin) {(int)&DDR ## port, (int)&PORT ## port, (int)&PIN ## port, pin}
 
@@ -112,4 +115,7 @@ PIN_DEF(F,0),    //  97 -- PF0 (ADC0)
 
 #undef PIN_DEF
 
-#endif  // HAL_MCU_ATMEGA2560_TQFP100_ATMEGA2560_TQFP100_H_
+}
+}
+
+#endif  // HAL_MCU_ATMEGA2560_TQFP100_MCU_DIGITALIO_H_
