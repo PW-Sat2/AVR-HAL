@@ -1,8 +1,12 @@
 #ifndef HAL_MCU_ATMEGA328P_TQFP32_ATMEGA328P_TQFP32_H_
 #define HAL_MCU_ATMEGA328P_TQFP32_ATMEGA328P_TQFP32_H_
 
-#include "periph/DigitalIOPinDescriptor.h"
 #include <avr/io.h>
+#include "periph/PeriphDescriptors.h"
+
+namespace hal {
+namespace mcu {
+
 
 #define PIN_DEF(port, pin) {(int)&DDR ## port, (int)&PORT ## port, (int)&PIN ## port, pin}
 
@@ -43,5 +47,8 @@ PIN_DEF(D,2)   // 32 -- PD2 (INT0/PCINT18)
 };
 
 #undef PIN_DEF
+
+}
+}
 
 #endif  // HAL_MCU_ATMEGA328P_TQFP32_ATMEGA328P_TQFP32_H_

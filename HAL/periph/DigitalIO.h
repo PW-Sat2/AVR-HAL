@@ -1,12 +1,10 @@
 #ifndef HAL_PERIPH_DIGITALIO_H_
 #define HAL_PERIPH_DIGITALIO_H_
 
+#include <periph/PeriphDescriptors.h>
 #include "libs/bit_operations.h"
 
-#include "DigitalIOPinDescriptor.h"
 #include "mcu/mcu.h"
-
-
 
 
 namespace hal {
@@ -23,10 +21,10 @@ class DigitalIO {
         INPUT_PULLUP
     };
 
-    constexpr explicit DigitalIO(Pin pin) : pin(DigitalIOPinMap[pin].pin),
-                                   DDRx((DigitalIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time : DigitalIOPinMap[pin].DDRx),
-                                   PORTx(DigitalIOPinMap[pin].PORTx),
-                                   PINx(DigitalIOPinMap[pin].PINx) {
+    constexpr explicit DigitalIO(Pin pin) : pin(mcu::DigitalIOPinMap[pin].pin),
+                                   DDRx((mcu::DigitalIOPinMap[pin].DDRx == 0 ) ? DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time : mcu::DigitalIOPinMap[pin].DDRx),
+                                   PORTx(mcu::DigitalIOPinMap[pin].PORTx),
+                                   PINx(mcu::DigitalIOPinMap[pin].PINx) {
     }
 	
 	void init(const DigitalIO::Mode mode) const __attribute__((always_inline)) {
