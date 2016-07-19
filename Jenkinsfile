@@ -1,4 +1,4 @@
 node('linux') {
 	stage 'Checkout'
-	bat 'Test!'
+	sh 'echo Test!'
 }
