@@ -6,6 +6,11 @@
 	#include "atmega328p_tqfp32/atmega328p_tqfp32.h"
 	#include "atmega328p_tqfp32/serial.h"
 #else
+#ifdef MCU_ATMEGA128A_TQFP64
+	#include "atmega128A_tqfp64/atmega128A_tqfp64.h"
+	#include "atmega128A_tqfp64/serial.h"
+#else
 	#error "Incorrect or no MCU defined"
+#endif
 #endif
 #endif

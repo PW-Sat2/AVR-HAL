@@ -30,6 +30,13 @@ ifeq ($(BOARD),ARDUINONANO328P)
 	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328P
 endif
 
+ifeq ($(BOARD),EASYAVR128)
+	MCU = ATMEGA128A_TQFP64
+	F_CPU = 16000000L
+	CFLAGS += -DBOARD_ATMEGA128A_TQFP64
+	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
+endif
+
 # -- MCU ----------------------------------------
 
 ifeq ($(MCU),ATMEGA2560_TQFP100)
@@ -42,6 +49,12 @@ ifeq ($(MCU),ATMEGA328P_TQFP32)
 	CFLAGS += -DMCU_ATMEGA328P_TQFP32
 	CFLAGS += -mmcu=atmega328p
 	AVRDUDE_TARGET = m328p
+endif
+
+ifeq ($(MCU),ATMEGA128A_TQFP64)
+	CFLAGS += -DMCU_ATMEGA128A_TQFP64
+	CFLAGS += -mmcu=atmega128
+	AVRDUDE_TARGET = m128
 endif
 
 # -- Compile ------------------------------------
