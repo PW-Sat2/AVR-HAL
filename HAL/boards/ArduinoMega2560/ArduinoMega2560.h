@@ -5,7 +5,7 @@
 #include "devices/LED.h"
 
 namespace hal {
-	
+
 namespace bsp {
 
 namespace pins {
@@ -82,10 +82,10 @@ static constexpr DigitalIO::Pin A14 = 83;
 static constexpr DigitalIO::Pin A15 = 82;
 
 static constexpr DigitalIO::Pin LED = D13;
-}
+}  // namespace pins
 
 constexpr static hal::LED led(pins::LED);
 
-}
-}
+}  // namespace bsp
+}  // namespace hal
 #endif  // HAL_BOARDS_ARDUINOMEGA2560_ARDUINOMEGA2560_H_
