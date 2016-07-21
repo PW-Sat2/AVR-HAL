@@ -5,7 +5,6 @@
 #include "devices/LED.h"
 
 namespace hal {
-	
 namespace bsp {
 
 namespace pins {
@@ -65,10 +64,11 @@ static constexpr DigitalIO::Pin PF0 = 61;
 
 
 static constexpr DigitalIO::Pin LED = PA7;
-}
+}  // namespace pins
 
 constexpr static hal::LED led(pins::LED);
 
-}
-}
+}  // namespace bsp
+}  // namespace hal
+
 #endif  // HAL_BOARDS_EASYAVR128_EASYAVR128_H_
