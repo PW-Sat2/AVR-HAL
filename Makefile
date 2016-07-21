@@ -1,5 +1,5 @@
 
-LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include --linelength=120
+LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays --linelength=120
 
 all: checkStyle cppcheck flawFinder
 .PHONY: all clean tmp checkStyle cppcheck flawFinder
