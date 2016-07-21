@@ -13,18 +13,34 @@ namespace hal {
 #define WRITE_REG(reg, val) (*((volatile uint8_t *)(mcu::UART_map[serial_num].reg)) = val)
 
 template<int serial_num>
+int uart_putchar(char x, FILE *stream);
+
+template<int serial_num>
+int uart_getchar(FILE *stream);
+
+
+template<int serial_num>
 class SerialX_ {
  public:
     static_assert(serial_num >= 0, "Bad Serial number!");
     static_assert(serial_num < SERIALs, "Bad Serial number!");
 
-    void init(const uint32_t baudrate) const __attribute__((always_inline)) {
+    void init(const uint32_t baudrate, bool init_stdio = false) const __attribute__((always_inline)) {
         const uint32_t ubrr = baud_to_ubrr(baudrate);
         WRITE_REG(UBRRnH, ubrr >> 8);
         WRITE_REG(UBRRnL, ubrr & 0xFF);
 
         WRITE_REG(UCSRnC, (1 << UCSZ01) | (1 << UCSZ00));
         WRITE_REG(UCSRnB, (1 << RXEN0) | (1 << TXEN0));
+
+        if( init_stdio ) {
+        	static FILE uart_output;
+			uart_output.put = uart_putchar<serial_num>;
+			uart_output.get = uart_getchar<serial_num>;
+			uart_output.flags = _FDEV_SETUP_RW;
+			stdout = &uart_output;
+			stdin = &uart_output;
+        }
     }
 
     void print_byte(const char byte) const __attribute__((always_inline)) {
@@ -122,6 +138,65 @@ constexpr static SerialX_<2> Serial2;
 #if SERIALs > 3
 constexpr static SerialX_<3> Serial3;
 #endif
+
+
+
+template<int serial_num>
+int uart_putchar(char x, __attribute__((unused)) FILE *stream) {
+#if SERIALs > 0
+	if( serial_num == 0 ) {
+		Serial0.print_byte(x);
+	}
+#endif
+
+#if SERIALs > 1
+	if( serial_num == 1 ) {
+		Serial1.print_byte(x);
+	}
+#endif
+
+#if SERIALs > 2
+	if( serial_num == 2 ) {
+		Serial2.print_byte(x);
+	}
+#endif
+
+#if SERIALs > 3
+	if( serial_num == 3 ) {
+		Serial3.print_byte(x);
+	}
+#endif
+	return 1;
+}
+
+template<int serial_num>
+int uart_getchar(__attribute__((unused)) FILE *stream) {
+#if SERIALs > 0
+	if( serial_num == 0 ) {
+		return Serial0.read_byte();
+	}
+#endif
+
+#if SERIALs > 1
+	if( serial_num == 1 ) {
+		return Serial1.read_byte();
+	}
+#endif
+
+#if SERIALs > 2
+	if( serial_num == 2 ) {
+		return Serial2.read_byte();
+	}
+#endif
+
+#if SERIALs > 3
+	if( serial_num == 3 ) {
+		return Serial3.read_byte();
+	}
+#endif
+}
+
+#undef SERIALs
 
 }  // namespace hal
 
