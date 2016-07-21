@@ -1,6 +1,10 @@
 node('linux') {
-	stage 'checkout '
+	stage 'checkout'
 	checkout scm
+	stage 'clean'
+	sh 'make clean'
+	sh 'make -C examples clean'
+	sh 'make -C unit_tests clean'
 	stage 'checkStyle'
 	sh 'make checkStyle'
 	stage 'compile examples'
