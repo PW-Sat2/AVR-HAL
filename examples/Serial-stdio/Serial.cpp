@@ -3,7 +3,7 @@
 
 
 int main() {
-    hal::Serial0.init(9600, true);
+    hal::Serial0.init(9600, hal::STDIO::ENABLE);
     printf("Init!\r\n");
 
     while (true) {
