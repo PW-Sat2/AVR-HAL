@@ -135,7 +135,7 @@ TEST(tab, references) {
 }
 
 TEST(tab, slice) {
-	constexpr int size = 100;
+    constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
