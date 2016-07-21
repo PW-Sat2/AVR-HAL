@@ -2,7 +2,7 @@
 #include "array_view.h"
 
 TEST(tab, check_values) {
-    const int size = 10;
+    constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
@@ -135,7 +135,7 @@ TEST(tab, references) {
 }
 
 TEST(tab, slice) {
-#define size 100
+	constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
@@ -156,5 +156,4 @@ TEST(tab, slice) {
     for (int i = 0; i < arv2.size(); ++i) {
         EXPECT_EQ(arv2[i], i+20);
     }
-#undef size
 }
