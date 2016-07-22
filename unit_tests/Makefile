@@ -19,7 +19,7 @@ all: test run
 
 $(GTEST_LIBS):
 	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
-	#unzip -o gtest.zip
+	unzip -o gtest.zip
 	rm gtest.zip
 	cd gtest-1.7.0; cmake .
 	make -C gtest-1.7.0
