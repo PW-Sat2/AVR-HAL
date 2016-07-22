@@ -35,3 +35,7 @@ Debug/
 RemoteSystemsTempFiles
 *.cproject
 *.project
+
+# CLion
+.idea
+CMakeLists.txt
