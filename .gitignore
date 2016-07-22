@@ -23,3 +23,15 @@
 
 tmp/
 Debug/
+
+# Atmel Studio
+*.atsln
+*.atsuo
+*.cppproj
+
+# Eclipse
+.metadata
+.settings
+RemoteSystemsTempFiles
+*.cproject
+*.project

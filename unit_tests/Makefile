@@ -1,7 +1,7 @@
 HAL_PATH = ../HAL
 GTEST_DIR = gtest-1.7.0
 CSRCS = 
-TESTS = tests_run_all.cpp array_view.cpp
+TESTS = tests_run_all.cpp array_view.cpp array.cpp
 
 INCLUDES = -I. -I$(HAL_PATH)/libs -I$(GTEST_DIR)/include/ -I$(GTEST_DIR)/include/gtest/
 
@@ -16,15 +16,15 @@ PHONY= all test run clean
 
 all: test run
 
-gtest.zip :
-	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
 
-gtest-1.7.0: gtest.zip
-	unzip -o  gtest.zip
+$(GTEST_LIBS):
+	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
+	#unzip -o gtest.zip
+	rm gtest.zip
 	cd gtest-1.7.0; cmake .
 	make -C gtest-1.7.0
 
-test: gtest-1.7.0 $(TESTS)
+test: $(GTEST_LIBS) $(TESTS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
 
 run: test
@@ -34,5 +34,6 @@ run: test
 clean:
 	rm -f test
 	rm -Rf gtest-1.7.0
+	rm -f gtest.zip
 
 

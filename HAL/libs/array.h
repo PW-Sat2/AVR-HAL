@@ -10,6 +10,7 @@ namespace libs {
 template<typename T, size_t N>
 class array {
  public:
+    static_assert(N > 0, "array size must be positive");
     // type definitions
     typedef T value_type;
     typedef T* iterator;
@@ -72,9 +73,6 @@ class array {
     static constexpr bool empty() {
         return false;
     }
-    static constexpr size_type max_size() {
-        return N;
-    }
     enum {
         static_size = N
     };
@@ -122,111 +120,6 @@ class array {
         if (i >= size()) {
             fail_due_to_error("array<>: index out of range");
         }
-    }
-};
-
-template<typename T>
-class array<T, 0> {
- public:
-    // type definitions
-    typedef T value_type;
-    typedef T* iterator;
-    typedef const T* const_iterator;
-    typedef T& reference;
-    typedef const T& const_reference;
-    typedef size_t size_type;
-    typedef ptrdiff_t difference_type;
-
-    // iterator support
-    iterator begin() {
-        return reinterpret_cast<iterator>(&c);
-    }
-    const_iterator begin() const {
-        return reinterpret_cast<const_iterator>(&c);
-    }
-    iterator end() {
-        return reinterpret_cast<iterator>(&c);
-    }
-    const_iterator end() const {
-        return reinterpret_cast<const_iterator>(&c);
-    }
-
-    // at() with range check
-    reference at(size_type i) {
-        fail_due_to_error("");
-    }
-    const_reference at(size_type i) const {
-        fail_due_to_error("<0>: index out of range");
-    }
-
-    // size is constant
-    static size_type size() {
-        return 0;
-    }
-    static bool empty() {
-        return true;
-    }
-    static size_type max_size() {
-        return 0;
-    }
-    enum {
-        static_size = 0
-    };
-
-    // swap
-    void swap(array<T, 0>& y) {
-        //  could swap value of c, but value is not part of documented array state
-    }
-
-    // direct access to data
-    const T* data() const {
-        return NULL;
-    }
-    T* data() {
-        return NULL;
-    }
-
-    // assignment with type conversion
-    template<typename T2>
-    array<T, 0>& operator=(const array<T2, 0>& rhs) {
-        return *this;
-    }
-
-    //  Calling these operations are undefined behaviour for 0-size arrays,
-    //  but Library TR1 requires their presence.
-    // operator[]
-    [[noreturn]] reference operator[](size_type i) {
-        makes_no_sense();
-    }
-
-    [[noreturn]] const_reference operator[](size_type i) const {
-        makes_no_sense();
-    }
-
-    // front() and back()
-    [[noreturn]] reference front() {
-        makes_no_sense();
-    }
-
-    [[noreturn]] const_reference front() const {
-        makes_no_sense();
-    }
-
-    [[noreturn]] reference back() {
-        makes_no_sense();
-    }
-
-    [[noreturn]] const_reference back() const {
-        makes_no_sense();
-    }
-
- private:
-    char c;  // to ensure different array intances return unique values for begin/end
-
-    // helper for operations that have undefined behaviour for 0-size arrays,
-    //  assert( false ); added to make lack of support clear
-    [[noreturn]] static void makes_no_sense() {
-        fail_due_to_error("array<0>: index out of range");
     }
 };
 
