@@ -1,8 +1,7 @@
 #include "Serial.h"
 
 void handler(uint8_t byte) {
-    hal::Serial0.print_byte('x');
-//    printf("got: %d\r\n", byte);
+    printf("got: %d\r\n", byte);
 }
 
 int main() {
