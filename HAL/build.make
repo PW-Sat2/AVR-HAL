@@ -34,7 +34,7 @@ endif
 
 ifeq ($(BOARD),EASYAVR128)
 	MCU = ATMEGA128A_TQFP64
-	F_CPU = 16000000L
+	F_CPU = 7372800L
 	CFLAGS += -DBOARD_ATMEGA128A_TQFP64
 	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
 endif
@@ -166,9 +166,8 @@ ifndef PROGRAMMER
 endif
 ifndef COM
 ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
-	$(error No COM port for programmer specified)
 endif
 endif
-	avrdude -F -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -D -Uflash:w:$(HEX_FILE):i
+	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
 include $(BOARD_FOLDER)/programmers.make
