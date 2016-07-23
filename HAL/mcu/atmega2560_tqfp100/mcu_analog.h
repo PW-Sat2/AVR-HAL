@@ -86,7 +86,10 @@ class InternalADCMcuSpecific {
 
     template<Input input>
     static void disable_digital() {
-        static_assert((input <= Input::ADC7) && (input >= Input::ADC8) && (input <= Input::ADC15), "Disabling digital buffer allowed only on ADC0..15");
+        static_assert((input <= Input::ADC7) &&
+                      (input >= Input::ADC8) &&
+                      (input <= Input::ADC15),
+                      "Disabling digital buffer allowed only on ADC0..15");
         if (input <= Input::ADC7) {
             DIDR0 |= (1 << static_cast<uint8_t>(input));
         } else {
