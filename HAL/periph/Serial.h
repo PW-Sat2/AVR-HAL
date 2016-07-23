@@ -9,6 +9,7 @@
 
 namespace hal {
 
+#define REG(reg) (*((volatile uint8_t *)(mcu::UART_map[serial_num].UCSRnB)))
 #define READ_REG(reg) (*((volatile uint8_t *)(mcu::UART_map[serial_num].reg)))
 #define WRITE_REG(reg, val) (*((volatile uint8_t *)(mcu::UART_map[serial_num].reg)) = val)
 
@@ -111,6 +112,12 @@ class Serial {
         return counter;
     }
 
+    void enable_rx_interrupt(void (*handler_)(uint8_t)) const {
+         REG(UCSRnB) |= (1 << RXCIE0);
+         rx_handler = handler_;
+    }
+
+    static void (*rx_handler)(uint8_t);
  private:
     constexpr static int BUFFER_SIZE = 50;
     static char buffer[BUFFER_SIZE];
@@ -124,11 +131,9 @@ class Serial {
     }
 };
 
+#undef REG
 #undef READ_REG
 #undef WRITE_REG
-
-template<int serial_num>
-char Serial<serial_num>::buffer[] = { 0 };
 
 #if SERIALs > 0
 constexpr static Serial<0> Serial0;
@@ -202,8 +207,6 @@ int uart_getchar(__attribute__((unused)) FILE *stream) {
     }
 #endif
 }
-
-#undef SERIALs
 
 }  // namespace hal
 

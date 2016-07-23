@@ -14,7 +14,7 @@ SIZE     = avr-size
 CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
-SRCS += $(HAL_PATH)/periph/Analog.cpp
+SRCS += $(HAL_PATH)/periph/Analog.cpp $(HAL_PATH)/periph/Serial.cpp
 
 # -- BOARDS -------------------------------------
 
@@ -68,8 +68,8 @@ OBJ_PATH = $(APP_NAME)/Obj
 HEX_FILE = $(EXE_PATH)/$(APP_NAME).hex
 ELF_FILE = $(EXE_PATH)/$(APP_NAME).elf
 
-
-OBJS = $(addprefix $(OBJ_PATH)/, $(notdir %/$(subst .cpp,.o,$(SRCS))))
+OBJS = $(addprefix $(OBJ_PATH)/, $(subst /,^,$(subst .cpp,.o,$(SRCS))))
+# OBJS = $(addprefix $(OBJ_PATH)/, $(notdir %/$(subst .cpp,.o,$(SRCS))))
 
 INCLUDES += \
   -I$(HAL_PATH) \
@@ -114,9 +114,9 @@ endif
 
 images: params $(HEX_FILE) $(ELF_FILE)
 
-$(OBJ_PATH)/%.o: $(SRCS)
-	@echo -e "\nCompiling " $(filter %$(subst .o,.cpp,$(notdir $@)), $(SRCS)) "..."
-	$(CPP) $(CFLAGS) $(filter %$(subst .o,.cpp,$(notdir $@)), $(SRCS)) -o $@
+$(OBJS): $(SRCS)
+	@echo -e "\nCompiling " $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) "..."
+	$(CPP) $(CFLAGS) $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) -o $@
 
 $(OBJS): directories
 
