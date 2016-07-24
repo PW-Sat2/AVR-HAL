@@ -118,6 +118,7 @@ class Serial {
     }
 
     static void (*rx_handler)(uint8_t);
+
  private:
     constexpr static int BUFFER_SIZE = 50;
     static char buffer[BUFFER_SIZE];
@@ -136,22 +137,26 @@ class Serial {
 #undef WRITE_REG
 
 #if SERIALs > 0
-constexpr static Serial<0> Serial0;
+constexpr Serial<0> Serial0;
 #endif
 
 #if SERIALs > 1
-constexpr static Serial<1> Serial1;
+constexpr Serial<1> Serial1;
 #endif
 
 #if SERIALs > 2
-constexpr static Serial<2> Serial2;
+constexpr Serial<2> Serial2;
 #endif
 
 #if SERIALs > 3
-constexpr static Serial<3> Serial3;
+constexpr Serial<3> Serial3;
 #endif
 
+template<int serial_num>
+char Serial<serial_num>::buffer[] = { 0 };
 
+template<int serial_num>
+void (*Serial<serial_num>::rx_handler)(uint8_t) = nullptr;
 
 template<int serial_num>
 int uart_putchar(char x, __attribute__((unused)) FILE *stream) {

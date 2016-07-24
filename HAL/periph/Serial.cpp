@@ -2,13 +2,6 @@
 
 namespace hal {
 
-template<int serial_num>
-char Serial<serial_num>::buffer[] = { 0 };
-
-template<int serial_num>
-void (*Serial<serial_num>::rx_handler)(uint8_t) = nullptr;
-
-
 #if SERIALs > 0
 ISR(USART0_RX_vect) {
     Serial<0>::rx_handler(UDR0);
