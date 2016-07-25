@@ -1,3 +1,6 @@
+#ifndef HAL_MCU_ATMEGA128A_TQFP64_MCU_CORE_H_
+#define HAL_MCU_ATMEGA128A_TQFP64_MCU_CORE_H_
+
 namespace hal {
 namespace cpu {
 
@@ -27,8 +30,10 @@ void sleep_disable() {
 }
 
 void sleep_cpu() {
-    __asm__ __volatile__ ( "sleep" "\n\t" :: );
+    __asm__ __volatile__("sleep" "\n\t" ::);
 }
 
 }  // namespace cpu
 }  // namespace hal
+
+#endif  // HAL_MCU_ATMEGA128A_TQFP64_MCU_CORE_H_

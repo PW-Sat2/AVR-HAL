@@ -1,5 +1,5 @@
 #include <util/delay.h>
-#include "mcu/atmega128a_tqfp64/timers.h"
+#include "mcu.h"
 #include "Serial.h"
 
 ISR(TIMER0_OVF_vect) {
