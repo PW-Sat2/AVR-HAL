@@ -18,7 +18,7 @@
 #include "atmega128a_tqfp64/mcu_serial.h"
 #include "atmega128a_tqfp64/mcu_analog.h"
 #include "atmega128a_tqfp64/mcu_core.h"
-#include "atmega128a_tqfp64/timers.h"
+#include "atmega128a_tqfp64/mcu_timers.h"
 #else
 #error "Incorrect or no MCU defined"
 #endif
