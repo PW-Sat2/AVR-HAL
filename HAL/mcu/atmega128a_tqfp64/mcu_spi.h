@@ -6,8 +6,8 @@
 namespace hal {
 namespace mcu {
 
-constexpr static int pin_sck = 20;
-constexpr static int pin_mosi = 21;
+constexpr static int pin_sck = 11;
+constexpr static int pin_mosi = 12;
 
 }
 }

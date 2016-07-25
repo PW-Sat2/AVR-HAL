@@ -40,7 +40,6 @@ class SPI {
             const SPI_Clock_Divisor clock_divisor) {
         pin_mosi.init(DigitalIO::OUTPUT);
         pin_sck.init(DigitalIO::OUTPUT);
-        pin_ss.init(DigitalIO::INPUT_PULLUP);
 
         SPCR = (1 << SPE) | (1 << MSTR) | (clock_divisor) | (phase << CPHA)
                 | (polarity << CPOL) | (data_order << DORD);
@@ -55,8 +54,7 @@ class SPI {
 
  private:
     static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
-                               pin_sck{mcu::pin_sck},
-                               pin_ss{mcu::pin_ss};
+                               pin_sck{mcu::pin_sck};
 };
 
 class SPI_Device {
