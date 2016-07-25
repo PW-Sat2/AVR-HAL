@@ -33,6 +33,16 @@ void sleep_cpu() {
     __asm__ __volatile__("sleep" "\n\t" ::);
 }
 
+template<int divisor>
+void set_clock_divider() {
+    XDIV = 0;
+    static_assert((divisor >= 1) && (divisor <= 129), "Clock divisor can be in rage 1..129!");
+    if( divisor > 1 ) {
+        XDIV = 129-divisor;
+        SBI(XDIV, XDIVEN);
+    }
+}
+
 }  // namespace cpu
 }  // namespace hal
 
