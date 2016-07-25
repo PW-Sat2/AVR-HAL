@@ -2,36 +2,50 @@
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_EXTI_H_
 
 namespace hal {
-namespace ExternalInterrupt {
 
-enum class Mode : uint8_t {
-    level_low = 0,
-    change = 1,
-    falling = 2,
-    rising = 3
+extern int impossible_exti_line;
+extern int impossible_exti_mode_at_this_line;
+
+class ExternalInterrupt {
+ public:
+    enum class Mode : uint8_t {
+        level_low = 0,
+        change = 1,
+        falling = 2,
+        rising = 3
+    };
+
+    constexpr ExternalInterrupt(int pin_nr, Mode mode_) :
+                                int_nr((pin_nr > 0) ?
+                                    ((pin_nr < 8) ?
+                                        (((pin_nr > 3) || (mode_ != Mode::change)) ?
+                                            pin_nr :
+                                            impossible_exti_mode_at_this_line) :
+                                        impossible_exti_line) :
+                                    impossible_exti_line),
+                                mode(mode_) {
+    }
+
+    void enable() const {
+        if (int_nr < 4) {
+            EICRA &= (~(0b11 << int_nr));
+            EICRA |= (static_cast<uint8_t>(mode) << int_nr);
+        } else {
+            EICRB &= (~(0b11 << (int_nr-4)));
+            EICRB |= (static_cast<uint8_t>(mode) << (int_nr-4));
+        }
+        SBI(EIMSK, int_nr);
+    }
+
+    void disable() const {
+        CBI(EIMSK, int_nr);
+    }
+
+ private:
+    const int int_nr;
+    const Mode mode;
 };
 
-template<int int_nr, Mode mode = Mode::change>
-void enable() {
-    static_assert((int_nr >= 0) && (int_nr <= 7), "This device has INT0..7!");
-    static_assert((int_nr >= 4) || (mode != Mode::change), "INTs 0..3 cannot have change mode!");
-
-    if( int_nr < 4 ) {
-        EICRA &= (~(0b11 << int_nr));
-        EICRA |= (static_cast<uint8_t>(mode) << int_nr);
-    } else {
-        EICRB &= (~(0b11 << (int_nr-4)));
-        EICRB |= (static_cast<uint8_t>(mode) << (int_nr-4));
-    }
-    SBI(EIMSK, int_nr);
-}
-
-template<int int_nr>
-void disable() {
-    CBI(EIMSK, int_nr);
-}
-
-}  // namespace ExternalInterrupt
 }  // namespace hal
 
-#endif /* HAL_MCU_ATMEGA128A_TQFP64_MCU_EXTI_H_ */
+#endif  // HAL_MCU_ATMEGA128A_TQFP64_MCU_EXTI_H_

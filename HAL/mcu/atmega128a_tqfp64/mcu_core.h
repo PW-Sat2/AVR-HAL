@@ -37,7 +37,7 @@ template<int divisor>
 void set_clock_divider() {
     XDIV = 0;
     static_assert((divisor >= 1) && (divisor <= 129), "Clock divisor can be in rage 1..129!");
-    if( divisor > 1 ) {
+    if (divisor > 1) {
         XDIV = 129-divisor;
         SBI(XDIV, XDIVEN);
     }
