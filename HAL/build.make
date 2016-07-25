@@ -14,7 +14,7 @@ SIZE     = avr-size
 CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
-SRCS += $(HAL_PATH)/periph/Analog.cpp $(HAL_PATH)/periph/Serial.cpp
+SRCS +=
 
 # -- BOARDS -------------------------------------
 

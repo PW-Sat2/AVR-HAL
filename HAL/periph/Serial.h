@@ -112,12 +112,9 @@ class Serial {
         return counter;
     }
 
-    void enable_rx_interrupt(void (*handler_)(uint8_t)) const {
+    void enable_rx_interrupt() const {
          REG(UCSRnB) |= (1 << RXCIE0);
-         rx_handler = handler_;
     }
-
-    static void (*rx_handler)(uint8_t);
 
  private:
     constexpr static int BUFFER_SIZE = 50;
@@ -154,9 +151,6 @@ constexpr Serial<3> Serial3;
 
 template<int serial_num>
 char Serial<serial_num>::buffer[] = { 0 };
-
-template<int serial_num>
-void (*Serial<serial_num>::rx_handler)(uint8_t) = nullptr;
 
 template<int serial_num>
 int uart_putchar(char x, __attribute__((unused)) FILE *stream) {

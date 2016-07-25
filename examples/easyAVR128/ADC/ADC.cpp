@@ -10,8 +10,8 @@ using hal::Serial0;
 volatile uint8_t flag = 0;
 volatile int x;
 
-void foo(int val) {
-    x = val;
+ISR(ADC_vect) {
+    x = ADC;
     flag = 1;
 }
 
@@ -23,7 +23,7 @@ int main() {
 
     InternalADC::set_channel(InternalADC::Input::ADC0);
 
-    InternalADC::enable_interrupt(foo);
+    InternalADC::enable_interrupt();
     InternalADC::set_trigger(InternalADC::TriggerSource::FreeRunning);
     InternalADC::trigger_conversion();
     sei();

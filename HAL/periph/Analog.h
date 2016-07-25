@@ -58,11 +58,9 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         return ADC;
     }
 
-    static void enable_interrupt(void (*handler_)(int)) {
-        handler = handler_;
+    static void enable_interrupt() {
         SBI(ADCSRA, ADIE);
     }
-    static void (*handler)(int);
 
     static void set_channel(Input input) {
         mcu::InternalADCMux::set(input);
