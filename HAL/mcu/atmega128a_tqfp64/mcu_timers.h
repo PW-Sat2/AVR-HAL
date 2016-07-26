@@ -20,7 +20,7 @@ class Timer0 {
     };
 
     enum class Mode : uint8_t {
-        normal = 0,
+        Normal = 0,
         PWM_phase_correct = 1,
         CTC = 2,
         FastPWM = 3
@@ -37,11 +37,11 @@ class Timer0 {
     }
 
     static void enable_overflow_interrupt() {
-        SBI(TIMSK, TOIE0);
+        set_bit(TIMSK, TOIE0);
     }
 
     static void enable_compare_interrupt() {
-        SBI(TIMSK, OCIE0);
+        set_bit(TIMSK, OCIE0);
     }
 };
 
@@ -95,19 +95,19 @@ class Timer1 {
     }
 
     static void enable_overflow_interrupt() {
-        SBI(TIMSK, TOIE1);
+        set_bit(TIMSK, TOIE1);
     }
 
     static void enable_compare_A_interrupt() {
-        SBI(TIMSK, OCIE1A);
+        set_bit(TIMSK, OCIE1A);
     }
 
     static void enable_compare_B_interrupt() {
-        SBI(TIMSK, OCIE1B);
+        set_bit(TIMSK, OCIE1B);
     }
 
     static void enable_compare_C_interrupt() {
-        SBI(ETIMSK, OCIE1C);
+        set_bit(ETIMSK, OCIE1C);
     }
 };
 
@@ -161,19 +161,19 @@ class Timer3 {
     }
 
     static void enable_overflow_interrupt() {
-        SBI(ETIMSK, TOIE3);
+        set_bit(ETIMSK, TOIE3);
     }
 
     static void enable_compare_A_interrupt() {
-        SBI(ETIMSK, OCIE3A);
+        set_bit(ETIMSK, OCIE3A);
     }
 
     static void enable_compare_B_interrupt() {
-        SBI(ETIMSK, OCIE3B);
+        set_bit(ETIMSK, OCIE3B);
     }
 
     static void enable_compare_C_interrupt() {
-        SBI(ETIMSK, OCIE3C);
+        set_bit(ETIMSK, OCIE3C);
     }
 };
 
@@ -208,11 +208,11 @@ class Timer2 {
     }
 
     static void enable_overflow_interrupt() {
-        SBI(TIMSK, TOIE2);
+        set_bit(TIMSK, TOIE2);
     }
 
     static void enable_compare_interrupt() {
-        SBI(TIMSK, OCIE2);
+        set_bit(TIMSK, OCIE2);
     }
 };
 

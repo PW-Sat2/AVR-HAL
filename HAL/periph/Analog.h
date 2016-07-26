@@ -40,15 +40,15 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static void trigger_conversion() {
-        SBI(ADCSRA, ADSC);
+        set_bit(ADCSRA, ADSC);
     }
 
     static void disable() {
-        CBI(ADCSRA, ADEN);
+        clear_bit(ADCSRA, ADEN);
     }
 
     static void enable() {
-        SBI(ADCSRA, ADEN);
+        set_bit(ADCSRA, ADEN);
     }
 
     static uint16_t read() {
@@ -59,7 +59,7 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static void enable_interrupt() {
-        SBI(ADCSRA, ADIE);
+        set_bit(ADCSRA, ADIE);
     }
 
     static void set_channel(Input input) {

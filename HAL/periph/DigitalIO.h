@@ -32,11 +32,11 @@ class DigitalIO {
     }
 
     void set() const __attribute__((always_inline)) {
-        set_bit(PORTx);
+        set_bit_dio(PORTx);
     }
 
     void reset() const __attribute__((always_inline)) {
-        clear_bit(PORTx);
+        clear_bit_dio(PORTx);
     }
 
     void write(bool value) const __attribute__((always_inline)) {
@@ -66,17 +66,17 @@ class DigitalIO {
             __attribute__((always_inline)) {
         switch (mode) {
         case OUTPUT:
-            set_bit(DDRx);
-            clear_bit(PORTx);
+            set_bit_dio(DDRx);
+            clear_bit_dio(PORTx);
             break;
         case INPUT_PULLUP:
-            clear_bit(DDRx);
-            set_bit(PORTx);
+            clear_bit_dio(DDRx);
+            set_bit_dio(PORTx);
             break;
         case INPUT:
         default:
-            clear_bit(DDRx);
-            clear_bit(PORTx);
+            clear_bit_dio(DDRx);
+            clear_bit_dio(PORTx);
             break;
         }
     }
@@ -85,12 +85,12 @@ class DigitalIO {
     const Pin pin;
     const int DDRx, PORTx, PINx;
 
-    void set_bit(int reg) const __attribute__((always_inline)) {
-        SBI(*((volatile uint8_t *)(reg)), pin);
+    void set_bit_dio(int reg) const __attribute__((always_inline)) {
+        set_bit((*((volatile uint8_t *)(reg))), pin);
     }
 
-    void clear_bit(int reg) const __attribute__((always_inline)) {
-        CBI(*((volatile uint8_t *)(reg)), pin);
+    void clear_bit_dio(int reg) const __attribute__((always_inline)) {
+        clear_bit(*((volatile uint8_t *)(reg)), pin);
     }
 };
 

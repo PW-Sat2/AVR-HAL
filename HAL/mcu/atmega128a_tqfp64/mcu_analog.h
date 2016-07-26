@@ -60,9 +60,9 @@ class InternalADCMcuSpecific {
 
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::FreeRunning) {
-            SBI(ADCSRA, ADFR);
+            set_bit(ADCSRA, ADFR);
         } else {
-            CBI(ADCSRA, ADFR);
+            clear_bit(ADCSRA, ADFR);
         }
     }
 };

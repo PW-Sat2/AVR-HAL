@@ -16,7 +16,7 @@ class ExternalInterrupt {
     };
 
     constexpr ExternalInterrupt(int pin_nr, Mode mode_) :
-                                int_nr((pin_nr > 0) ?
+                                int_nr((pin_nr >= 0) ?
                                     ((pin_nr < 8) ?
                                         (((pin_nr > 3) || (mode_ != Mode::change)) ?
                                             pin_nr :
@@ -34,11 +34,11 @@ class ExternalInterrupt {
             EICRB &= (~(0b11 << (int_nr-4)));
             EICRB |= (static_cast<uint8_t>(mode) << (int_nr-4));
         }
-        SBI(EIMSK, int_nr);
+        set_bit(EIMSK, int_nr);
     }
 
     void disable() const {
-        CBI(EIMSK, int_nr);
+        clear_bit(EIMSK, int_nr);
     }
 
  private:

@@ -22,6 +22,7 @@
 #include "atmega128a_tqfp64/mcu_watchdog.h"
 #include "atmega128a_tqfp64/mcu_spi.h"
 #include "atmega128a_tqfp64/mcu_exti.h"
+#include "atmega128a_tqfp64/mcu_i2c.h"
 #else
 #error "Incorrect or no MCU defined"
 #endif

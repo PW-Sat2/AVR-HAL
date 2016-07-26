@@ -22,11 +22,11 @@ void set_sleep_mode(SleepModes mode) {
 }
 
 void sleep_enable() {
-    SBI(MCUCR, SE);
+    set_bit(MCUCR, SE);
 }
 
 void sleep_disable() {
-    CBI(MCUCR, SE);
+    clear_bit(MCUCR, SE);
 }
 
 void sleep_cpu() {

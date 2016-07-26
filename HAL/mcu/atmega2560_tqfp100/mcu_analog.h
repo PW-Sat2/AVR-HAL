@@ -111,10 +111,10 @@ class InternalADCMcuSpecific {
 
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::Disable) {
-            CBI(ADCSRA, ADATE);
+            clear_bit(ADCSRA, ADATE);
         } else {
             ADCSRB = static_cast<uint8_t>(trigger);
-            SBI(ADCSRA, ADATE);
+            set_bit(ADCSRA, ADATE);
         }
     }
 };
