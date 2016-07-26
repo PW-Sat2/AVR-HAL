@@ -1,7 +1,7 @@
 HAL_PATH = ../HAL
 GTEST_DIR = gtest-1.7.0
 CSRCS = 
-TESTS = tests_run_all.cpp array_view.cpp array.cpp
+TESTS = tests_run_all.cpp array_view.cpp array.cpp bit_operations.cpp
 
 INCLUDES = -I. -I$(HAL_PATH)/libs -I$(GTEST_DIR)/include/ -I$(GTEST_DIR)/include/gtest/
 
