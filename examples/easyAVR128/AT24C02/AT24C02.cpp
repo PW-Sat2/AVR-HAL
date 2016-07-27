@@ -20,7 +20,7 @@ int main() {
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
 
 #ifdef HARDWARE_TWI
-    hal::TWI::init(100000);
+    hal::TWI::init<10000>();
     hal::TWI::enable_internal_pullups();
 #else
     softI2C_1::init();

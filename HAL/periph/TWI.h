@@ -6,13 +6,15 @@
 #include "mcu.h"
 #include "DigitalIO.h"
 #include "I2C.h"
+#include "compile_time.h"
 
 namespace hal {
 
 class TWI : public I2C_Base {
  public:
-    static void init(uint32_t frequency) {
-        speed(frequency);
+    template<uint32_t frequency>
+    static void init() {
+        set_speed<frequency>();
         TWCR = (1 << TWEN);
     }
 
@@ -26,13 +28,10 @@ class TWI : public I2C_Base {
         TWCR = 0;
     }
 
-    static void speed(const uint32_t frequency) {
-        TWSR = 0;
-        uint8_t calc_TWBR = ((F_CPU/frequency)-16)/2;
-        if (calc_TWBR <= 10) {
-            calc_TWBR = 36;
-        }
-        TWBR = calc_TWBR;
+    template<uint32_t frequency>
+    static void set_speed() {
+        TWSR = calc_twps<frequency>::value;
+        TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
 
     static bool start(uint8_t address, const StartAction_t start_action) {
@@ -97,6 +96,24 @@ class TWI : public I2C_Base {
     static void wait_for_finish() {
         while (read_bit(TWCR, TWINT) == false) {}
     }
+
+    template<uint32_t frequency, int twps>
+    struct calc_twbr {
+        static const int32_t value = ((F_CPU/frequency)-16)/(2*libs::power<4, twps>::value);
+    };
+
+    template<uint32_t frequency, int twps = 0>
+    struct calc_twps {
+        static const int32_t value =
+                (calc_twbr<frequency, twps>::value < 255 ) ?
+                        twps :
+                        calc_twps<frequency, twps+1>::value;
+    };
+    // recursion stop at max value of twps
+    template<uint32_t frequency>
+    struct calc_twps<frequency, 3> {
+        static const int32_t value = 3;
+    };
 };
 
 }  // namespace hal
