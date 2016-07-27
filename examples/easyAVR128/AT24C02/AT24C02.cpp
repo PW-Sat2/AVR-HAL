@@ -5,12 +5,26 @@
 #include "AT24C02.h"
 #include "array.h"
 
-constexpr hal::AT24C02<hal::TWI> memory;
+#include "SoftI2C.h"
+
+#define HARDWARE_TWI
+
+#ifdef HARDWARE_TWI
+    constexpr hal::AT24C02<hal::TWI> memory;
+#else
+    typedef hal::SoftI2C_t<25, 26> softI2C_1;
+    constexpr hal::AT24C02<softI2C_1> memory;
+#endif
 
 int main() {
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
-    hal::TWI::init(10000);
+
+#ifdef HARDWARE_TWI
+    hal::TWI::init(100000);
     hal::TWI::enable_internal_pullups();
+#else
+    softI2C_1::init();
+#endif
 
     hal::libs::array<uint8_t, 10> arr;
     for(int i = 0; i < 10; ++i) {

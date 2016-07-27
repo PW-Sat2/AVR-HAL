@@ -74,6 +74,7 @@ class TWI : public I2C_Base {
     static void write(const uint8_t * data, uint8_t len) {
         while(len--) {
             write(*data);
+            data++;
         }
     }
 
