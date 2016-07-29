@@ -1,6 +1,8 @@
 #ifndef HAL_PERIPH_I2C_H_
 #define HAL_PERIPH_I2C_H_
 
+#include "array_view.h"
+
 namespace hal {
 
 class I2C_Base {
@@ -28,9 +30,9 @@ class I2C_Device_t {
         I2C::stop();
     }
 
-    void write(uint8_t * data, uint8_t len) const {
+    void write(const libs::array_view<uint8_t> arv) const {
         I2C::start(this->address, I2C::START_WRITE);
-        I2C::write(data, len);
+        I2C::write(arv);
         I2C::stop();
     }
 
@@ -40,29 +42,33 @@ class I2C_Device_t {
         I2C::stop();
     }
 
-    void read(uint8_t * data_out, uint8_t len, I2C_Base::Acknowledge_t last_byte_ACK) const {
+    void read(libs::array_view<uint8_t> arv, I2C_Base::Acknowledge_t last_byte_ACK = I2C_Base::Acknowledge_t::NACK) const {
         I2C::start(this->address, I2C::START_READ);
-        I2C::read(data_out, len, last_byte_ACK);
+        I2C::read(arv, last_byte_ACK);
         I2C::stop();
     }
 
-    void data_transfer(uint8_t * out_data, uint8_t out_len, uint8_t * in_data, uint8_t in_len) const {
+    void data_transfer(const libs::array_view<uint8_t> transmit, libs::array_view<uint8_t> receive) const {
         I2C::start(this->address, I2C::START_WRITE);
-        I2C::write(out_data, out_len);
+        I2C::write(transmit);
         I2C::start(this->address, I2C::START_READ);
-        I2C::read(in_data, in_len, I2C::NACK);
+        I2C::read(receive);
         I2C::stop();
     }
 
-    void write_register(uint8_t register_address, uint8_t * data, uint8_t len) const {
+    void write_register(uint8_t register_address, const libs::array_view<const uint8_t> data) const {
         I2C::start(this->address, I2C::START_WRITE);
         I2C::write(register_address);
-        I2C::write(data, len);
+        I2C::write(data);
         I2C::stop();
     }
 
-    void read_register(uint8_t register_address, uint8_t * data, uint8_t len) const {
-        this->data_transfer(&register_address, 1, data, len);
+    void read_register(uint8_t register_address, libs::array_view<uint8_t> data) const {
+        I2C::start(this->address, I2C::START_WRITE);
+        I2C::write(register_address);
+        I2C::start(this->address, I2C::START_READ);
+        I2C::read(data);
+        I2C::stop();
     }
 
  private:

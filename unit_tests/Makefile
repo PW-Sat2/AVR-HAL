@@ -1,9 +1,9 @@
 HAL_PATH = ../HAL
 GTEST_DIR = gtest-1.7.0
 CSRCS = 
-TESTS = tests_run_all.cpp array_view.cpp array.cpp bit_operations.cpp compile_time.cpp
+TESTS = tests_run_all.cpp I2C.cpp array_view.cpp array.cpp bit_operations.cpp compile_time.cpp
 
-INCLUDES = -I. -I$(HAL_PATH)/libs -I$(GTEST_DIR)/include/ -I$(GTEST_DIR)/include/gtest/
+INCLUDES = -I. -I$(HAL_PATH)/libs -I$(GTEST_DIR)/include/ -I$(GTEST_DIR)/include/gtest/ -I$(HAL_PATH)/periph
 
 LIBS_FOLDERS = -L$(GTEST_DIR)/
 GTEST_LIBS = $(GTEST_DIR)/libgtest.a

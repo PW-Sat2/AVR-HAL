@@ -108,9 +108,9 @@ TEST(tab, pointers) {
     hal::libs::array_view<int32_t> arv(tab);
     const hal::libs::array_view<int32_t> carv(arv);
 
-    int32_t * ptr = arv;
+    int32_t * ptr = arv.data();
     EXPECT_EQ(ptr, arv.data());
-    const int32_t * cptr = carv;
+    const int32_t * cptr = carv.data();
     EXPECT_EQ(cptr, carv.data());
 }
 

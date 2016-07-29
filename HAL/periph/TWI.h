@@ -70,22 +70,25 @@ class TWI : public I2C_Base {
         return 0;
     }
 
-    static void write(const uint8_t * data, uint8_t len) {
-        while(len--) {
-            write(*data);
-            data++;
-        }
-    }
-
     static uint8_t read(Acknowledge_t ACK) {
         TWCR =  (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
         wait_for_finish();
         return TWDR;
     }
 
-    static void read(uint8_t * data, uint8_t len, Acknowledge_t last_byte_ACK) {
-        len--;
-        while(len--) {
+    static void write(const libs::array_view<const uint8_t> & arv) {
+        auto size = arv.size();
+        auto * data = arv.data();
+        while (size--) {
+            write(*data);
+            data++;
+        }
+    }
+
+    static void read(libs::array_view<uint8_t> arv, Acknowledge_t last_byte_ACK = NACK) {
+        auto size = arv.size()-1;
+        auto * data = arv.data();
+        while(size--) {
             *data = read(ACK);
             data++;
         }
