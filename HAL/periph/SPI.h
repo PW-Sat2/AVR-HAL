@@ -28,13 +28,6 @@ class SPI {
         SPI_Clk_Div_128 = 3,
     };
 
-    struct InitTypeDef_t {
-        SPI_Polarity polarity;
-        SPI_Phase phase;
-        SPI_DataOrder data_order;
-        SPI_Clock_Divisor clk_divisor;
-    };
-
     static void init(const SPI_Polarity polarity, const SPI_Phase phase,
             const SPI_DataOrder data_order,
             const SPI_Clock_Divisor clock_divisor) {
