@@ -74,13 +74,6 @@ public:
         return ack;
     }
 
-    static void write(const uint8_t * data, uint8_t len) {
-        while(len--) {
-            write(*data);
-            data++;
-        }
-    }
-
     static uint8_t read(Acknowledge_t ACK) {
         uint8_t data = 0;
 
@@ -119,9 +112,19 @@ public:
         return data;
     }
 
-    static void read(uint8_t * data, uint8_t len, Acknowledge_t last_byte_ACK) {
-        len--;
-        while(len--) {
+    static void write(const libs::array_view<const uint8_t> & arv) {
+        auto size = arv.size();
+        auto * data = arv.data();
+        while (size--) {
+            write(*data);
+            data++;
+        }
+    }
+
+    static void read(libs::array_view<uint8_t> arv, Acknowledge_t last_byte_ACK = NACK) {
+        auto size = arv.size()-1;
+        auto * data = arv.data();
+        while(size--) {
             *data = read(ACK);
             data++;
         }

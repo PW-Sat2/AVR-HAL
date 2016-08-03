@@ -7,7 +7,7 @@
 
 #include "SoftI2C.h"
 
-#define HARDWARE_TWI
+//#define HARDWARE_TWI
 
 #ifdef HARDWARE_TWI
     constexpr hal::AT24C02<hal::TWI> memory;

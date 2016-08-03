@@ -112,6 +112,11 @@ class array {
         }
     }
 
+	// get array view to this array
+	array_view<T> as_array_view() {
+		return make_array_view(elems, N);
+	}
+	
  private:
     T elems[N];    // fixed-size array of elements of type T
 

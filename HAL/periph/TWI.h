@@ -14,7 +14,7 @@ class TWI : public I2C_Base {
  public:
     template<uint32_t frequency>
     static void init() {
-        set_speed<frequency>();
+        set_frequency<frequency>();
         TWCR = (1 << TWEN);
     }
 
@@ -29,7 +29,7 @@ class TWI : public I2C_Base {
     }
 
     template<uint32_t frequency>
-    static void set_speed() {
+    static void set_frequency() {
         TWSR = calc_twps<frequency>::value;
         TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
@@ -53,7 +53,7 @@ class TWI : public I2C_Base {
         return true;
     }
 
-    static void stop(void) {
+    static void stop() {
         TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
         while (TWCR & (1 << TWSTO)) {}
     }
