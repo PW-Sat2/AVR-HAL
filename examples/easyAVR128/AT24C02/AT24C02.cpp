@@ -12,7 +12,7 @@
 #ifdef HARDWARE_TWI
     constexpr hal::AT24C02<hal::TWI> memory;
 #else
-    typedef hal::SoftI2C_t<25, 26> softI2C_1;
+    using softI2C_1 = hal::SoftI2C_t<25, 26>;
     constexpr hal::AT24C02<softI2C_1> memory;
 #endif
 
