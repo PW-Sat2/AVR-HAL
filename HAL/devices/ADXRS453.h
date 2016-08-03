@@ -3,6 +3,7 @@
 
 #include "SPI.h"
 #include "DigitalIO.h"
+#include "array.h"
 
 namespace hal {
 
@@ -26,7 +27,7 @@ class ADXRS453 {
 	}
 
 	void init() const {
-		SPI::init(SPI::SPI_idle_low, SPI::SPI_leading_sample, SPI::SPI_MSB_First, SPI::SPI_Clk_Div_16);
+		SPI::init(SPI::Polarity::idle_low, SPI::Phase::leading_sample, SPI::DataOrder::MSB_first, SPI::ClockDivisor::DIV_16);
 		this->spi_dev.init();
 	}
 
@@ -44,7 +45,7 @@ class ADXRS453 {
 	}
 
 	uint32_t getSensorData() const {
-	    uint8_t dataBuffer[4] = {0, 0, 0, 0};
+		libs::array<uint8_t, 4>dataBuffer(0);
 
 	    dataBuffer[0] = (1 << 5);
 	    uint32_t command = (static_cast<uint32_t>(dataBuffer[0]) << 24) |
@@ -61,7 +62,7 @@ class ADXRS453 {
 	        dataBuffer[3] |= 1;
 	    }
 		
-		this->spi_dev.data_transfer(dataBuffer, dataBuffer, 4);
+		this->spi_dev.data_transfer(dataBuffer, dataBuffer);
 
 	    uint32_t registerValue = (static_cast<uint32_t>(dataBuffer[0]) << 24) |
 	                    (static_cast<uint32_t>(dataBuffer[1]) << 16) |
@@ -98,37 +99,37 @@ class ADXRS453 {
 
  private:
 	uint16_t getRegister(const uint8_t registerAddress) const {
-
-	    uint8_t dataBuffer[4] = {0, 0, 0, 0};
-
+		libs::array<uint8_t, 4>dataBuffer(0);
+		
+        
 	    dataBuffer[0] = (1 << 7) | (registerAddress >> 7);
 	    dataBuffer[1] = (registerAddress << 1);
-
+        
 	    uint32_t command = (static_cast<uint32_t>(dataBuffer[0]) << 24) |
 	              (static_cast<uint32_t>(dataBuffer[1]) << 16) |
 	              (static_cast<uint32_t>(dataBuffer[2]) << 8) |
 	              dataBuffer[3];
-
+        
 	    uint8_t sum = 0;
 	    for (uint8_t bitNo = 31; bitNo > 0; bitNo--) {
 	        sum += ((command >> bitNo) & 0x1);
 	    }
-
+        
 	    if (!(sum % 2)) {
 	        dataBuffer[3] |= 1;
 	    }
-
-	    this->spi_dev.data_transfer(dataBuffer, dataBuffer, 4);
-
+        
+	    this->spi_dev.data_transfer(dataBuffer, dataBuffer);
+        
 	    uint16_t registerValue = (static_cast<uint16_t>(dataBuffer[1]) << 11) |
 	                    (static_cast<uint16_t>(dataBuffer[2]) << 3) |
 	                    (dataBuffer[3] >> 5);
-
+        
 	    return registerValue;
 	}
 
 	void setRegisterValue(const uint8_t registerAddress, uint16_t registerValue) const {
-	    uint8_t dataBuffer[4] = {0, 0, 0, 0};
+	    libs::array<uint8_t, 4>dataBuffer(0);
 	    uint32_t command = 0;
 	    
 	    dataBuffer[0] = (1 << 6) | (registerAddress >> 7);
@@ -141,17 +142,17 @@ class ADXRS453 {
 	              (static_cast<uint32_t>(dataBuffer[1]) << 16) |
 	              (static_cast<uint32_t>(dataBuffer[2]) << 8) |
 	              dataBuffer[3];
-
+        
 	    uint8_t sum = 0;
 	    for (uint8_t bitNo = 31; bitNo > 0; bitNo--) {
 	        sum += ((command >> bitNo) & 0x1);
 	    }
-
+        
 	    if (!(sum % 2)) {
 	        dataBuffer[3] |= 1;
 	    }
-
-		this->spi_dev.data_transfer(dataBuffer, dataBuffer, 4);
+        
+		this->spi_dev.data_transmit(dataBuffer);
 	}
 
  	const SPI_Device spi_dev;

@@ -21,6 +21,11 @@ class array {
     typedef size_t size_type;
     typedef ptrdiff_t difference_type;
 
+	// constructors
+	array(T&& value) {
+		assign(value);
+	}
+
     // iterator support
     iterator begin() {
         return elems;

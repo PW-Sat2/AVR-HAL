@@ -4,38 +4,42 @@
 #include <avr/io.h>
 #include "mcu.h"
 #include "DigitalIO.h"
+#include "array.h"
 
 namespace hal {
 
 class SPI {
  public:
-    enum SPI_Polarity {
-        SPI_idle_low = 0, SPI_idle_high = 1
+    enum class Polarity : int {
+        idle_low = 0, 
+		idle_high = 1
     };
 
-    enum SPI_Phase {
-        SPI_leading_sample = 0, SPI_trailing_sample = 1
+    enum class Phase : int {
+        leading_sample = 0,
+		trailing_sample = 1
     };
 
-    enum SPI_DataOrder {
-        SPI_MSB_First = 0, SPI_LSB_First = 1
+    enum class DataOrder : int {
+        MSB_first = 0, 
+		LSB_first = 1
     };
 
-    enum SPI_Clock_Divisor {
-        SPI_Clk_Div_4 = 0,
-        SPI_Clk_Div_16 = 1,
-        SPI_Clk_Div_64 = 2,
-        SPI_Clk_Div_128 = 3,
+    enum class ClockDivisor : int {
+        DIV_4 = 0,
+        DIV_16 = 1,
+        DIV_64 = 2,
+        DIV_128 = 3,
     };
 
-    static void init(const SPI_Polarity polarity, const SPI_Phase phase,
-            const SPI_DataOrder data_order,
-            const SPI_Clock_Divisor clock_divisor) {
+    static void init(const Polarity polarity, const Phase phase,
+            const DataOrder data_order,
+            const ClockDivisor clock_divisor) {
         pin_mosi.init(DigitalIO::OUTPUT);
         pin_sck.init(DigitalIO::OUTPUT);
 
-        SPCR = (1 << SPE) | (1 << MSTR) | (clock_divisor) | (phase << CPHA)
-                | (polarity << CPOL) | (data_order << DORD);
+        SPCR = (1 << SPE) | (1 << MSTR) | (static_cast<uint8_t>(clock_divisor)) | (static_cast<uint8_t>(phase) << CPHA)
+                | (static_cast<uint8_t>(polarity) << CPOL) | (static_cast<uint8_t>(data_order) << DORD);
     }
 
     static uint8_t shift(const uint8_t data) {
@@ -83,14 +87,35 @@ class SPI_Device {
         return x;
     }
 
-    void data_transfer(uint8_t * in_data, uint8_t * out_data,
-            uint8_t len) const {
+	template<size_t size>
+    void data_transfer(const libs::array<uint8_t, size> & output, libs::array<uint8_t, size> & input) const {
         this->enable();
+		const uint8_t * out_ptr = output.data();
+		uint8_t * in_ptr = input.data();
+		int len = size;
         while (len--) {
-            (*out_data) = SPI::shift(*in_data);
-            in_data++;
-            out_data++;
+            (*in_ptr) = SPI::shift(*out_ptr);
+            in_ptr++;
+            out_ptr++;
         }
+        this->disable();
+    }
+	
+	template<size_t size>
+    void data_transmit(const libs::array<uint8_t, size> & data) const {
+        this->enable();
+		for(auto& x : data) {
+			SPI::shift(x);
+		}
+        this->disable();
+    }
+
+	template<size_t size>
+    void data_receive(const libs::array<uint8_t, size> & data) const {
+        this->enable();
+		for(auto& x : data) {
+			x = SPI::shift(0);
+		}
         this->disable();
     }
 };
