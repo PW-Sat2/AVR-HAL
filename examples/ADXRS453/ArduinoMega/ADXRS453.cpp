@@ -10,12 +10,15 @@ int main() {
     hal::Serial0.printf("Start \r\n");
     gyro1.init();
 	
-	while (gyro1.deviceStatus() == false);
-   	hal::Serial0.printf("Sensor init\r\n");
+	gyro1.deviceStatus();
+	bool status = gyro1.deviceStatus();
+   	hal::Serial0.printf("Sensor init = %d\r\n", status);
 
 
     while (true) {
+    	gyro1.getTemperature();
 	    float temperature = gyro1.getTemperature();
+	    gyro1.getRate();
 	    float rate = gyro1.getRate();
 
 	    hal::Serial0.printf("Temperature = %f;\tRate = %f\r\n", temperature, rate);
