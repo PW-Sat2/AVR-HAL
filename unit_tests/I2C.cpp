@@ -37,7 +37,7 @@ std::vector<I2C_Event> events;
 class TWI_fake : public I2C_Base {
  public:
 
-    static bool start(uint8_t address, const StartAction_t start_action) {
+    static bool start(uint8_t address, const StartAction start_action) {
         events.push_back(I2C_Event(I2C_Event::START, (address << 1) | static_cast<uint8_t>(start_action)));
         return true;
     }
@@ -50,8 +50,8 @@ class TWI_fake : public I2C_Base {
         events.push_back(I2C_Event(I2C_Event::WRITE, data));
     }
 
-    static uint8_t read(Acknowledge_t ack) {
-        if (ack == Acknowledge_t::ACK) {
+    static uint8_t read(Acknowledge ack) {
+        if (ack == ACK) {
             events.push_back(I2C_Event(I2C_Event::READ, 1));
         } else {
             events.push_back(I2C_Event(I2C_Event::READ, 0));
@@ -67,7 +67,7 @@ class TWI_fake : public I2C_Base {
         }
     }
 
-    static void read(libs::array_view<uint8_t> arv, Acknowledge_t last_byte_ACK = NACK) {
+    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
         auto size = arv.size()-1;
         auto * data = arv.data();
         while(size--) {
@@ -133,8 +133,8 @@ TEST(i2c, device) {
     events.clear(); ref.clear();
 
     constexpr uint8_t addr = 0xF9;
-    const uint8_t addr_w = (addr << 1) | static_cast<uint8_t>(I2C_Base::START_WRITE);
-    const uint8_t addr_r = (addr << 1) | static_cast<uint8_t>(I2C_Base::START_READ);
+    const uint8_t addr_w = (addr << 1) | static_cast<uint8_t>(I2C_Base::StartAction::write);
+    const uint8_t addr_r = (addr << 1) | static_cast<uint8_t>(I2C_Base::StartAction::read);
     using dev = I2C_Device_t<TWI_fake, addr>;
     dev::write(1);
     PUSHv(START, addr_w);
@@ -154,10 +154,10 @@ TEST(i2c, device) {
     dev::read(I2C_Base::ACK);
     dev::read(I2C_Base::NACK);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
     PUSH(STOP);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
+    PUSHv(READ, I2C_Base::Acknowledge::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
@@ -165,22 +165,22 @@ TEST(i2c, device) {
     array_view<uint8_t> arv(tab2);
     dev::read(arv);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
-    PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev::read(arv, I2C_Base::Acknowledge_t::NACK);
+    dev::read(arv, I2C_Base::Acknowledge::NACK);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
-    PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev::read(arv, I2C_Base::Acknowledge_t::ACK);
+    dev::read(arv, I2C_Base::Acknowledge::ACK);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
@@ -194,8 +194,8 @@ TEST(i2c, device) {
     PUSHv(WRITE, 8);
     PUSHv(WRITE, 7);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
-    PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
@@ -212,8 +212,8 @@ TEST(i2c, device) {
     PUSHv(START, addr_w);
     PUSHv(WRITE, 0x18);
     PUSHv(START, addr_r);
-    PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
-    PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
+    PUSHv(READ, I2C_Base::Acknowledge::ACK);
+    PUSHv(READ, I2C_Base::Acknowledge::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 }

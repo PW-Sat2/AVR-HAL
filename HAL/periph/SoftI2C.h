@@ -16,14 +16,14 @@ public:
         pin_sda.reset();
     }
 
-    static bool start(uint8_t address, const StartAction_t start_action) {
+    static bool start(uint8_t address, const StartAction start_action) {
         pin_scl.pinmode(DigitalIO::Mode::INPUT);
         hDelay();
 
         pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
         hDelay();
 
-        return write((address << 1) | start_action);
+        return write((address << 1) | static_cast<int>(start_action));
     }
 
     static void stop() {
@@ -74,7 +74,7 @@ public:
         return ack;
     }
 
-    static uint8_t read(Acknowledge_t ACK) {
+    static uint8_t read(Acknowledge ACK) {
         uint8_t data = 0;
 
         for (uint8_t i = 0; i < 8; ++i) {
@@ -121,7 +121,7 @@ public:
         }
     }
 
-    static void read(libs::array_view<uint8_t> arv, Acknowledge_t last_byte_ACK = NACK) {
+    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
         auto size = arv.size()-1;
         auto * data = arv.data();
         while(size--) {

@@ -34,7 +34,7 @@ class TWI : public I2C_Base {
         TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
 
-    static bool start(uint8_t address, const StartAction_t start_action) {
+    static bool start(uint8_t address, const StartAction start_action) {
         uint8_t twst;
         TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
         wait_for_finish();
@@ -42,12 +42,12 @@ class TWI : public I2C_Base {
         if ((twst != TW_START) && (twst != TW_REP_START)) {
             return false;
         }
-        TWDR = (address << 1) | start_action;
+        TWDR = (address << 1) | static_cast<int>(start_action);
         TWCR = (1 << TWINT) | (1 << TWEN);
         wait_for_finish();
         twst = TW_STATUS;
-        if (((start_action == StartAction_t::START_READ) && (twst != TW_MR_SLA_ACK)) ||
-            ((start_action == StartAction_t::START_WRITE) && (twst != TW_MT_SLA_ACK))) {
+        if (((start_action == StartAction::read) && (twst != TW_MR_SLA_ACK)) ||
+            ((start_action == StartAction::write) && (twst != TW_MT_SLA_ACK))) {
             return false;
         }
         return true;
@@ -70,7 +70,7 @@ class TWI : public I2C_Base {
         return 0;
     }
 
-    static uint8_t read(Acknowledge_t ACK) {
+    static uint8_t read(Acknowledge ACK) {
         TWCR =  (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
         wait_for_finish();
         return TWDR;
@@ -85,7 +85,7 @@ class TWI : public I2C_Base {
         }
     }
 
-    static void read(libs::array_view<uint8_t> arv, Acknowledge_t last_byte_ACK = NACK) {
+    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
         auto size = arv.size()-1;
         auto * data = arv.data();
         while(size--) {
