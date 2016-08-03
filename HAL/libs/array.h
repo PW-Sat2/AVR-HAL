@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "hal_assert.h"
+#include "array_view.h"
 
 namespace hal {
 namespace libs {

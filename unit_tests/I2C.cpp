@@ -132,11 +132,11 @@ TEST(i2c, device) {
     EXPECT_TRUE(ref == events); \
     events.clear(); ref.clear();
 
-    const uint8_t addr = 0xF9;
+    constexpr uint8_t addr = 0xF9;
     const uint8_t addr_w = (addr << 1) | static_cast<uint8_t>(I2C_Base::START_WRITE);
     const uint8_t addr_r = (addr << 1) | static_cast<uint8_t>(I2C_Base::START_READ);
-    I2C_Device_t<TWI_fake> dev(addr);
-    dev.write(1);
+    using dev = I2C_Device_t<TWI_fake, addr>;
+    dev::write(1);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 1);
     PUSH(STOP);
@@ -144,15 +144,15 @@ TEST(i2c, device) {
     TEST_AND_CLEAR();
 
     uint8_t tab[] = {2, 3};
-    dev.write(make_array_view(tab));
+    dev::write(make_array_view(tab));
     PUSHv(START, addr_w);
     PUSHv(WRITE, 2);
     PUSHv(WRITE, 3);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev.read(I2C_Base::ACK);
-    dev.read(I2C_Base::NACK);
+    dev::read(I2C_Base::ACK);
+    dev::read(I2C_Base::NACK);
     PUSHv(START, addr_r);
     PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
     PUSH(STOP);
@@ -163,21 +163,21 @@ TEST(i2c, device) {
 
     uint8_t tab2[2];
     array_view<uint8_t> arv(tab2);
-    dev.read(arv);
+    dev::read(arv);
     PUSHv(START, addr_r);
     PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
     PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev.read(arv, I2C_Base::Acknowledge_t::NACK);
+    dev::read(arv, I2C_Base::Acknowledge_t::NACK);
     PUSHv(START, addr_r);
     PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
     PUSHv(READ, I2C_Base::Acknowledge_t::NACK);
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev.read(arv, I2C_Base::Acknowledge_t::ACK);
+    dev::read(arv, I2C_Base::Acknowledge_t::ACK);
     PUSHv(START, addr_r);
     PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
     PUSHv(READ, I2C_Base::Acknowledge_t::ACK);
@@ -188,7 +188,7 @@ TEST(i2c, device) {
     array_view<uint8_t> arv_tx(tab_tx);
     uint8_t tab_rx[2];
     array_view<uint8_t> arv_rx(tab_rx);
-    dev.data_transfer(arv_tx, arv_rx);
+    dev::data_transfer(arv_tx, arv_rx);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 9);
     PUSHv(WRITE, 8);
@@ -199,7 +199,7 @@ TEST(i2c, device) {
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev.write_register(0x18, arv_tx);
+    dev::write_register(0x18, arv_tx);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 0x18);
     PUSHv(WRITE, 9);
@@ -208,7 +208,7 @@ TEST(i2c, device) {
     PUSH(STOP);
     TEST_AND_CLEAR();
 
-    dev.read_register(0x18, arv_rx);
+    dev::read_register(0x18, arv_rx);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 0x18);
     PUSHv(START, addr_r);

@@ -1,7 +1,7 @@
 #include "gtest.h"
 #include "array_view.h"
 
-TEST(tab, check_values) {
+TEST(array_view, check_values) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
@@ -48,7 +48,7 @@ TEST(tab, check_values) {
     EXPECT_EQ(carv.size_bytes(), 40);
 }
 
-TEST(tab, equal) {
+TEST(array_view, equal) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
@@ -78,7 +78,7 @@ TEST(tab, equal) {
     }
 }
 
-TEST(tab, reset) {
+TEST(array_view, reset) {
     constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
@@ -99,7 +99,7 @@ TEST(tab, reset) {
     EXPECT_EQ(arv.size_bytes(), 0);
 }
 
-TEST(tab, pointers) {
+TEST(array_view, pointers) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
@@ -114,7 +114,7 @@ TEST(tab, pointers) {
     EXPECT_EQ(cptr, carv.data());
 }
 
-TEST(tab, references) {
+TEST(array_view, references) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
@@ -134,7 +134,7 @@ TEST(tab, references) {
     EXPECT_EQ(carv[9], arv.back());
 }
 
-TEST(tab, slice) {
+TEST(array_view, slice) {
     constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
