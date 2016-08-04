@@ -10,19 +10,20 @@ int main() {
     hal::Serial0.printf("Start \r\n");
     gyro1.init();
 	
-	gyro1.deviceStatus();
 	bool status = gyro1.deviceStatus();
    	hal::Serial0.printf("Sensor init = %d\r\n", status);
 
 
     while (true) {
-    	gyro1.getTemperature();
 	    float temperature = gyro1.getTemperature();
-	    gyro1.getRate();
 	    float rate = gyro1.getRate();
+	    uint32_t sensor_data = gyro1.getSensorData();
 
-	    hal::Serial0.printf("Temperature = %f;\tRate = %f\r\n", temperature, rate);
-	    _delay_ms(1000);
+	    hal::Serial0.printf("Temperature = %f;\t", temperature);
+   	    hal::Serial0.printf("Rate = %f;\t", rate);
+	    hal::Serial0.printf("Sensor data = %ul\r\n", sensor_data);
+
+	    _delay_ms(500);
 	}
 	
 }

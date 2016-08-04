@@ -63,6 +63,7 @@ class ADXRS453 {
 	    }
 		
 		this->spi_dev.data_transfer(dataBuffer, dataBuffer);
+		this->spi_dev.data_transfer(dataBuffer, dataBuffer);
 
 	    uint32_t registerValue = (static_cast<uint32_t>(dataBuffer[0]) << 24) |
 	                    (static_cast<uint32_t>(dataBuffer[1]) << 16) |
@@ -119,6 +120,7 @@ class ADXRS453 {
 	        dataBuffer[3] |= 1;
 	    }
         
+	    this->spi_dev.data_transfer(dataBuffer, dataBuffer);        
 	    this->spi_dev.data_transfer(dataBuffer, dataBuffer);
         
 	    uint16_t registerValue = (static_cast<uint16_t>(dataBuffer[1]) << 11) |
