@@ -22,8 +22,9 @@ class array {
     typedef ptrdiff_t difference_type;
 
 	// constructors
-	array(T&& value) {
-		assign(value);
+	constexpr array() {
+	}
+	constexpr array(T&& value) : elems{value} {
 	}
 
     // iterator support
@@ -112,7 +113,7 @@ class array {
     }
 
     // assign one value to all elements
-    void assign(const T& value) {
+    constexpr void assign(const T& value) {
         for (size_type i = 0; i < static_size; ++i) {
             elems[i] = value;
         }
@@ -120,6 +121,9 @@ class array {
 
 	// get array view to this array
 	array_view<T> as_array_view() {
+		return make_array_view(elems, N);
+	}
+	const array_view<const T> as_array_view() const {
 		return make_array_view(elems, N);
 	}
 	

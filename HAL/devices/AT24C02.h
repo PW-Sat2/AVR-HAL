@@ -12,7 +12,7 @@ namespace hal {
 template<typename I2C>
 class AT24C02 {
 public:
-    using i2cdevice = I2C_Device_t<I2C, 0x50>;
+    using i2cdevice = I2C_Device<I2C, 0x50>;
 
     template<typename T>
     void write(uint8_t addr, libs::array_view<T> & arr) const {

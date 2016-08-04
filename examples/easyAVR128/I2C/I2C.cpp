@@ -5,7 +5,7 @@
 int main() {
     hal::TWI::init<100000>();
     hal::TWI::enable_internal_pullups();
-    hal::I2C_Device_t<hal::TWI, 0x1E> dev;
+    using dev = hal::I2C_Device<hal::TWI, 0x1E>;
 
     while (true) {
         dev::write(0x12);

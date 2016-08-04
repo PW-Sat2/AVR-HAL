@@ -1,9 +1,10 @@
 #include "SPI.h"
+#include "array_view.h"
 
 int main() {
-    hal::SPI::init(hal::SPI::SPI_Polarity::SPI_idle_high,
-            hal::SPI::SPI_leading_sample, hal::SPI::SPI_MSB_First,
-            hal::SPI::SPI_Clk_Div_128);
+    hal::SPI::init(hal::SPI::Polarity::idle_high,
+            hal::SPI::Phase::leading_sample, hal::SPI::DataOrder::MSB_first,
+            hal::SPI::ClockDivisor::DIV_128);
 
     constexpr hal::SPI_Device dev1(1);
     dev1.init();
@@ -11,5 +12,6 @@ int main() {
     dev1.shift(0xFF);
 
     uint8_t data[] = { 1, 2, 3 };
-    dev1.data_transfer(data, data, 3);
+	
+    dev1.data_transfer(hal::libs::make_array_view(data), hal::libs::make_array_view(data));
 }

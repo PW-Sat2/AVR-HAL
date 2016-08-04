@@ -76,25 +76,6 @@ class TWI : public I2C_Base {
         return TWDR;
     }
 
-    static void write(const libs::array_view<const uint8_t> & arv) {
-        auto size = arv.size();
-        auto * data = arv.data();
-        while (size--) {
-            write(*data);
-            data++;
-        }
-    }
-
-    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
-        auto size = arv.size()-1;
-        auto * data = arv.data();
-        while(size--) {
-            *data = read(ACK);
-            data++;
-        }
-        *data = read(last_byte_ACK);
-    }
-
  private:
     static void wait_for_finish() {
         while (read_bit(TWCR, TWINT) == false) {}

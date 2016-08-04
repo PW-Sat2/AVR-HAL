@@ -68,11 +68,11 @@ class SPI_Device {
         this->disable();
     }
 
-    void enable(void) const {
+    void enable() const {
         this->pin_cs.reset();
     }
 
-    void disable(void) const {
+    void disable() const {
         this->pin_cs.set();
     }
 
@@ -86,23 +86,23 @@ class SPI_Device {
         this->disable();
         return x;
     }
-
-	template<size_t size>
-    void data_transfer(const libs::array<uint8_t, size> & output, libs::array<uint8_t, size> & input) const {
-        this->enable();
+	
+	template<typename T, typename T2>
+	void data_transfer(T&& output, T2&& input) const {
+		this->enable();
 		const uint8_t * out_ptr = output.data();
 		uint8_t * in_ptr = input.data();
-		int len = size;
+		int len = input.size();
         while (len--) {
             (*in_ptr) = SPI::shift(*out_ptr);
             in_ptr++;
             out_ptr++;
         }
         this->disable();
-    }
+	}
 	
-	template<size_t size>
-    void data_transmit(const libs::array<uint8_t, size> & data) const {
+	template<typename T>
+	void data_transmit(T&& data) const {
         this->enable();
 		for(auto& x : data) {
 			SPI::shift(x);
@@ -110,8 +110,8 @@ class SPI_Device {
         this->disable();
     }
 
-	template<size_t size>
-    void data_receive(const libs::array<uint8_t, size> & data) const {
+	template<typename T>
+	void data_receive(T&& data) const {
         this->enable();
 		for(auto& x : data) {
 			x = SPI::shift(0);
