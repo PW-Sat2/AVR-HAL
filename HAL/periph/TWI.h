@@ -10,7 +10,7 @@
 
 namespace hal {
 
-class TWI : public I2C_Base {
+class TWI : public I2C {
  public:
     template<uint32_t frequency>
     static void init() {
@@ -89,7 +89,7 @@ class TWI : public I2C_Base {
     template<uint32_t frequency, int twps = 0>
     struct calc_twps {
         static const int32_t value =
-                (calc_twbr<frequency, twps>::value < 255 ) ?
+                (calc_twbr<frequency, twps>::value < 255) ?
                         twps :
                         calc_twps<frequency, twps+1>::value;
     };

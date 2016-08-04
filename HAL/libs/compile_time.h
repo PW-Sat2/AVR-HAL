@@ -15,7 +15,7 @@ struct power<base, 0> {
     static const int32_t value = 1;
 };
 
-}  // namespace hal
 }  // namespace libs
+}  // namespace hal
 
 #endif  // HAL_LIBS_COMPILE_TIME_H_

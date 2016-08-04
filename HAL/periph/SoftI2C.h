@@ -7,8 +7,8 @@
 namespace hal {
 
 template<int pin_nr_scl, int pin_nr_sda>
-class SoftI2C_t: public I2C_Base {
-public:
+class SoftI2C_t: public I2C {
+ public:
     static void init() {
         pin_scl.init(DigitalIO::Mode::INPUT);
         pin_sda.init(DigitalIO::Mode::INPUT);
@@ -51,7 +51,7 @@ public:
             hDelay();
 
             while (pin_scl.read() == 0) {
-            };
+            }
 
             data = data << 1;
         }
@@ -84,12 +84,11 @@ public:
             hDelay();
 
             while ((pin_scl.read()) == 0) {
-            };
+            }
 
             if (pin_sda.read()) {
                 data |= (0x80 >> i);
             }
-
         }
         pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
         qDelay();
@@ -121,18 +120,19 @@ public:
         }
     }
 
-    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
-        auto size = arv.size()-1;
+    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK =
+            NACK) {
+        auto size = arv.size() - 1;
         auto * data = arv.data();
-        while(size--) {
+        while (size--) {
             *data = read(ACK);
             data++;
         }
         *data = read(last_byte_ACK);
     }
 
-private:
-    constexpr static DigitalIO pin_sda{pin_nr_sda}, pin_scl{pin_nr_scl};
+ private:
+    constexpr static DigitalIO pin_sda { pin_nr_sda }, pin_scl { pin_nr_scl };
 
     static void qDelay() {
         _delay_loop_2(3);

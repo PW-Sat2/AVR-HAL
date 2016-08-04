@@ -16,7 +16,7 @@ class I2C_Event {
     Type type;
     uint8_t payload;
 
-    I2C_Event(Type type, uint8_t payload = 0) :
+    explicit I2C_Event(Type type, uint8_t payload = 0) :
         type(type), payload(payload) {
     }
 
@@ -36,7 +36,6 @@ std::vector<I2C_Event> events;
 
 class TWI_fake : public I2C_Base {
  public:
-
     static bool start(uint8_t address, const StartAction start_action) {
         events.push_back(I2C_Event(I2C_Event::START, (address << 1) | static_cast<uint8_t>(start_action)));
         return true;
@@ -70,7 +69,7 @@ class TWI_fake : public I2C_Base {
     static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
         auto size = arv.size()-1;
         auto * data = arv.data();
-        while(size--) {
+        while (size--) {
             *data = read(ACK);
             data++;
         }
@@ -80,10 +79,10 @@ class TWI_fake : public I2C_Base {
 
 bool operator==(const std::vector<I2C_Event> & lhs,
         const std::vector<I2C_Event> & rhs) {
-    if( lhs.size() != rhs.size() )
+    if ( lhs.size() != rhs.size() )
         return false;
-    for(int i = 0; i < lhs.size(); ++i) {
-        if( lhs[i] != rhs[i] )
+    for (int i = 0; i < lhs.size(); ++i) {
+        if ( lhs[i] != rhs[i] )
             return false;
     }
     return true;

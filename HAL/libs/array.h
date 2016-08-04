@@ -21,11 +21,12 @@ class array {
     typedef size_t size_type;
     typedef ptrdiff_t difference_type;
 
-	// constructors
-	constexpr array() {
-	}
-	constexpr array(T&& value) : elems{value} {
-	}
+    // constructors
+    constexpr array() {
+    }
+    constexpr array(T&& value) :
+            elems { value } {
+    }
 
     // iterator support
     iterator begin() {
@@ -104,8 +105,8 @@ class array {
     }
 
     // assignment with type conversion
-    template <typename T2>
-    array<T, N>& operator= (const array<T2, N>& rhs) {
+    template<typename T2>
+    array<T, N>& operator=(const array<T2, N>& rhs) {
         for (size_type i = 0; i < static_size; ++i) {
             memcpy(elems[0], rhs.data(), static_size * sizeof(T));
         }
@@ -119,14 +120,14 @@ class array {
         }
     }
 
-	// get array view to this array
-	array_view<T> as_array_view() {
-		return make_array_view(elems, N);
-	}
-	const array_view<const T> as_array_view() const {
-		return make_array_view(elems, N);
-	}
-	
+    // get array view to this array
+    array_view<T> as_array_view() {
+        return make_array_view(elems, N);
+    }
+    const array_view<const T> as_array_view() const {
+        return make_array_view(elems, N);
+    }
+
  private:
     T elems[N];    // fixed-size array of elements of type T
 
@@ -141,7 +142,7 @@ class array {
 // comparisons
 template<class T, size_t N>
 bool operator==(const array<T, N>& x, const array<T, N>& y) {
-    if (memcmp(x.data(), y.data(), x.size()*sizeof(T)) == 0) {
+    if (memcmp(x.data(), y.data(), x.size() * sizeof(T)) == 0) {
         return true;
     }
     return false;

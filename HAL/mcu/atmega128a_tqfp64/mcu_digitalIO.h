@@ -2,7 +2,7 @@
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_DIGITALIO_H_
 
 #include <avr/io.h>
-#include <periph/PeriphDescriptors.h>
+#include "PeriphDescriptors.h"
 
 namespace hal {
 namespace mcu {

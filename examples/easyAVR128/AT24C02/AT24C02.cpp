@@ -7,7 +7,7 @@
 
 #include "SoftI2C.h"
 
-//#define HARDWARE_TWI
+// #define HARDWARE_TWI
 
 #ifdef HARDWARE_TWI
     constexpr hal::AT24C02<hal::TWI> memory;
@@ -27,7 +27,7 @@ int main() {
 #endif
 
     hal::libs::array<uint8_t, 10> arr;
-    for(int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 10; ++i) {
         arr[i] = i;
     }
     memory.write(0, arr);
@@ -38,7 +38,7 @@ int main() {
         hal::libs::array<uint8_t, 10> arr_r;
         memory.read(0x00, arr_r);
 
-        for(const uint8_t x : arr_r) {
+        for (const uint8_t x : arr_r) {
             printf("%d, ", x);
         }
         printf("\r\n");
