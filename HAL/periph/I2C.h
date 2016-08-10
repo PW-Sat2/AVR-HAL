@@ -37,25 +37,24 @@ class I2C_Device {
         I2C::stop();
     }
 
-    template<typename T, typename enable_if<
-            !is_integral<remove_reference<T>>::value>::type>
+    template<typename T, typename = typename enable_if<!is_integral<typename remove_reference<T>::type >::value>::type>
     void write(T&& arv) const {
         I2C::start(address, I2C::StartAction::write);
         raw_write(arv);
         I2C::stop();
     }
 
-    uint8_t read() const {
+    uint8_t read(typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
         I2C::start(address, I2C::StartAction::read);
-        uint8_t val = I2C::read(I2C::NACK);
+        uint8_t val = I2C::read(last_byte_ACK);
         I2C::stop();
         return val;
     }
 
     template<typename T>
-    void read(T&& arv) const {
+    void read(T&& arv, typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
         I2C::start(address, I2C::StartAction::read);
-        raw_read(arv);
+        raw_read(arv, last_byte_ACK);
         I2C::stop();
     }
 
