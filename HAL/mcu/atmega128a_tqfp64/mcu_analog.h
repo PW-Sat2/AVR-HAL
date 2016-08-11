@@ -13,13 +13,13 @@ class InternalADCMcuSpecific {
  public:
     InternalADCMcuSpecific() = delete;
 
-    enum class Reference
-        : uint8_t {
-            AREF = 0, AVcc = 1, Internal_2V56 = 3
+    enum class Reference : uint8_t {
+        AREF = 0,
+        AVcc = 1,
+        Internal_2V56 = 3
     };
-    enum class Input
-        : uint8_t {
-            ADC0 = 0,
+    enum class Input : uint8_t {
+        ADC0 = 0,
         ADC1 = 1,
         ADC2 = 2,
         ADC3 = 3,
@@ -71,7 +71,7 @@ class InternalADCMux {
  public:
     InternalADCMux() = delete;
 
-    static void set(InternalADCMcuSpecific::Input input) {
+    static void select(InternalADCMcuSpecific::Input input) {
         ADMUX &= 0b11110000;
         ADMUX |= static_cast<uint8_t>(input);
     }

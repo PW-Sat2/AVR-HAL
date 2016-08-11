@@ -11,7 +11,7 @@ volatile uint8_t flag = 0;
 volatile int x;
 
 ISR(ADC_vect) {
-    x = ADC;
+    x = InternalADC::read_nowait();
     flag = 1;
 }
 
@@ -19,18 +19,21 @@ ISR(ADC_vect) {
 int main() {
     Serial0.init(115200, hal::STDIO::ENABLE);
     InternalADC::init(InternalADC::Prescaler::DIV_128,
-                      InternalADC::Reference::AVcc);
+                      InternalADC::Reference::AVcc, 5);
+
+    InternalADC::set_reference(InternalADC::Reference::Internal_2V56, 2.56);
 
     InternalADC::set_channel(InternalADC::Input::ADC0);
 
     InternalADC::enable_interrupt();
     InternalADC::set_trigger(InternalADC::TriggerSource::FreeRunning);
     InternalADC::trigger_conversion();
+
     sei();
 
     while (true) {
         if (flag) {
-            printf("read: %d\r\n", x);
+            printf("read: %d = %.2f V\r\n", x, InternalADC::bits_to_voltage(x));
             flag = 0;
         }
     }

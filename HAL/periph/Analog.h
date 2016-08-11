@@ -23,9 +23,9 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         DIV_128 = 7
     };
 
-    static void init(Prescaler prescaler, Reference reference) {
+    static void init(Prescaler prescaler, Reference reference, float voltage) {
         set_prescaler(prescaler);
-        set_reference(reference);
+        set_reference(reference, voltage);
         enable();
     }
 
@@ -34,13 +34,10 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         ADCSRA |= static_cast<uint8_t>(prescaler);
     }
 
-    static void set_reference(Reference reference) {
+    static void set_reference(Reference reference, float voltage) {
         ADMUX &= 0b00111111;
         ADMUX |= (static_cast<uint8_t>(reference) << 6);
-    }
-
-    static void trigger_conversion() {
-        set_bit(ADCSRA, ADSC);
+        reference_voltage = voltage;
     }
 
     static void disable() {
@@ -53,9 +50,37 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
 
     static uint16_t read() {
         trigger_conversion();
-        while (RBI(ADCSRA, ADSC)) {
-        }
+        wait_for_conversion_finish();
+        return read_nowait();
+    }
+
+    static uint16_t read_nowait() {
         return ADC;
+    }
+
+    static float read_voltage() {
+        return bits_to_voltage(read());
+    }
+
+    static float read_voltage_nowait() {
+        return bits_to_voltage(read_nowait());
+    }
+
+    static float bits_to_voltage(uint16_t bits) {
+        return (bits*reference_voltage)/1024;
+    }
+
+    static void trigger_conversion() {
+        set_bit(ADCSRA, ADSC);
+    }
+
+    static void wait_for_conversion_finish() {
+        while (!conversion_finished()) {
+        }
+    }
+
+    static bool conversion_finished() {
+        return !read_bit(ADCSRA, ADSC);
     }
 
     static void enable_interrupt() {
@@ -63,8 +88,11 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static void set_channel(Input input) {
-        mcu::InternalADCMux::set(input);
+        mcu::InternalADCMux::select(input);
     }
+
+ private:
+    static float reference_voltage;
 };
 
 class AnalogGPIO {
@@ -74,16 +102,16 @@ class AnalogGPIO {
     }
 
     uint16_t read() const {
-        mcu::InternalADCMux::set(pin_mode_mem);
+        mcu::InternalADCMux::select(pin_mode_mem);
         return InternalADC::read();
     }
 
-    void set() const {
-        mcu::InternalADCMux::set(pin_mode_mem);
+    void select() const {
+        mcu::InternalADCMux::select(pin_mode_mem);
     }
 
     uint16_t read_nowait() const {
-        return InternalADC::read();
+        return InternalADC::read_nowait();
     }
 
  private:

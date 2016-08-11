@@ -14,7 +14,7 @@ SIZE     = avr-size
 CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
-SRCS +=
+SRCS += $(HAL_PATH)/periph/Analog.cpp
 
 # -- BOARDS -------------------------------------
 
@@ -69,7 +69,6 @@ HEX_FILE = $(EXE_PATH)/$(APP_NAME).hex
 ELF_FILE = $(EXE_PATH)/$(APP_NAME).elf
 
 OBJS = $(addprefix $(OBJ_PATH)/, $(subst /,^,$(subst .cpp,.o,$(SRCS))))
-# OBJS = $(addprefix $(OBJ_PATH)/, $(notdir %/$(subst .cpp,.o,$(SRCS))))
 
 INCLUDES += \
   -I$(HAL_PATH) \

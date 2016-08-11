@@ -10,14 +10,13 @@ using hal::Serial0;
 volatile int x;
 
 ISR(ADC_vect) {
-    x = ADC;
+    x = InternalADC::read_nowait();
 }
-
 
 int main() {
     Serial0.init(115200, hal::STDIO::ENABLE);
     InternalADC::init(InternalADC::Prescaler::DIV_128,
-                      InternalADC::Reference::AVcc);
+                      InternalADC::Reference::AVcc, 5);
 
     InternalADC::set_channel(InternalADC::Input::ADC0);
 
