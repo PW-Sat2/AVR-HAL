@@ -16,30 +16,30 @@ enum class SleepModes : uint8_t {
     Extended_Standby = 7
 };
 
-void set_sleep_mode(SleepModes mode) {
+inline void set_sleep_mode(SleepModes mode) {
     MCUCR &= 0b11000011;
     MCUCR |= (static_cast<uint8_t>(mode) << 2);
 }
 
-void sleep_enable() {
+inline void sleep_enable() {
     set_bit(MCUCR, SE);
 }
 
-void sleep_disable() {
+inline void sleep_disable() {
     clear_bit(MCUCR, SE);
 }
 
-void sleep_cpu() {
+inline void sleep_cpu() {
     __asm__ __volatile__("sleep" "\n\t" ::);
 }
 
 template<int divisor>
-void set_clock_divider() {
+inline void set_clock_divider() {
     XDIV = 0;
     static_assert((divisor >= 1) && (divisor <= 129), "Clock divisor can be in rage 1..129!");
     if (divisor > 1) {
         XDIV = 129-divisor;
-        SBI(XDIV, XDIVEN);
+        set_bit(XDIV, XDIVEN);
     }
 }
 
