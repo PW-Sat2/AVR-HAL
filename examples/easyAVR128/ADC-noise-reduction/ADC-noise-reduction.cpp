@@ -18,7 +18,7 @@ int main() {
     InternalADC::init(InternalADC::Prescaler::DIV_128,
                       InternalADC::Reference::AVcc, 5);
 
-    InternalADC::set_channel(InternalADC::Input::ADC0);
+    InternalADC::select_channel(InternalADC::Input::ADC0);
 
     InternalADC::enable_interrupt();
     sei();

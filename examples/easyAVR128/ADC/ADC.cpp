@@ -7,12 +7,12 @@ using hal::InternalADC;
 using hal::Serial0;
 
 
-volatile uint8_t flag = 0;
+volatile bool flag = 0;
 volatile int x;
 
 ISR(ADC_vect) {
-    x = ADC;
-    flag = 1;
+    x = InternalADC::read_nowait();
+    flag = true;
 }
 
 
@@ -21,7 +21,7 @@ int main() {
     InternalADC::init(InternalADC::Prescaler::DIV_128,
                       InternalADC::Reference::AVcc, 5);
 
-    InternalADC::set_channel(InternalADC::Input::ADC0);
+    InternalADC::select_channel(InternalADC::Input::ADC0);
 
     InternalADC::enable_interrupt();
     InternalADC::set_trigger(InternalADC::TriggerSource::FreeRunning);
@@ -31,7 +31,7 @@ int main() {
     while (true) {
         if (flag) {
             printf("read: %d\r\n", x);
-            flag = 0;
+            flag = false;
         }
     }
 }

@@ -19,7 +19,8 @@ class TWI : public I2C {
     }
 
     static void enable_internal_pullups() {
-        DigitalIO pin_scl{mcu::pin_scl}, pin_sda{mcu::pin_sda};
+        DigitalIO pin_scl{mcu::pin_scl},
+                  pin_sda{mcu::pin_sda};
         pin_scl.init(hal::DigitalIO::INPUT_PULLUP);
         pin_sda.init(hal::DigitalIO::INPUT_PULLUP);
     }

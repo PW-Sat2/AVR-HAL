@@ -28,9 +28,7 @@ template<int serial_num>
 class Serial {
  public:
     static_assert(serial_num >= 0, "Bad Serial number!");
-    static_assert(serial_num < SERIALs, "Bad Serial number!");
-
-
+    static_assert(serial_num < MCU_NR_OF_SERIALS, "Bad Serial number!");
 
     void init(const uint32_t baudrate, STDIO enable_stdio = STDIO::DISABLE)
               const __attribute__((always_inline)) {
@@ -64,6 +62,10 @@ class Serial {
     uint8_t read_byte() const __attribute__((always_inline)) {
         while (!this->available()) {
         }
+        return read_byte_nowait();
+    }
+
+    uint8_t read_byte_nowait() const __attribute__((always_inline)) {
         return READ_REG(UDRn);
     }
 
@@ -133,19 +135,19 @@ class Serial {
 #undef READ_REG
 #undef WRITE_REG
 
-#if SERIALs > 0
+#if MCU_NR_OF_SERIALS > 0
 constexpr Serial<0> Serial0;
 #endif
 
-#if SERIALs > 1
+#if MCU_NR_OF_SERIALS > 1
 constexpr Serial<1> Serial1;
 #endif
 
-#if SERIALs > 2
+#if MCU_NR_OF_SERIALS > 2
 constexpr Serial<2> Serial2;
 #endif
 
-#if SERIALs > 3
+#if MCU_NR_OF_SERIALS > 3
 constexpr Serial<3> Serial3;
 #endif
 
@@ -154,25 +156,25 @@ char Serial<serial_num>::buffer[] = { 0 };
 
 template<int serial_num>
 int uart_putchar(char x, __attribute__((unused)) FILE *stream) {
-#if SERIALs > 0
+#if MCU_NR_OF_SERIALS > 0
     if (serial_num == 0) {
         Serial0.print_byte(x);
     }
 #endif
 
-#if SERIALs > 1
+#if MCU_NR_OF_SERIALS > 1
     if (serial_num == 1) {
         Serial1.print_byte(x);
     }
 #endif
 
-#if SERIALs > 2
+#if MCU_NR_OF_SERIALS > 2
     if (serial_num == 2) {
         Serial2.print_byte(x);
     }
 #endif
 
-#if SERIALs > 3
+#if MCU_NR_OF_SERIALS > 3
     if (serial_num == 3) {
         Serial3.print_byte(x);
     }
@@ -182,25 +184,25 @@ int uart_putchar(char x, __attribute__((unused)) FILE *stream) {
 
 template<int serial_num>
 int uart_getchar(__attribute__((unused)) FILE *stream) {
-#if SERIALs > 0
+#if MCU_NR_OF_SERIALS > 0
     if (serial_num == 0) {
         return Serial0.read_byte();
     }
 #endif
 
-#if SERIALs > 1
+#if MCU_NR_OF_SERIALS > 1
     if (serial_num == 1) {
         return Serial1.read_byte();
     }
 #endif
 
-#if SERIALs > 2
+#if MCU_NR_OF_SERIALS > 2
     if (serial_num == 2) {
         return Serial2.read_byte();
     }
 #endif
 
-#if SERIALs > 3
+#if MCU_NR_OF_SERIALS > 3
     if (serial_num == 3) {
         return Serial3.read_byte();
     }

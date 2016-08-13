@@ -8,7 +8,6 @@
 
 namespace hal {
 
-
 template<typename I2C>
 class AT24C02 {
  public:

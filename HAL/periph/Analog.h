@@ -1,11 +1,9 @@
 #ifndef HAL_PERIPH_ANALOG_H_
 #define HAL_PERIPH_ANALOG_H_
 
-#include <stdio.h>
 #include <avr/io.h>
 #include "bit_operations.h"
 #include "mcu.h"
-#include "boards.h"
 
 namespace hal {
 
@@ -87,7 +85,7 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         set_bit(ADCSRA, ADIE);
     }
 
-    static void set_channel(Input input) {
+    static void select_channel(Input input) {
         mcu::InternalADCMux::select(input);
     }
 
@@ -97,25 +95,25 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
 
 class AnalogGPIO {
  public:
-    explicit constexpr AnalogGPIO(InternalADC::Input input) :
-        pin_mode_mem{input} {
+    explicit constexpr AnalogGPIO(InternalADC::Input pin) :
+        pin{pin} {
     }
 
     uint16_t read() const {
-        mcu::InternalADCMux::select(pin_mode_mem);
+        mcu::InternalADCMux::select(pin);
         return InternalADC::read();
-    }
-
-    void select() const {
-        mcu::InternalADCMux::select(pin_mode_mem);
     }
 
     uint16_t read_nowait() const {
         return InternalADC::read_nowait();
     }
 
+    void select() const {
+        mcu::InternalADCMux::select(pin);
+    }
+
  private:
-    const InternalADC::Input pin_mode_mem;
+    const InternalADC::Input pin;
 };
 
 }  // namespace hal

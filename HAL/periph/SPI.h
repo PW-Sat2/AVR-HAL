@@ -29,7 +29,7 @@ class SPI {
         DIV_4 = 0,
         DIV_16 = 1,
         DIV_64 = 2,
-        DIV_128 = 3,
+        DIV_128 = 3
     };
 
     static void init(const Polarity polarity, const Phase phase,
@@ -37,10 +37,12 @@ class SPI {
         pin_mosi.init(DigitalIO::OUTPUT);
         pin_sck.init(DigitalIO::OUTPUT);
 
-        SPCR = (1 << SPE) | (1 << MSTR) | (static_cast<uint8_t>(clock_divisor))
-                | (static_cast<uint8_t>(phase) << CPHA)
-                | (static_cast<uint8_t>(polarity) << CPOL)
-                | (static_cast<uint8_t>(data_order) << DORD);
+        SPCR = (1 << SPE)  |
+               (1 << MSTR) |
+               (static_cast<uint8_t>(clock_divisor)) |
+               (static_cast<uint8_t>(phase) << CPHA) |
+               (static_cast<uint8_t>(polarity) << CPOL) |
+               (static_cast<uint8_t>(data_order) << DORD);
     }
 
     static uint8_t shift(const uint8_t data) {
@@ -51,14 +53,14 @@ class SPI {
     }
 
  private:
-    static constexpr DigitalIO pin_mosi { mcu::pin_mosi },
-                               pin_sck  { mcu::pin_sck };
+    static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
+                               pin_sck{mcu::pin_sck};
 };
 
 class SPI_Device {
  public:
     constexpr explicit SPI_Device(const DigitalIO::Pin pin_cs) :
-            pin_cs(pin_cs) {
+            pin_cs{pin_cs} {
     }
 
     void init() const {
@@ -78,7 +80,7 @@ class SPI_Device {
         return SPI::shift(data);
     }
 
-    uint8_t data_transfer(const uint8_t data) const {
+    uint8_t transfer(const uint8_t data) const {
         this->enable();
         uint8_t x = SPI::shift(data);
         this->disable();
@@ -86,7 +88,7 @@ class SPI_Device {
     }
 
     template<typename T, typename T2>
-    void data_transfer(T&& output, T2&& input) const {
+    void transfer(T&& output, T2&& input) const {
         this->enable();
         const uint8_t * out_ptr = output.data();
         uint8_t * in_ptr = input.data();
@@ -100,19 +102,19 @@ class SPI_Device {
     }
 
     template<typename T>
-    void data_transmit(T&& data) const {
+    void transmit(T&& data) const {
         this->enable();
-        for (auto& x : data) {
+        for (auto&& x : data) {
             SPI::shift(x);
         }
         this->disable();
     }
 
     template<typename T>
-    void data_receive(T&& data) const {
+    void receive(T&& data, uint8_t output_value = 0) const {
         this->enable();
         for (auto& x : data) {
-            x = SPI::shift(0);
+            x = SPI::shift(output_value);
         }
         this->disable();
     }

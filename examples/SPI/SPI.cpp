@@ -13,6 +13,6 @@ int main() {
 
     uint8_t data[] = { 1, 2, 3 };
 
-    dev1.data_transfer(hal::libs::make_array_view(data),
+    dev1.transfer(hal::libs::make_array_view(data),
             hal::libs::make_array_view(data));
 }

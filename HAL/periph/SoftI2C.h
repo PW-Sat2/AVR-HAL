@@ -17,37 +17,37 @@ class SoftI2C_t: public I2C {
     }
 
     static bool start(uint8_t address, const StartAction start_action) {
-        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+        scl_high();
         hDelay();
 
-        pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+        sda_low();
         hDelay();
 
         return write((address << 1) | static_cast<int>(start_action));
     }
 
     static void stop() {
-        pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+        sda_low();
         hDelay();
-        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+        scl_high();
         qDelay();
-        pin_sda.pinmode(DigitalIO::Mode::INPUT);
+        sda_high();
         hDelay();
     }
 
     static bool write(uint8_t data) {
         for (uint8_t i = 0; i < 8; ++i) {
-            pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+            scl_low();
             qDelay();
 
             if (data & 0x80) {
-                pin_sda.pinmode(DigitalIO::Mode::INPUT);
+                sda_high();
             } else {
-                pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+                sda_low();
             }
 
             hDelay();
-            pin_scl.pinmode(DigitalIO::Mode::INPUT);
+            scl_high();
             hDelay();
 
             while (pin_scl.read() == 0) {
@@ -57,18 +57,18 @@ class SoftI2C_t: public I2C {
         }
 
         // ACK Phase
-        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+        scl_low();
         qDelay();
 
-        pin_sda.pinmode(DigitalIO::Mode::INPUT);
+        sda_high();
         hDelay();
 
-        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+        scl_high();
         hDelay();
 
         bool ack = !(pin_sda.read());
 
-        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+        scl_low();
         hDelay();
 
         return ack;
@@ -78,9 +78,9 @@ class SoftI2C_t: public I2C {
         uint8_t data = 0;
 
         for (uint8_t i = 0; i < 8; ++i) {
-            pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+            scl_low();
             hDelay();
-            pin_scl.pinmode(DigitalIO::Mode::INPUT);
+            scl_high();
             hDelay();
 
             while ((pin_scl.read()) == 0) {
@@ -90,56 +90,50 @@ class SoftI2C_t: public I2C {
                 data |= (0x80 >> i);
             }
         }
-        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+        scl_low();
         qDelay();
 
         if (ACK == true) {
-            pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+            sda_low();
         } else {
-            pin_sda.pinmode(DigitalIO::Mode::INPUT);
+            sda_high();
         }
         hDelay();
 
-        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+        scl_high();
         hDelay();
 
-        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+        scl_low();
 
-        pin_sda.pinmode(DigitalIO::Mode::INPUT);
+        sda_high();
         hDelay();
 
         return data;
     }
 
-    static void write(const libs::array_view<const uint8_t> & arv) {
-        auto size = arv.size();
-        auto * data = arv.data();
-        while (size--) {
-            write(*data);
-            data++;
-        }
-    }
-
-    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK =
-            NACK) {
-        auto size = arv.size() - 1;
-        auto * data = arv.data();
-        while (size--) {
-            *data = read(ACK);
-            data++;
-        }
-        *data = read(last_byte_ACK);
-    }
-
  private:
-    constexpr static DigitalIO pin_sda { pin_nr_sda }, pin_scl { pin_nr_scl };
+    constexpr static DigitalIO pin_sda{pin_nr_sda},
+                               pin_scl{pin_nr_scl};
 
     static void qDelay() {
-        _delay_loop_2(3);
+        _delay_loop_1(3);
+    }
+    static void hDelay() {
+        _delay_loop_1(5);
     }
 
-    static void hDelay() {
-        _delay_loop_2(5);
+    static void sda_high() __attribute__((always_inline)) {
+        pin_sda.pinmode(DigitalIO::Mode::INPUT);
+    }
+    static void sda_low() __attribute__((always_inline)) {
+        pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+    }
+
+    static void scl_high() __attribute__((always_inline)) {
+        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+    }
+    static void scl_low() __attribute__((always_inline)) {
+        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
     }
 };
 

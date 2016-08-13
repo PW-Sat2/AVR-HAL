@@ -13,7 +13,8 @@ extern int DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time;
 
 class DigitalIO {
  public:
-    typedef uint8_t Pin;
+    using Pin = uint8_t;
+
     enum Mode {
         INPUT, OUTPUT, INPUT_PULLUP
     };
@@ -67,13 +68,14 @@ class DigitalIO {
         switch (mode) {
         case OUTPUT:
             set_bit_dio(DDRx);
-            clear_bit_dio(PORTx);
+//            clear_bit_dio(PORTx);
             break;
         case INPUT_PULLUP:
             clear_bit_dio(DDRx);
             set_bit_dio(PORTx);
             break;
         case INPUT:
+            [[fallthrought]]
         default:
             clear_bit_dio(DDRx);
             clear_bit_dio(PORTx);

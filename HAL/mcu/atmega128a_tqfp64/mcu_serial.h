@@ -7,7 +7,7 @@
 namespace hal {
 namespace mcu {
 
-#define SERIALs 2
+#define MCU_NR_OF_SERIALS 2
 
 #define SERIAL_DEF(nr) { reinterpret_cast<int>(&UBRR ## nr ## H),    \
                          reinterpret_cast<int>(&UBRR ## nr ## L),    \
@@ -16,7 +16,7 @@ namespace mcu {
                          reinterpret_cast<int>(&UCSR ## nr ## C),    \
                          reinterpret_cast<int>(&UDR ## nr) }
 
-constexpr static UART_descriptor UART_map[SERIALs] = {
+constexpr static UART_descriptor UART_map[MCU_NR_OF_SERIALS] = {
     SERIAL_DEF(0),
     SERIAL_DEF(1)
 };

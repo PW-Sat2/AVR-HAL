@@ -23,7 +23,7 @@ int main() {
 
     InternalADC::set_reference(InternalADC::Reference::Internal_2V56, 2.56);
 
-    InternalADC::set_channel(InternalADC::Input::ADC0);
+    InternalADC::select_channel(InternalADC::Input::ADC0);
 
     InternalADC::enable_interrupt();
     InternalADC::set_trigger(InternalADC::TriggerSource::FreeRunning);

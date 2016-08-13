@@ -2,38 +2,40 @@
 #define FPF270X_H_
 
 namespace hal {
+
 class FPF270x {
 public:
     constexpr FPF270x(const DigitalIO::Pin pin_on,
             const DigitalIO::Pin pin_flag, const DigitalIO::Pin pin_pgood) :
-            DIO_on(pin_on), DIO_flag(pin_flag), DIO_pgood(pin_pgood) {
+            pin_on{pin_on}, pin_flag{pin_flag}, pin_pgood{pin_pgood} {
     }
 
     void init() {
-        this->DIO_on.init(DigitalIO::OUTPUT);
-        this->DIO_flag.init(DigitalIO::INPUT_PULLUP);
-        this->DIO_pgood.init(DigitalIO::INPUT_PULLUP);
+        this->pin_on.init(DigitalIO::OUTPUT);
+        this->pin_flag.init(DigitalIO::INPUT_PULLUP);
+        this->pin_pgood.init(DigitalIO::INPUT_PULLUP);
     }
 
     void on() {
-        this->DIO_on.reset();
+        this->pin_on.reset();
     }
 
     void off() {
-        this->DIO_on.set();
+        this->pin_on.set();
     }
 
     bool errorOccured() {
-        return this->DIO_flag.read();
+        return this->pin_flag.read();
     }
 
     bool powerGood() {
-        return this->DIO_pgood.read();
+        return this->pin_pgood.read();
     }
 
 private:
-    DigitalIO DIO_on, DIO_flag, DIO_pgood;
+    constexpr DigitalIO pin_on, pin_flag, pin_pgood;
 };
-}
+
+}  // namespace hal
 
 #endif /* FPF270X_H_ */
