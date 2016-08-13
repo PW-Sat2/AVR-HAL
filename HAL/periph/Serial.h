@@ -32,7 +32,7 @@ class Serial {
 
     void init(const uint32_t baudrate, STDIO enable_stdio = STDIO::DISABLE)
               const __attribute__((always_inline)) {
-        const uint32_t ubrr = baud_to_ubrr(baudrate);
+        const uint16_t ubrr = baud_to_ubrr(baudrate);
         WRITE_REG(UBRRnH, ubrr >> 8);
         WRITE_REG(UBRRnL, ubrr & 0xFF);
 
