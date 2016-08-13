@@ -14,7 +14,7 @@ SIZE     = avr-size
 CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
-SRCS +=
+SRCS += $(HAL_PATH)/periph/Analog.cpp
 
 # -- BOARDS -------------------------------------
 
@@ -100,7 +100,9 @@ all: params directories images size
 
 all_targets: clean
 	$(MAKE) all BOARD=ARDUINOMEGA2560
-	$(MAKE) all BOARD=ARDUINONANO328P
+	$(MAKE) all BOARD=ARDUINONANO328_8MHZ
+	$(MAKE) all BOARD=EASYAVR128
+	$(MAKE) clean
 
 params: directories
 ifdef COM 
@@ -176,4 +178,15 @@ endif
 endif
 	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
-include $(BOARD_FOLDER)/programmers.make
+ifdef BOARD_FOLDER
+	include $(BOARD_FOLDER)/programmers.make
+endif
+
+
+# -- Utils --------------------------------------
+
+gitignores: .gitignore
+
+.gitignore: Makefile
+	echo $(APP_NAME) > .gitignore
+	

@@ -1,6 +1,6 @@
 SUBDIRS := $(subst /,,$(wildcard */))
 CLEAN_SUBDIRS := $(addprefix clean_,$(SUBDIRS))
-ALL_SUBDIRS := $(addprefix all_,$(SUBDIRS))
+GIT_SUBDIRS := $(addprefix git_,$(SUBDIRS))
 
 
 all: $(SUBDIRS)
@@ -13,9 +13,12 @@ clean: $(CLEAN_SUBDIRS)
 $(CLEAN_SUBDIRS): force
 	$(MAKE) -C $(patsubst clean_%,%,$@) clean
 
-all_targets: $(ALL_SUBDIRS)
+all_targets: force
+	$(MAKE) -C !all_targets all_targets
 
-$(ALL_SUBDIRS): force
-	$(MAKE) -C $(patsubst all_%,%,$@) all_targets 
+gitignores: $(GIT_SUBDIRS)
 
-.PHONY: all force all_targets clean $(SUBDIRS)
+$(GIT_SUBDIRS): force
+	$(MAKE) -C $(patsubst git_%,%,$@) gitignores
+
+.PHONY: all gitignores force all_targets clean $(SUBDIRS)

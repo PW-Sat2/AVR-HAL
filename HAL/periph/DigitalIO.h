@@ -49,10 +49,7 @@ class DigitalIO {
     }
 
     bool read() const __attribute__((always_inline)) {
-        if (bit_is_clear(*((volatile uint8_t *)(PINx)), pin)) {
-            return false;
-        }
-        return true;
+        return read_bit(*((volatile uint8_t *)(PINx)), pin);
     }
 
     void toggle() const __attribute__((always_inline)) {
@@ -88,7 +85,7 @@ class DigitalIO {
     const int DDRx, PORTx, PINx;
 
     void set_bit_dio(int reg) const __attribute__((always_inline)) {
-        set_bit((*((volatile uint8_t *)(reg))), pin);
+        set_bit(*((volatile uint8_t *)(reg)), pin);
     }
 
     void clear_bit_dio(int reg) const __attribute__((always_inline)) {

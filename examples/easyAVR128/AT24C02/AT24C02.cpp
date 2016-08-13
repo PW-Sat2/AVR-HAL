@@ -12,8 +12,8 @@
 #ifdef HARDWARE_TWI
     constexpr hal::AT24C02<hal::TWI> memory;
 #else
-    using softI2C_1 = hal::SoftI2C_t<25, 26>;
-    constexpr hal::AT24C02<softI2C_1> memory;
+    using softI2C = hal::SoftI2C<25, 26>;
+    constexpr hal::AT24C02<softI2C> memory;
 #endif
 
 int main() {
@@ -23,7 +23,7 @@ int main() {
     hal::TWI::init<10000>();
     hal::TWI::enable_internal_pullups();
 #else
-    softI2C_1::init();
+    softI2C::init();
 #endif
 
     hal::libs::array<uint8_t, 10> arr;

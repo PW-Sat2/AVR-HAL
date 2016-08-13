@@ -6,8 +6,8 @@
 
 namespace hal {
 
-template<int pin_nr_scl, int pin_nr_sda>
-class SoftI2C_t: public I2C {
+template<int pin_nr_sda, int pin_nr_scl>
+class SoftI2C: public I2C {
  public:
     static void init() {
         pin_scl.init(DigitalIO::Mode::INPUT);

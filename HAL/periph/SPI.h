@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include "mcu.h"
+#include "bit_operations.h"
 #include "DigitalIO.h"
 #include "array.h"
 
@@ -33,7 +34,7 @@ class SPI {
     };
 
     static void init(const Polarity polarity, const Phase phase,
-            const DataOrder data_order, const ClockDivisor clock_divisor) {
+                  const DataOrder data_order, const ClockDivisor clock_divisor) {
         pin_mosi.init(DigitalIO::OUTPUT);
         pin_sck.init(DigitalIO::OUTPUT);
 
@@ -46,10 +47,32 @@ class SPI {
     }
 
     static uint8_t shift(const uint8_t data) {
-        SPDR = data;
-        while (!(SPSR & (1 << SPIF))) {
+        write_data_nowait(data);
+        wait_for_transmission_complete();
+        return get_data_nowait();
+    }
+
+    static void wait_for_transmission_complete() {
+        while (!is_transmission_complete()) {
         }
+    }
+
+    static bool is_transmission_complete() {
+        return !read_bit(SPSR, SPIF);
+    }
+
+    // functions for interrupt-driven usage
+
+    static void write_data_nowait(uint8_t data) {
+        SPDR = data;
+    }
+
+    static uint8_t get_data_nowait() {
         return SPDR;
+    }
+
+    static void enable_interrupt() {
+        set_bit(SPCR, SPIE);
     }
 
  private:
