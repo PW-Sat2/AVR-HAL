@@ -25,18 +25,18 @@ ifeq ($(BOARD),ARDUINOMEGA2560)
 	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoMega2560
 endif
 
-ifeq ($(BOARD),ARDUINONANO328_16MHZ)
+ifeq ($(BOARD),ARDUINONANO328P_16MHZ)
 	MCU = ATMEGA328P_TQFP32
 	F_CPU = 16000000L
-	CFLAGS += -DBOARD_ARDUINONANO328_16MHZ
-	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328
+	CFLAGS += -DBOARD_ARDUINONANO328P_16MHZ
+	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328P
 endif
 
-ifeq ($(BOARD),ARDUINONANO328_8MHZ)
+ifeq ($(BOARD),ARDUINONANO328P_8MHZ)
 	MCU = ATMEGA328P_TQFP32
 	F_CPU = 8000000L
-	CFLAGS += -DBOARD_ARDUINONANO328_8MHZ
-	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328
+	CFLAGS += -DBOARD_ARDUINONANO328P_8MHZ
+	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328P
 endif
 
 ifeq ($(BOARD),EASYAVR128)
@@ -162,15 +162,15 @@ fresh: all
 
 AVRDUDE_PARAMS = -c$(PROGRAMMER)
 ifdef COM
-	AVRDUDE_PARAMS += -P$(COM)
+AVRDUDE_PARAMS += -P$(COM)
 endif
 ifdef BAUD
-	AVRDUDE_PARAMS += -b$(BAUD)
+AVRDUDE_PARAMS += -b$(BAUD)
 endif
 
 flash: all
 ifndef PROGRAMMER
-	$(error No programmer defined)
+$(error No programmer defined)
 endif
 ifndef COM
 ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
@@ -178,8 +178,9 @@ endif
 endif
 	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
+
 ifdef BOARD_FOLDER
-	include $(BOARD_FOLDER)/programmers.make
+include $(BOARD_FOLDER)/programmers.make
 endif
 
 
