@@ -8,6 +8,8 @@ namespace mcu {
 
 constexpr static int pin_sck = 11;
 constexpr static int pin_mosi = 12;
+constexpr static int pin_miso = 13;
+constexpr static int pin_ss = 10;
 
 }
 }

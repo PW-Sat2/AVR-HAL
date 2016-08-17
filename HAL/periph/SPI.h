@@ -37,6 +37,7 @@ class SPI {
                   const DataOrder data_order, const ClockDivisor clock_divisor) {
         pin_mosi.init(DigitalIO::OUTPUT);
         pin_sck.init(DigitalIO::OUTPUT);
+        pin_ss.init(DigitalIO::OUTPUT);
 
         SPCR = (1 << SPE)  |
                (1 << MSTR) |
@@ -58,7 +59,7 @@ class SPI {
     }
 
     static bool is_transmission_complete() {
-        return !read_bit(SPSR, SPIF);
+        return (read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
@@ -77,7 +78,8 @@ class SPI {
 
  private:
     static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
-                               pin_sck{mcu::pin_sck};
+                               pin_sck{mcu::pin_sck},
+                               pin_ss{mcu::pin_ss};
 };
 
 class SPI_Device {

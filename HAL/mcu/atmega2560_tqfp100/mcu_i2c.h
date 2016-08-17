@@ -4,8 +4,8 @@
 namespace hal {
 namespace mcu {
 
-constexpr int pin_sda = 44;
-constexpr int pin_scl = 43;
+constexpr static int pin_sda = 44;
+constexpr static int pin_scl = 43;
 
 }
 }
