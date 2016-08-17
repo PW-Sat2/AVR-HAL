@@ -170,11 +170,10 @@ endif
 
 flash: all
 ifndef PROGRAMMER
-$(error No programmer defined)
+	$(error No programmer defined)
 endif
 ifndef COM
-ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
-endif
+	ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
 endif
 	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
