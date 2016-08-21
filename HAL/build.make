@@ -90,7 +90,7 @@ CFLAGS += $(INCLUDES)
 CFLAGS += -DF_CPU=$(F_CPU)
 
 LINKER_FLAGS = -Wl,-Map=$(LIST_PATH)/$(APP_NAME).map -Wl,--gc-sections 
-#LINKER_FLAGS += -Wl,-u,vfprintf -lprintf_flt -lm
+LINKER_FLAGS += -Wl,-u,vfprintf -lprintf_flt -lm
 LINKER_FLAGS += $(filter -mmcu%,$(CFLAGS))
 
 
@@ -172,9 +172,9 @@ flash: all
 ifndef PROGRAMMER
 	$(error No programmer defined)
 endif
-ifndef COM
-	ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
-endif
+#ifndef COM
+#	ifneq ($(filter wiring arduino,$(PROGRAMMER)),"")
+#endif
 	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
 
