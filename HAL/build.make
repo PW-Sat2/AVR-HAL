@@ -100,7 +100,9 @@ all: params directories images size
 
 all_targets: clean
 	$(MAKE) all BOARD=ARDUINOMEGA2560
+	$(MAKE) clean
 	$(MAKE) all BOARD=ARDUINONANO328P_8MHZ
+	$(MAKE) clean
 	$(MAKE) all BOARD=EASYAVR128
 	$(MAKE) clean
 
