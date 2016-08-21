@@ -15,15 +15,19 @@ class ExternalInterrupt {
         rising = 3
     };
 
-    constexpr ExternalInterrupt(int pin_nr, Mode mode_) :
-                                int_nr((pin_nr >= 0) ?
-                                    ((pin_nr < 8) ?
-                                        (((pin_nr > 3) || (mode_ != Mode::change)) ?
-                                            pin_nr :
-                                            impossible_exti_mode_at_this_line) :
-                                        impossible_exti_line) :
-                                    impossible_exti_line),
-                                mode(mode_) {
+    constexpr ExternalInterrupt(int pin_nr, Mode mode) :
+                                int_nr{check_pin(pin_nr, mode)},
+                                mode{mode} {
+    }
+
+    constexpr static int check_pin(int pin_nr, Mode mode) {
+        return (pin_nr >= 0) ?
+                ((pin_nr < 8) ?
+                    (((pin_nr > 3) || (mode != Mode::change)) ?
+                        pin_nr :
+                        impossible_exti_mode_at_this_line) :
+                    impossible_exti_line) :
+                impossible_exti_line;
     }
 
     void enable() const {
