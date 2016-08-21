@@ -9,7 +9,7 @@
 namespace hal {
 
 // hack for checking bad pin association
-extern int DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time;
+extern int DigitalIO_bad_pin_or_cannot_be_evaluated_at_compiletime;
 
 class DigitalIO {
  public:
@@ -22,7 +22,7 @@ class DigitalIO {
     constexpr explicit DigitalIO(Pin pin) :
             pin(mcu::DigitalIOPinMap[pin].pin), DDRx(
                     (mcu::DigitalIOPinMap[pin].DDRx == 0) ?
-                            DigitalIO_bad_pin_or_cannot_be_evaluated_at_compile_time :
+                            DigitalIO_bad_pin_or_cannot_be_evaluated_at_compiletime :
                             mcu::DigitalIOPinMap[pin].DDRx), PORTx(
                     mcu::DigitalIOPinMap[pin].PORTx), PINx(
                     mcu::DigitalIOPinMap[pin].PINx) {
