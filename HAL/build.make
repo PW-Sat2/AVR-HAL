@@ -11,7 +11,7 @@ OBJCOPY  = avr-objcopy
 OBJDUMP  = avr-objdump
 SIZE     = avr-size
 
-CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
+CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
 HAL_SRCS = $(HAL_PATH)/periph/Analog.cpp
@@ -83,7 +83,8 @@ INCLUDES += \
   -I$(HAL_PATH)/periph \
   -I$(HAL_PATH)/boards \
   -I$(HAL_PATH)/devices \
-  -I$(HAL_PATH)/libs
+  -I$(HAL_PATH)/libs    \
+  -I$(HAL_PATH)/libs/std
 
 CFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDES)

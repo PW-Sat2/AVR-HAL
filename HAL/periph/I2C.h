@@ -3,7 +3,7 @@
 
 #include "array.h"
 #include "array_view.h"
-#include "type_traits.h"
+#include <type_traits>
 
 namespace hal {
 
@@ -38,9 +38,9 @@ class I2C_Device {
     }
 
     template<typename T, typename =
-             typename avrstd::enable_if<
-                          !avrstd::is_integral<
-                              typename avrstd::remove_reference<T>::type
+             typename std::enable_if<
+                          !std::is_integral<
+                              typename std::remove_reference<T>::type
                           >::value
                       >::type>
     void write(T&& arv) const {

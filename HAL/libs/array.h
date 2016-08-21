@@ -4,7 +4,8 @@
 #include <stddef.h>
 #include "hal_assert.h"
 #include "array_view.h"
-#include "type_traits.h"
+#include <type_traits>
+#include <utility>
 
 namespace hal {
 namespace libs {
@@ -14,7 +15,7 @@ class array {
  public:
     static_assert(N > 0, "array size must be positive");
     // type definitions
-    typedef typename avrstd::remove_reference<T>::type value_type;
+    typedef typename std::remove_reference<T>::type value_type;
     typedef T* iterator;
     typedef const T* const_iterator;
     typedef T& reference;
@@ -88,11 +89,7 @@ class array {
 
     // swap (note: linear complexity in N, constant for given instantiation)
     void swap(array<T, N>& y) noexcept {
-        for (size_type i = 0; i < static_size; ++i) {
-            T x = y[i];
-            y[i] = elems[i];
-            elems[i] = x;
-        }
+        std::swap(this->elems, y.elems);
     }
 
     // direct access to data (read-only)
