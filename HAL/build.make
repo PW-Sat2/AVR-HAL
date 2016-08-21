@@ -14,7 +14,7 @@ SIZE     = avr-size
 CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -pedantic -Winline -ffunction-sections -g
 CFLAGS += $(CPPFLAGS)
 
-SRCS += $(HAL_PATH)/periph/Analog.cpp
+HAL_SRCS = $(HAL_PATH)/periph/Analog.cpp
 
 # -- BOARDS -------------------------------------
 
@@ -94,7 +94,7 @@ LINKER_FLAGS += -Wl,-u,vfprintf -lprintf_flt -lm
 LINKER_FLAGS += $(filter -mmcu%,$(CFLAGS))
 
 
-.PHONY: params all directories clean size images
+.PHONY: params all directories clean size images force
 
 all: params directories images size
 
@@ -122,15 +122,21 @@ endif
 
 images: params $(HEX_FILE) $(ELF_FILE)
 
-$(OBJS): $(SRCS)
+$(OBJS): force
 	@echo -e "\nCompiling " $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) "..."
 	$(CPP) $(CFLAGS) $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) -o $@
 
+$(OBJ_PATH)/..^..^..^HAL^periph^Analog.o: $(HAL_PATH)/periph/Analog.cpp $(HAL_PATH)/periph/Analog.h
+	@echo -e "\nCompiling " $(HAL_PATH)/periph/Analog.cpp "..."
+	$(CPP) $(CFLAGS) $(HAL_PATH)/periph/Analog.cpp -o $@
+	
+force: ;
+
 $(OBJS): directories
 
-$(ELF_FILE): $(OBJS)
+$(ELF_FILE): $(OBJS) $(OBJ_PATH)/..^..^..^HAL^periph^Analog.o
 	@echo -e "\nLinking..."
-	$(LD) $(LINKER_FLAGS) $(OBJS) -o $@
+	$(LD) $(LINKER_FLAGS) $(OBJS) $(OBJ_PATH)/..^..^..^HAL^periph^Analog.o -o $@
 
 $(HEX_FILE): $(ELF_FILE)
 	@echo -e "\nCreating HEX..."
