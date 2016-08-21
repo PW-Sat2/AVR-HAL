@@ -142,20 +142,18 @@ class array {
 
 // comparisons
 template<class T, size_t N>
-bool operator==(const array<T, N>& x, const array<T, N>& y) {
-    if (memcmp(x.data(), y.data(), x.size() * sizeof(T)) == 0) {
-        return true;
-    }
-    return false;
+inline bool operator==(const array<T, N>& x, const array<T, N>& y) {
+    return (memcmp(x.data(), y.data(), x.size() * sizeof(T)) == 0);
 }
+
 template<class T, size_t N>
-bool operator!=(const array<T, N>& x, const array<T, N>& y) {
+inline bool operator!=(const array<T, N>& x, const array<T, N>& y) {
     return !(x == y);
 }
 
 // global swap()
 template<class T, size_t N>
-inline void swap(array<T, N>& x, array<T, N>& y) {
+inline void swap(array<T, N>& x, array<T, N>& y) noexcept {
     x.swap(y);
 }
 
