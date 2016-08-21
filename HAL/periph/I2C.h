@@ -38,9 +38,9 @@ class I2C_Device {
     }
 
     template<typename T, typename =
-             typename enable_if<
-                          !is_integral<
-                              typename remove_reference<T>::type
+             typename avrstd::enable_if<
+                          !avrstd::is_integral<
+                              typename avrstd::remove_reference<T>::type
                           >::value
                       >::type>
     void write(T&& arv) const {

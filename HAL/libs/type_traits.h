@@ -25,6 +25,8 @@
 #define _STLP_CPP_0X
 #define _STLP_VARIADIC_TEMPLATES
 
+namespace avrstd {
+
 template <class _Tp, _Tp __v>
 struct integral_constant
 {
@@ -1630,6 +1632,8 @@ struct result_of<Fn(ArgTypes...)>
 #undef __SPEC_1
 #undef __CV_SPEC_2
 #undef __SPEC_2
+
+}
 
 #endif // __STLP_TYPE_TRAITS
 

@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include "hal_assert.h"
 #include "array_view.h"
+#include "type_traits.h"
 
 namespace hal {
 namespace libs {
@@ -13,7 +14,7 @@ class array {
  public:
     static_assert(N > 0, "array size must be positive");
     // type definitions
-    typedef T value_type;
+    typedef typename avrstd::remove_reference<T>::type value_type;
     typedef T* iterator;
     typedef const T* const_iterator;
     typedef T& reference;
