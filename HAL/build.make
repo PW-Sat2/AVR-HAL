@@ -139,11 +139,21 @@ $(HEX_FILE): $(ELF_FILE)
 clean:
 	rm -rf $(APP_NAME)
 
-directories:
+directories: $(APP_NAME) $(LIST_PATH) $(EXE_PATH) $(OBJ_PATH) $(APP_NAME)/conf
+
+$(APP_NAME):
 	@"mkdir" -p $(APP_NAME)
+	
+$(LIST_PATH):
 	@"mkdir" -p $(LIST_PATH)
+
+$(EXE_PATH):
 	@"mkdir" -p $(EXE_PATH)
+
+$(OBJ_PATH):
 	@"mkdir" -p $(OBJ_PATH)
+
+$(APP_NAME)/conf: $(APP_NAME)
 	@"touch" $(APP_NAME)/conf
 
 ifeq ($(MAKECMDGOALS), fresh)
