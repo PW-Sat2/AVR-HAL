@@ -27,6 +27,15 @@ class DigitalIO {
                     mcu::DigitalIOPinMap[pin].PORTx), PINx(
                     mcu::DigitalIOPinMap[pin].PINx) {
     }
+    enum class RUNTIME {
+        ENABLED
+    };
+    constexpr explicit DigitalIO(Pin pin, __attribute__((unused)) RUNTIME) :
+            pin(mcu::DigitalIOPinMap[pin].pin),
+            DDRx(mcu::DigitalIOPinMap[pin].DDRx),
+            PORTx(mcu::DigitalIOPinMap[pin].PORTx),
+            PINx(mcu::DigitalIOPinMap[pin].PINx) {
+    }
 
     void init(const DigitalIO::Mode mode) const __attribute__((always_inline)) {
         pinmode(mode);
