@@ -87,7 +87,7 @@ class array {
     };
 
     // swap (note: linear complexity in N, constant for given instantiation)
-    void swap(array<T, N>& y) {
+    void swap(array<T, N>& y) noexcept {
         for (size_type i = 0; i < static_size; ++i) {
             T x = y[i];
             y[i] = elems[i];
