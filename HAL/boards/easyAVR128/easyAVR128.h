@@ -6,8 +6,62 @@
 
 namespace hal {
 namespace bsp {
-
 namespace pins {
+
+#undef PE0
+#undef PE1
+#undef PE2
+#undef PE3
+#undef PE4
+#undef PE5
+#undef PE6
+#undef PE7
+#undef PB0
+#undef PB1
+#undef PB2
+#undef PB3
+#undef PB4
+#undef PB5
+#undef PB6
+#undef PB7
+#undef PG3
+#undef PG4
+#undef PD0
+#undef PD1
+#undef PD2
+#undef PD3
+#undef PD4
+#undef PD5
+#undef PD6
+#undef PD7
+#undef PG0
+#undef PG1
+#undef PC0
+#undef PC1
+#undef PC2
+#undef PC3
+#undef PC4
+#undef PC5
+#undef PC6
+#undef PC7
+#undef PG2
+#undef PA7
+#undef PA6
+#undef PA5
+#undef PA4
+#undef PA3
+#undef PA2
+#undef PA1
+#undef PA0
+#undef PF7
+#undef PF6
+#undef PF5
+#undef PF4
+#undef PF3
+#undef PF2
+#undef PF1
+#undef PF0
+
 static constexpr DigitalIO::Pin PE0 = 2;
 static constexpr DigitalIO::Pin PE1 = 3;
 static constexpr DigitalIO::Pin PE2 = 4;

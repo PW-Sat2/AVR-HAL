@@ -7,6 +7,8 @@
 #include "ArduinoNano328P/ArduinoNano328P.h"
 #elif defined(BOARD_EASYAVR128)
 #include "easyAVR128/easyAVR128.h"
+#else
+#error "No board defined!"
 #endif
 
 #endif  // HAL_BOARDS_BOARDS_H_
