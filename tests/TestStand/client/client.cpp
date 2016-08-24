@@ -35,7 +35,7 @@ ISR(USART0_RX_vect) {
 #endif
     char now = UDR0;
     buf[cnt++] = now;
-    if( now == '\r' ) {
+    if (now == '\r') {
         buf[cnt-1] = 0;
         pin1.set();
         cmd_ready_flag = true;
@@ -63,14 +63,14 @@ int main() {
 
     uint32_t counter = 0;
     while (true) {
-        if( cmd_ready_flag ) {
+        if (cmd_ready_flag) {
             hal::libs::CLI::parse_line(buf);
             cmd_ready_flag = false;
             pin1.reset();
             Serial0.print_byte(0);
         }
         counter++;
-        if( counter == 1000000 ) {  // ~1 sec delay
+        if (counter == 1000000) {  // ~1 sec delay
             counter = 0;
             Serial0.print_byte(0);
         }

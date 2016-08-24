@@ -1,3 +1,6 @@
+#ifndef TESTS_TESTSTAND_CLIENT_COMMANDS_H_
+#define TESTS_TESTSTAND_CLIENT_COMMANDS_H_
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include "DigitalIO.h"
@@ -11,12 +14,12 @@
 using namespace hal;
 
 class PingCmd: libs::CLI::Command {
-public:
+ public:
     PingCmd() : libs::CLI::Command("ping") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        for(auto &&x: parameters) {
+        for (auto &&x : parameters) {
             printf("%s ", x);
         }
         printf("\r");
@@ -24,11 +27,11 @@ public:
 };
 
 class GPIOCmd: libs::CLI::Command {
-public:
+ public:
     GPIOCmd() :
             libs::CLI::Command("gpio") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
         uint8_t pin = atoi(parameters.at(0));
         DigitalIO io { pin, hal::DigitalIO::RUNTIME::ENABLED };
@@ -65,11 +68,11 @@ ISR(ADC_vect) {
 }
 
 class ADCCmd: libs::CLI::Command {
-public:
+ public:
     ADCCmd() :
             libs::CLI::Command("an") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
         char cmd = parameters.at(0)[0];
         if (cmd == 'i') {
@@ -102,12 +105,11 @@ public:
 };
 
 class AnalogIOCmd: libs::CLI::Command {
-public:
+ public:
     AnalogIOCmd() : libs::CLI::Command("ang") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
-
         auto ch = static_cast<InternalADC::Input>(atoi(parameters.at(1)));
         AnalogGPIO pin{ch};
 
@@ -121,11 +123,11 @@ public:
 };
 
 class SPIMasterCmd: hal::libs::CLI::Command {
-public:
+ public:
     SPIMasterCmd() :
             hal::libs::CLI::Command("spi") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
         if (parameters.at(0)[0] == 'i') {
             auto polarity   = static_cast<SPI::Polarity>(atoi(parameters.at(1)));
@@ -147,11 +149,11 @@ public:
 };
 
 class SPIDeviceCmd: hal::libs::CLI::Command {
-public:
+ public:
     SPIDeviceCmd() :
             hal::libs::CLI::Command("spid") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
         auto pin = static_cast<DigitalIO::Pin>(atoi(parameters.at(0)));
         SPI_Device dev{pin, DigitalIO::RUNTIME::ENABLED};
@@ -171,11 +173,11 @@ public:
 };
 
 class SPISlaveCmd: hal::libs::CLI::Command {
-public:
+ public:
     SPISlaveCmd() :
             hal::libs::CLI::Command("spis") {
     }
-    virtual void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::array_view<char *> & parameters)
             override {
         if (parameters.at(0)[0] == 'i') {
             auto polarity   = static_cast<SPISlave::Polarity>(atoi(parameters.at(1)));
@@ -207,5 +209,6 @@ public:
 
     volatile uint8_t buffer[10];
     volatile uint8_t buffer_cnt = 0;
-
 };
+
+#endif  // TESTS_TESTSTAND_CLIENT_COMMANDS_H_
