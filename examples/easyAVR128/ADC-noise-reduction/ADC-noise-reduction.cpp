@@ -24,6 +24,7 @@ int main() {
     sei();
 
     hal::cpu::set_sleep_mode(hal::cpu::SleepModes::ADC_Noise_Reduction);
+    hal::cpu::sleep_enable();
     while (true) {
         hal::cpu::sleep_cpu();  // triggers ADC conversion
         printf("read: %d\r\n", x);
