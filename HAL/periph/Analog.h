@@ -85,6 +85,10 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         set_bit(ADCSRA, ADIE);
     }
 
+    static void disable_interrupt() {
+        clear_bit(ADCSRA, ADIE);
+    }
+
     static void select_channel(Input input) {
         mcu::InternalADCMux::select(input);
     }
@@ -102,6 +106,11 @@ class AnalogGPIO {
     uint16_t read() const {
         mcu::InternalADCMux::select(pin);
         return InternalADC::read();
+    }
+
+    float read_voltage() const {
+        mcu::InternalADCMux::select(pin);
+        return InternalADC::read_voltage();
     }
 
     uint16_t read_nowait() const {
