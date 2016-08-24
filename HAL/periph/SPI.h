@@ -47,6 +47,10 @@ class SPI {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
+    static void disable() {
+        SPCR = 0;
+    }
+
     static uint8_t shift(const uint8_t data) {
         write_data_nowait(data);
         wait_for_transmission_complete();
@@ -86,6 +90,10 @@ class SPI_Device {
  public:
     constexpr explicit SPI_Device(const DigitalIO::Pin pin_cs) :
             pin_cs{pin_cs} {
+    }
+
+    constexpr explicit SPI_Device(const DigitalIO::Pin pin_cs, DigitalIO::RUNTIME) :
+            pin_cs{pin_cs, DigitalIO::RUNTIME::ENABLED} {
     }
 
     void init() const {
