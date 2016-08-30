@@ -16,7 +16,7 @@ namespace CLI {
 class Command;
 
 uint8_t nrOfCommands = 0;
-libs::array<Command *, 10> commands;
+libs::array<Command *, 20> commands;
 
 class Command {
  public:
@@ -43,7 +43,7 @@ class Command {
 void parse_line(char *line) {
     size_t len = strlen(line);
     uint8_t iter = 0;
-    libs::array<char*, 10> params;
+    libs::array<char*, 20> params;
 
     while (line[iter] != ' ' && isalpha(line[iter])) {
         ++iter;
