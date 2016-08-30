@@ -127,12 +127,13 @@ class I2CTests(unittest.TestCase):
         cls.avr328, cls.avr644 = init_devices()
 
     def setUp(self):
-        self.file = open("log.txt", 'w')
+        self.fails = 0
+        self.oks = 1
 
     def tearDown(self):
+        self.printStatus()
         self.i2c_master.disable()
         self.i2c_slave.disable()
-        self.file.close()
 
     def get_random_tab(self, length, start=0, end=255):
         tab = []
@@ -141,11 +142,17 @@ class I2CTests(unittest.TestCase):
 
         return tab
 
+    def printStatus(self):
+        print "OKs: ", self.oks, " Fails: ", self.fails
+        print "PER = ", float(self.fails)/float(self.oks + self.fails)
+
     def myAssertEqual(self, a, b):
-        self.file.write(str(a) + " -> " + str(b) + "\n")
-        self.assertEqual(a, b)
-        # if a != b:
-        #     print "FAIL: ", a, b
+        # self.assertEqual(a, b)
+        if a == b:
+            self.oks += 1
+        else:
+            self.fails += 1
+            print "FAIL: ", a, b
 
     def single_test_write(self):
         tab = self.get_random_tab(random.randrange(1, 9))
@@ -179,7 +186,6 @@ class I2CTests(unittest.TestCase):
         addresses[addresses.index(81)] = 11
 
         for address in addresses:
-            self.file.write("addr " + str(address))
             print "addr: ", address
             self.i2c_master = I2CMaster(self.avr328)
             self.i2c_dev = I2CDevice(self.avr328, address)
@@ -196,7 +202,6 @@ class I2CTests(unittest.TestCase):
             if address == 80 or address == 81:
                 continue
 
-            self.file.write("addr " + str(address))
             print "addr: ", address
             self.i2c_master = I2CMaster(self.avr328)
             self.i2c_dev = I2CDevice(self.avr328, address)
@@ -204,6 +209,8 @@ class I2CTests(unittest.TestCase):
 
             for i in xrange(1000):
                 self.single_test()
+
+            self.printStatus()
 
 if __name__ == '__main__':
     unittest.main()
