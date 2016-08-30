@@ -3,17 +3,17 @@
 #include "array_view.h"
 #include "TWISlave.h"
 
-void callback(hal::libs::array_view<uint8_t> && arr) {
-    printf("callback!: %d\n", arr.size());
-    for(auto x : arr) {
-        printf("%d ", x);
+void hal::TWISlave::callback() {
+    printf("callback!: %d\n", TWISlave::rx_buffer_cnt);
+    for(int i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+        printf("%d ", TWISlave::rx_buffer[i]);
     }
     printf("\n");
 }
 
 int main() {
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
-    hal::TWISlave::init(0x1E, callback);
+    hal::TWISlave::init(0x1E);
 
     sei();
 

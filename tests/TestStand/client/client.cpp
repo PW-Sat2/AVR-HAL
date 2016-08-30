@@ -17,11 +17,15 @@ PingCmd ping_cmd;
 AnalogIOCmd analogio_cmd;
 SPIMasterCmd spimaster_cmd;
 SPIDeviceCmd spidevice_cmd;
+I2CMasterCmd i2cmaster_cmd;
+I2CSlaveCmd i2cslave_cmd;
 
 #if defined(MCU_ATMEGA328P_TQFP32)
 constexpr DigitalIO pin1{bsp::pins::D2};
 #elif defined(MCU_ATMEGA128A_TQFP64)
 constexpr DigitalIO pin1{bsp::pins::PA1};
+#elif defined(MCU_ATMEGA644P_DIP40)
+constexpr DigitalIO pin1{bsp::pins::A1};
 #endif
 
 static char buf[100];
@@ -30,7 +34,7 @@ static bool cmd_ready_flag = false;
 
 #if defined(MCU_ATMEGA328P_TQFP32)
 ISR(USART_RX_vect) {
-#elif defined(MCU_ATMEGA128A_TQFP64)
+#elif defined(MCU_ATMEGA128A_TQFP64) || defined(MCU_ATMEGA644P_DIP40)
 ISR(USART0_RX_vect) {
 #endif
     char now = UDR0;
@@ -47,7 +51,7 @@ ISR(SPI_STC_vect) {
     SPDR = spislave_cmd.isr(SPDR);
 }
 
-#if defined(MCU_ATMEGA328P_TQFP32)
+#if defined(MCU_ATMEGA328P_TQFP32) || defined(MCU_ATMEGA644P_DIP40)
 constexpr uint32_t baudrate = 250000;
 #elif defined(MCU_ATMEGA128A_TQFP64)
 constexpr uint32_t baudrate = 115200;
@@ -72,7 +76,7 @@ int main() {
         counter++;
         if (counter == 1000000) {  // ~1 sec delay
             counter = 0;
-            Serial0.print_byte(0);
+            Serial0.print_byte(1);
         }
     }
 }

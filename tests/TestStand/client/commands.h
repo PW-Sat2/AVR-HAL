@@ -9,6 +9,9 @@
 #include "SPI.h"
 #include "SPISlave.h"
 #include "Analog.h"
+#include "TWI.h"
+#include "TWISlave.h"
+
 #include "CLI.h"
 
 using namespace hal;
@@ -38,7 +41,7 @@ class GPIOCmd: libs::CLI::Command {
 
         if (parameters.size() == 1) {
             bool s = io.read();
-            printf("%d", s);
+            printf("%d\r", s);
         } else {
             switch (parameters.at(1)[0]) {
             case '1':
@@ -175,7 +178,7 @@ class SPIDeviceCmd: hal::libs::CLI::Command {
 class SPISlaveCmd: hal::libs::CLI::Command {
  public:
     SPISlaveCmd() :
-            hal::libs::CLI::Command("spis") {
+            hal::libs::CLI::Command("ss") {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
@@ -188,17 +191,17 @@ class SPISlaveCmd: hal::libs::CLI::Command {
             SPISlave::enable_interrupt();
         } else if (parameters.at(0)[0] == 'd') {
             SPISlave::disable();
+        } else if (parameters.at(0)[0] == 'r') {
+            for (uint8_t i = 0; i < buffer_cnt; ++i) {
+                printf("%d ", buffer[i]);
+            }
+            printf("\n");
         } else {
             buffer_cnt = 0;
             for (uint8_t i = 0; i < parameters.size(); ++i) {
                 buffer[i] = atoi(parameters.at(i));
             }
             SPDR = buffer[0];
-            for (uint8_t i = 0; i < parameters.size(); ++i) {
-                while (buffer_cnt <= i) {
-                }
-                printf("%d\r", buffer[i]);
-            }
         }
     }
 
@@ -209,6 +212,87 @@ class SPISlaveCmd: hal::libs::CLI::Command {
 
     volatile uint8_t buffer[10];
     volatile uint8_t buffer_cnt = 0;
+};
+
+
+class I2CMasterCmd: hal::libs::CLI::Command {
+ public:
+    I2CMasterCmd() : hal::libs::CLI::Command("im") {
+    }
+    void callback(const hal::libs::array_view<char *> & parameters)
+            override {
+        if (parameters.at(0)[0] == 'i') {
+            TWI::disable();
+            TWI::init<100000>();
+        } else if (parameters.at(0)[0] == 'd') {
+            TWI::disable();
+        } else {
+            uint8_t addr = atoi(parameters.at(0));
+            uint8_t bytes_to_write = parameters.size() - 2;
+            uint8_t bytes_to_read = atoi(parameters.at(1+bytes_to_write));
+
+            hal::libs::array<uint8_t, 10> tx_buf, rx_buf;
+
+            for (uint8_t i = 0; i < bytes_to_write; ++i) {
+                tx_buf[i] = atoi(parameters.at(1+i));
+            }
+
+            auto tx_data = hal::libs::array_view<uint8_t>{tx_buf.data(), bytes_to_write};
+            auto rx_data = hal::libs::array_view<uint8_t>{rx_buf.data(), bytes_to_read};
+
+            I2C_Device<TWI> device{addr};
+            if( bytes_to_read == 0 ) {
+                device.write(tx_data);
+            } else if( bytes_to_write == 0 ) {
+                device.read(rx_data);
+            } else {
+                device.data_transfer(tx_data, rx_data);
+            }
+
+            for (uint8_t i = 0; i < bytes_to_read; ++i) {
+                printf("%d ", rx_buf[i]);
+            }
+            printf("\r");
+        }
+    }
+};
+
+volatile bool twi_was_callbacked = false;
+
+void TWISlave::callback() {
+    twi_was_callbacked = true;
+}
+
+class I2CSlaveCmd: hal::libs::CLI::Command {
+ public:
+    I2CSlaveCmd() : hal::libs::CLI::Command("is") {
+    }
+    void callback(const hal::libs::array_view<char *> & parameters)
+            override {
+        if (parameters.at(0)[0] == 'i') {
+            uint8_t address = atoi(parameters.at(1));
+            TWISlave::disable();
+            TWISlave::init(address);
+        } else if (parameters.at(0)[0] == 'd') {
+            TWISlave::disable();
+        } else if (parameters.at(0)[0] == 'r') {
+            if( twi_was_callbacked ) {
+                for(uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+                    printf("%d ", TWISlave::rx_buffer[i]);
+                }
+            } else {
+                for(uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+                    printf("0 ");
+                }
+            }
+            printf("\r");
+            twi_was_callbacked = false;
+        } else {
+            for (uint8_t i = 0; i < parameters.size(); ++i) {
+                TWISlave::tx_buffer[i] = atoi(parameters.at(i));
+            }
+        }
+    }
 };
 
 #endif  // TESTS_TESTSTAND_CLIENT_COMMANDS_H_
