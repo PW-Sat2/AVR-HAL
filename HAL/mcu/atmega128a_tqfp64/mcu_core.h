@@ -39,7 +39,7 @@ inline void set_clock_divider() {
     static_assert((divisor >= 1) && (divisor <= 129), "Clock divisor can be in rage 1..129!");
     if (divisor > 1) {
         XDIV = 129-divisor;
-        set_bit(XDIV, XDIVEN);
+        set_bit(XDIV, 7);
     }
 }
 
