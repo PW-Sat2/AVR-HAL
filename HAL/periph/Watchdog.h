@@ -8,7 +8,7 @@ namespace hal {
 
 class Watchdog : public mcu::Watchdog {
  public:
-    static void reset() __attribute__((always_inline)) {
+    static void kick() __attribute__((always_inline)) {
         wdt_reset();
     }
 
