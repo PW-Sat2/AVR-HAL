@@ -54,7 +54,7 @@ ISR(SPI_STC_vect) {
 #if defined(MCU_ATMEGA328P_TQFP32) || defined(MCU_ATMEGA644P_DIP40)
 constexpr uint32_t baudrate = 250000;
 #elif defined(MCU_ATMEGA128A_TQFP64)
-constexpr uint32_t baudrate = 115200;
+constexpr uint32_t baudrate = 230400;
 #endif
 
 int main() {

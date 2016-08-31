@@ -145,8 +145,9 @@ class SPIMasterCmd: hal::libs::CLI::Command {
             for (uint8_t i = 0; i < parameters.size(); ++i) {
                 uint8_t now = atoi(parameters.at(i));
                 now = SPI::shift(now);
-                printf("%d\r", now);
+                printf("%d ", now);
             }
+            printf("\r");
         }
     }
 };
@@ -170,10 +171,12 @@ class SPIDeviceCmd: hal::libs::CLI::Command {
         dev.transfer(libs::make_array_view(buf.data(), parameters.size()-1),
                      libs::make_array_view(buf.data(), parameters.size()-1));
         for (uint8_t i = 0; i < parameters.size()-1; ++i) {
-            printf("%d\r", buf[i]);
+            printf("%d ", buf[i]);
         }
+        printf("\r");
     }
 };
+
 
 class SPISlaveCmd: hal::libs::CLI::Command {
  public:
@@ -195,7 +198,7 @@ class SPISlaveCmd: hal::libs::CLI::Command {
             for (uint8_t i = 0; i < buffer_cnt; ++i) {
                 printf("%d ", buffer[i]);
             }
-            printf("\n");
+            printf("\r");
         } else {
             buffer_cnt = 0;
             for (uint8_t i = 0; i < parameters.size(); ++i) {

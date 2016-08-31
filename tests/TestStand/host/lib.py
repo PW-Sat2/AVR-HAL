@@ -240,12 +240,8 @@ class SPIMaster:
                          str(clock_divisor))
 
     def shift(self, data):
-        self.dev.send("spi " + " ".join(str(i) for i in data))
-        resp = []
-        for i in data:
-            resp.append(int(self.dev.read()))
-        self.dev.cmd_fin()
-        return resp
+        line = self.dev.send_command_and_read_line("spi " + " ".join(str(i) for i in data))
+        return [int(i) for i in line.split()]
 
     def disable(self):
         self.dev.send_command("spi d")
@@ -257,12 +253,8 @@ class SPIDevice:
         self.pin = pin
 
     def shift(self, data):
-        self.dev.send("spid " + str(self.pin) + " " + " ".join(str(i) for i in data))
-        resp = []
-        for i in data:
-            resp.append(int(self.dev.read()))
-        self.dev.cmd_fin()
-        return resp
+        line = self.dev.send_command_and_read_line("spid " + str(self.pin) + " " + " ".join(str(i) for i in data))
+        return [int(i) for i in line.split()]
 
 
 class SPISlave:
