@@ -11,6 +11,7 @@
 #include "Analog.h"
 #include "TWI.h"
 #include "TWISlave.h"
+#include "Watchdog.h"
 
 #include "CLI.h"
 
@@ -29,6 +30,16 @@ class PingCmd: libs::CLI::Command {
     }
 };
 
+class ResetCmd: libs::CLI::Command {
+ public:
+    ResetCmd() : libs::CLI::Command("reset") {
+    }
+    void callback(const hal::libs::array_view<char *> & parameters)
+            override {
+        hal::Watchdog::enable(mcu::Watchdog::Period::p_2000ms);
+    }
+};
+
 class GPIOCmd: libs::CLI::Command {
  public:
     GPIOCmd() :
@@ -36,14 +47,14 @@ class GPIOCmd: libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        uint8_t pin = atoi(parameters.at(0));
+        uint8_t pin = atoi(parameters[0]);
         DigitalIO io { pin, hal::DigitalIO::RUNTIME::ENABLED };
 
         if (parameters.size() == 1) {
             bool s = io.read();
             printf("%d\r", s);
         } else {
-            switch (parameters.at(1)[0]) {
+            switch (parameters[1][0]) {
             case '1':
                 io.set();
                 break;
@@ -77,11 +88,11 @@ class ADCCmd: libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        char cmd = parameters.at(0)[0];
+        char cmd = parameters[0][0];
         if (cmd == 'i') {
-            auto prescaler = static_cast<InternalADC::Prescaler>(atoi(parameters.at(1)));
-            auto reference = static_cast<InternalADC::Reference>(atoi(parameters.at(2)));
-            float voltage = atof(parameters.at(3));
+            auto prescaler = static_cast<InternalADC::Prescaler>(atoi(parameters[1]));
+            auto reference = static_cast<InternalADC::Reference>(atoi(parameters[2]));
+            float voltage = atof(parameters[3]);
             InternalADC::init(prescaler, reference, voltage);
         } else if (cmd == 'r') {
             printf("%d\r", InternalADC::read());
@@ -90,7 +101,7 @@ class ADCCmd: libs::CLI::Command {
         } else if (cmd == 'd') {
             InternalADC::disable();
         } else if (cmd == 'c') {
-            auto ch = static_cast<InternalADC::Input>(atoi(parameters.at(1)));
+            auto ch = static_cast<InternalADC::Input>(atoi(parameters[1]));
             InternalADC::select_channel(ch);
         } else if (cmd == 'n') {
 //            InternalADC::enable_interrupt();
@@ -113,10 +124,10 @@ class AnalogIOCmd: libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        auto ch = static_cast<InternalADC::Input>(atoi(parameters.at(1)));
+        auto ch = static_cast<InternalADC::Input>(atoi(parameters[1]));
         AnalogGPIO pin{ch};
 
-        char cmd = parameters.at(0)[0];
+        char cmd = parameters[0][0];
         if (cmd == 'r') {
             printf("%d\r", pin.read());
         } else if (cmd == 'v') {
@@ -132,18 +143,18 @@ class SPIMasterCmd: hal::libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        if (parameters.at(0)[0] == 'i') {
-            auto polarity   = static_cast<SPI::Polarity>(atoi(parameters.at(1)));
-            auto phase      = static_cast<SPI::Phase>(atoi(parameters.at(2)));
-            auto data_order = static_cast<SPI::DataOrder>(atoi(parameters.at(3)));
-            auto divisor    = static_cast<SPI::ClockDivisor>(atoi(parameters.at(4)));
+        if (parameters[0][0] == 'i') {
+            auto polarity   = static_cast<SPI::Polarity>(atoi(parameters[1]));
+            auto phase      = static_cast<SPI::Phase>(atoi(parameters[2]));
+            auto data_order = static_cast<SPI::DataOrder>(atoi(parameters[3]));
+            auto divisor    = static_cast<SPI::ClockDivisor>(atoi(parameters[4]));
 
             SPI::init(polarity, phase, data_order, divisor);
-        } else if (parameters.at(0)[0] == 'd') {
+        } else if (parameters[0][0] == 'd') {
             SPI::disable();
         } else {
             for (uint8_t i = 0; i < parameters.size(); ++i) {
-                uint8_t now = atoi(parameters.at(i));
+                uint8_t now = atoi(parameters[i]);
                 now = SPI::shift(now);
                 printf("%d ", now);
             }
@@ -159,14 +170,14 @@ class SPIDeviceCmd: hal::libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        auto pin = static_cast<DigitalIO::Pin>(atoi(parameters.at(0)));
+        auto pin = static_cast<DigitalIO::Pin>(atoi(parameters[0]));
         SPI_Device dev{pin, DigitalIO::RUNTIME::ENABLED};
         dev.init();
 
         libs::array<uint8_t, 10> buf;
 
         for (uint8_t i = 0; i < parameters.size()-1; ++i) {
-            buf[i] = atoi(parameters.at(i+1));
+            buf[i] = atoi(parameters[i+1]);
         }
         dev.transfer(libs::make_array_view(buf.data(), parameters.size()-1),
                      libs::make_array_view(buf.data(), parameters.size()-1));
@@ -185,16 +196,16 @@ class SPISlaveCmd: hal::libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        if (parameters.at(0)[0] == 'i') {
-            auto polarity   = static_cast<SPISlave::Polarity>(atoi(parameters.at(1)));
-            auto phase      = static_cast<SPISlave::Phase>(atoi(parameters.at(2)));
-            auto data_order = static_cast<SPISlave::DataOrder>(atoi(parameters.at(3)));
+        if (parameters[0][0] == 'i') {
+            auto polarity   = static_cast<SPISlave::Polarity>(atoi(parameters[1]));
+            auto phase      = static_cast<SPISlave::Phase>(atoi(parameters[2]));
+            auto data_order = static_cast<SPISlave::DataOrder>(atoi(parameters[3]));
 
             SPISlave::init(polarity, phase, data_order);
             SPISlave::enable_interrupt();
-        } else if (parameters.at(0)[0] == 'd') {
+        } else if (parameters[0][0] == 'd') {
             SPISlave::disable();
-        } else if (parameters.at(0)[0] == 'r') {
+        } else if (parameters[0][0] == 'r') {
             for (uint8_t i = 0; i < buffer_cnt; ++i) {
                 printf("%d ", buffer[i]);
             }
@@ -202,7 +213,7 @@ class SPISlaveCmd: hal::libs::CLI::Command {
         } else {
             buffer_cnt = 0;
             for (uint8_t i = 0; i < parameters.size(); ++i) {
-                buffer[i] = atoi(parameters.at(i));
+                buffer[i] = atoi(parameters[i]);
             }
             SPDR = buffer[0];
         }
@@ -224,20 +235,20 @@ class I2CMasterCmd: hal::libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        if (parameters.at(0)[0] == 'i') {
+        if (parameters[0][0] == 'i') {
             TWI::disable();
             TWI::init<100000>();
-        } else if (parameters.at(0)[0] == 'd') {
+        } else if (parameters[0][0] == 'd') {
             TWI::disable();
         } else {
-            uint8_t addr = atoi(parameters.at(0));
+            uint8_t addr = atoi(parameters[0]);
             uint8_t bytes_to_write = parameters.size() - 2;
-            uint8_t bytes_to_read = atoi(parameters.at(1+bytes_to_write));
+            uint8_t bytes_to_read = atoi(parameters[1+bytes_to_write]);
 
             hal::libs::array<uint8_t, 10> tx_buf, rx_buf;
 
             for (uint8_t i = 0; i < bytes_to_write; ++i) {
-                tx_buf[i] = atoi(parameters.at(1+i));
+                tx_buf[i] = atoi(parameters[1+i]);
             }
 
             auto tx_data = hal::libs::array_view<uint8_t>{tx_buf.data(), bytes_to_write};
@@ -272,13 +283,13 @@ class I2CSlaveCmd: hal::libs::CLI::Command {
     }
     void callback(const hal::libs::array_view<char *> & parameters)
             override {
-        if (parameters.at(0)[0] == 'i') {
-            uint8_t address = atoi(parameters.at(1));
+        if (parameters[0][0] == 'i') {
+            uint8_t address = atoi(parameters[1]);
             TWISlave::disable();
             TWISlave::init(address);
-        } else if (parameters.at(0)[0] == 'd') {
+        } else if (parameters[0][0] == 'd') {
             TWISlave::disable();
-        } else if (parameters.at(0)[0] == 'r') {
+        } else if (parameters[0][0] == 'r') {
             if (twi_was_callbacked) {
                 for (uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
                     printf("%d ", TWISlave::rx_buffer[i]);
@@ -292,7 +303,7 @@ class I2CSlaveCmd: hal::libs::CLI::Command {
             twi_was_callbacked = false;
         } else {
             for (uint8_t i = 0; i < parameters.size(); ++i) {
-                TWISlave::tx_buffer[i] = atoi(parameters.at(i));
+                TWISlave::tx_buffer[i] = atoi(parameters[i]);
             }
         }
     }
