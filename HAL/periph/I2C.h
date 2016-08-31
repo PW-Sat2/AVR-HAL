@@ -4,6 +4,7 @@
 #include "array.h"
 #include "array_view.h"
 #include <type_traits>
+#include <utility>
 
 namespace hal {
 
@@ -45,7 +46,7 @@ class I2C_Device {
                       >::type>
     void write(T&& arv) const {
         I2C::start(address, I2C::StartAction::write);
-        raw_write(arv);
+        raw_write(std::forward<T>(arv));
         I2C::stop();
     }
 
