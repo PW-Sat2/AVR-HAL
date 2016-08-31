@@ -241,9 +241,9 @@ class I2CMasterCmd: hal::libs::CLI::Command {
             auto rx_data = hal::libs::array_view<uint8_t>{rx_buf.data(), bytes_to_read};
 
             I2C_Device<TWI> device{addr};
-            if( bytes_to_read == 0 ) {
+            if (bytes_to_read == 0) {
                 device.write(tx_data);
-            } else if( bytes_to_write == 0 ) {
+            } else if ( bytes_to_write == 0 ) {
                 device.read(rx_data);
             } else {
                 device.data_transfer(tx_data, rx_data);
@@ -276,12 +276,12 @@ class I2CSlaveCmd: hal::libs::CLI::Command {
         } else if (parameters.at(0)[0] == 'd') {
             TWISlave::disable();
         } else if (parameters.at(0)[0] == 'r') {
-            if( twi_was_callbacked ) {
-                for(uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+            if (twi_was_callbacked) {
+                for (uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
                     printf("%d ", TWISlave::rx_buffer[i]);
                 }
             } else {
-                for(uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+                for (uint8_t i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
                     printf("0 ");
                 }
             }

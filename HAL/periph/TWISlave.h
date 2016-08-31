@@ -15,10 +15,10 @@ namespace hal {
 extern "C" void TWI_vect();
 
 class TWISlave {
-public:
+ public:
     TWISlave() = delete;
     ~TWISlave() = delete;
-    //static_assert(address < 128, "I2C address have to be lower than 128!");
+    // static_assert(address < 128, "I2C address have to be lower than 128!");
 
     static void init(uint8_t address) {
         DigitalIO pin_sda { mcu::pin_sda }, pin_scl { mcu::pin_scl };
@@ -40,7 +40,7 @@ public:
     static volatile uint8_t rx_buffer_cnt;
     static volatile uint8_t rx_buffer[20];
 
-private:
+ private:
     friend void TWI_vect();
     static void callback();
 };
@@ -55,7 +55,7 @@ ISR(TWI_vect) {
     volatile uint8_t twsr = (TWSR & 0xF8);
     char now = TWDR;
 
-    switch(twsr) {
+    switch (twsr) {
     case TW_SR_SLA_ACK:
         TWISlave::rx_buffer_cnt = 0;
         break;

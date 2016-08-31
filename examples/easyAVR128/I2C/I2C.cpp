@@ -10,7 +10,7 @@ int main() {
     while (true) {
         hal::libs::array<uint8_t, 20> arr_w;
 
-        for(int i = 0; i < arr_w.size(); ++i) {
+        for (int i = 0; i < arr_w.size(); ++i) {
             arr_w[i] = 100-i;
         }
 

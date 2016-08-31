@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_
-#define HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_
+#ifndef HAL_MCU_ATMEGA644P_DIP40_MCU_SPI_H_
+#define HAL_MCU_ATMEGA644P_DIP40_MCU_SPI_H_
 
 #include "PeriphDescriptors.h"
 #include "DigitalIO.h"
@@ -15,4 +15,4 @@ constexpr static int pin_ss = 5;    // PB4
 }
 }
 
-#endif /* HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_ */
+#endif  // HAL_MCU_ATMEGA644P_DIP40_MCU_SPI_H_

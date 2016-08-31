@@ -5,7 +5,7 @@
 
 void hal::TWISlave::callback() {
     printf("callback!: %d\n", TWISlave::rx_buffer_cnt);
-    for(int i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
+    for (int i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
         printf("%d ", TWISlave::rx_buffer[i]);
     }
     printf("\n");
@@ -17,7 +17,7 @@ int main() {
 
     sei();
 
-    for(int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 10; ++i) {
         hal::TWISlave::tx_buffer[i] = 10+i;
     }
     while (true) {

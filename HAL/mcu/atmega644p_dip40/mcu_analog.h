@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA328P_TQFP32_MCU_ANALOG_H_
-#define HAL_MCU_ATMEGA328P_TQFP32_MCU_ANALOG_H_
+#ifndef HAL_MCU_ATMEGA644P_DIP40_MCU_ANALOG_H_
+#define HAL_MCU_ATMEGA644P_DIP40_MCU_ANALOG_H_
 
 #include <stdint.h>
 #include <avr/io.h>
@@ -96,4 +96,4 @@ class InternalADCMux {
 }  // namespace mcu
 }  // namespace hal
 
-#endif  // HAL_MCU_ATMEGA328P_TQFP32_MCU_ANALOG_H_
+#endif  // HAL_MCU_ATMEGA644P_DIP40_MCU_ANALOG_H_
