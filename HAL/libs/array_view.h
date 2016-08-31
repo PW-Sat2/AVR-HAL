@@ -36,10 +36,16 @@ class array_view final {
             m_pointer { arr }, m_size_in_items { ArraySize } {
     }
 
+    template<typename ArrayType, size_t ArraySize>
+    constexpr explicit array_view(ArrayType (&&arr)[ArraySize]) = delete;
+
     template<typename ContainerType>
     constexpr explicit array_view(const ContainerType & container) :
             m_pointer { container.data() }, m_size_in_items { container.size() } {
     }
+
+    template<typename ContainerType>
+    constexpr explicit array_view(const ContainerType && container) = delete;
 
     template<typename ConvertibleType>
     constexpr array_view(ConvertibleType * array_ptr,
@@ -103,7 +109,7 @@ class array_view final {
     // Data access:
     //
 
-    const_reference at(const size_type index) const {
+    reference at(const size_type index) const {
         // at() always validates the array_view and index.
         // operator[] uses assert()s that can be disabled if
         // you care more about performance than runtime checking.
@@ -113,59 +119,29 @@ class array_view final {
         }
         return *(data() + index);
     }
-    reference at(const size_type index) {
-        check_not_null();
-        if (index >= size()) {
-            fail_due_to_error("array_view::at(): index is out-of-bounds!");
-        }
-        return *(data() + index);
-    }
 
-    const_reference operator[](const size_type index) const {
+    reference operator[](const size_type index) const {
         // Unlike with at() these checks can be disabled for ultimate performance.
         assert(data() != nullptr);
         assert(index < size());
         return *(data() + index);
     }
-    reference operator[](const size_type index) {
-        assert(data() != nullptr);
-        assert(index < size());
-        return *(data() + index);
-    }
 
-    reference front() {
+    reference front() const {
         check_not_null();
         return *data();
     }
 
-    const_reference front() const {
-        check_not_null();
-        return *data();
-    }
-
-    reference back() {
+    reference back() const {
         check_not_null();
         return *(data() + size() - 1);
     }
 
-    const_reference back() const {
-        check_not_null();
-        return *(data() + size() - 1);
-    }
-
-    pointer begin() {
+    pointer begin() const {
         return m_pointer;
     }
 
-    const_pointer begin() const {
-        return m_pointer;
-    }
-
-    pointer end() {
-        return m_pointer + size();
-    }
-
-    const_pointer end() const {
+    pointer end() const {
         return m_pointer + size();
     }
 
@@ -182,10 +158,7 @@ class array_view final {
     constexpr size_type size_bytes() const {
         return m_size_in_items * sizeof(value_type);
     }
-    const_pointer data() const {
-        return m_pointer;
-    }
-    pointer data() {
+    pointer data() const {
         return m_pointer;
     }
 
@@ -209,18 +182,6 @@ class array_view final {
     }
     constexpr bool operator !=(const array_view & other) const {
         return !(*this == other);
-    }
-
-    //
-    // Cast to pointer
-    //
-
-    operator pointer() {
-        return m_pointer;
-    }
-
-    operator const_pointer() const {
-        return m_pointer;
     }
 
  private:
