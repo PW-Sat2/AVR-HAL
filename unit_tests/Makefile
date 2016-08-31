@@ -1,5 +1,5 @@
 HAL_PATH = ../HAL
-GTEST_DIR = gtest-1.7.0
+GTEST_DIR = googletest-release-1.7.0
 CSRCS = 
 TESTS = tests_run_all.cpp I2C.cpp array_view.cpp array.cpp bit_operations.cpp compile_time.cpp
 
@@ -18,22 +18,22 @@ all: test run
 
 
 $(GTEST_LIBS):
-	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
+	wget https://github.com/google/googletest/archive/release-1.7.0.zip -O gtest.zip
 	unzip -o gtest.zip
 	rm gtest.zip
-	cd gtest-1.7.0; cmake .
-	make -C gtest-1.7.0
+	cd $(GTEST_DIR); cmake .
+	make -C $(GTEST_DIR)
 
 test: $(GTEST_LIBS) $(TESTS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
 
 run: test
-	LD_LIBRARY_PATH=gtest-1.7.0/lib/.libs:$LD_LIBRARY_PATH  ./test
+	LD_LIBRARY_PATH=$(GTEST_DIR)/lib/.libs:$LD_LIBRARY_PATH  ./test
 	rm -f test
 
 clean:
 	rm -f test
-	rm -Rf gtest-1.7.0
+	rm -Rf $(GTEST_DIR)
 	rm -f gtest.zip
 
 
