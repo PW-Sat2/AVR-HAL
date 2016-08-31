@@ -1,4 +1,3 @@
-HAL_PATH = ../../../HAL
 APP_NAME = Client
 
 INCLUDES = \

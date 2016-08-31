@@ -1,6 +1,3 @@
-# -- User definitions ---------------------------
-
-HAL_PATH = ../../../HAL
 APP_NAME = ADXRS453
 
 BOARD = ARDUINOMEGA2560

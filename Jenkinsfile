@@ -1,5 +1,6 @@
 node('linux') {
 	stage 'checkout'
+	sh 'export HAL_PATH=$(pwd)/HAL'
 	checkout scm
 	stage 'clean'
 	sh 'make clean'
