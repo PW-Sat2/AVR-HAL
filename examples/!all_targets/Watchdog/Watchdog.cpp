@@ -6,7 +6,7 @@ int main() {
     printf("reset\r\n");
 
     hal::Watchdog::enable(hal::Watchdog::Period::p_1000ms);
-    hal::Watchdog::reset();
+    hal::Watchdog::kick();
 
     while (true) {
     }
