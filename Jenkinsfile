@@ -3,7 +3,8 @@ node('linux') {
 	checkout scm
 	stage 'clean'
 	
-	sh "export HAL_PATH=/home/jenkins/workspace/AVR-HAL/devel/HAL"
+	env.HAL_PATH = "/home/jenkins/workspace/AVR-HAL/devel/HAL"
+	sh "env"
 	
 	sh "echo $HAL_PATH"
 	sh "ls $HAL_PATH"
