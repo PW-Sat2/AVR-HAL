@@ -2,7 +2,10 @@ node('linux') {
 	stage 'checkout'
 	checkout scm
 	stage 'clean'
-	env.HAL_PATH = /home/jenkins/workspace/AVR-HAL/devel/HAL
+	
+	env.HAL_PATH = '/home/jenkins/workspace/AVR-HAL/devel/HAL'
+	echo ${env.HAL_PATH}
+	
 	sh 'echo $HAL_PATH'
 	sh 'ls $HAL_PATH'
 	sh 'make clean'
