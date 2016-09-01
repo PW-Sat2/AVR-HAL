@@ -1,8 +1,8 @@
 node('linux') {
 	stage 'checkout'
-	sh 'export HAL_PATH=$(pwd)/HAL'
 	checkout scm
 	stage 'clean'
+	env.HAL_PATH = /home/jenkins/workspace/AVR-HAL/devel/HAL
 	sh 'echo $HAL_PATH'
 	sh 'ls $HAL_PATH'
 	sh 'make clean'
