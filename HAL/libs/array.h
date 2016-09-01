@@ -112,7 +112,7 @@ class array {
     }
 
     // assign one value to all elements
-    constexpr void assign(const T& value) {
+    /*constexpr */void assign(const T& value) {
         for (size_type i = 0; i < static_size; ++i) {
             elems[i] = value;
         }
