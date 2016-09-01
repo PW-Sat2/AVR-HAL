@@ -10,9 +10,9 @@ namespace hal {
 
 class I2C {
  public:
-    enum class StartAction
-        : int {
-            write = 0, read = 1
+    enum class StartAction : int {
+        write = 0,
+        read = 1
     };
 
     enum Acknowledge {
@@ -67,9 +67,9 @@ class I2C_Device {
     template<typename T, typename T2>
     void data_transfer(T&& transmit, T2&& receive) const {
         I2C::start(address, I2C::StartAction::write);
-        raw_write(transmit);
+        raw_write(std::forward<T>(transmit));
         I2C::start(address, I2C::StartAction::read);
-        raw_read(receive);
+        raw_read(std::forward<T>(receive));
         I2C::stop();
     }
 
@@ -77,7 +77,7 @@ class I2C_Device {
     void write_register(uint8_t register_address, T&& data) const {
         I2C::start(address, I2C::StartAction::write);
         I2C::write(register_address);
-        raw_write(data);
+        raw_write(std::forward<T>(data));
         I2C::stop();
     }
 
@@ -86,7 +86,7 @@ class I2C_Device {
         I2C::start(address, I2C::StartAction::write);
         I2C::write(register_address);
         I2C::start(address, I2C::StartAction::read);
-        raw_read(data);
+        raw_read(std::forward<T>(data));
         I2C::stop();
     }
 
