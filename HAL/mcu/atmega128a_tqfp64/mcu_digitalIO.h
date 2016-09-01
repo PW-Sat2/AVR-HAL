@@ -12,7 +12,7 @@ namespace mcu {
                             reinterpret_cast<int>(&PIN ## port), pin}
 
 constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
-    {0, 0, 0, 0},    // 0 -- artificial pin
+    {0, 0, 0, 0},     // 0 -- artificial pin
     {0, 0, 0, 0},     // 1 -- ~PEN
     PIN_DEF(E, 0),    // 2 -- RXD0/(PDI) PE0
     PIN_DEF(E, 1),    // 3 -- (TXD0/PDO) PE1
