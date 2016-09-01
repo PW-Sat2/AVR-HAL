@@ -4,7 +4,6 @@ node('linux') {
 	stage 'clean'
 	
 	sh "export HAL_PATH=/home/jenkins/workspace/AVR-HAL/devel/HAL"
-	sh "echo ${env.HAL_PATH}"
 	
 	sh "echo $HAL_PATH"
 	sh "ls $HAL_PATH"
