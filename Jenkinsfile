@@ -3,6 +3,8 @@ node('linux') {
 	sh 'export HAL_PATH=$(pwd)/HAL'
 	checkout scm
 	stage 'clean'
+	sh 'echo $HAL_PATH'
+	sh 'ls $HAL_PATH'
 	sh 'make clean'
 	sh 'make -C examples clean'
 	sh 'make -C unit_tests clean'
