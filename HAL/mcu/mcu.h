@@ -15,6 +15,13 @@
     #include "atmega328p_tqfp32/mcu_i2c.h"
     #include "atmega328p_tqfp32/mcu_analog.h"
     #include "atmega328p_tqfp32/mcu_watchdog.h"
+#elif defined(MCU_ATMEGA324P_TQFP32)
+    #include "atmega324p_tqfp32/mcu_digitalIO.h"
+    #include "atmega324p_tqfp32/mcu_serial.h"
+    #include "atmega324p_tqfp32/mcu_spi.h"
+    #include "atmega324p_tqfp32/mcu_i2c.h"
+    #include "atmega324p_tqfp32/mcu_analog.h"
+    #include "atmega324p_tqfp32/mcu_watchdog.h"
 #elif defined(MCU_ATMEGA128A_TQFP64)
     #include "atmega128a_tqfp64/mcu_digitalIO.h"
     #include "atmega128a_tqfp64/mcu_serial.h"
