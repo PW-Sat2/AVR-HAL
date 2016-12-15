@@ -27,7 +27,7 @@ class ADXRS453 {
 
     void init() const {
         SPI::init(SPI::Polarity::idle_low, SPI::Phase::leading_sample,
-                SPI::DataOrder::MSB_first, SPI::ClockDivisor::DIV_16);
+                SPI::DataOrder::MSB_first, SPI::ClockDivisor::DIV_128);
         this->spi_dev.init();
     }
 
@@ -80,22 +80,29 @@ class ADXRS453 {
         if (registerValue < 0x8000) {
             rate = (static_cast<float>(registerValue) / 80);
         } else {  /*!< If data received is in negative degree range */
-            rate = (-1)
-                    * (static_cast<float>((0xFFFF - registerValue + 1) / 80.0));
+            rate = (-1) * (static_cast<float>((0xFFFF - registerValue + 1) / 80.0));
         }
 
         return rate;
     }
 
     float getTemperature() const {
-        uint16_t registerValue = getRegister(RegisterMap::TEMP);
-        registerValue = (registerValue >> 6) - 0x31F;
-        float temperature = static_cast<float>(registerValue) / 5;
+        uint32_t registerValue = 0;
+        float temperature = 0;
+        registerValue = getRegister(RegisterMap::TEMP);
+
+        if ((registerValue >> 6) > 0x31F) {
+            registerValue = (registerValue >> 6) - 0x31F;
+            temperature = static_cast<float>(registerValue) / 5.0;
+        } else {
+            registerValue = (registerValue >> 6);
+            temperature = static_cast<float>(registerValue) / 5.0 + 45.0;
+        }
 
         return temperature;
     }
 
- private:
+
     uint16_t getRegister(const uint8_t registerAddress) const {
         libs::array<uint8_t, 4> dataBuffer(0);
 
@@ -125,6 +132,7 @@ class ADXRS453 {
         return registerValue;
     }
 
+ private:
     void setRegisterValue(const uint8_t registerAddress,
             uint16_t registerValue) const {
         libs::array<uint8_t, 4> dataBuffer(0);
