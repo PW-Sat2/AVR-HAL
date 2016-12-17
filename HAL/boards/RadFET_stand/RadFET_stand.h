@@ -3,6 +3,7 @@
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
+#include "devices/ADG708.h"
 
 namespace hal {
 namespace bsp {
@@ -116,6 +117,20 @@ static constexpr DigitalIO::Pin PF2 = 59;
 static constexpr DigitalIO::Pin PF1 = 60;
 static constexpr DigitalIO::Pin PF0 = 61;
 
+static constexpr DigitalIO::Pin GPIO0 = 48;
+static constexpr DigitalIO::Pin GPIO1 = 47;
+static constexpr DigitalIO::Pin GPIO2 = 46;
+static constexpr DigitalIO::Pin GPIO3 = 45;
+static constexpr DigitalIO::Pin GPIO4 = 44;
+static constexpr DigitalIO::Pin GPIO5 = 43;
+static constexpr DigitalIO::Pin GPIO6 = 39;
+static constexpr DigitalIO::Pin GPIO7 = 38;
+static constexpr DigitalIO::Pin GPIO8 = 37;
+static constexpr DigitalIO::Pin GPIO9 = 36;
+static constexpr DigitalIO::Pin GPIO10 = 35;
+static constexpr DigitalIO::Pin GPIO11 = 34;
+static constexpr DigitalIO::Pin GPIO12 = 33;
+
 
 static constexpr DigitalIO::Pin LED0 = PE4;
 static constexpr DigitalIO::Pin LED1 = PE5;
@@ -127,6 +142,10 @@ constexpr static hal::LED led0(pins::LED0);
 constexpr static hal::LED led1(pins::LED1);
 constexpr static hal::LED led2(pins::LED2);
 constexpr static hal::LED led3(pins::LED3);
+
+constexpr static hal::ADG708 mux1(pins::GPIO0, pins::GPIO3, pins::GPIO1, pins::GPIO2);
+constexpr static hal::ADG708 mux2(pins::GPIO0, pins::GPIO3, pins::GPIO1, pins::GPIO4);
+constexpr static hal::ADG708 mux3(pins::GPIO0, pins::GPIO3, pins::GPIO1, pins::GPIO5);
 
 
 }  // namespace bsp
