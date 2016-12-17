@@ -53,6 +53,13 @@ ifeq ($(BOARD),EVB_MEGA644P_16MHZ)
 	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
 endif
 
+ifeq ($(BOARD),RADFET_STAND)
+	MCU = ATMEGA128A_TQFP64
+	F_CPU = 11059200L
+	CFLAGS += -DBOARD_RADFET_STAND
+	BOARD_FOLDER = $(HAL_PATH)/boards/RadFET_stand
+endif
+
 # -- MCU ----------------------------------------
 
 ifeq ($(MCU),ATMEGA2560_TQFP100)
@@ -118,6 +125,8 @@ all_targets: clean
 	$(MAKE) all BOARD=ARDUINONANO328P_8MHZ
 	$(MAKE) clean
 	$(MAKE) all BOARD=EASYAVR128
+	$(MAKE) clean
+	$(MAKE) all BOARD=RADFET_STAND
 	$(MAKE) clean
 
 params: directories
