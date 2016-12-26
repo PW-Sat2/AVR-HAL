@@ -1,0 +1,13 @@
+APP_NAME = Client
+
+INCLUDES = \
+  -I .
+
+#BOARD=EASYAVR128
+#BOARD=ARDUINONANO328P_16MHZ
+BOARD=EVB_MEGA644P_16MHZ
+  
+SRCS = \
+	client.cpp
+
+include $(HAL_PATH)/build.make
