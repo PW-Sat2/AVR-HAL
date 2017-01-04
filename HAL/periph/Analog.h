@@ -93,6 +93,10 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         mcu::InternalADCMux::select(input);
     }
 
+    static float read_reference() {
+        return reference_voltage;
+    }
+
  private:
     static float reference_voltage;
 };
