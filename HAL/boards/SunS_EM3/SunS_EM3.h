@@ -3,6 +3,7 @@
 
 #include "periph/DigitalIO.h"
 #include "periph/Serial.h"
+#include "periph/Analog.h"
 
 #ifdef DEBUG
 #define printf printf

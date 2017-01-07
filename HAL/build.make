@@ -60,6 +60,13 @@ ifeq ($(BOARD),EVB_ATMEGA324P)
 	BOARD_FOLDER = $(HAL_PATH)/boards/EVB_ATMega324p
 endif
 
+ifeq ($(BOARD),SUNS_EM3)
+	MCU = ATMEGA324P_44
+	F_CPU = 8000000L
+	CFLAGS += -DBOARD_SUNS_EM3
+	BOARD_FOLDER = $(HAL_PATH)/boards/SUNS_EM3
+endif
+
 # -- MCU ----------------------------------------
 
 ifeq ($(MCU),ATMEGA2560_TQFP100)
