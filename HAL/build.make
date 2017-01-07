@@ -53,6 +53,13 @@ ifeq ($(BOARD),EVB_MEGA644P_16MHZ)
 	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
 endif
 
+ifeq ($(BOARD),EVB_ATMEGA324P)
+	MCU = ATMEGA324P_44
+	F_CPU = 8000000L
+	CFLAGS += -DBOARD_EVB_ATMEGA324P
+	BOARD_FOLDER = $(HAL_PATH)/boards/EVB_ATMega324p
+endif
+
 # -- MCU ----------------------------------------
 
 ifeq ($(MCU),ATMEGA2560_TQFP100)
@@ -77,6 +84,24 @@ ifeq ($(MCU),ATMEGA644P_DIP40)
 	CFLAGS += -DMCU_ATMEGA644P_DIP40
 	CFLAGS += -mmcu=atmega644p
 	AVRDUDE_TARGET = m644p
+endif
+
+ifeq ($(MCU),ATMEGA164P_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega164p
+	AVRDUDE_TARGET = m164p
+endif
+
+ifeq ($(MCU),ATMEGA324P_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega324p
+	AVRDUDE_TARGET = m324p
+endif
+
+ifeq ($(MCU),ATMEGA644P_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega664p
+	AVRDUDE_TARGET = m664p
 endif
 
 # -- Compile ------------------------------------
