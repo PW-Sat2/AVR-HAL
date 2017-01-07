@@ -9,7 +9,7 @@
 #include "easyAVR128/easyAVR128.h"
 #elif defined(BOARD_EVB_MEGA644P_16MHZ)
 #include "EVB/EVB.h"
-#elif defined(ATMEGA324P)
+#elif defined(BOARD_ATMEGA324P)
 #include "ATMEGA324P/ATMEGA324P.h"
 #else
 #error "No board defined!"
