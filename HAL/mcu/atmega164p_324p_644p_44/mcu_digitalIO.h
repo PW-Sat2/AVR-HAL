@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA324P_TQFP32_MCU_DIGITALIO_H_
-#define HAL_MCU_ATMEGA324P_TQFP32_MCU_DIGITALIO_H_
+#ifndef HAL_MCU_ATMEGA164P_324P_644P_44_MCU_DIGITALIO_H_
+#define HAL_MCU_ATMEGA164P_324P_644P_44_MCU_DIGITALIO_H_
 
 #include <avr/io.h>
 #include "PeriphDescriptors.h"
@@ -64,4 +64,4 @@ constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
 }  // namespace mcu
 }  // namespace hal
 
-#endif  // HAL_MCU_ATMEGA324P_TQFP32_MCU_DIGITALIO_H_
+#endif  // HAL_MCU_ATMEGA164P_324P_644P_44_MCU_DIGITALIO_H_

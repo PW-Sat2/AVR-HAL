@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_ATMEGA324P_ATXXX4324P_H_
-#define HAL_BOARDS_ATMEGA324P_ATXXX4324P_H_
+#ifndef HAL_BOARDS_EVB_ATMEGA324P_EVB_ATMEGA324P_H_
+#define HAL_BOARDS_EVB_ATMEGA324P_EVB_ATMEGA324P_H_
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
@@ -84,4 +84,4 @@ constexpr static hal::LED led(pins::LED);
 }  // namespace bsp
 }  // namespace hal
 
-#endif  // HAL_BOARDS_ATMEGA324P_ATXXX4324P_H_
+#endif  // HAL_BOARDS_EVB_ATMEGA324P_EVB_ATMEGA324P_H_

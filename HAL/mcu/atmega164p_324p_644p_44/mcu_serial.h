@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA328P_TQFP32_MCU_SERIAL_H_
-#define HAL_MCU_ATMEGA328P_TQFP32_MCU_SERIAL_H_
+#ifndef HAL_MCU_ATMEGA164P_324P_644P_44_MCU_SERIAL_H_
+#define HAL_MCU_ATMEGA164P_324P_644P_44_MCU_SERIAL_H_
 
 #include <avr/io.h>
 #include "PeriphDescriptors.h"
@@ -23,4 +23,4 @@ constexpr static UART_descriptor UART_map[MCU_NR_OF_SERIALS] = {
 }  // namespace mcu
 }  // namespace hal
 
-#endif  // HAL_MCU_ATMEGA328P_TQFP32_MCU_SERIAL_H_
+#endif  // HAL_MCU_ATMEGA164P_324P_644P_44_MCU_SERIAL_H_

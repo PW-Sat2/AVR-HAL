@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA324P_TQFP32_MCU_WATCHDOG_H_
-#define HAL_MCU_ATMEGA324P_TQFP32_MCU_WATCHDOG_H_
+#ifndef HAL_MCU_ATMEGA164P_324P_644P_44_MCU_WATCHDOG_H_
+#define HAL_MCU_ATMEGA164P_324P_644P_44_MCU_WATCHDOG_H_
 
 namespace hal {
 namespace mcu {
@@ -23,4 +23,4 @@ class Watchdog {
 }  // namespace mcu
 }  // namespace hal
 
-#endif  // HAL_MCU_ATMEGA324P_TQFP32_MCU_WATCHDOG_H_
+#endif  // HAL_MCU_ATMEGA164P_324P_644P_44_MCU_WATCHDOG_H_
