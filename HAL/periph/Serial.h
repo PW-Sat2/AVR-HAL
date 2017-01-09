@@ -119,7 +119,7 @@ class Serial {
     }
 
  private:
-    constexpr static int BUFFER_SIZE = 50;
+    constexpr static int BUFFER_SIZE = 200;
     static char buffer[BUFFER_SIZE];
 
     void print_buffer() const {
