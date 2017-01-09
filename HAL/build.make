@@ -61,7 +61,7 @@ ifeq ($(BOARD),EVB_ATMEGA324P)
 endif
 
 ifeq ($(BOARD),SUNS_EM3)
-	MCU = ATMEGA324P_44
+	MCU = ATMEGA324A_44
 	F_CPU = 8000000L
 	CFLAGS += -DBOARD_SUNS_EM3
 	BOARD_FOLDER = $(HAL_PATH)/boards/SUNS_EM3
@@ -109,6 +109,25 @@ ifeq ($(MCU),ATMEGA644P_44)
 	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
 	CFLAGS += -mmcu=atmega664p
 	AVRDUDE_TARGET = m664p
+endif
+
+
+ifeq ($(MCU),ATMEGA164A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega164a
+	AVRDUDE_TARGET = m164pa
+endif
+
+ifeq ($(MCU),ATMEGA324A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega324a
+	AVRDUDE_TARGET = m324pa
+endif
+
+ifeq ($(MCU),ATMEGA644A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega664a
+	AVRDUDE_TARGET = m664pa
 endif
 
 # -- Compile ------------------------------------

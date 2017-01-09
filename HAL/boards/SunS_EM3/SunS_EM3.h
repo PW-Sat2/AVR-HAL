@@ -5,12 +5,6 @@
 #include "periph/Serial.h"
 #include "periph/Analog.h"
 
-#ifdef DEBUG
-#define printf printf
-#else
-#define printf(text) ((void)0)
-#endif
-
 namespace hal {
 namespace bsp {
 static constexpr InternalADC::Input TEMP_BOARD = InternalADC::Input::ADC4;
