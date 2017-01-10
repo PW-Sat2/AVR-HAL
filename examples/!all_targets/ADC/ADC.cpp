@@ -19,7 +19,7 @@ ISR(ADC_vect) {
 int main() {
     Serial0.init(115200, hal::STDIO::ENABLE);
     InternalADC::init(InternalADC::Prescaler::DIV_128,
-                      InternalADC::Reference::AVcc, 5);
+                      InternalADC::Reference::AVcc);
 
     InternalADC::select_channel(InternalADC::Input::ADC0);
 
@@ -31,7 +31,7 @@ int main() {
 
     while (true) {
         if (flag) {
-            printf("read: %d = %.2f V\r\n", x, InternalADC::bits_to_voltage(x));
+            printf("read: %d\r\n", x);
             flag = 0;
         }
     }

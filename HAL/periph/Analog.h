@@ -21,9 +21,9 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         DIV_128 = 7
     };
 
-    static void init(Prescaler prescaler, Reference reference, float voltage) {
+    static void init(Prescaler prescaler, Reference reference) {
         set_prescaler(prescaler);
-        set_reference(reference, voltage);
+        set_reference(reference);
         enable();
     }
 
@@ -32,10 +32,9 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         ADCSRA |= static_cast<uint8_t>(prescaler);
     }
 
-    static void set_reference(Reference reference, float voltage) {
+    static void set_reference(Reference reference) {
         ADMUX &= 0b00111111;
         ADMUX |= (static_cast<uint8_t>(reference) << 6);
-        reference_voltage = voltage;
     }
 
     static void disable() {
@@ -54,18 +53,6 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
 
     static uint16_t read_nowait() {
         return ADC;
-    }
-
-    static float read_voltage() {
-        return bits_to_voltage(read());
-    }
-
-    static float read_voltage_nowait() {
-        return bits_to_voltage(read_nowait());
-    }
-
-    static float bits_to_voltage(uint16_t bits) {
-        return (bits*reference_voltage)/1024;
     }
 
     static void trigger_conversion() {
@@ -92,13 +79,6 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     static void select_channel(Input input) {
         mcu::InternalADCMux::select(input);
     }
-
-    static float read_reference() {
-        return reference_voltage;
-    }
-
- private:
-    static float reference_voltage;
 };
 
 class AnalogGPIO {
@@ -110,11 +90,6 @@ class AnalogGPIO {
     uint16_t read() const {
         mcu::InternalADCMux::select(pin);
         return InternalADC::read();
-    }
-
-    float read_voltage() const {
-        mcu::InternalADCMux::select(pin);
-        return InternalADC::read_voltage();
     }
 
     uint16_t read_nowait() const {
