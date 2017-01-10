@@ -60,15 +60,18 @@ class Device {
         return x;
     }
 
-    template<int length>
-    void transfer(const libs::array<uint8_t, length>& input,
-                           libs::array<uint8_t, length>& output) const {
-        transfer(input.data(), output.data(), input.size());
-    }
-
-    void transfer(const libs::array_view<uint8_t> input,
-                        libs::array_view<uint8_t> output) const {
-        transfer(input.data(), output.data(), input.size());
+    template<typename T, typename T2>
+    void transfer(T&& output, T2&& input) const {
+        this->enable();
+        const uint8_t * out_ptr = output.data();
+        uint8_t * in_ptr = input.data();
+        int len = input.size();
+        while (len--) {
+            (*in_ptr) = spi::shift(*out_ptr);
+            in_ptr++;
+            out_ptr++;
+        }
+        this->disable();
     }
 
     template<typename T>
@@ -91,20 +94,7 @@ class Device {
 
  private:
      const DigitalIO pin_cs;
-
-     void transfer(const uint8_t * out_ptr,
-                   uint8_t * in_ptr,
-                   int length) const {
-         this->enable();
-         while (length--) {
-             (*in_ptr) = spi::shift(*out_ptr);
-             in_ptr++;
-             out_ptr++;
-         }
-         this->disable();
-     }
 };
-
 }
 }  // namespace hal
 
