@@ -16,7 +16,7 @@ ISR(ADC_vect) {
 int main() {
     Serial0.init(115200, hal::STDIO::ENABLE);
     InternalADC::init(InternalADC::Prescaler::DIV_128,
-                      InternalADC::Reference::AVcc, 5);
+                      InternalADC::Reference::AVcc);
 
     InternalADC::select_channel(InternalADC::Input::ADC0);
 

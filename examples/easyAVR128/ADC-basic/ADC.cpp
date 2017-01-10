@@ -10,11 +10,11 @@ using hal::Serial0;
 int main() {
     Serial0.init(115200, hal::STDIO::ENABLE);
     InternalADC::init(InternalADC::Prescaler::DIV_128,
-                      InternalADC::Reference::AVcc, 3.3);
+                      InternalADC::Reference::AVcc);
 
     InternalADC::select_channel(InternalADC::Input::ADC0);
 
     while (true) {
-        printf("read: %d = %f V\r\n", InternalADC::read(), InternalADC::read_voltage());
+        printf("read: %d\r\n", InternalADC::read());
     }
 }
