@@ -13,8 +13,7 @@ int main() {
 
     dev1.shift(0xFF);
 
-    uint8_t data[] = { 1, 2, 3 };
+	hal::libs::array<uint8_t, 3> data = {1, 2, 3};
 
-    dev1.transfer(hal::libs::make_array_view(data),
-            hal::libs::make_array_view(data));
+    dev1.transfer(data, data);
 }
