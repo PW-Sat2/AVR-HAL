@@ -119,7 +119,7 @@ class array {
         return make_array_view(elems, N);
     }
 
-	T elems[N];    // fixed-size array of elements of type T
+    T elems[N];    // fixed-size array of elements of type T
  private:
 
     // check range (may be private because it is static)
