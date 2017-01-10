@@ -5,6 +5,8 @@
 #include "ArduinoMega2560/ArduinoMega2560.h"
 #elif defined(BOARD_ARDUINONANO328P_16MHZ) || defined(BOARD_ARDUINONANO328P_8MHZ)
 #include "ArduinoNano328P/ArduinoNano328P.h"
+#elif defined(BOARD_RADFET_STAND)
+#include "RadFET_stand/RadFET_stand.h"
 #elif defined(BOARD_EASYAVR128)
 #include "easyAVR128/easyAVR128.h"
 #elif defined(BOARD_EVB_MEGA644P_16MHZ)
