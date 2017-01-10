@@ -13,8 +13,7 @@ using spi = hal::SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_4,
 
 using spiSoft = hal::SPI::Software<1, 2, 3,
                                    SPI::Polarity::idle_high,
-                                   SPI::Phase::leading_sample,
-                                   SPI::DataOrder::LSB_first>;
+                                   SPI::Phase::leading_sample>;
 
 int main() {
     spi::init();

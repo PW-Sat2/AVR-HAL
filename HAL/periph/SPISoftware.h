@@ -17,8 +17,7 @@ template<DigitalIO::Pin pin_mosi_nr,
          DigitalIO::Pin pin_miso_nr,
          DigitalIO::Pin pin_sck_nr,
          SPI::Polarity polarity,
-         SPI::Phase phase,
-         SPI::DataOrder data_order>
+         SPI::Phase phase>
 class Software {
  public:
     static void init() {
