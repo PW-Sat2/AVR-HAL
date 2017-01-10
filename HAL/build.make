@@ -147,7 +147,8 @@ INCLUDES += \
   -I$(HAL_PATH)/periph \
   -I$(HAL_PATH)/boards \
   -I$(HAL_PATH)/devices \
-  -I$(HAL_PATH)/libs    \
+  -I$(HAL_PATH)/libs \
+  -I$(HAL_PATH)/libs/device_supports \
   -I$(HAL_PATH)/libs/std
 
 CFLAGS += $(DEFINES)
