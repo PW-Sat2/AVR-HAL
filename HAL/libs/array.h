@@ -23,13 +23,6 @@ class array {
     typedef size_t size_type;
     typedef ptrdiff_t difference_type;
 
-    // constructors
-    constexpr array() {
-    }
-    constexpr array(T&& value) :
-            elems { value } {
-    }
-
     // iterator support
     iterator begin() {
         return elems;
@@ -126,8 +119,8 @@ class array {
         return make_array_view(elems, N);
     }
 
- private:
     T elems[N];    // fixed-size array of elements of type T
+ private:
 
     // check range (may be private because it is static)
     static void rangecheck(size_type i) {
