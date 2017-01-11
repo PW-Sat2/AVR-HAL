@@ -8,91 +8,31 @@
 #include "array.h"
 
 namespace hal {
+namespace SPI {
 
-class SPI {
- public:
-    enum class Polarity : int {
-        idle_low = 0,
-        idle_high = 1
-    };
-
-    enum class Phase : int {
-        leading_sample = 0,
-        trailing_sample = 1
-    };
-
-    enum class DataOrder : int {
-        MSB_first = 0,
-        LSB_first = 1
-    };
-
-    enum class ClockDivisor : int {
-        DIV_4 = 0,
-        DIV_16 = 1,
-        DIV_64 = 2,
-        DIV_128 = 3
-    };
-
-    static void init(const Polarity polarity, const Phase phase,
-                  const DataOrder data_order, const ClockDivisor clock_divisor) {
-        pin_mosi.init(DigitalIO::OUTPUT);
-        pin_sck.init(DigitalIO::OUTPUT);
-        pin_ss.init(DigitalIO::OUTPUT);
-
-        SPCR = (1 << SPE)  |
-               (1 << MSTR) |
-               (static_cast<uint8_t>(clock_divisor)) |
-               (static_cast<uint8_t>(phase) << CPHA) |
-               (static_cast<uint8_t>(polarity) << CPOL) |
-               (static_cast<uint8_t>(data_order) << DORD);
-    }
-
-    static void disable() {
-        SPCR = 0;
-    }
-
-    static uint8_t shift(const uint8_t data) {
-        write_data_nowait(data);
-        wait_for_transmission_complete();
-        return get_data_nowait();
-    }
-
-    static void wait_for_transmission_complete() {
-        while (!is_transmission_complete()) {
-        }
-    }
-
-    static bool is_transmission_complete() {
-        return (read_bit(SPSR, SPIF) == true);
-    }
-
-    // functions for interrupt-driven usage
-
-    static void write_data_nowait(uint8_t data) {
-        SPDR = data;
-    }
-
-    static uint8_t get_data_nowait() {
-        return SPDR;
-    }
-
-    static void enable_interrupt() {
-        set_bit(SPCR, SPIE);
-    }
-
- private:
-    static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
-                               pin_sck{mcu::pin_sck},
-                               pin_ss{mcu::pin_ss};
+enum class Polarity : int {
+    idle_low = 0,
+    idle_high = 1
 };
 
-class SPI_Device {
+enum class Phase : int {
+    leading_sample = 0,
+    trailing_sample = 1
+};
+
+enum class DataOrder : int {
+    MSB_first = 0,
+    LSB_first = 1
+};
+
+template<typename spi>
+class Device {
  public:
-    constexpr explicit SPI_Device(const DigitalIO::Pin pin_cs) :
+    constexpr explicit Device(const DigitalIO::Pin pin_cs) :
             pin_cs{pin_cs} {
     }
 
-    constexpr explicit SPI_Device(const DigitalIO::Pin pin_cs, DigitalIO::RUNTIME) :
+    constexpr explicit Device(const DigitalIO::Pin pin_cs, DigitalIO::RUNTIME) :
             pin_cs{pin_cs, DigitalIO::RUNTIME::ENABLED} {
     }
 
@@ -110,12 +50,12 @@ class SPI_Device {
     }
 
     uint8_t shift(const uint8_t data) const {
-        return SPI::shift(data);
+        return spi::shift(data);
     }
 
     uint8_t transfer(const uint8_t data) const {
         this->enable();
-        uint8_t x = SPI::shift(data);
+        uint8_t x = spi::shift(data);
         this->disable();
         return x;
     }
@@ -127,7 +67,7 @@ class SPI_Device {
         uint8_t * in_ptr = input.data();
         int len = input.size();
         while (len--) {
-            (*in_ptr) = SPI::shift(*out_ptr);
+            (*in_ptr) = spi::shift(*out_ptr);
             in_ptr++;
             out_ptr++;
         }
@@ -138,7 +78,7 @@ class SPI_Device {
     void transmit(T&& data) const {
         this->enable();
         for (auto&& x : data) {
-            SPI::shift(x);
+            spi::shift(x);
         }
         this->disable();
     }
@@ -147,7 +87,7 @@ class SPI_Device {
     void receive(T&& data, uint8_t output_value = 0) const {
         this->enable();
         for (auto& x : data) {
-            x = SPI::shift(output_value);
+            x = spi::shift(output_value);
         }
         this->disable();
     }
@@ -155,7 +95,7 @@ class SPI_Device {
  private:
      const DigitalIO pin_cs;
 };
-
+}
 }  // namespace hal
 
 #endif  // HAL_PERIPH_SPI_H_

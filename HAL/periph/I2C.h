@@ -60,7 +60,7 @@ class I2C_Device {
     template<typename T>
     void read(T&& arv, typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
         I2C::start(address, I2C::StartAction::read);
-        raw_read(arv, last_byte_ACK);
+        raw_read(std::forward(arv), last_byte_ACK);
         I2C::stop();
     }
 
