@@ -122,6 +122,7 @@ class array {
     T elems[N];    // fixed-size array of elements of type T
  private:
 
+ private:
     // check range (may be private because it is static)
     static void rangecheck(size_type i) {
         if (i >= size()) {

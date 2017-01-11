@@ -58,11 +58,11 @@ ifeq ($(BOARD),EVB_ATMEGA324P)
 	BOARD_FOLDER = $(HAL_PATH)/boards/EVB_ATMega324p
 endif
 
-ifeq ($(BOARD),RADFET_STAND)
-	MCU = ATMEGA128A_TQFP64
-	F_CPU = 11059200L
-	CFLAGS += -DBOARD_RADFET_STAND
-	BOARD_FOLDER = $(HAL_PATH)/boards/RadFET_stand
+ifeq ($(BOARD),SUNS_EM3)
+	MCU = ATMEGA324A_44
+	F_CPU = 8000000L
+	CFLAGS += -DBOARD_SUNS_EM3
+	BOARD_FOLDER = $(HAL_PATH)/boards/SUNS_EM3
 endif
 
 ifeq ($(BOARD),RADFET_EM1)
@@ -116,6 +116,25 @@ ifeq ($(MCU),ATMEGA644P_44)
 	AVRDUDE_TARGET = m664p
 endif
 
+
+ifeq ($(MCU),ATMEGA164A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega164a
+	AVRDUDE_TARGET = m164pa
+endif
+
+ifeq ($(MCU),ATMEGA324A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega324a
+	AVRDUDE_TARGET = m324pa
+endif
+
+ifeq ($(MCU),ATMEGA644A_44)
+	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
+	CFLAGS += -mmcu=atmega664a
+	AVRDUDE_TARGET = m664pa
+endif
+
 # -- Compile ------------------------------------
 
 LIST_PATH = $(APP_NAME)/List
@@ -133,7 +152,8 @@ INCLUDES += \
   -I$(HAL_PATH)/periph \
   -I$(HAL_PATH)/boards \
   -I$(HAL_PATH)/devices \
-  -I$(HAL_PATH)/libs    \
+  -I$(HAL_PATH)/libs \
+  -I$(HAL_PATH)/libs/device_supports \
   -I$(HAL_PATH)/libs/std
 
 CFLAGS += $(DEFINES)
@@ -155,8 +175,6 @@ all_targets: clean
 	$(MAKE) all BOARD=ARDUINONANO328P_8MHZ
 	$(MAKE) clean
 	$(MAKE) all BOARD=EASYAVR128
-	$(MAKE) clean
-	$(MAKE) all BOARD=RADFET_STAND
 	$(MAKE) clean
 
 params: directories

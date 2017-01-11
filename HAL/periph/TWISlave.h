@@ -35,21 +35,22 @@ class TWISlave {
     }
 
     static volatile uint8_t tx_buffer_cnt;
-    static volatile uint8_t tx_buffer[20];
+    static volatile uint8_t tx_buffer[200];
 
     static volatile uint8_t rx_buffer_cnt;
-    static volatile uint8_t rx_buffer[20];
+    static volatile uint8_t rx_buffer[200];
 
  private:
     friend void TWI_vect();
-    static void callback();
+    static void callbackRx();
+    static void callbackTx();
 };
 
 volatile uint8_t TWISlave::tx_buffer_cnt;
-volatile uint8_t TWISlave::tx_buffer[20];
+volatile uint8_t TWISlave::tx_buffer[200];
 
 volatile uint8_t TWISlave::rx_buffer_cnt;
-volatile uint8_t TWISlave::rx_buffer[20];
+volatile uint8_t TWISlave::rx_buffer[200];
 
 ISR(TWI_vect) {
     volatile uint8_t twsr = (TWSR & 0xF8);
@@ -64,7 +65,7 @@ ISR(TWI_vect) {
         TWISlave::rx_buffer[TWISlave::rx_buffer_cnt++] = now;
         break;
     case TW_SR_STOP:
-        TWISlave::callback();
+        TWISlave::callbackRx();
         break;
 
     case TW_ST_SLA_ACK:
@@ -75,6 +76,7 @@ ISR(TWI_vect) {
         TWDR = TWISlave::tx_buffer[TWISlave::tx_buffer_cnt++];
         break;
     case TW_ST_DATA_NACK:
+        TWISlave::callbackTx();
         break;
 
     default:
