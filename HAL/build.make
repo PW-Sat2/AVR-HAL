@@ -65,6 +65,13 @@ ifeq ($(BOARD),RADFET_STAND)
 	BOARD_FOLDER = $(HAL_PATH)/boards/RadFET_stand
 endif
 
+ifeq ($(BOARD),RADFET_EM1)
+	MCU = ATMEGA164P_44
+	F_CPU = 1000000L
+	CFLAGS += -DBOARD_RADFET_EM1
+	BOARD_FOLDER = $(HAL_PATH)/boards/RadFET_EM1
+endif
+
 # -- MCU ----------------------------------------
 
 ifeq ($(MCU),ATMEGA2560_TQFP100)
