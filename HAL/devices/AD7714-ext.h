@@ -8,7 +8,6 @@
 
 namespace hal {
 
-template<typename spi>
 class AD7714 {
  public:
 
@@ -73,8 +72,8 @@ class AD7714 {
     };
 
 
-    explicit AD7714(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY) :
-            spi_dev(pin_cs), pin_DRDY{pin_DRDY} {
+    explicit AD7714(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY, DigitalIO::Pin pin_RESET, DigitalIO::Pin pin_STANDBY, DigitalIO::Pin pin_BUFFER) :
+            spi_dev(pin_cs), pin_DRDY{pin_DRDY}, pin_RESET{pin_RESET}, pin_STANDBY{pin_STANDBY}, pin_BUFFER{pin_BUFFER} {
     }
 
 
@@ -96,13 +95,38 @@ class AD7714 {
     }
 
 
+    void reset() const {
+      this->pin_RESET.reset();
+      _delay_ms(10);
+      this->pin_RESET.set();
+      _delay_ms(10);
+    }
+
 
     void init() const {
 
       this->spi_dev.init();
 
       this->pin_DRDY.pinmode(DigitalIO::INPUT);
+      this->pin_RESET.pinmode(DigitalIO::OUTPUT);
+      this->pin_STANDBY.pinmode(DigitalIO::OUTPUT);
+      this->pin_BUFFER.pinmode(DigitalIO::OUTPUT);
+
+      this->reset();
+      this->buffer(ON);
+      this->power_mode(OFF);
     }
+
+    void power_mode(Control_State status) const {
+      pin_STANDBY.write(static_cast<bool>(status));
+      _delay_ms(10);
+    }
+
+
+    void buffer(Control_State buff_stat) const {
+      pin_BUFFER.write(static_cast<bool>(buff_stat));
+    }
+
 
     void writeToCommReg(ADC_Registers reg, bool read) const {
       uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
@@ -159,9 +183,8 @@ class AD7714 {
  private:
     ADC_Channels actual_channel;
     DataLength dataLen;
-
-    const SPI::Device<spi> spi_dev;
-    const DigitalIO pin_DRDY;
+    const SPI_Device spi_dev;
+    const DigitalIO pin_DRDY, pin_RESET, pin_STANDBY, pin_BUFFER;
 };
 
 }  // namespace hal
