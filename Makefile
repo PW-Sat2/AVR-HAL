@@ -14,14 +14,14 @@ tmp/cpplint.py:
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 
 checkStyle: tmp tmp/cpplint.py
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/gtest-" | grep -v "HAL/libs/std/" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
 
 clangformat: tmp
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/gtest-" | grep -v "HAL/libs/std/" | xargs clang-format -i
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs clang-format -i
 
-	
+
 cppcheck:
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/gtest-" | grep -v "HAL/libs/std/" | xargs cppcheck --enable=all --inconclusive --std=c++11
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs cppcheck --enable=all --inconclusive --std=c++11
 
 tmp/flawfinder:
 	wget http://www.dwheeler.com/flawfinder/flawfinder-1.31.tar.gz -O tmp/flawFinder.tar.gz

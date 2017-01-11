@@ -1,5 +1,5 @@
-#ifndef HAL_DEVICES_LM60_H_
-#define HAL_DEVICES_LM60_H_
+#ifndef HAL_LIBS_DEVICE_SUPPORTS_LM60_H_
+#define HAL_LIBS_DEVICE_SUPPORTS_LM60_H_
 
 namespace hal {
 
@@ -10,4 +10,4 @@ namespace LM60 {
 }  // namespace LM60
 }  // namespace hal
 
-#endif  // HAL_DEVICES_LM60_H_
+#endif  // HAL_LIBS_DEVICE_SUPPORTS_LM60_H_

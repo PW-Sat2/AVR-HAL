@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_RadFET_EM1_RadFET_EM1_H_
-#define HAL_BOARDS_RadFET_EM1_RadFET_EM1_H_
+#ifndef HAL_BOARDS_RADFET_EM1_RADFET_EM1_H_
+#define HAL_BOARDS_RADFET_EM1_RADFET_EM1_H_
 
 #include "DigitalIO.h"
 #include "SPI.h"
@@ -54,4 +54,4 @@ AD7714<AD7714_spi> AD7714_adc(pins::AD7714_CS, pins::AD7714_DRDY);
 }  // namespace bsp
 }  // namespace hal
 
-#endif  // HAL_BOARDS_RadFET_EM1_RadFET_EM1_H_
+#endif  // HAL_BOARDS_RADFET_EM1_RADFET_EM1_H_

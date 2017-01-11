@@ -2,15 +2,15 @@
 #define HAL_LIBS_ARRAY_H_
 
 #include <stddef.h>
-#include "hal_assert.h"
-#include "array_view.h"
 #include <type_traits>
 #include <utility>
+#include "array_view.h"
+#include "hal_assert.h"
 
 namespace hal {
 namespace libs {
 
-template<typename T, size_t N>
+template <typename T, size_t N>
 class array {
  public:
     static_assert(N > 0, "array size must be positive");
@@ -76,9 +76,7 @@ class array {
     static constexpr bool empty() {
         return false;
     }
-    enum {
-        static_size = N
-    };
+    enum { static_size = N };
 
     // swap (note: linear complexity in N, constant for given instantiation)
     void swap(array<T, N>& y) noexcept {
@@ -96,7 +94,7 @@ class array {
     }
 
     // assignment with type conversion
-    template<typename T2>
+    template <typename T2>
     array<T, N>& operator=(const array<T2, N>& rhs) {
         for (size_type i = 0; i < static_size; ++i) {
             memcpy(elems[0], rhs.data(), static_size * sizeof(T));
@@ -105,7 +103,7 @@ class array {
     }
 
     // assign one value to all elements
-    /*constexpr */void assign(const T& value) {
+    /*constexpr */ void assign(const T& value) {
         for (size_type i = 0; i < static_size; ++i) {
             elems[i] = value;
         }
@@ -119,8 +117,7 @@ class array {
         return make_array_view(elems, N);
     }
 
-    T elems[N];    // fixed-size array of elements of type T
- private:
+    T elems[N];  // fixed-size array of elements of type T
 
  private:
     // check range (may be private because it is static)
@@ -132,18 +129,18 @@ class array {
 };
 
 // comparisons
-template<class T, size_t N>
+template <class T, size_t N>
 inline bool operator==(const array<T, N>& x, const array<T, N>& y) {
     return (memcmp(x.data(), y.data(), x.size() * sizeof(T)) == 0);
 }
 
-template<class T, size_t N>
+template <class T, size_t N>
 inline bool operator!=(const array<T, N>& x, const array<T, N>& y) {
     return !(x == y);
 }
 
 // global swap()
-template<class T, size_t N>
+template <class T, size_t N>
 inline void swap(array<T, N>& x, array<T, N>& y) noexcept {
     x.swap(y);
 }

@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_EASYAVR128_EASYAVR128_H_
-#define HAL_BOARDS_EASYAVR128_EASYAVR128_H_
+#ifndef HAL_BOARDS_RADFET_STAND_RADFET_STAND_H_
+#define HAL_BOARDS_RADFET_STAND_RADFET_STAND_H_
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
@@ -151,4 +151,4 @@ constexpr static hal::ADG708 mux3(pins::GPIO0, pins::GPIO3, pins::GPIO1, pins::G
 }  // namespace bsp
 }  // namespace hal
 
-#endif  // HAL_BOARDS_EASYAVR128_EASYAVR128_H_
+#endif  // HAL_BOARDS_RADFET_STAND_RADFET_STAND_H_

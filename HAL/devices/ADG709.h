@@ -7,10 +7,10 @@ namespace hal {
 
 class ADG709 {
  public:
-
-    constexpr explicit ADG709(DigitalIO::Pin pin_A0, DigitalIO::Pin pin_A1, DigitalIO::Pin pin_EN) : pin_A0{pin_A0}, pin_A1{pin_A1}, pin_EN{pin_EN} {
+    constexpr explicit ADG709(DigitalIO::Pin pin_A0, DigitalIO::Pin pin_A1,
+                              DigitalIO::Pin pin_EN)
+        : pin_A0{pin_A0}, pin_A1{pin_A1}, pin_EN{pin_EN} {
     }
-
 
     void init() const {
         this->pin_A0.pinmode(DigitalIO::OUTPUT);
@@ -20,16 +20,13 @@ class ADG709 {
         this->disable();
     }
 
-
     void enable() const {
         this->pin_EN.set();
     }
 
-
     void disable() const {
         this->pin_EN.reset();
     }
-
 
     void select(uint8_t channel) const {
         this->pin_A0.write(static_cast<bool>(channel & 0b01));
@@ -41,6 +38,5 @@ class ADG709 {
 };
 
 }  // namespace hal
-
 
 #endif  // HAL_DEVICES_ADG709_H_

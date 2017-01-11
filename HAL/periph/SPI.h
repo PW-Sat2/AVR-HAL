@@ -95,7 +95,8 @@ class Device {
  private:
      const DigitalIO pin_cs;
 };
-}
+
+}  // namespace SPI
 }  // namespace hal
 
 #endif  // HAL_PERIPH_SPI_H_

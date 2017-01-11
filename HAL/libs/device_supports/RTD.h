@@ -1,5 +1,5 @@
-#ifndef HAL_DEVICES_RTD_H_
-#define HAL_DEVICES_RTD_H_
+#ifndef HAL_LIBS_DEVICE_SUPPORTS_RTD_H_
+#define HAL_LIBS_DEVICE_SUPPORTS_RTD_H_
 
 namespace hal {
 
@@ -18,4 +18,4 @@ class RTD {
 
 }  // namespace hal
 
-#endif  // HAL_DEVICES_RTD_H_
+#endif  // HAL_LIBS_DEVICE_SUPPORTS_RTD_H_

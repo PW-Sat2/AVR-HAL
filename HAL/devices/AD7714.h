@@ -11,7 +11,6 @@ namespace hal {
 template<typename spi>
 class AD7714 {
  public:
-
     enum ADC_Registers {
         COMM_REG = 0,
         MODE_REG = 1,
@@ -47,7 +46,7 @@ class AD7714 {
     };
 
     enum DataLength {
-        Data_24bit = 1,
+        Data_24bit = 1,  //
         Data_16bit = 0
     };
 
@@ -63,12 +62,12 @@ class AD7714 {
     };
 
     enum Control_State {
-        OFF = 0,
+        OFF = 0,  //
         ON  = 1
     };
 
     enum Polarity {
-        bipolar = 0,
+        bipolar = 0,  //
         unipolar = 1
     };
 
@@ -98,7 +97,6 @@ class AD7714 {
 
 
     void init() const {
-
       this->spi_dev.init();
 
       this->pin_DRDY.pinmode(DigitalIO::INPUT);
