@@ -7,6 +7,7 @@
 
 namespace hal {
 
+template<typename spi>
 class ADXRS453 {
  public:
     enum RegisterMap {
@@ -26,8 +27,6 @@ class ADXRS453 {
     }
 
     void init() const {
-        SPI::init(SPI::Polarity::idle_low, SPI::Phase::leading_sample,
-                SPI::DataOrder::MSB_first, SPI::ClockDivisor::DIV_128);
         this->spi_dev.init();
     }
 
@@ -45,7 +44,7 @@ class ADXRS453 {
     }
 
     uint32_t getSensorData() const {
-        libs::array<uint8_t, 4> dataBuffer(0);
+        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0] = (1 << 5);
         uint32_t command = (static_cast<uint32_t>(dataBuffer[0]) << 24)
@@ -104,7 +103,7 @@ class ADXRS453 {
 
 
     uint16_t getRegister(const uint8_t registerAddress) const {
-        libs::array<uint8_t, 4> dataBuffer(0);
+        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0] = (1 << 7) | (registerAddress >> 7);
         dataBuffer[1] = (registerAddress << 1);
@@ -135,7 +134,7 @@ class ADXRS453 {
  private:
     void setRegisterValue(const uint8_t registerAddress,
             uint16_t registerValue) const {
-        libs::array<uint8_t, 4> dataBuffer(0);
+        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
         uint32_t command = 0;
 
         dataBuffer[0] = (1 << 6) | (registerAddress >> 7);
@@ -158,7 +157,7 @@ class ADXRS453 {
 
         this->spi_dev.transmit(dataBuffer);
     }
-    const SPI_Device spi_dev;
+    const SPI::Device<spi> spi_dev;
 };
 
 }  // namespace hal

@@ -3,12 +3,16 @@
 #include "array_view.h"
 #include "TWISlave.h"
 
-void hal::TWISlave::callback() {
-    printf("callback!: %d\n", TWISlave::rx_buffer_cnt);
+void hal::TWISlave::callbackRx() {
+    printf("callbackRx!: %d\n", TWISlave::rx_buffer_cnt);
     for (int i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
         printf("%d ", TWISlave::rx_buffer[i]);
     }
     printf("\n");
+}
+
+void hal::TWISlave::callbackTx() {
+    printf("callbackTx!");
 }
 
 int main() {
