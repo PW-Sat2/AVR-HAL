@@ -1,3 +1,6 @@
+include $(HAL_PATH)/boards/boards.make
+include $(HAL_PATH)/mcu/mcu.make
+
 # -- Tools definitions --------------------------
 
 AS       = avr-as
@@ -11,129 +14,8 @@ OBJCOPY  = avr-objcopy
 OBJDUMP  = avr-objdump
 SIZE     = avr-size
 
-CFLAGS = -O2 -std=gnu++1y -c -Wall -Wextra -Winline -ffunction-sections -g
+CFLAGS += -O2 -std=gnu++1y -c -Wall -Wextra -Winline -ffunction-sections -g $(USER_CFLAGS)
 CFLAGS += $(CPPFLAGS)
-
-# -- BOARDS -------------------------------------
-
-ifeq ($(BOARD),ARDUINOMEGA2560)
-	MCU = ATMEGA2560_TQFP100
-	F_CPU = 16000000L
-	CFLAGS += -DBOARD_ARDUINOMEGA2560
-	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoMega2560
-endif
-
-ifeq ($(BOARD),ARDUINONANO328P_16MHZ)
-	MCU = ATMEGA328P_TQFP32
-	F_CPU = 16000000L
-	CFLAGS += -DBOARD_ARDUINONANO328P_16MHZ
-	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328P
-endif
-
-ifeq ($(BOARD),ARDUINONANO328P_8MHZ)
-	MCU = ATMEGA328P_TQFP32
-	F_CPU = 8000000L
-	CFLAGS += -DBOARD_ARDUINONANO328P_8MHZ
-	BOARD_FOLDER = $(HAL_PATH)/boards/ArduinoNano328P
-endif
-
-ifeq ($(BOARD),EASYAVR128)
-	MCU = ATMEGA128A_TQFP64
-	F_CPU = 7372800L
-	CFLAGS += -DBOARD_EASYAVR128
-	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
-endif
-
-ifeq ($(BOARD),EVB_MEGA644P_16MHZ)
-	MCU = ATMEGA644P_DIP40
-	F_CPU = 16000000L
-	CFLAGS += -DBOARD_EVB_MEGA644P_16MHZ
-	BOARD_FOLDER = $(HAL_PATH)/boards/easyAVR128
-endif
-
-ifeq ($(BOARD),EVB_ATMEGA324P)
-	MCU = ATMEGA324P_44
-	F_CPU = 8000000L
-	CFLAGS += -DBOARD_EVB_ATMEGA324P
-	BOARD_FOLDER = $(HAL_PATH)/boards/EVB_ATMega324p
-endif
-
-ifeq ($(BOARD),SUNS_EM3)
-	MCU = ATMEGA324A_44
-	F_CPU = 8000000L
-	CFLAGS += -DBOARD_SUNS_EM3
-	BOARD_FOLDER = $(HAL_PATH)/boards/SUNS_EM3
-endif
-
-ifeq ($(BOARD),RADFET_EM1)
-	MCU = ATMEGA164P_44
-	F_CPU = 1000000L
-	CFLAGS += -DBOARD_RADFET_EM1
-	BOARD_FOLDER = $(HAL_PATH)/boards/RadFET_EM1
-endif
-
-# -- MCU ----------------------------------------
-
-ifeq ($(MCU),ATMEGA2560_TQFP100)
-	CFLAGS += -DMCU_ATMEGA2560_TQFP100
-	CFLAGS += -mmcu=atmega2560
-	AVRDUDE_TARGET = atmega2560
-endif
-
-ifeq ($(MCU),ATMEGA328P_TQFP32)
-	CFLAGS += -DMCU_ATMEGA328P_TQFP32
-	CFLAGS += -mmcu=atmega328p
-	AVRDUDE_TARGET = m328p
-endif
-
-ifeq ($(MCU),ATMEGA128A_TQFP64)
-	CFLAGS += -DMCU_ATMEGA128A_TQFP64
-	CFLAGS += -mmcu=atmega128a
-	AVRDUDE_TARGET = m128
-endif
-
-ifeq ($(MCU),ATMEGA644P_DIP40)
-	CFLAGS += -DMCU_ATMEGA644P_DIP40
-	CFLAGS += -mmcu=atmega644p
-	AVRDUDE_TARGET = m644p
-endif
-
-ifeq ($(MCU),ATMEGA164P_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega164p
-	AVRDUDE_TARGET = m164p
-endif
-
-ifeq ($(MCU),ATMEGA324P_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega324p
-	AVRDUDE_TARGET = m324p
-endif
-
-ifeq ($(MCU),ATMEGA644P_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega664p
-	AVRDUDE_TARGET = m664p
-endif
-
-
-ifeq ($(MCU),ATMEGA164A_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega164a
-	AVRDUDE_TARGET = m164pa
-endif
-
-ifeq ($(MCU),ATMEGA324A_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega324a
-	AVRDUDE_TARGET = m324pa
-endif
-
-ifeq ($(MCU),ATMEGA644A_44)
-	CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-	CFLAGS += -mmcu=atmega664a
-	AVRDUDE_TARGET = m664pa
-endif
 
 # -- Compile ------------------------------------
 
@@ -158,7 +40,11 @@ INCLUDES += \
 
 CFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDES)
+ifdef F_CPU
 CFLAGS += -DF_CPU=$(F_CPU)
+else
+#$(error "No F_CPU defined! Provide in board BSP (board.make), by Makefile or by command line (F_CPU=...)")
+endif
 
 LINKER_FLAGS = -Wl,-Map=$(LIST_PATH)/$(APP_NAME).map -Wl,--gc-sections 
 LINKER_FLAGS += -Wl,-u,vfprintf -lprintf_flt -lm
@@ -172,7 +58,7 @@ all: params directories images size
 all_targets: clean
 	$(MAKE) all BOARD=ARDUINOMEGA2560
 	$(MAKE) clean
-	$(MAKE) all BOARD=ARDUINONANO328P_8MHZ
+	$(MAKE) all BOARD=ARDUINONANO328P F_CPU=16000000
 	$(MAKE) clean
 	$(MAKE) all BOARD=EASYAVR128
 	$(MAKE) clean
@@ -193,10 +79,15 @@ ifdef BAUD
 	@"echo" BAUD=$(BAUD) >> $(APP_NAME)/conf
 endif
 
+ifndef BOARD
+	@"echo" "No BOARD defined. Provide BOARD=...!!!"
+	false;
+endif
+
 images: params $(HEX_FILE) $(ELF_FILE)
 
 $(OBJS): force
-	@echo -e "\nCompiling " $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) "..."
+	@echo "\nCompiling " $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) "..."
 	$(CPP) $(CFLAGS) $(filter $(subst $(OBJ_PATH)/,,$(subst ^,/,$(subst .o,.cpp,$@))), $(SRCS)) -o $@
 	
 force: ;
@@ -204,11 +95,11 @@ force: ;
 $(OBJS): directories
 
 $(ELF_FILE): $(OBJS)
-	@echo -e "\nLinking..."
+	@echo "\nLinking..."
 	$(LD) $(LINKER_FLAGS) $(OBJS) -o $@
 
 $(HEX_FILE): $(ELF_FILE)
-	@echo -e "\nCreating HEX..."
+	@echo "\nCreating HEX..."
 	$(OBJCOPY) -O ihex -R .eeprom $^ $@
 
 clean:
@@ -236,7 +127,7 @@ directories: clean
 endif
 
 size: $(ELF_FILE)
-	@echo -e "\nSize:"
+	@echo "\nSize:"
 	@$(SIZE) -td $(ELF_FILE)
 
 fresh: all
@@ -263,7 +154,7 @@ endif
 	avrdude -v -p$(AVRDUDE_TARGET) $(AVRDUDE_PARAMS) -Uflash:w:$(HEX_FILE):i
 
 
-ifdef BOARD_FOLDER
+ifneq ("$(wildcard $(BOARD_FOLDER)/programmers.make)","")
 include $(BOARD_FOLDER)/programmers.make
 endif
 
