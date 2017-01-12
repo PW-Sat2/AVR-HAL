@@ -1,5 +1,7 @@
-include $(HAL_PATH)/boards/boards.make
-include $(HAL_PATH)/mcu/mcu.make
+ifeq (,$(filter clean all_targets ,$(MAKECMDGOALS)))
+  include $(HAL_PATH)/boards/boards.make
+  include $(HAL_PATH)/mcu/mcu.make
+endif
 
 # -- Tools definitions --------------------------
 
@@ -40,11 +42,7 @@ INCLUDES += \
 
 CFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDES)
-ifdef F_CPU
 CFLAGS += -DF_CPU=$(F_CPU)
-else
-#$(error "No F_CPU defined! Provide in board BSP (board.make), by Makefile or by command line (F_CPU=...)")
-endif
 
 LINKER_FLAGS = -Wl,-Map=$(LIST_PATH)/$(APP_NAME).map -Wl,--gc-sections 
 LINKER_FLAGS += -Wl,-u,vfprintf -lprintf_flt -lm
@@ -82,6 +80,10 @@ endif
 ifndef BOARD
 	@"echo" "No BOARD defined. Provide BOARD=...!!!"
 	false;
+endif
+
+ifndef AVRDUDE_TARGET
+	$(error "Incorrect MCU $(MCU) defined")
 endif
 
 images: params $(HEX_FILE) $(ELF_FILE)
