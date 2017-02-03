@@ -1,7 +1,5 @@
 #include <util/delay.h>
 #include "DigitalIO.h"
-#include "boards.h"
-
 
 int main() {
     constexpr hal::DigitalIO pin(hal::bsp::pins::LED);

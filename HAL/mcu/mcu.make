@@ -1,46 +1,49 @@
-# -- MCU ----------------------------------------
+includes.ATMEGA2560_TQFP100       := atmega2560_tqfp100
+mmcutarget.ATMEGA2560_TQFP100     := atmega2560
+avrdudetarget.ATMEGA2560_TQFP100  := atmega2560
 
-ifeq ($(MCU),ATMEGA2560_TQFP100)
-  CFLAGS += -DMCU_ATMEGA2560_TQFP100
-  CFLAGS += -mmcu=atmega2560
-  AVRDUDE_TARGET = atmega2560
-else ifeq ($(MCU),ATMEGA328P_TQFP32)
-  CFLAGS += -DMCU_ATMEGA328P_TQFP32
-  CFLAGS += -mmcu=atmega328p
-  AVRDUDE_TARGET = m328p
-else ifeq ($(MCU),ATMEGA128A_TQFP64)
-  CFLAGS += -DMCU_ATMEGA128A_TQFP64
-  CFLAGS += -mmcu=atmega128a
-  AVRDUDE_TARGET = m128
-else ifeq ($(MCU),ATMEGA644P_DIP40)
-  CFLAGS += -DMCU_ATMEGA644P_DIP40
-  CFLAGS += -mmcu=atmega644p
-  AVRDUDE_TARGET = m644p
-else ifeq ($(MCU),ATMEGA164P_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega164p
-  AVRDUDE_TARGET = m164p
-else ifeq ($(MCU),ATMEGA324P_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega324p
-  AVRDUDE_TARGET = m324p
-else ifeq ($(MCU),ATMEGA644P_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega664p
-  AVRDUDE_TARGET = m664p
-else ifeq ($(MCU),ATMEGA164A_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega164a
-  AVRDUDE_TARGET = m164pa
-else ifeq ($(MCU),ATMEGA324A_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega324a
-  AVRDUDE_TARGET = m324pa
-else ifeq ($(MCU),ATMEGA644A_44)
-  CFLAGS += -DMCU_ATMEGA164P_324P_644P_44
-  CFLAGS += -mmcu=atmega664a
-  AVRDUDE_TARGET = m664pa
-else
+includes.ATMEGA328P_TQFP32        := atmega328p_tqfp32
+mmcutarget.ATMEGA328P_TQFP32      := atmega328p
+avrdudetarget.ATMEGA328P_TQFP32   := m328p
+
+includes.ATMEGA128A_TQFP64        := atmega128a_tqfp64
+mmcutarget.ATMEGA128A_TQFP64      := atmega128a
+avrdudetarget.ATMEGA128A_TQFP64   := m128
+
+includes.ATMEGA644P_DIP40         := atmega644p_dip40
+mmcutarget.ATMEGA644P_DIP40       := atmega644p
+avrdudetarget.ATMEGA644P_DIP40    := m644p
+
+includes.ATMEGA164P_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA164P_44          := atmega164p
+avrdudetarget.ATMEGA164P_44       := m164p
+
+includes.ATMEGA164A_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA164P_44          := atmega164a
+avrdudetarget.ATMEGA164P_44       := m164pa
+
+includes.ATMEGA324P_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA324P_44          := atmega324p
+avrdudetarget.ATMEGA324P_44       := m324p
+
+includes.ATMEGA324P_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA324P_44          := atmega324a
+avrdudetarget.ATMEGA324P_44       := m324pa
+
+includes.ATMEGA644P_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA644P_44          := atmega664p
+avrdudetarget.ATMEGA644P_44       := m664p
+
+includes.ATMEGA644A_44            := atmega164p_324p_644p_44
+mmcutarget.ATMEGA644P_44          := atmega664a
+avrdudetarget.ATMEGA644P_44       := m664pa
+
+
+INCLUDES += -I$(HAL_PATH)/mcu/${includes.${MCU}}
+CFLAGS += -mmcu=${mmcutarget.${MCU}}
+AVRDUDE_TARGET = ${avrdudetarget.${MCU}}
+
+ifeq (${includes.${MCU}},)
   $(error "Incorrect MCU $(MCU) defined")
 endif
 

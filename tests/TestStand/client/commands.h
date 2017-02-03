@@ -4,7 +4,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "DigitalIO.h"
-#include "boards.h"
 #include "Serial.h"
 #include "SPI.h"
 #include "SPISlave.h"

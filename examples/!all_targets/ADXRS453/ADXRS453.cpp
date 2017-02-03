@@ -2,7 +2,6 @@
 #include "SPI.h"
 #include "SPIHardware.h"
 #include "ADXRS453.h"
-#include "boards.h"
 #include "Serial.h"
 #include "mcu.h"
 
