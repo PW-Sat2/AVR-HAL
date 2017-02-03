@@ -14,4 +14,4 @@ endif
 $(info "Board $(BOARD) files imported from" $(BOARD_FOLDER));
 
 include $(BOARD_FOLDER)/board.make
-CFLAGS += -DBOARD=$(BOARD)
+INCLUDES += -I$(BOARD_FOLDER)

@@ -32,9 +32,7 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(subst /,^,$(subst .cpp,.o,$(SRCS))))
 
 INCLUDES += \
   -I$(HAL_PATH) \
-  -I$(HAL_PATH)/mcu \
   -I$(HAL_PATH)/periph \
-  -I$(HAL_PATH)/boards \
   -I$(HAL_PATH)/devices \
   -I$(HAL_PATH)/libs \
   -I$(HAL_PATH)/libs/device_supports \

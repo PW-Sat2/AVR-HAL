@@ -7,7 +7,7 @@
 #include "array.h"
 #include "mcu.h"
 
-#include "boards.h"
+#include "board.h"
 #include "Serial.h"
 
 namespace hal {
