@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_ARDUINOMEGA2560_ARDUINOMEGA2560_H_
-#define HAL_BOARDS_ARDUINOMEGA2560_ARDUINOMEGA2560_H_
+#ifndef HAL_BOARDS_ARDUINOMEGA2560_BOARD_H_
+#define HAL_BOARDS_ARDUINOMEGA2560_BOARD_H_
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
@@ -88,4 +88,4 @@ constexpr static hal::LED led(pins::LED);
 
 }  // namespace bsp
 }  // namespace hal
-#endif  // HAL_BOARDS_ARDUINOMEGA2560_ARDUINOMEGA2560_H_
+#endif  // HAL_BOARDS_ARDUINOMEGA2560_BOARD_H_

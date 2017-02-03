@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_EVB_EVB_H_
-#define HAL_BOARDS_EVB_EVB_H_
+#ifndef HAL_BOARDS_EVB_MEGA644P_BOARD_H_
+#define HAL_BOARDS_EVB_MEGA644P_BOARD_H_
 
 #include "periph/DigitalIO.h"
 #include "devices/LED.h"
@@ -46,4 +46,4 @@ static constexpr DigitalIO::Pin D7 = 21;
 }  // namespace bsp
 }  // namespace hal
 
-#endif  // HAL_BOARDS_EVB_EVB_H_
+#endif  // HAL_BOARDS_EVB_MEGA644P_BOARD_H_
