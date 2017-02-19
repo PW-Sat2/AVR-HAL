@@ -29,6 +29,11 @@ enum Registers {
     TIMER = 0x0F
 };
 
+enum ClockStatus {
+    STOPPED = 0,
+    RUNNING = 1
+};
+
 enum Century {
     Century_21st = 0x00,
     Century_20th = 0x01
@@ -102,10 +107,9 @@ class PCF8563 {
         datetime.month = bcdToDec(data[5] & 0x1f);
 
         if (data[5] & 0x80) {
-            datetime.year = 1900 + bcdToDec(data[8]);
-        }
-        else {
-            datetime.year = 2000 + bcdToDec(data[8]);
+            datetime.year = 1900 + bcdToDec(data[6]);
+        } else {
+            datetime.year = 2000 + bcdToDec(data[6]);
         }
 
         datetime.clk_status = static_cast<bool>(data[0] & 0x80);
@@ -113,9 +117,24 @@ class PCF8563 {
         return datetime;
     }
 
+    PCF8563_types::ClockStatus getClockStatus() const {
+        libs::array<uint8_t, 1> data;
+        i2cdevice.read_register(PCF8563_types::Registers::VL_SECONDS, data);
+
+        PCF8563_types::ClockStatus status;
+
+        if (true == static_cast<bool>(data[0] & 0x80)) {
+            status = PCF8563_types::ClockStatus::STOPPED;
+        } else {
+            status = PCF8563_types::ClockStatus::RUNNING;
+        }
+
+        return status;
+    }
+
 
  private:
-    const I2C_Device<I2C> i2cdevice{0xA2};
+    const I2C_Device<I2C> i2cdevice{0x51};
 
     uint8_t decToBcd(uint8_t val) const {
         return ((val/10*16) + (val%10));
