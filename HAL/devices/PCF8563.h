@@ -112,7 +112,11 @@ class PCF8563 {
             datetime.year = 2000 + bcdToDec(data[6]);
         }
 
-        datetime.clk_status = static_cast<bool>(data[0] & 0x80);
+        if (true == static_cast<bool>(data[0] & 0x80)) {
+            datetime.clk_status = PCF8563_types::ClockStatus::STOPPED;
+        } else {
+            datetime.clk_status = PCF8563_types::ClockStatus::RUNNING;
+        }
 
         return datetime;
     }
