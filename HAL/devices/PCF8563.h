@@ -68,12 +68,12 @@ class PCF8563 {
         i2cdevice.write_register(PCF8563_types::Registers::CONTROL_STATUS_1, data);
     }
 
-    void set_time(const uint8_t seconds, const uint8_t minutes, const uint8_t hours) const {
+    void set_time(const uint8_t hours, const uint8_t minutes, const uint8_t seconds) const {
         libs::array<const uint8_t, 3> data = {decToBcd(seconds), decToBcd(minutes), decToBcd(hours)};
         i2cdevice.write_register(PCF8563_types::Registers::VL_SECONDS, data);
     }
 
-    void set_month(const uint8_t day, const uint8_t weekday, const uint8_t month, const uint8_t year,
+    void set_date(const uint8_t day, const uint8_t weekday, const uint8_t month, const uint8_t year,
          const PCF8563_types::Century century) const {
         uint8_t month_century = decToBcd(month);
 

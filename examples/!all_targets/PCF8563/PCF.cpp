@@ -15,8 +15,8 @@ int main() {
     if (hal::PCF8563_types::ClockStatus::STOPPED == rtc.getClockStatus()) {
         printf("Clock is not working, setting time!\r\n");
         rtc.clear_status();
-        rtc.set_time(50, 52, 22);
-        rtc.set_month(19, 6, 2, 17, hal::PCF8563_types::Century::Century_21st);
+        rtc.set_time(22, 52, 50);
+        rtc.set_date(19, 6, 2, 17, hal::PCF8563_types::Century::Century_21st);
     } else {
         printf("RTC is working!\r\n");
     }
