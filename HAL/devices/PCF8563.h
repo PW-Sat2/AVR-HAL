@@ -58,7 +58,7 @@ struct DateTime {
     bool clk_status;
 };
 
-} // namespace PCF8563_types
+}  // namespace PCF8563_types
 
 template<typename I2C>
 class PCF8563 {
@@ -73,7 +73,8 @@ class PCF8563 {
         i2cdevice.write_register(PCF8563_types::Registers::VL_SECONDS, data);
     }
 
-    void set_month(const uint8_t day, const uint8_t weekday, const uint8_t month, const uint8_t year, const PCF8563_types::Century century) const {
+    void set_month(const uint8_t day, const uint8_t weekday, const uint8_t month, const uint8_t year,
+         const PCF8563_types::Century century) const {
         uint8_t month_century = decToBcd(month);
 
         if (PCF8563_types::Century::Century_21st == century) {
