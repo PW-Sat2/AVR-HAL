@@ -9,10 +9,11 @@ int main() {
     hal::Serial0.init(4800, hal::STDIO::ENABLE);
 
     using SoftI2C = hal::SoftI2C<27, 28>;
+    using PCF8563 = hal::PCF8563<SoftI2C>;
     SoftI2C::init();
-    constexpr hal::PCF8563<SoftI2C> rtc;
+    constexpr PCF8563 rtc;
 
-    if (hal::PCF8563_types::ClockStatus::STOPPED == rtc.getClockStatus()) {
+    if (PCF8563::ClockStatus::STOPPED == rtc.getClockStatus()) {
         printf("Clock is not working, setting time!\r\n");
         rtc.clear_status();
         rtc.set_date_time({20, 1, 2, 1994}, {20, 00, 00});
@@ -20,12 +21,12 @@ int main() {
         printf("RTC is working!\r\n");
     }
 
-    rtc.set_square_output(hal::PCF8563_types::SquareOutput::SQW_32KHZ);
-    hal::PCF8563_types::Date date;
-    hal::PCF8563_types::Time time;
+    rtc.set_square_output(PCF8563::SquareOutput::SQW_32KHZ);
+    PCF8563::Date date;
+    PCF8563::Time time;
 
     while (true) {
-        if (hal::PCF8563_types::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
+        if (PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
                 time.hours, time.minutes, time.seconds,
                 date.day, date.month, date.year, date.weekday);
