@@ -10,12 +10,12 @@ namespace hal {
 template<typename I2C>
 class PCF8563 {
  public:
-    enum ClockStatus {
+    enum class ClockStatus {
         STOPPED = 0,
         RUNNING = 1
     };
 
-    enum SquareOutput {
+    enum class SquareOutput {
         SQW_DISABLE = 0b00000000,
         SQW_32KHZ = 0b10000000,
         SQW_1024HZ = 0b10000001,
@@ -37,7 +37,7 @@ class PCF8563 {
     };
     void clear_status() const {
         libs::array<const uint8_t, 2> data = {0x00, 0x00};
-        i2cdevice.write_register(Registers::CONTROL_STATUS_1, data);
+        i2cdevice.write_register(static_cast<uint8_t>(Registers::CONTROL_STATUS_1), data);
     }
 
     void set_date_time(Date date, Time time) const {
@@ -60,17 +60,17 @@ class PCF8563 {
             decToBcd(date.year%100)
         };
 
-        i2cdevice.write_register(Registers::VL_SECONDS, data);
+        i2cdevice.write_register(static_cast<uint8_t>(Registers::VL_SECONDS), data);
     }
 
     void set_square_output(SquareOutput frequency) const {
-        libs::array<const uint8_t, 1> data = {frequency};
-        i2cdevice.write_register(Registers::CLKOUT_CTRL, data);
+        libs::array<const uint8_t, 1> data = {static_cast<uint8_t>(frequency)};
+        i2cdevice.write_register(static_cast<uint8_t>(Registers::CLKOUT_CTRL), data);
     }
 
     ClockStatus get_date_time(Date &date, Time &time) const {
         libs::array<uint8_t, 7> data;
-        i2cdevice.read_register(Registers::VL_SECONDS, data);
+        i2cdevice.read_register(static_cast<uint8_t>(Registers::VL_SECONDS), data);
 
         time.hours = bcdToDec(data[2] & 0x3F);
         time.minutes = bcdToDec(data[1] & 0x7F);
@@ -95,7 +95,7 @@ class PCF8563 {
 
     ClockStatus getClockStatus() const {
         libs::array<uint8_t, 1> data;
-        i2cdevice.read_register(Registers::VL_SECONDS, data);
+        i2cdevice.read_register(static_cast<uint8_t>(Registers::VL_SECONDS), data);
 
         if (data[0] & 0x80) {
             return ClockStatus::STOPPED;
@@ -105,7 +105,7 @@ class PCF8563 {
     }
 
  private:
-    enum Registers {
+    enum class Registers {
         CONTROL_STATUS_1 = 0x00,
         CONTROL_STATUS_2 = 0x01,
         VL_SECONDS = 0x02,
