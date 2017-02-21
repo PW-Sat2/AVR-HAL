@@ -1,6 +1,6 @@
 GTEST_DIR = googletest-release-1.7.0
 CSRCS = 
-TESTS = tests_run_all.cpp I2C.cpp array_view.cpp array.cpp bit_operations.cpp compile_time.cpp
+TESTS = tests_run_all.cpp I2C.cpp array_view.cpp array.cpp bit_operations.cpp compile_time.cpp fifo.cpp
 
 INCLUDES = -I. -I$(HAL_PATH)/libs -I$(GTEST_DIR)/include/ -I$(GTEST_DIR)/include/gtest/ -I$(HAL_PATH)/periph
 
