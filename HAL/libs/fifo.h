@@ -42,6 +42,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+namespace hal {
+namespace libs {
+
 template <class T>
 class FIFO {
  public:
@@ -253,4 +256,9 @@ class FIFO_data : public FIFO<T> {
  private:
     T data[size];
 };
+
+}  // namespace libs
+}  // namespace hal
+
+
 #endif  // HAL_LIBS_FIFO_H_

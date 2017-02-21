@@ -1,6 +1,8 @@
 #include "gtest.h"
 #include "fifo.h"
 
+using hal::libs::FIFO_data;
+
 TEST(fifo, simple) {
     FIFO_data<int, 10> fifo;
     fifo.append(1);
