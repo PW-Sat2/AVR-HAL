@@ -40,6 +40,11 @@ class array_view final {
     constexpr explicit array_view(ArrayType (&&arr)[ArraySize]) = delete;
 
     template<typename ContainerType>
+    constexpr explicit array_view(ContainerType & container) :
+            m_pointer { container.data() }, m_size_in_items { container.size() } {
+    }
+
+    template<typename ContainerType>
     constexpr explicit array_view(const ContainerType & container) :
             m_pointer { container.data() }, m_size_in_items { container.size() } {
     }
@@ -210,8 +215,12 @@ constexpr auto make_array_view(ArrayType * array_ptr,
     return array_view<ArrayType> { array_ptr, size_in_items };
 }
 template<typename ContainerType>
-constexpr auto make_array_view(const ContainerType & container) {
+constexpr auto make_array_view(ContainerType & container) {
     return array_view<typename ContainerType::value_type> { container };
+}
+template<typename ContainerType>
+constexpr auto make_array_view(const ContainerType & container) {
+    return array_view<const typename ContainerType::value_type> { container };
 }
 
 }  // namespace libs
