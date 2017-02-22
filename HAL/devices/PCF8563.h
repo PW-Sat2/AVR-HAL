@@ -10,12 +10,12 @@ namespace hal {
 template<typename I2C>
 class PCF8563 {
  public:
-    enum ClockStatus {
+    enum class ClockStatus {
         STOPPED = 0,
         RUNNING = 1
     };
 
-    enum SquareOutput {
+    enum class SquareOutput {
         SQW_DISABLE = 0b00000000,
         SQW_32KHZ = 0b10000000,
         SQW_1024HZ = 0b10000001,
@@ -64,7 +64,7 @@ class PCF8563 {
     }
 
     void set_square_output(SquareOutput frequency) const {
-        libs::array<const uint8_t, 1> data = {frequency};
+        libs::array<const uint8_t, 1> data = {static_cast<uint8_t>(frequency)};
         i2cdevice.write_register(Registers::CLKOUT_CTRL, data);
     }
 
