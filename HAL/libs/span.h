@@ -1,5 +1,5 @@
-#ifndef HAL_LIBS_ARRAY_VIEW_H_
-#define HAL_LIBS_ARRAY_VIEW_H_
+#ifndef HAL_LIBS_SPAN_H_
+#define HAL_LIBS_SPAN_H_
 
 #include <stddef.h>
 #include "hal_assert.h"
@@ -8,7 +8,7 @@ namespace hal {
 namespace libs {
 
 template<typename T>
-class array_view final {
+class span final {
  public:
     //
     // Nested types:
@@ -19,52 +19,54 @@ class array_view final {
     using difference_type = ptrdiff_t;
 
     using pointer = T *;
+    using iterator = T *;
     using reference = T &;
     using const_pointer = const T *;
+    using const_iterator = const T *;
     using const_reference = const T &;
 
     //
     // Constructors / assignment:
     //
 
-    constexpr array_view() :
+    constexpr span() :
             m_pointer { nullptr }, m_size_in_items { 0 } {
     }
 
     template<typename ArrayType, size_t ArraySize>
-    constexpr explicit array_view(ArrayType (&arr)[ArraySize]) :
+    constexpr span(ArrayType (&arr)[ArraySize]) :
             m_pointer { arr }, m_size_in_items { ArraySize } {
     }
 
     template<typename ArrayType, size_t ArraySize>
-    constexpr explicit array_view(ArrayType (&&arr)[ArraySize]) = delete;
+    constexpr span(ArrayType (&&arr)[ArraySize]) = delete;
 
     template<typename ContainerType>
-    constexpr explicit array_view(ContainerType & container) :
+    constexpr span(ContainerType & container) :
             m_pointer { container.data() }, m_size_in_items { container.size() } {
     }
 
     template<typename ContainerType>
-    constexpr explicit array_view(const ContainerType & container) :
+    constexpr span(const ContainerType & container) :
             m_pointer { container.data() }, m_size_in_items { container.size() } {
     }
 
     template<typename ContainerType>
-    constexpr explicit array_view(const ContainerType && container) = delete;
+    constexpr span(const ContainerType && container) = delete;
 
     template<typename ConvertibleType>
-    constexpr array_view(ConvertibleType * array_ptr,
+    constexpr span(ConvertibleType * array_ptr,
             size_type size_in_items) :
             m_pointer { array_ptr }, m_size_in_items { size_in_items } {
     }
 
     template<typename ConvertibleType>
-    constexpr array_view(array_view<ConvertibleType> other) :
+    constexpr span(span<ConvertibleType> other) :
             m_pointer { other.data() }, m_size_in_items { other.size() } {
     }
 
     template<typename ConvertibleType>
-    constexpr array_view & operator =(array_view<ConvertibleType> other) {
+    constexpr span & operator =(span<ConvertibleType> other) {
         m_pointer = other.data();
         m_size_in_items = other.size();
         return *this;
@@ -79,35 +81,21 @@ class array_view final {
         m_size_in_items = 0;
     }
 
-    array_view slice(const size_type offset_in_items) const {
-        return slice(offset_in_items, size());
-    }
-
-    array_view slice(const size_type start_offset,
-            const size_type end_offset) const {
+    span subspan(const size_type start_offset,
+            const size_type slice_size) const {
         check_not_null();
 
-        if (end_offset == start_offset) {
-            fail_due_to_error(
-                    "array_view slice start and end offsets are the same!");
-        }
-        if (start_offset > end_offset) {
-            fail_due_to_error(
-                    "array_view slice start offset greater than end offset!");
-        }
-
-        size_type slice_size = end_offset - start_offset;
         pointer slice_ptr = const_cast<pointer>(data()) + start_offset;
         pointer end_ptr = const_cast<pointer>(data()) + size();
 
         if (slice_ptr > end_ptr) {
-            fail_due_to_error("array_view slice start offset is out-of-bounds!");
+            fail_due_to_error("span slice start offset is out-of-bounds!");
         }
         if (slice_size > (size() - start_offset)) {
-            fail_due_to_error("array_view slice is larger than size!");
+            fail_due_to_error("span slice is larger than size!");
         }
 
-        return array_view(slice_ptr, slice_size);
+        return span(slice_ptr, slice_size);
     }
 
     //
@@ -115,12 +103,12 @@ class array_view final {
     //
 
     reference at(const size_type index) const {
-        // at() always validates the array_view and index.
+        // at() always validates the span and index.
         // operator[] uses assert()s that can be disabled if
         // you care more about performance than runtime checking.
         check_not_null();
         if (index >= size()) {
-            fail_due_to_error("array_view::at(): index is out-of-bounds!");
+            fail_due_to_error("span::at(): index is out-of-bounds!");
         }
         return *(data() + index);
     }
@@ -160,6 +148,9 @@ class array_view final {
     constexpr size_type size() const {
         return m_size_in_items;
     }
+    constexpr size_type length() const {
+        return m_size_in_items;
+    }
     constexpr size_type size_bytes() const {
         return m_size_in_items * sizeof(value_type);
     }
@@ -168,7 +159,7 @@ class array_view final {
     }
 
     //
-    // Compare against nullptr (test for a null array_view):
+    // Compare against nullptr (test for a null span):
     //
 
     constexpr bool operator ==(nullptr_t) const {
@@ -182,48 +173,48 @@ class array_view final {
     // Compare for same array pointer and size:
     //
 
-    constexpr bool operator ==(const array_view & other) const {
+    constexpr bool operator ==(const span & other) const {
         return data() == other.data() && size() == other.size();
     }
-    constexpr bool operator !=(const array_view & other) const {
+    constexpr bool operator !=(const span & other) const {
         return !(*this == other);
     }
 
  private:
     void check_not_null() const {
         if (data() == nullptr || size() == 0) {
-            fail_due_to_error("array_view pointer is null or size is zero!");
+            fail_due_to_error("span pointer is null or size is zero!");
         }
     }
 
-    // Pointer is just a reference to external memory. Not owned by array_view.
+    // Pointer is just a reference to external memory. Not owned by span.
     pointer m_pointer;
     size_type m_size_in_items;
 };
 
 //
-// make_array_view() helpers:
+// make_span() helpers:
 //
 
 template<typename ArrayType, size_t ArraySize>
-constexpr auto make_array_view(ArrayType (&arr)[ArraySize]) {
-    return array_view<ArrayType> { arr, ArraySize };
+constexpr auto make_span(ArrayType (&arr)[ArraySize]) {
+    return span<ArrayType> { arr, ArraySize };
 }
 template<typename ArrayType>
-constexpr auto make_array_view(ArrayType * array_ptr,
+constexpr auto make_span(ArrayType * array_ptr,
         const size_t size_in_items) {
-    return array_view<ArrayType> { array_ptr, size_in_items };
+    return span<ArrayType> { array_ptr, size_in_items };
 }
 template<typename ContainerType>
-constexpr auto make_array_view(ContainerType & container) {
-    return array_view<typename ContainerType::value_type> { container };
+constexpr auto make_span(ContainerType & container) {
+    return span<typename ContainerType::value_type> { container };
 }
 template<typename ContainerType>
-constexpr auto make_array_view(const ContainerType & container) {
-    return array_view<const typename ContainerType::value_type> { container };
+constexpr auto make_span(const ContainerType & container) {
+    return span<const typename ContainerType::value_type> { container };
 }
 
 }  // namespace libs
 }  // namespace hal
 
-#endif  // HAL_LIBS_ARRAY_VIEW_H_
+#endif  // HAL_LIBS_SPAN_H_

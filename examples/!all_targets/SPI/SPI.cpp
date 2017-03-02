@@ -2,7 +2,7 @@
 #include "SPISoftware.h"
 #include "SPI.h"
 #include "mcu.h"
-#include "array_view.h"
+#include "span.h"
 
 using namespace hal;
 

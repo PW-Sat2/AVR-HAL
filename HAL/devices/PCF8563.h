@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "I2C.h"
 #include "array.h"
-#include "array_view.h"
+#include "span.h"
 
 namespace hal {
 template<typename I2C>
