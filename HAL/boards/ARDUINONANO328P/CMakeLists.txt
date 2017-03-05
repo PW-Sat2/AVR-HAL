@@ -1,0 +1,13 @@
+set(NAME board)
+
+add_library(${NAME} INTERFACE)
+
+target_include_directories(${NAME} INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
+set(HAL_MCU ATMEGA328P_TQFP32 CACHE STRING "")
+set(AVRDUDE_TOOL arduino CACHE STRING "")
+set(F_CPU 16000000 CACHE STRING "")
+
+set(AVRDUDE_OPTIONS -P -b115200 CACHE STRING "")
