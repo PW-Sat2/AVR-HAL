@@ -2,7 +2,7 @@
 #define HAL_PERIPH_I2C_H_
 
 #include "array.h"
-#include "array_view.h"
+#include "span.h"
 #include <type_traits>
 #include <utility>
 

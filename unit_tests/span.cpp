@@ -1,14 +1,16 @@
-#include "gtest.h"
-#include "array_view.h"
+#include <gtest/gtest.h>
+#include "span.h"
 
-TEST(array_view, check_values) {
+using namespace hal;
+
+TEST(span, check_values) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    hal::libs::array_view<int> arv(tab);
-    const hal::libs::array_view<int> carv(tab);
+    libs::span<int> arv(tab);
+    const libs::span<int> carv(tab);
 
     EXPECT_NE(arv.data(), nullptr);
     EXPECT_EQ(arv.size(), 10);
@@ -48,14 +50,14 @@ TEST(array_view, check_values) {
     EXPECT_EQ(carv.size_bytes(), 40);
 }
 
-TEST(array_view, equal) {
+TEST(span, equal) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    hal::libs::array_view<int> arv(tab);
-    hal::libs::array_view<int> arv2;
+    libs::span<int> arv(tab);
+    libs::span<int> arv2;
     EXPECT_EQ(arv.empty(), false);
     EXPECT_EQ(arv2.empty(), true);
     EXPECT_EQ(arv == arv2, false);
@@ -78,13 +80,13 @@ TEST(array_view, equal) {
     }
 }
 
-TEST(array_view, reset) {
+TEST(span, reset) {
     constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    hal::libs::array_view<int32_t> arv(tab);
+    libs::span<int32_t> arv(tab);
 
     for (int i = 0; i < size; ++i) {
         EXPECT_EQ(arv[i], i);
@@ -99,14 +101,14 @@ TEST(array_view, reset) {
     EXPECT_EQ(arv.size_bytes(), 0);
 }
 
-TEST(array_view, pointers) {
+TEST(span, pointers) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    hal::libs::array_view<int32_t> arv(tab);
-    const hal::libs::array_view<int32_t> carv(arv);
+    libs::span<int32_t> arv(tab);
+    const libs::span<int32_t> carv(arv);
 
     int32_t * ptr = arv.data();
     EXPECT_EQ(ptr, arv.data());
@@ -114,14 +116,14 @@ TEST(array_view, pointers) {
     EXPECT_EQ(cptr, carv.data());
 }
 
-TEST(array_view, references) {
+TEST(span, references) {
     constexpr int size = 10;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    hal::libs::array_view<int32_t> arv(tab);
-    const hal::libs::array_view<int32_t> carv(tab);
+    libs::span<int32_t> arv(tab);
+    const libs::span<int32_t> carv(tab);
 
     EXPECT_EQ(&arv[0], arv.begin());
     EXPECT_EQ(&arv[0]+10, arv.end());
@@ -134,23 +136,23 @@ TEST(array_view, references) {
     EXPECT_EQ(carv[9], arv.back());
 }
 
-TEST(array_view, slice) {
+TEST(span, slice) {
     constexpr int size = 100;
     int tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
     int * const tab_ptr = tab;
-    hal::libs::array_view<int32_t> arv(tab_ptr, 100);
+    libs::span<int32_t> arv(tab_ptr, 100);
 
-    hal::libs::array_view<int32_t> arv2(arv.slice(50));
+    libs::span<int32_t> arv2(arv.subspan(0, 50));
 
     EXPECT_EQ(arv2.size(), 50);
     for (int i = 0; i < arv2.size(); ++i) {
-        EXPECT_EQ(arv2[i], i+50);
+        EXPECT_EQ(arv2[i], i);
     }
 
-    arv2 = arv.slice(20, 30);
+    arv2 = arv.subspan(20, 10);
 
     EXPECT_EQ(arv2.size(), 10);
     for (int i = 0; i < arv2.size(); ++i) {

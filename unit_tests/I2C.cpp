@@ -57,7 +57,7 @@ class TWI_fake : public I2C {
         }
     }
 
-    static void write(const libs::array_view<const uint8_t> & arv) {
+    static void write(const libs::span<const uint8_t> & arv) {
         auto size = arv.size();
         auto * data = arv.data();
         while (size--) {
@@ -66,7 +66,7 @@ class TWI_fake : public I2C {
         }
     }
 
-    static void read(libs::array_view<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
+    static void read(libs::span<uint8_t> arv, Acknowledge last_byte_ACK = NACK) {
         auto size = arv.size()-1;
         auto * data = arv.data();
         while (size--) {
@@ -92,16 +92,16 @@ bool operator==(const std::vector<I2C_Event> & lhs,
 #define PUSHv(event, val) ref.push_back(I2C_Event(I2C_Event:: event, val))
 
 TEST(i2c, basic) {
-    using hal::libs::make_array_view;
-    using hal::libs::array_view;
+    using hal::libs::make_span;
+    using hal::libs::span;
     events.clear();
 
     TWI_fake::write(0);
     uint8_t data[] = {1, 2, 3};
-    TWI_fake::write(make_array_view(data));
+    TWI_fake::write(make_span(data));
 
     uint8_t data2[4];
-    array_view<uint8_t> XXX(data2);
+    span<uint8_t> XXX(data2);
     TWI_fake::read(XXX);
     TWI_fake::read(I2C::ACK);
     TWI_fake::read(I2C::NACK);
@@ -122,8 +122,8 @@ TEST(i2c, basic) {
 }
 
 TEST(i2c, device) {
-    using hal::libs::make_array_view;
-    using hal::libs::array_view;
+    using hal::libs::make_span;
+    using hal::libs::span;
     events.clear();
     std::vector<I2C_Event> ref;
 
@@ -143,7 +143,7 @@ TEST(i2c, device) {
     TEST_AND_CLEAR();
 
     uint8_t tab[] = {2, 3};
-    dev.write(make_array_view(tab));
+    dev.write(make_span(tab));
     PUSHv(START, addr_w);
     PUSHv(WRITE, 2);
     PUSHv(WRITE, 3);
@@ -161,7 +161,7 @@ TEST(i2c, device) {
     TEST_AND_CLEAR();
 
     uint8_t tab2[2];
-    array_view<uint8_t> arv(tab2);
+    span<uint8_t> arv(tab2);
     dev.read(arv);
     PUSHv(START, addr_r);
     PUSHv(READ, I2C::Acknowledge::ACK);
@@ -184,9 +184,9 @@ TEST(i2c, device) {
     TEST_AND_CLEAR();
 
     uint8_t tab_tx[] = {9, 8, 7};
-    array_view<uint8_t> arv_tx(tab_tx);
+    span<uint8_t> arv_tx(tab_tx);
     uint8_t tab_rx[2];
-    array_view<uint8_t> arv_rx(tab_rx);
+    span<uint8_t> arv_rx(tab_rx);
     dev.data_transfer(arv_tx, arv_rx);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 9);

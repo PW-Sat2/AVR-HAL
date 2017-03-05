@@ -1,6 +1,6 @@
 #include <util/delay.h>
 #include "Serial.h"
-#include "array_view.h"
+#include "span.h"
 #include "TWISlave.h"
 
 void hal::TWISlave::callbackRx() {

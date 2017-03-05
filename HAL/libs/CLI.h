@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <ctype.h>
-#include "array_view.h"
+#include "span.h"
 #include "array.h"
 
 namespace hal {
@@ -25,7 +25,7 @@ class Command {
         commands[nrOfCommands++] = this;
     }
 
-    virtual void callback(__attribute__((unused))  const array_view<char *> & parameters) {
+    virtual void callback(__attribute__((unused))  const span<char *> & parameters) {
     }
 
     const char * name;
@@ -64,7 +64,7 @@ void parse_line(char *line) {
                     ++iter;
                 line[iter] = 0;
             }
-            libs::array_view<char *> view(params.data(), param_nr);
+            libs::span<char *> view(params.data(), param_nr);
             cmd->callback(view);
             return;
         }
