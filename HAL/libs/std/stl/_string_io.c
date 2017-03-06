@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_STRING_IO_C
 #define _STLP_STRING_IO_C
 

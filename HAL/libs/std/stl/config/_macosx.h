@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #define _STLP_PLATFORM "Mac OS X"
 
 #if defined (__BIG_ENDIAN__)

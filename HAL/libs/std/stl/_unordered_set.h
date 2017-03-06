@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 2004
  * Francois Dumont
@@ -359,4 +360,3 @@ _STLP_END_NAMESPACE
 // Local Variables:
 // mode:C++
 // End:
-

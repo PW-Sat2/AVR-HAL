@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* We do not use auto link feature when:
  *  - user asked not to use it (_STLP_DONT_USE_AUTO_LINK)
  *  - STLport is used only as a STL library (_STLP_NO_IOSTREAMS || _STLP_USE_NO_IOSTREAMS)
@@ -58,4 +59,3 @@
 #  undef _STLP_STRINGIZE
 
 #endif /* _STLP_DONT_USE_AUTO_LINK */
-

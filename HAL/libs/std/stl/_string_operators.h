@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 2003
  * Francois Dumont
@@ -599,4 +600,3 @@ operator>=(const _STLP_PRIV __bstr_sum<_CharT,_Traits,_Alloc,_Lhs,_Rhs,_StoreDir
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_STRING_OPERATORS_H */
-

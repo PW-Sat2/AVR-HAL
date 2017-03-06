@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * This file is included in every header that needs the STLport library to be
  * built; the header files mostly are the iostreams-headers. The file checks for

@@ -1,3 +1,4 @@
+#pragma GCC system_header
 // -*- C++ -*- Time-stamp: <2012-04-20 17:23:24 ptr>
 
 /*
@@ -1653,4 +1654,3 @@ _STLP_END_NAMESPACE
 #endif
 
 #endif // __STLP_TYPE_TRAITS
-

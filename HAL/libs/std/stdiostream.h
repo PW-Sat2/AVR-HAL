@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_misc_stdiostream_h
 # define _STLP_misc_stdiostream_h
 # if (__SUNPRO_CC >= 0x500 )

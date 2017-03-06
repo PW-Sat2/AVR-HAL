@@ -1,3 +1,4 @@
+#pragma GCC system_header
 // -*- C++ -*- Time-stamp: <2012-03-02 15:29:29 ptr>
 
 /*

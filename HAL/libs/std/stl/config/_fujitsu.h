@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* STLport configuration for Fujitsu compiler : looks like a perfect one ! */
 #define _STLP_COMPILER "Fujitsu"
 
