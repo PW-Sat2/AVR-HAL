@@ -58,8 +58,8 @@ macro(add_hal_executable target_name)
 	set_target_properties(
 		${elf_file}
 		PROPERTIES
-		
-			LINK_FLAGS "-mmcu=${AVR_MCU} -Wl,-Map,${map_file} ${AVR_LINKER_LIBS}"
+
+			LINK_FLAGS "-mmcu=${AVR_MCU} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
 	)
 
 	# generate the lst file
