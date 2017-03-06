@@ -1,4 +1,4 @@
-#include "gtest.h"
+#include <gtest/gtest.h>
 #include "compile_time.h"
 #include <cmath>
 using hal::libs::power;

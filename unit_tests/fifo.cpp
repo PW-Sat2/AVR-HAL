@@ -1,4 +1,4 @@
-#include "gtest.h"
+#include <gtest/gtest.h>
 #include "fifo.h"
 
 using hal::libs::FIFO_data;

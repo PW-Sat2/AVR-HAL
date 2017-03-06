@@ -1,4 +1,4 @@
-#include "gtest.h"
+#include <gtest/gtest.h>
 #include "I2C.h"
 #include "compile_time.h"
 #include <vector>
