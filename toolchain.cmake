@@ -3,6 +3,11 @@ INCLUDE(CMakeForceCompiler)
 
 set(CMAKE_SYSTEM_NAME Generic)
 
+# resolve board -> mcu if board from HAL
+include(${CMAKE_CURRENT_LIST_DIR}/HAL/boards/board.cmake)
+# resolve mcu -> build variables
+include(${CMAKE_CURRENT_LIST_DIR}/HAL/mcu/mcu.cmake)
+
 find_program(CC NAMES avr-gcc)
 find_program(CXX NAMES avr-g++)
 
@@ -23,8 +28,6 @@ CMAKE_FORCE_CXX_COMPILER(${CXX} GNU)
 message(STATUS "Using HAL from ${CMAKE_CURRENT_LIST_DIR}")
 message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
 
-# setup the avr exectable macro
-
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
 
 set(ENABLE_HAL_STD TRUE)
@@ -32,9 +35,11 @@ set(ENABLE_HAL_STD TRUE)
 set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
 set (CXXWARN "-Wall -Wextra -Werror")
 set (CTUNING "-DNDEBUG -O2 -g -ggdb -fomit-frame-pointer -ffunction-sections -fdata-sections")
+set (CWORKAROUNDS "-Wno-format")
+set (CMCU "-mmcu=${GCC_TARGET} -DF_CPU=${F_CPU}L")
 
-set (CMAKE_C_FLAGS "-std=gnu11 ${CWARN} ${CTUNING}" CACHE STRING "" FORCE)
-set (CMAKE_CXX_FLAGS "-std=gnu++1y -fno-exceptions ${CXXWARN} ${CTUNING}" CACHE STRING "" FORCE)
+set (CMAKE_C_FLAGS "-std=gnu11 ${CMCU} ${CWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
+set (CMAKE_CXX_FLAGS "-std=gnu++1y ${CMCU} -fno-exceptions ${CXXWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
 
 
 macro(add_hal_executable target_name)
@@ -50,19 +55,11 @@ macro(add_hal_executable target_name)
 	)
 	target_link_libraries(${elf_file} hal)
 
-	if(F_CPU)
-		add_definitions("-DF_CPU=${F_CPU}L")
-		message(STATUS "MCU core frequency = ${F_CPU}")
-	else()
-		message(WARNING "No MCU core frequency defined!")
-	endif(F_CPU)
-
-	add_definitions("-mmcu=${AVR_MCU}")
-
 	set_target_properties(
 		${elf_file}
 		PROPERTIES
-			LINK_FLAGS    "-mmcu=${AVR_MCU} -Wl,-Map,${map_file} ${AVR_LINKER_LIBS}"
+		
+			LINK_FLAGS "-mmcu=${AVR_MCU} -Wl,-Map,${map_file} ${AVR_LINKER_LIBS}"
 	)
 
 	# generate the lst file

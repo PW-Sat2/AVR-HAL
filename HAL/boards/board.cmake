@@ -1,0 +1,6 @@
+if(BOARD)
+    message(STATUS "Use HAL board: ${BOARD}")
+    include(${CMAKE_CURRENT_LIST_DIR}/${BOARD}/board.cmake)
+else()
+    message(STATUS "Not using HAL board!")
+endif(BOARD)
