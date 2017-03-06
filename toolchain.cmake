@@ -50,7 +50,7 @@ macro(add_hal_executable target_name)
 
 	set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
 	set (CXXWARN "-Wall -Wextra -Werror")
-	set (CTUNING "-DNDEBUG -O2 -g -ggdb -pedantic -fomit-frame-pointer -ffunction-sections -fdata-sections")
+	set (CTUNING "-DNDEBUG -O2 -g -ggdb -fomit-frame-pointer -ffunction-sections -fdata-sections")
 	set (CMCU "-mmcu=${AVR_MCU}")
 	set (CMAKE_C_FLAGS "-std=gnu11 ${CWARN} ${CTUNING} ${CMCU}")
 	set (CMAKE_CXX_FLAGS "-std=gnu++1y -fno-exceptions ${CXXWARN} ${CTUNING} ${CMCU}")
@@ -104,13 +104,13 @@ macro(add_hal_executable target_name)
 	message(STATUS "Command: ${AVRDUDE_ARGS}")
 
 	add_custom_command(
-		OUTPUT "flash-${hex_file}"
+		OUTPUT "${hex_file}.flash"
 		COMMAND
 			${AVRDUDE} ${AVRDUDE_ARGS}
 	)
 	add_custom_target(
-		"${target_name}-flash"
-		DEPENDS ${hex_file} "flash-${hex_file}"
+		"${target_name}.flash"
+		DEPENDS ${hex_file} "${hex_file}.flash"
 	)
 
 endmacro(add_hal_executable)

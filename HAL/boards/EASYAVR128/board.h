@@ -1,8 +1,8 @@
 #ifndef HAL_BOARDS_EASYAVR128_BOARD_H_
 #define HAL_BOARDS_EASYAVR128_BOARD_H_
 
-#include "periph/DigitalIO.h"
-#include "devices/LED.h"
+#include "DigitalIO.h"
+#include "LED.h"
 
 namespace hal {
 namespace bsp {

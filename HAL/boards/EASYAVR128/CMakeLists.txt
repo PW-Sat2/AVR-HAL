@@ -1,0 +1,11 @@
+set(NAME board)
+
+add_library(${NAME} INTERFACE)
+
+target_include_directories(${NAME} INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
+set(HAL_MCU ATMEGA128A_TQFP64 CACHE STRING "")
+set(AVRDUDE_TOOL usbasp CACHE STRING "")
+set(F_CPU 7372800 CACHE STRING "")

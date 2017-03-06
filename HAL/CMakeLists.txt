@@ -10,5 +10,7 @@ target_link_libraries(${NAME} INTERFACE board mcu)
 target_include_directories(${NAME} INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/periph
     ${CMAKE_CURRENT_LIST_DIR}/libs
+    ${CMAKE_CURRENT_LIST_DIR}/libs/std
+    ${CMAKE_CURRENT_LIST_DIR}/libs/device_supports
     ${CMAKE_CURRENT_LIST_DIR}/devices
 )

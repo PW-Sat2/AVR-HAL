@@ -16,7 +16,7 @@ int main() {
 
     while (true) {
         static int counter = 0;
-//        hal::Serial0.printf("Counter value = %d\r\n", counter++);
+        hal::Serial0.printf("Counter value = %d\r\n", counter++);
 
         _delay_ms(200);
     }
