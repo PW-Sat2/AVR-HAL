@@ -48,8 +48,8 @@ else()
 endif(includes_${HAL_MCU})
 
 set(include ${includes_${HAL_MCU}})
-set(GCC_TARGET ${GCC_TARGET_${HAL_MCU}} CACHE STRING "gcc target passed to -mmcu flag" FORCE)
-set(AVRDUDE_TARGET ${AVRDUDE_TARGET_${HAL_MCU}} CACHE STRING "avrdude target passed to -p flag" FORCE)
+set(GCC_TARGET ${GCC_TARGET_${HAL_MCU}} CACHE STRING "gcc target passed to -mmcu flag")
+set(AVRDUDE_TARGET ${AVRDUDE_TARGET_${HAL_MCU}} CACHE STRING "avrdude target passed to -p flag")
 
 message(STATUS "HAL_MCU: ${HAL_MCU}")
 message(STATUS "GCC_TARGET: ${GCC_TARGET}")
