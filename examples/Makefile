@@ -1,4 +1,4 @@
-all: all_targets
+all: all_targets easyAVR128
 
 all_targets: force
 	make -C all_targets

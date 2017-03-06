@@ -8,7 +8,7 @@
 int main() {
     hal::Serial0.init(4800, hal::STDIO::ENABLE);
 
-    using SoftI2C = hal::SoftI2C<27, 28>;
+    using SoftI2C = hal::SoftI2C<hal::mcu::pin_sda, hal::mcu::pin_scl>;
     using PCF8563 = hal::PCF8563<SoftI2C>;
     SoftI2C::init();
     constexpr PCF8563 rtc;

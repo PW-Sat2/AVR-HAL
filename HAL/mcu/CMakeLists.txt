@@ -26,9 +26,9 @@ SET(           includes_ATMEGA324P_44    atmega164p_324p_644p_44)
 SET(         GCC_TARGET_ATMEGA324P_44    atmega324p)
 SET(     AVRDUDE_TARGET_ATMEGA324P_44    m324p)
 
-SET(           includes_ATMEGA324P_44    atmega164p_324p_644p_44)
-SET(         GCC_TARGET_ATMEGA324P_44    atmega324a)
-SET(     AVRDUDE_TARGET_ATMEGA324P_44    m324pa)
+SET(           includes_ATMEGA324A_44    atmega164p_324p_644p_44)
+SET(         GCC_TARGET_ATMEGA324A_44    atmega324a)
+SET(     AVRDUDE_TARGET_ATMEGA324A_44    m324pa)
 
 SET(           includes_ATMEGA644P_44    atmega164p_324p_644p_44)
 SET(         GCC_TARGET_ATMEGA644P_44    atmega664p)
