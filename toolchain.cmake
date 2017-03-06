@@ -27,6 +27,15 @@ message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
 
+set(ENABLE_HAL_STD TRUE)
+
+set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
+set (CXXWARN "-Wall -Wextra -Werror")
+set (CTUNING "-DNDEBUG -O2 -g -ggdb -fomit-frame-pointer -ffunction-sections -fdata-sections")
+
+set (CMAKE_C_FLAGS "-std=gnu11 ${CWARN} ${CTUNING}" CACHE STRING "" FORCE)
+set (CMAKE_CXX_FLAGS "-std=gnu++1y -fno-exceptions ${CXXWARN} ${CTUNING}" CACHE STRING "" FORCE)
+
 
 macro(add_hal_executable target_name)
 	set(AVR_MCU ${GCC_TARGET})
@@ -48,13 +57,7 @@ macro(add_hal_executable target_name)
 		message(WARNING "No MCU core frequency defined!")
 	endif(F_CPU)
 
-	set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
-	set (CXXWARN "-Wall -Wextra -Werror")
-	set (CTUNING "-DNDEBUG -O2 -g -ggdb -fomit-frame-pointer -ffunction-sections -fdata-sections")
-	set (CMCU "-mmcu=${AVR_MCU}")
-	set (CMAKE_C_FLAGS "-std=gnu11 ${CWARN} ${CTUNING} ${CMCU}")
-	set (CMAKE_CXX_FLAGS "-std=gnu++1y -fno-exceptions ${CXXWARN} ${CTUNING} ${CMCU}")
-	set (CMAKE_CXX_STANDARD 14)
+	add_definitions("-mmcu=${AVR_MCU}")
 
 	set_target_properties(
 		${elf_file}

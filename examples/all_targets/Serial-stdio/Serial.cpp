@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 #include "Serial.h"
 
 
@@ -7,9 +7,9 @@ int main() {
     printf("Init!\r\n");
 
     while (true) {
-        printf("Write a number:\r\n");
+        std::printf("Write a number:\r\n");
         int x;
-        scanf("%d", &x);
-        printf("read: %d\r\n", x);
+        std::scanf("%d", &x);
+        std::printf("read: %d\r\n", x);
     }
 }

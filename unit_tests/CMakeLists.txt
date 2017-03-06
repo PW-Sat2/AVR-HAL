@@ -4,20 +4,23 @@ set(NAME unit_tests)
 project(${NAME} C CXX)
 add_subdirectory(gtest)
 
+set(CMAKE_CXX_FLAGS "-std=c++1y")
+
 add_subdirectory(../HAL hal)
 add_subdirectory(board)
 
 add_executable(${NAME}
-    test1.cpp
     array.cpp
     bit_operations.cpp
     compile_time.cpp
     fifo.cpp
     I2C.cpp
     span.cpp
+    ReaderTest.cpp
+    WriterTest.cpp
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+
 
 target_link_libraries(${NAME}
     hal
