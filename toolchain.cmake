@@ -46,11 +46,10 @@ set (CMAKE_CXX_FLAGS "-std=gnu++1y ${CMCU} -fno-exceptions ${CXXWARN} ${CTUNING}
 
 
 macro(add_hal_executable target_name)
-	set(AVR_MCU ${GCC_TARGET})
 	set(elf_file ${target_name})
-	set(map_file ${target_name}-${AVR_MCU}.map)
-	set(hex_file ${target_name}-${AVR_MCU}.hex)
-	set(lst_file ${target_name}-${AVR_MCU}.lst)
+	set(map_file ${target_name}-${GCC_TARGET}.map)
+	set(hex_file ${target_name}-${GCC_TARGET}.hex)
+	set(lst_file ${target_name}-${GCC_TARGET}.lst)
 
 	# create elf file
 	add_executable(${elf_file}
@@ -62,7 +61,7 @@ macro(add_hal_executable target_name)
 		${elf_file}
 		PROPERTIES
 
-			LINK_FLAGS "-mmcu=${AVR_MCU} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
+			LINK_FLAGS "-mmcu=${GCC_TARGET} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
 	)
 
 	# generate the lst file
@@ -114,6 +113,11 @@ macro(add_hal_executable target_name)
 	add_custom_target(
 		"${target_name}.flash"
 		DEPENDS ${hex_file} "${hex_file}.flash"
+	)
+
+	add_custom_target(${target_name}.sim
+		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${target_name} -W 0xC6,- -T exit
+		DEPENDS ${hex_file}
 	)
 
 endmacro(add_hal_executable)
