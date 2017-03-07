@@ -1,7 +1,9 @@
-#include <gtest/gtest.h>
+#include "tests.h"
+
 #include "I2C.h"
 #include "compile_time.h"
-#include <vector>
+
+#include "fifo.h"
 
 namespace hal {
 
@@ -16,7 +18,8 @@ class I2C_Event {
     Type type;
     uint8_t payload;
 
-    explicit I2C_Event(Type type, uint8_t payload = 0) :
+    I2C_Event() {}
+    I2C_Event(Type type, uint8_t payload = 0) :
         type(type), payload(payload) {
     }
 
@@ -32,29 +35,33 @@ class I2C_Event {
     }
 };
 
-std::vector<I2C_Event> events;
+constexpr int FIFOS_N = 100;
+
+hal::libs::FIFO_data<I2C_Event, FIFOS_N> events;
 
 class TWI_fake : public I2C {
  public:
     static bool start(uint8_t address, const StartAction start_action) {
-        events.push_back(I2C_Event(I2C_Event::START, (address << 1) | static_cast<uint8_t>(start_action)));
+        events.append(I2C_Event(I2C_Event::START, (address << 1) | static_cast<uint8_t>(start_action)));
         return true;
     }
 
     static void stop(void) {
-        events.push_back(I2C_Event(I2C_Event::STOP));
+        events.append(I2C_Event(I2C_Event::STOP));
     }
 
     static bool write(const uint8_t data) {
-        events.push_back(I2C_Event(I2C_Event::WRITE, data));
+        events.append(I2C_Event(I2C_Event::WRITE, data));
+        return true;
     }
 
     static uint8_t read(Acknowledge ack) {
         if (ack == ACK) {
-            events.push_back(I2C_Event(I2C_Event::READ, 1));
+            events.append(I2C_Event(I2C_Event::READ, 1));
         } else {
-            events.push_back(I2C_Event(I2C_Event::READ, 0));
+            events.append(I2C_Event(I2C_Event::READ, 0));
         }
+        return true;
     }
 
     static void write(const libs::span<const uint8_t> & arv) {
@@ -77,24 +84,32 @@ class TWI_fake : public I2C {
     }
 };
 
-bool operator==(const std::vector<I2C_Event> & lhs,
-        const std::vector<I2C_Event> & rhs) {
-    if ( lhs.size() != rhs.size() )
-        return false;
-    for (int i = 0; i < lhs.size(); ++i) {
-        if ( lhs[i] != rhs[i] )
-            return false;
-    }
-    return true;
+bool operator==(const hal::libs::FIFO_data<I2C_Event, FIFOS_N>& lhs,
+                const hal::libs::FIFO_data<I2C_Event, FIFOS_N>& rhs) {
+
+    const I2C_Event * left_ptr;
+    auto left_size = lhs.getContinousPart(left_ptr);
+
+    const I2C_Event * right_ptr;
+    auto right_size = rhs.getContinousPart(right_ptr);
+
+
+    auto left = hal::libs::make_span(left_ptr, left_size);
+    auto right = hal::libs::make_span(right_ptr, right_size);
+    
+    return std::equal(left.begin(), left.end(), right.begin());
 }
 
-#define PUSH(event) ref.push_back(I2C_Event(I2C_Event:: event))
-#define PUSHv(event, val) ref.push_back(I2C_Event(I2C_Event:: event, val))
+#define PUSH(event) ref.append(I2C_Event(I2C_Event:: event))
+#define PUSHv(event, val) ref.append(I2C_Event(I2C_Event:: event, val))
+#define TEST_AND_CLEAR() \
+    EXPECT_TRUE(ref == events); \
+    events.flush(); ref.flush();
 
 TEST(i2c, basic) {
     using hal::libs::make_span;
     using hal::libs::span;
-    events.clear();
+    events.flush();
 
     TWI_fake::write(0);
     uint8_t data[] = {1, 2, 3};
@@ -106,32 +121,30 @@ TEST(i2c, basic) {
     TWI_fake::read(I2C::ACK);
     TWI_fake::read(I2C::NACK);
 
-    std::vector<I2C_Event> ref;
-    ref.push_back(I2C_Event(I2C_Event::WRITE, 0));
-    ref.push_back(I2C_Event(I2C_Event::WRITE, 1));
-    ref.push_back(I2C_Event(I2C_Event::WRITE, 2));
-    ref.push_back(I2C_Event(I2C_Event::WRITE, 3));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::ACK));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::ACK));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::ACK));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::NACK));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::ACK));
-    ref.push_back(I2C_Event(I2C_Event::READ, I2C::NACK));
+    hal::libs::FIFO_data<I2C_Event, FIFOS_N> ref;
+    ref.append(I2C_Event(I2C_Event::WRITE, 0));
+    ref.append(I2C_Event(I2C_Event::WRITE, 1));
+    ref.append(I2C_Event(I2C_Event::WRITE, 2));
+    ref.append(I2C_Event(I2C_Event::WRITE, 3));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::ACK));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::ACK));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::ACK));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::NACK));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::ACK));
+    ref.append(I2C_Event(I2C_Event::READ, I2C::NACK));
 
-    EXPECT_TRUE(ref == events);
+    TEST_AND_CLEAR();
 }
 
 TEST(i2c, device) {
     using hal::libs::make_span;
     using hal::libs::span;
-    events.clear();
-    std::vector<I2C_Event> ref;
+    events.flush();
+    hal::libs::FIFO_data<I2C_Event, FIFOS_N> ref;
 
-#define TEST_AND_CLEAR() \
-    EXPECT_TRUE(ref == events); \
-    events.clear(); ref.clear();
 
-    constexpr uint8_t addr = 0xF9;
+
+    constexpr uint8_t addr = 0x09;
     const uint8_t addr_w = (addr << 1) | static_cast<uint8_t>(I2C::StartAction::write);
     const uint8_t addr_r = (addr << 1) | static_cast<uint8_t>(I2C::StartAction::read);
     hal::I2C_Device<TWI_fake> dev(addr);
@@ -218,3 +231,5 @@ TEST(i2c, device) {
 }
 
 }  // namespace hal
+
+DEFINE_TESTSUITE(i2c);

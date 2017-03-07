@@ -1,5 +1,8 @@
-#include <gtest/gtest.h>
+#include "tests.h"
+#include <cstring>
+
 #include "fifo.h"
+
 
 using hal::libs::FIFO_data;
 
@@ -153,3 +156,5 @@ TEST(fifo, arrays) {
         EXPECT_EQ(fifo.getFreeSpace(), 11);
     }
 }
+
+DEFINE_TESTSUITE(fifo);

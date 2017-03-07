@@ -1,35 +1,34 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.1)
 
 set(NAME unit_tests)
-project(${NAME} C CXX)
-add_subdirectory(gtest)
+set(BOARD ARDUINOMEGA2560)
+set(CMAKE_TOOLCHAIN_FILE "../toolchain.cmake")
 
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+project(${NAME})
 
-add_subdirectory(../HAL hal)
-add_subdirectory(board)
+add_subdirectory(unity)
 
-add_executable(${NAME}
-    array.cpp
-    bit_operations.cpp
+add_subdirectory(../ hal)
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error" CACHE STRING "" FORCE)
+
+add_hal_executable(${NAME}
+    main.cpp
     compile_time.cpp
+    bit_operations.cpp
+    array.cpp
     fifo.cpp
-    I2C.cpp
-    span.cpp
     ReaderTest.cpp
     WriterTest.cpp
+    span.cpp
+    I2C.cpp
 )
 
-
-
 target_link_libraries(${NAME}
-    hal
-    libs
-    gtest
-    gtest_main
+    unity
 )
 
 add_custom_target(unit_tests.run
-  ${CMAKE_CURRENT_BINARY_DIR}/unit_tests
+  COMMAND ${SIMULAVR} -d atmega2560 -f ${NAME} -W 0xC6,- -T exit
   DEPENDS ${NAME}
 )
