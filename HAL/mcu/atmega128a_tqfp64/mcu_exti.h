@@ -31,12 +31,13 @@ class ExternalInterrupt {
     }
 
     void enable() const {
+        disable();
         if (int_nr < 4) {
-            EICRA &= (~(0b11 << int_nr));
-            EICRA |= (static_cast<uint8_t>(mode) << int_nr);
+            EICRA &= (~(0b11 << 2*int_nr));
+            EICRA |= (static_cast<uint8_t>(mode) << 2*int_nr);
         } else {
-            EICRB &= (~(0b11 << (int_nr-4)));
-            EICRB |= (static_cast<uint8_t>(mode) << (int_nr-4));
+            EICRB &= (~(0b11 << (2*(int_nr-4))));
+            EICRB |= (static_cast<uint8_t>(mode) << (2*(int_nr-4)));
         }
         set_bit(EIMSK, int_nr);
     }
