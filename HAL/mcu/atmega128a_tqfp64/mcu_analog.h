@@ -72,7 +72,7 @@ class InternalADCMux {
     InternalADCMux() = delete;
 
     static void select(InternalADCMcuSpecific::Input input) {
-        ADMUX &= 0b11110000;
+        ADMUX &= 0b11100000;
         ADMUX |= static_cast<uint8_t>(input);
     }
 };
