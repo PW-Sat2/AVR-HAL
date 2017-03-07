@@ -22,6 +22,7 @@ add_hal_executable(${NAME}
     WriterTest.cpp
     span.cpp
     I2C.cpp
+    data_types.cpp
 )
 
 target_link_libraries(${NAME}
