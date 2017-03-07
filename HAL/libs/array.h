@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <type_traits>
 #include <utility>
+#include <cstring>
+#include <algorithm>
 #include "span.h"
 #include "hal_assert.h"
 
@@ -77,11 +79,6 @@ class array {
         return false;
     }
     enum { static_size = N };
-
-    // swap (note: linear complexity in N, constant for given instantiation)
-    void swap(array<T, N>& y) noexcept {
-        std::swap(this->elems, y.elems);
-    }
 
     // direct access to data (read-only)
     const T* data() const {
