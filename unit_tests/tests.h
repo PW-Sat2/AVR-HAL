@@ -28,10 +28,8 @@ bool TEST_ ## a() {                 \
     return UNITY_END();             \
 }
 
-#define INC_TESTSUITE(a) \
-bool TEST_ ## a();
-
 #define RUN_TESTSUITE(a) \
+bool TEST_ ## a();       \
 TEST_ ## a()
 
 #define EXPECT_EQ TEST_ASSERT_EQUAL
@@ -39,5 +37,6 @@ TEST_ ## a()
 #define EXPECT_FALSE TEST_ASSERT_FALSE
 #define EXPECT_TRUE TEST_ASSERT_TRUE
 #define EXPECT_FLOAT_EQ TEST_ASSERT_EQUAL_FLOAT
+#define EXPECT_STREQ TEST_ASSERT_EQUAL_STRING
 
 #endif  // UNIT_TESTS_AVR_TESTS_H_

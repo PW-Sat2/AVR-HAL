@@ -1,17 +1,6 @@
 #include "Serial.h"
 #include "tests.h"
 
-INC_TESTSUITE(bit_operations);
-INC_TESTSUITE(compile_time);
-INC_TESTSUITE(array);
-INC_TESTSUITE(fifo);
-INC_TESTSUITE(ReaderTest);
-INC_TESTSUITE(WriterTest);
-INC_TESTSUITE(span);
-INC_TESTSUITE(i2c);
-INC_TESTSUITE(data_types);
-INC_TESTSUITE(eeprom);
-
 int main() {
     hal::Serial0.init(9600, hal::STDIO::ENABLE);
 
@@ -25,6 +14,7 @@ int main() {
     RUN_TESTSUITE(i2c);
     RUN_TESTSUITE(data_types);
     RUN_TESTSUITE(eeprom);
+    RUN_TESTSUITE(terminal);
 
     return 0;
 }

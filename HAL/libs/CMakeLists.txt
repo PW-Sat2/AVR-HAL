@@ -1,5 +1,7 @@
 set(NAME libs)
 
+add_subdirectory(terminal)
+
 add_library(${NAME} STATIC
     reader.cpp
     writer.cpp
