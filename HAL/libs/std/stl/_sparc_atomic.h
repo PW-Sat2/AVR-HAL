@@ -1,3 +1,4 @@
+#pragma GCC system_header
 
 // Currently, SUN CC requires object file
 

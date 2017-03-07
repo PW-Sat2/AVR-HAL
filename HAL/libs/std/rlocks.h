@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_misc_rlocks_h
 # define _STLP_misc_rlocks_h
 # if (__SUNPRO_CC >= 0x500 )
@@ -8,4 +9,3 @@
 #  error "This file is for SUN CC only. Please remove it if it causes any harm for other compilers."
 # endif
 #endif
-

@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #define _STLP_PLATFORM "Open BSD"
 
 #define _STLP_USE_UNIX_IO

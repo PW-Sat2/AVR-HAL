@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1999
  * Silicon Graphics Computer Systems, Inc.
@@ -90,14 +91,16 @@ public:
   // In Unix, writing n characters always bumps the file position by n.
   // In Windows text mode, however, it bumps the file position by n + m,
   // where m is the number of newlines in the range.  That's because an
-  // internal \n corresponds to an external two-character sequence.
+  // internal 
+ corresponds to an external two-character sequence.
   streamoff _M_get_offset(char* __first, char* __last) {
 #if defined (_STLP_UNIX) || defined (_STLP_MAC)
     return __last - __first;
 #else // defined (_STLP_WIN32)
     return ( (_M_openmode & ios_base::binary) != 0 )
       ? (__last - __first)
-      : count(__first, __last, '\n') + (__last - __first);
+      : count(__first, __last, '
+') + (__last - __first);
 #endif
   }
 

@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* This header turns off warnings that STLport headers generate for compiled
  * user code.
  */

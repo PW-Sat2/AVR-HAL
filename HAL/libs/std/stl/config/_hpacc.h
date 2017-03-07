@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* STLport configuration file
  * It is internal STLport header - DO NOT include it directly
  */

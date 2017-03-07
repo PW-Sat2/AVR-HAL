@@ -1,3 +1,4 @@
+#pragma GCC system_header
 // STLport configuration file
 // It is internal STLport header - DO NOT include it directly
 
@@ -147,4 +148,3 @@ long    __stl_InterlockedExchange( long *Destination, long Value );
 #  define _STLP_ATOMIC_EXCHANGE(__x, __y) __stl_InterlockedExchange((long*)__x, (long)__y)
 #  define _STLP_ATOMIC_EXCHANGE_PTR(__x, __y) __stl_InterlockedExchange((long*)__x, (long)__y)
 #endif /* INLINE INTERLOCK */
-

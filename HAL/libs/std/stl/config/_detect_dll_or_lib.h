@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* File used to define macros:
  * _STLP_USE_DYNAMIC_LIB: To signal use STLport as a dll or build of the
  *                        STLport dlls.

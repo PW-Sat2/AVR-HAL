@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * This file defines site configuration.
  */

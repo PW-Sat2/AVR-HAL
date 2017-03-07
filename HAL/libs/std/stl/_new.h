@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1999
  * Boris Fomitchev
@@ -186,7 +187,8 @@ _STLP_END_NAMESPACE
 #    ifdef __ANDROID__
 #      include <stdlib.h> /* for exit() in _STLP_THROW_BAD_ALLOC */
 #    endif
-#    define _STLP_THROW_BAD_ALLOC puts("out of memory\n"); exit(1)
+#    define _STLP_THROW_BAD_ALLOC puts("out of memory
+"); exit(1)
 #  else
 #    define _STLP_THROW_BAD_ALLOC _STLP_THROW(_STLP_STD::bad_alloc())
 #  endif

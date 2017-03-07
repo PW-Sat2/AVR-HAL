@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* This is an implementation file which is intended to be included
  * multiple times with different _STLP_TEMPLATE_CONTAINER settings.
  */

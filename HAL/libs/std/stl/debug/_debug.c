@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  *
  * Copyright (c) 1997
@@ -276,9 +277,15 @@ _STLP_MOVE_TO_PRIV_NAMESPACE
 #    endif /* _STLP_USE_WIDE_INTERFACE */
 
 #    define _STLP_MESSAGE_TABLE_BODY = { \
-_STLP_STRING_LITERAL("\n" _STLP_PERCENT_S "(%d): STL error: " _STLP_PERCENT_S "\n"), \
-_STLP_STRING_LITERAL(_STLP_PERCENT_S "(%d): STL assertion failure : " _STLP_PERCENT_S "\n" _STLP_ASSERT_MSG_TRAILER), \
-_STLP_STRING_LITERAL("\n" _STLP_PERCENT_S "(%d): STL error : " _STLP_PERCENT_S "\n" _STLP_PERCENT_S "(%d): STL assertion failure:     " _STLP_PERCENT_S " \n" _STLP_ASSERT_MSG_TRAILER), \
+_STLP_STRING_LITERAL("
+" _STLP_PERCENT_S "(%d): STL error: " _STLP_PERCENT_S "
+"), \
+_STLP_STRING_LITERAL(_STLP_PERCENT_S "(%d): STL assertion failure : " _STLP_PERCENT_S "
+" _STLP_ASSERT_MSG_TRAILER), \
+_STLP_STRING_LITERAL("
+" _STLP_PERCENT_S "(%d): STL error : " _STLP_PERCENT_S "
+" _STLP_PERCENT_S "(%d): STL assertion failure:     " _STLP_PERCENT_S " 
+" _STLP_ASSERT_MSG_TRAILER), \
 _STLP_STRING_LITERAL("Invalid argument to operation (see operation documentation)"),                  \
 _STLP_STRING_LITERAL("Taking an iterator out of destroyed (or otherwise corrupted) container"),       \
 _STLP_STRING_LITERAL("Trying to extract an object out from empty container"),\
@@ -343,7 +350,7 @@ __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...) {
   TCHAR __buffer[512];
   int _convert = strlen(__format_str) + 1;
   LPWSTR _lpw = (LPWSTR)alloca(_convert * sizeof(wchar_t));
-  _lpw[0] = '\0';
+  _lpw[0] = ' ';
   MultiByteToWideChar(GetACP(), 0, __format_str, -1, _lpw, _convert);
   wvsprintf(__buffer, _lpw, __args);
   _STLP_WINCE_TRACE(__buffer);

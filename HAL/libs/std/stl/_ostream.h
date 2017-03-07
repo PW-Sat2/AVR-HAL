@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1999
  * Silicon Graphics Computer Systems, Inc.
@@ -355,7 +356,8 @@ operator<<(basic_ostream<char, _Traits>& __os, const unsigned char* __s) {
 template <class _CharT, class _Traits>
 inline basic_ostream<_CharT, _Traits>& _STLP_CALL
 endl(basic_ostream<_CharT, _Traits>& __os) {
-  __os.put(__os.widen('\n'));
+  __os.put(__os.widen('
+'));
   __os.flush();
   return __os;
 }

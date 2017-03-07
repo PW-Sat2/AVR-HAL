@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* NOTE : this header has no guards and is MEANT for multiple inclusion!
  * If you are using "header protection" option with your compiler,
  * please also find #pragma which disables it and put it here, to
