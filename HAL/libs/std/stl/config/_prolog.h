@@ -1,3 +1,4 @@
+#pragma GCC system_header
 
 #if defined (_STLP_MSVC) || defined (__ICL)
 

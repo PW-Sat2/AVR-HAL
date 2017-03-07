@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Derived from: http://code.google.com/p/msinttypes/
  *

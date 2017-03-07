@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_FACETS_FWD_H
 #define _STLP_FACETS_FWD_H
 

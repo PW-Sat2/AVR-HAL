@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_INTERNAL_IOSFWD
 #define _STLP_INTERNAL_IOSFWD
 

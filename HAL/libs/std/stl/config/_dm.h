@@ -1,3 +1,4 @@
+#pragma GCC system_header
 // STLport configuration file for Digital Mars C++
 
 #define _STLP_COMPILER __DMC_VERSION_STRING__

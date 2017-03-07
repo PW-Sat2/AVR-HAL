@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #define _STLP_PLATFORM "Embedded AVR-libc"
 
 // Platform define

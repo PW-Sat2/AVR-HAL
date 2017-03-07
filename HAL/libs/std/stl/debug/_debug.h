@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  *
  * Copyright (c) 1997
@@ -349,12 +350,14 @@ public:
 class _STLP_CLASS_DECLSPEC __owned_list {
 public:
   __owned_list(void* __o) {
-    //    fprintf(stderr, "__owned_list(): %p\n",(void*)this);
+    //    fprintf(stderr, "__owned_list(): %p
+",(void*)this);
     _M_node._M_owner = __REINTERPRET_CAST(__owned_list*,__o);
     _M_node._M_next = 0;
   }
   ~__owned_list() {
-    //    fprintf(stderr, "~__owned_list(): %p\n",(void*)this);
+    //    fprintf(stderr, "~__owned_list(): %p
+",(void*)this);
     _Invalidate_all();
     // that prevents detach
     _M_node._Invalidate();

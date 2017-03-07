@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 2003
  * Francois Dumont

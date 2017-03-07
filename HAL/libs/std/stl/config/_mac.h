@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #define _STLP_PLATFORM "Mac"
 
 #define _STLP_MAC  1

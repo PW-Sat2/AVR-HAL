@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1996,1997
  * Silicon Graphics Computer Systems, Inc.
@@ -972,13 +973,15 @@ template <class _CharT, class _Alloc>
 void rope<_CharT,_Alloc>::_S_dump(_RopeRep* __r, int __indent) {
   for (int __i = 0; __i < __indent; ++__i) putchar(' ');
   if (0 == __r) {
-    printf("NULL\n"); return;
+    printf("NULL
+"); return;
   }
   if (_RopeRep::_S_concat == __r->_M_tag) {
     _RopeConcatenation* __c = __STATIC_CAST(_RopeConcatenation*, __r);
     _RopeRep* __left = __c->_M_left;
     _RopeRep* __right = __c->_M_right;
-    printf("Concatenation %p (rc = %ld, depth = %d, len = %ld, %s balanced)\n",
+    printf("Concatenation %p (rc = %ld, depth = %d, len = %ld, %s balanced)
+",
       __r, __r->_M_ref_count, __r->_M_depth, __r->_M_size._M_data,
       __r->_M_is_balanced? "" : "not");
     _S_dump(__left, __indent + 2);
@@ -1011,9 +1014,13 @@ void rope<_CharT,_Alloc>::_S_dump(_RopeRep* __r, int __indent) {
 
       _S_flatten(__prefix, __buffer);
       __buffer[__prefix->_M_size._M_data] = _STLP_DEFAULT_CONSTRUCTED(_CharT);
-      printf("%s%s\n", (char*)__buffer, __too_big? "...\n" : "\n");
+      printf("%s%s
+", (char*)__buffer, __too_big? "...
+" : "
+");
     } else {
-      printf("\n");
+      printf("
+");
     }
   }
 }
