@@ -10,6 +10,7 @@ INC_TESTSUITE(WriterTest);
 INC_TESTSUITE(span);
 INC_TESTSUITE(i2c);
 INC_TESTSUITE(data_types);
+INC_TESTSUITE(eeprom);
 
 int main() {
     hal::Serial0.init(9600, hal::STDIO::ENABLE);
@@ -23,6 +24,7 @@ int main() {
     RUN_TESTSUITE(span);
     RUN_TESTSUITE(i2c);
     RUN_TESTSUITE(data_types);
+    RUN_TESTSUITE(eeprom);
 
     return 0;
 }

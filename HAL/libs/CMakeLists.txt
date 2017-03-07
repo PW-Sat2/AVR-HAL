@@ -13,6 +13,6 @@ if(ENABLE_HAL_STD)
 endif(ENABLE_HAL_STD)
 
 target_include_directories(${NAME} INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/.
+    ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/device_supports
 )

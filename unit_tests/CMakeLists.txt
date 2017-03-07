@@ -23,6 +23,7 @@ add_hal_executable(${NAME}
     span.cpp
     I2C.cpp
     data_types.cpp
+    eeprom.cpp
 )
 
 target_link_libraries(${NAME}
