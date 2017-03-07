@@ -35,7 +35,7 @@ class span final {
 
     template<typename ArrayType, size_t ArraySize>
     constexpr span(ArrayType (&arr)[ArraySize]) :
-            m_pointer { arr }, m_size_in_items { ArraySize } {
+            m_pointer(arr), m_size_in_items(ArraySize) {
     }
 
     template<typename ArrayType, size_t ArraySize>
@@ -43,12 +43,12 @@ class span final {
 
     template<typename ContainerType>
     constexpr span(ContainerType & container) :
-            m_pointer { container.data() }, m_size_in_items { container.size() } {
+            m_pointer(container.data()), m_size_in_items(container.size()) {
     }
 
     template<typename ContainerType>
     constexpr span(const ContainerType & container) :
-            m_pointer { container.data() }, m_size_in_items { container.size() } {
+            m_pointer(container.data()), m_size_in_items(container.size()) {
     }
 
     template<typename ContainerType>
@@ -57,12 +57,12 @@ class span final {
     template<typename ConvertibleType>
     constexpr span(ConvertibleType * array_ptr,
             size_type size_in_items) :
-            m_pointer { array_ptr }, m_size_in_items { size_in_items } {
+            m_pointer(array_ptr), m_size_in_items(size_in_items) {
     }
 
     template<typename ConvertibleType>
     constexpr span(span<ConvertibleType> other) :
-            m_pointer { other.data() }, m_size_in_items { other.size() } {
+            m_pointer(other.data()), m_size_in_items(other.size()) {
     }
 
     template<typename ConvertibleType>
