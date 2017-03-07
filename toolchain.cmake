@@ -22,11 +22,14 @@ find_program(CMAKE_MAKE_PROGRAM NAMES make)
 
 find_program(AVRDUDE NAMES avrdude)
 
+find_program(SIMULAVR NAMES simulavr)
+
 CMAKE_FORCE_C_COMPILER(${CC} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CXX} GNU)
 
 message(STATUS "Using HAL from ${CMAKE_CURRENT_LIST_DIR}")
 message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
+message(STATUS "SimulAVR: ${SIMULAVR}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
 
