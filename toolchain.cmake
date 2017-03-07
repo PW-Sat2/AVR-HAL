@@ -116,7 +116,7 @@ macro(add_hal_executable target_name)
 	)
 
 	add_custom_target(${target_name}.sim
-		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${target_name} -W 0xC6,- -T exit
+		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${target_name} -W 0x20,- -R 0x22,- -T exit
 		DEPENDS ${hex_file}
 	)
 
