@@ -32,19 +32,6 @@ bool Reader::Skip(uint16_t length)
     return UpdateState(length);
 }
 
-float Reader::ReadFloat()
-{
-    if (!UpdateState(4))
-    {
-        return 0;
-    }
-    else
-    {
-        float x = *(float *)(&this->buffer[(this->position-4)]);
-        return x;
-    }
-}
-
 uint8_t Reader::ReadByte()
 {
     if (!UpdateState(1))

@@ -62,13 +62,6 @@ class Reader final
      */
     int32_t RemainingSize();
 
-
-    /**
-     * @brief Read float from the buffer and advance pointer by 4-bytes.
-     * @return Read float.
-     */
-    float ReadFloat();
-
     /**
      * @brief Read single byte from the buffer and move the current position to the next byte.
      * @return Read byte.
