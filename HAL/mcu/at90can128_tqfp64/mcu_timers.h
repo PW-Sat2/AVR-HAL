@@ -13,26 +13,35 @@ class Timer0 {
         DIV_1 = 1,
         DIV_8 = 2,
         DIV_32 = 3,
-        DIV_64 = 4,
-        DIV_128 = 5,
-        DIV_256 = 6,
-        DIV_1024 = 7
+        DIV_256 = 4,
+        DIV_1024 = 5,
+        T0_falling = 6,
+        T0_rising = 7
     };
 
-    static void init(Prescaler prescaler) {
-        TCCR0 = static_cast<uint8_t>(prescaler);
+    enum class Mode : uint8_t {
+        Normal = 0,
+        PWM_phase_correct = 1,
+        CTC = 2,
+        FastPWM = 3
+    };
+
+    static void init(Prescaler prescaler, Mode mode) {
+        TCCR0A = (static_cast<uint8_t>(mode) & 0b01 << WGM00) |
+                 (static_cast<uint8_t>(mode) & 0b10 << WGM01) |
+                  static_cast<uint8_t>(prescaler);
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(TIMSK, TOIE0);
+        set_bit(TIMSK0, TOIE0);
     }
 
     static void set_output_compare(uint8_t value) {
-        OCR0 = value;
+        OCR0A = value;
     }
 
     static void enable_compare_interrupt() {
-        set_bit(TIMSK, OCIE0);
+        set_bit(TIMSK0, OCIE0A);
     }
 };
 

@@ -16,11 +16,11 @@ class ExternalInterrupt {
     };
 
     constexpr ExternalInterrupt(int pin_nr, Mode mode) :
-                                int_nr{check_pin(pin_nr, mode)},
+                                int_nr{check_pin(pin_nr)},
                                 mode{mode} {
     }
 
-    constexpr static int check_pin(int pin_nr, Mode mode) {
+    constexpr static int check_pin(int pin_nr) {
         return (pin_nr >= 0) ?
                 ((pin_nr < 8) ?
                     pin_nr :
