@@ -15,7 +15,7 @@ int main() {
     RUN_TESTSUITE(data_types);
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);
-    RUN_TESTSUITE(gcc_static);
+    // RUN_TESTSUITE(pure_virtual);
 
     return 0;
 }
