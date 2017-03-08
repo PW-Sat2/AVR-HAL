@@ -34,9 +34,10 @@ void Terminal::HandleCommand(char* buffer) {
         if (strcmp(commandName, command.name) == 0) {
             command.handler(argc, args);
 
-            return;
+            break;
         }
     }
+    this->SendPrefix();
 }
 
 void Terminal::SendPrefix() {
