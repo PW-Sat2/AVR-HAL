@@ -1,5 +1,5 @@
-#ifndef UNIT_TESTS_AVR_TESTS_H_
-#define UNIT_TESTS_AVR_TESTS_H_
+#ifndef UNIT_TESTS_TESTS_H_
+#define UNIT_TESTS_TESTS_H_
 
 #include "unity.h"
 #include "fifo.h"
@@ -15,14 +15,14 @@ struct TEST_ ## a ## b ## _str { \
         data.append(TEST_ ## a ## b);   \
     }                            \
 } TEST_ ## a ## b ## _str_inst;  \
-void TEST_ ## a ## b ()
+void TEST_ ## a ## b()
 
 #define RUN(a, b) RUN_TEST(TEST_ ## a ## b)
 
 #define DEFINE_TESTSUITE(a)         \
 bool TEST_ ## a() {                 \
     UNITY_BEGIN();                  \
-    while(data.getLength() > 0) {   \
+    while (data.getLength() > 0) {   \
         RUN_TEST(data.get());       \
     }                               \
     return UNITY_END();             \
@@ -39,4 +39,4 @@ TEST_ ## a()
 #define EXPECT_FLOAT_EQ TEST_ASSERT_EQUAL_FLOAT
 #define EXPECT_STREQ TEST_ASSERT_EQUAL_STRING
 
-#endif  // UNIT_TESTS_AVR_TESTS_H_
+#endif  // UNIT_TESTS_TESTS_H_

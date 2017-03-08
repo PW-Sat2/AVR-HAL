@@ -1,19 +1,15 @@
 #include "reader.h"
 #include <utility>
 
-Reader::Reader() : position(0), isValid(false)
-{
+Reader::Reader() : position(0), isValid(false) {
 }
 
-Reader::Reader(hal::libs::span<const uint8_t> view)
-{
+Reader::Reader(hal::libs::span<const uint8_t> view) {
     Initialize(view);
 }
 
-bool Reader::UpdateState(uint16_t requestedSize)
-{
-    if (this->isValid)
-    {
+bool Reader::UpdateState(uint16_t requestedSize) {
+    if (this->isValid) {
         this->position += requestedSize;
         this->isValid = this->position <= this->buffer.size();
     }
@@ -21,43 +17,32 @@ bool Reader::UpdateState(uint16_t requestedSize)
     return this->isValid;
 }
 
-void Reader::Initialize(hal::libs::span<const uint8_t> view)
-{
+void Reader::Initialize(hal::libs::span<const uint8_t> view) {
     this->buffer = view;
     Reset();
 }
 
-bool Reader::Skip(uint16_t length)
-{
+bool Reader::Skip(uint16_t length) {
     return UpdateState(length);
 }
 
-uint8_t Reader::ReadByte()
-{
-    if (!UpdateState(1))
-    {
+uint8_t Reader::ReadByte() {
+    if (!UpdateState(1)) {
         return 0;
-    }
-    else
-    {
+    } else {
         return this->buffer[this->position - 1];
     }
 }
 
-uint8_t Reader::ReadByteBCD(uint8_t upperNibbleMask)
-{
+uint8_t Reader::ReadByteBCD(uint8_t upperNibbleMask) {
     uint8_t bcdByte = ReadByte();
     return ((bcdByte & upperNibbleMask) >> 4) * 10 + (bcdByte & 0x0F);
 }
 
-uint16_t Reader::ReadWordLE()
-{
-    if (!UpdateState(2))
-    {
+uint16_t Reader::ReadWordLE() {
+    if (!UpdateState(2)) {
         return 0;
-    }
-    else
-    {
+    } else {
         uint16_t value = this->buffer[this->position - 1];
         value <<= 8;
         value += this->buffer[this->position - 2];
@@ -65,19 +50,14 @@ uint16_t Reader::ReadWordLE()
     }
 }
 
-int16_t Reader::ReadSignedWordLE()
-{
+int16_t Reader::ReadSignedWordLE() {
     return static_cast<int16_t>(this->ReadWordLE());
 }
 
-uint16_t Reader::ReadWordBE()
-{
-    if (!UpdateState(2))
-    {
+uint16_t Reader::ReadWordBE() {
+    if (!UpdateState(2)) {
         return 0;
-    }
-    else
-    {
+    } else {
         uint16_t value = this->buffer[this->position - 2];
         value <<= 8;
         value += this->buffer[this->position - 1];
@@ -85,14 +65,10 @@ uint16_t Reader::ReadWordBE()
     }
 }
 
-uint32_t Reader::ReadDoubleWordLE()
-{
-    if (!UpdateState(4))
-    {
+uint32_t Reader::ReadDoubleWordLE() {
+    if (!UpdateState(4)) {
         return 0;
-    }
-    else
-    {
+    } else {
         uint32_t value = this->buffer[this->position - 1];
         value <<= 8;
         value += this->buffer[this->position - 2];
@@ -104,19 +80,14 @@ uint32_t Reader::ReadDoubleWordLE()
     }
 }
 
-int32_t Reader::ReadSignedDoubleWordLE()
-{
+int32_t Reader::ReadSignedDoubleWordLE() {
     return static_cast<int32_t>(this->ReadDoubleWordLE());
 }
 
-uint32_t Reader::ReadDoubleWordBE()
-{
-    if (!UpdateState(4))
-    {
+uint32_t Reader::ReadDoubleWordBE() {
+    if (!UpdateState(4)) {
         return 0;
-    }
-    else
-    {
+    } else {
         uint32_t value = this->buffer[this->position - 4];
         value <<= 8;
         value += this->buffer[this->position - 3];
@@ -128,14 +99,10 @@ uint32_t Reader::ReadDoubleWordBE()
     }
 }
 
-uint64_t Reader::ReadQuadWordLE()
-{
-    if (!UpdateState(8))
-    {
+uint64_t Reader::ReadQuadWordLE() {
+    if (!UpdateState(8)) {
         return 0;
-    }
-    else
-    {
+    } else {
         uint64_t value = this->buffer[this->position - 1];
         value <<= 8;
         value += this->buffer[this->position - 2];
@@ -155,24 +122,18 @@ uint64_t Reader::ReadQuadWordLE()
     }
 }
 
-hal::libs::span<const uint8_t> Reader::ReadArray(uint16_t length)
-{
-    if (!UpdateState(length))
-    {
+hal::libs::span<const uint8_t> Reader::ReadArray(uint16_t length) {
+    if (!UpdateState(length)) {
         return hal::libs::span<const uint8_t>();
-    }
-    else
-    {
+    } else {
         return this->buffer.subspan(this->position - length, length);
     }
 }
 
-int32_t Reader::RemainingSize()
-{
+int32_t Reader::RemainingSize() {
     return this->buffer.size() - this->position;
 }
 
-hal::libs::span<const uint8_t> Reader::ReadToEnd()
-{
+hal::libs::span<const uint8_t> Reader::ReadToEnd() {
     return this->ReadArray(this->RemainingSize());
 }

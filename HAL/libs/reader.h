@@ -1,10 +1,10 @@
-#ifndef LIBS_READER_H_
-#define LIBS_READER_H_
+#ifndef HAL_LIBS_READER_H_
+#define HAL_LIBS_READER_H_
 
 #pragma once
 
 #include <cstdint>
-#include "span.h"    
+#include "span.h"
 
 /**
  * @defgroup utilities General Purpose Utilities
@@ -18,9 +18,8 @@
  * that is independent of both current memory layout and the actual
  * buffer location in memory.
  */
-class Reader final
-{
-  public:
+class Reader final {
+ public:
     /**
      * @brief Default ctor.
      */
@@ -43,84 +42,98 @@ class Reader final
      * @brief Jumps over the requested amount of bytes.
      * @param[in] length Number of bytes to skip.
      * @return Operation status.
-     * @retval true Buffer is valid and there is still some unread data left in it.
+     * @retval true Buffer is valid and there is still some unread data left in
+     * it.
      * @retval false An attempt to read beyond the buffer end has been made.
      */
     bool Skip(uint16_t length);
 
     /**
      * @brief Returns current reader status.
-     * @retval true Buffer is valid and there is still some unread data left in it.
+     * @retval true Buffer is valid and there is still some unread data left in
+     * it.
      * @retval false An attempt to read beyond the buffer end has been made.
      */
     bool Status() const;
 
     /**
      * @brief Returns the number of not yet read bytes from the buffer.
-     * @retval true Buffer is valid and there is still some unread data left in it.
+     * @retval true Buffer is valid and there is still some unread data left in
+     * it.
      * @retval false An attempt to read beyond the buffer end has been made.
      */
     int32_t RemainingSize();
 
     /**
-     * @brief Read single byte from the buffer and move the current position to the next byte.
+     * @brief Read single byte from the buffer and move the current position to
+     * the next byte.
      * @return Read byte.
      */
     uint8_t ReadByte();
 
     /**
-     * @brief Read single binary coded decimal byte from the buffer and move the current position to the next byte.
+     * @brief Read single binary coded decimal byte from the buffer and move the
+     * current position to the next byte.
      * @param[in] upperNibbleMask mask used for byte's upper nibble.
      * @return Read byte.
      */
     uint8_t ReadByteBCD(uint8_t upperNibbleMask);
 
     /**
-     * @brief Read single 16 bit word with little-endian memory orientation from the buffer
+     * @brief Read single 16 bit word with little-endian memory orientation from
+     * the buffer
      * and advance the current buffer position to the next unread byte.
      * @return Read word.
      */
     uint16_t ReadWordLE();
 
     /**
-     * @brief Read single 16 bit word with little-endian memory orientation from the buffer,
-     * convert it into signed value and advance the current buffer position to the next unread byte.
+     * @brief Read single 16 bit word with little-endian memory orientation from
+     * the buffer,
+     * convert it into signed value and advance the current buffer position to
+     * the next unread byte.
      * Value is read assuming 2's complement notation.
      * @return Read signed word value.
      */
     int16_t ReadSignedWordLE();
 
     /**
-     * @brief Read single 16 bit word with big-endian memory orientation from the buffer
+     * @brief Read single 16 bit word with big-endian memory orientation from
+     * the buffer
      * and advance the current buffer position to the next unread byte.
      * @return Read word.
      */
     uint16_t ReadWordBE();
 
     /**
-     * @brief Read single 32 bit word with little-endian memory orientation from the buffer
+     * @brief Read single 32 bit word with little-endian memory orientation from
+     * the buffer
      * and advance the current buffer position to the next unread byte.
      * @return Read double word.
      */
     uint32_t ReadDoubleWordLE();
 
     /**
-     * @brief Read single 32 bit word with little-endian memory orientation from the buffer,
-     * convert it into signed value and advance the current buffer position to the next unread byte.
+     * @brief Read single 32 bit word with little-endian memory orientation from
+     * the buffer,
+     * convert it into signed value and advance the current buffer position to
+     * the next unread byte.
      * Value is read assuming 2's complement notation.
      * @return Read signed double word value.
      */
     int32_t ReadSignedDoubleWordLE();
 
     /**
-     * @brief Read single 32 bit word with big-endian memory orientation from the buffer
+     * @brief Read single 32 bit word with big-endian memory orientation from
+     * the buffer
      * and advance the current buffer position to the next unread byte.
      * @return Read double word.
      */
     uint32_t ReadDoubleWordBE();
 
     /**
-     * @brief Read single 64 bit word with little-endian memory orientation from the buffer
+     * @brief Read single 64 bit word with little-endian memory orientation from
+     * the buffer
      * and advance the current buffer position to the next unread byte.
      * @return Read double word.
      */
@@ -129,8 +142,10 @@ class Reader final
     /**
      * @brief Read the requested number of bytes from the buffer.
      *
-     * This method does not perform any operation/transformation on the data it only ensures that
-     * there are requested number of bytes available in the buffer and advances the current
+     * This method does not perform any operation/transformation on the data it
+     * only ensures that
+     * there are requested number of bytes available in the buffer and advances
+     * the current
      * buffer position to the first byte beyond the requested block.
      * @param[in] length Size in bytes of the requested data block.
      * @return Pointer to the first byte of the requested memory block.
@@ -148,7 +163,7 @@ class Reader final
      */
     hal::libs::span<const uint8_t> ReadToEnd();
 
-  private:
+ private:
     bool UpdateState(uint16_t requestedSize);
 
     /**
@@ -172,17 +187,15 @@ class Reader final
     bool isValid;
 };
 
-inline bool Reader::Status() const
-{
+inline bool Reader::Status() const {
     return this->isValid;
 }
 
-inline void Reader::Reset()
-{
+inline void Reader::Reset() {
     this->position = 0;
     this->isValid = !this->buffer.empty();
 }
 
 /** @}*/
 
-#endif  // LIBS_READER_H_
+#endif  // HAL_LIBS_READER_H_

@@ -106,7 +106,7 @@ TEST(terminal, single_argument) {
     EXPECT_FALSE(cmds[1].wasInvoked());
     EXPECT_EQ(cmds[0].argc, 1);
     EXPECT_STREQ(cmds[0].argv[0], "abc");
-    
+
     prepare();
     handle(" foo           94m1ie]1db        ");
     EXPECT_FALSE(cmds[0].wasInvoked());
@@ -137,7 +137,7 @@ TEST(terminal, more_arguments) {
     EXPECT_FALSE(cmds[1].wasInvoked());
     EXPECT_EQ(cmds[0].argc, 1);
     EXPECT_STREQ(cmds[0].argv[0], "abc");
-    
+
     prepare();
     handle("foo          94m1ie]1db        ");
     EXPECT_FALSE(cmds[0].wasInvoked());

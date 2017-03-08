@@ -86,7 +86,6 @@ class TWI_fake : public I2C {
 
 bool operator==(const hal::libs::FIFO_data<I2C_Event, FIFOS_N>& lhs,
                 const hal::libs::FIFO_data<I2C_Event, FIFOS_N>& rhs) {
-
     const I2C_Event * left_ptr;
     auto left_size = lhs.getContinousPart(left_ptr);
 
@@ -96,7 +95,7 @@ bool operator==(const hal::libs::FIFO_data<I2C_Event, FIFOS_N>& lhs,
 
     auto left = hal::libs::make_span(left_ptr, left_size);
     auto right = hal::libs::make_span(right_ptr, right_size);
-    
+
     return std::equal(left.begin(), left.end(), right.begin());
 }
 
