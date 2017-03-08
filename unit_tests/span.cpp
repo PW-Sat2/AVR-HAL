@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "span.h"
 
 using namespace hal;
@@ -14,10 +14,7 @@ TEST(span, check_values) {
 
     EXPECT_NE(arv.data(), nullptr);
     EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 40);
-    EXPECT_NE(carv.data(), nullptr);
-    EXPECT_EQ(carv.size(), 10);
-    EXPECT_EQ(carv.size_bytes(), 40);
+    EXPECT_EQ(arv.size_bytes(), 20);
 
     for (int i = 0; i < size; ++i) {
         EXPECT_EQ(arv[i], i);
@@ -28,10 +25,7 @@ TEST(span, check_values) {
 
     EXPECT_NE(arv.data(), nullptr);
     EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 40);
-    EXPECT_NE(carv.data(), nullptr);
-    EXPECT_EQ(carv.size(), 10);
-    EXPECT_EQ(carv.size_bytes(), 40);
+    EXPECT_EQ(arv.size_bytes(), 20);
 
     int i = 0;
     for (auto &x : arv) {
@@ -44,10 +38,7 @@ TEST(span, check_values) {
 
     EXPECT_NE(arv.data(), nullptr);
     EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 40);
-    EXPECT_NE(carv.data(), nullptr);
-    EXPECT_EQ(carv.size(), 10);
-    EXPECT_EQ(carv.size_bytes(), 40);
+    EXPECT_EQ(arv.size_bytes(), 20);
 }
 
 TEST(span, equal) {
@@ -82,7 +73,7 @@ TEST(span, equal) {
 
 TEST(span, reset) {
     constexpr int size = 100;
-    int tab[size];
+    int32_t tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
@@ -103,7 +94,7 @@ TEST(span, reset) {
 
 TEST(span, pointers) {
     constexpr int size = 10;
-    int tab[size];
+    int32_t tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
@@ -118,7 +109,7 @@ TEST(span, pointers) {
 
 TEST(span, references) {
     constexpr int size = 10;
-    int tab[size];
+    int32_t tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
@@ -138,24 +129,26 @@ TEST(span, references) {
 
 TEST(span, slice) {
     constexpr int size = 100;
-    int tab[size];
+    int32_t tab[size];
     for (int i = 0; i < size; ++i) {
         tab[i] = i;
     }
-    int * const tab_ptr = tab;
+    int32_t * const tab_ptr = tab;
     libs::span<int32_t> arv(tab_ptr, 100);
 
     libs::span<int32_t> arv2(arv.subspan(0, 50));
 
     EXPECT_EQ(arv2.size(), 50);
-    for (int i = 0; i < arv2.size(); ++i) {
+    for (size_t i = 0; i < arv2.size(); ++i) {
         EXPECT_EQ(arv2[i], i);
     }
 
     arv2 = arv.subspan(20, 10);
 
     EXPECT_EQ(arv2.size(), 10);
-    for (int i = 0; i < arv2.size(); ++i) {
+    for (size_t i = 0; i < arv2.size(); ++i) {
         EXPECT_EQ(arv2[i], i+20);
     }
 }
+
+DEFINE_TESTSUITE(span);

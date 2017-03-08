@@ -1,15 +1,18 @@
-#include "gtest.h"
-#include <cmath>
+#include "unity.h"
+#include "tests.h"
+
+#include <math.h>
 #include "bit_operations.h"
 #include <numeric>
+#include <limits>
 
 TEST(bit_operations, set_bit) {
     using hal::set_bit;
-    unsigned int val = 0;
+    uint32_t val = 0;
     for (int i = 0; i < 32; ++i) {
         val = 0;
         set_bit(val, i);
-        EXPECT_EQ(val, std::pow(2, i));
+        EXPECT_EQ(val, (1UL << i));
     }
     val = 0;
     for (int i = 0; i < 32; ++i) {
@@ -57,12 +60,12 @@ TEST(bit_operations, set_bit) {
 
 TEST(bit_operations, set_bit_ptr) {
     using hal::set_bit;
-    unsigned int value = 0;
-    unsigned int * val = &value;
+    uint32_t value = 0;
+    uint32_t * val = &value;
     for (int i = 0; i < 32; ++i) {
         *val = 0;
         set_bit(val, i);
-        EXPECT_EQ(*val, std::pow(2, i));
+        EXPECT_EQ(*val, (1ULL << i));
     }
     *val = 0;
     for (int i = 0; i < 32; ++i) {
@@ -110,12 +113,12 @@ TEST(bit_operations, set_bit_ptr) {
 
 TEST(bit_operations, clear_bit) {
     using hal::clear_bit;
-    unsigned int val = 0xFFFFFFFF;
+    uint32_t val = 0xFFFFFFFF;
     const auto MAX = std::numeric_limits<decltype(val)>::max();
     for (int i = 0; i < 32; ++i) {
         val = 0xFFFFFFFF;
         clear_bit(val, i);
-        EXPECT_EQ(val, 0xFFFFFFFF-std::pow(2, i));
+        EXPECT_EQ(val, 0xFFFFFFFF-(1UL << i));
     }
     val = MAX;
     for (int i = 0; i < 32; ++i) {
@@ -163,13 +166,13 @@ TEST(bit_operations, clear_bit) {
 
 TEST(bit_operations, clear_bit_ptr) {
     using hal::clear_bit;
-    unsigned int value = 0xFFFFFFFF;
+    uint32_t value = 0xFFFFFFFF;
     auto val = &value;
     const auto MAX = std::numeric_limits<decltype(value)>::max();
     for (int i = 0; i < 32; ++i) {
         *val = 0xFFFFFFFF;
         clear_bit(val, i);
-        EXPECT_EQ(*val, 0xFFFFFFFF-std::pow(2, i));
+        EXPECT_EQ(*val, 0xFFFFFFFF-(1UL << i));
     }
     *val = MAX;
     for (int i = 0; i < 32; ++i) {
@@ -216,7 +219,7 @@ TEST(bit_operations, clear_bit_ptr) {
 }
 
 TEST(bit_operations, read_bit) {
-    int val = 0;
+    uint32_t val = 0;
     for (int i = 0; i < 32; ++i) {
         EXPECT_EQ(hal::read_bit(val, i), 0);
     }
@@ -234,7 +237,7 @@ TEST(bit_operations, read_bit) {
     }
 
     for (int set = 0; set < 32; ++set) {
-        val = (1 << set);
+        val = (1UL << set);
         for (int i = 0; i < 32; ++i) {
             EXPECT_EQ(hal::read_bit(val, i), (i == set));
         }
@@ -251,3 +254,5 @@ TEST(bit_operations, read_bit) {
     EXPECT_EQ(hal::read_bit(val2, 7), 1);
 }
 
+
+DEFINE_TESTSUITE(bit_operations);

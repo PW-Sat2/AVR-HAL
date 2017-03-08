@@ -1,12 +1,12 @@
-#include "gtest.h"
+#include "tests.h"
 #include "array.h"
 
 TEST(array, refs) {
-    int XXX = 73923874, YYY = 2938481092;
-    hal::libs::array<int, 10> arr;
+    uint32_t XXX = 73923874, YYY = 2938481092;
+    hal::libs::array<uint32_t, 10> arr;
     arr[0] = XXX;
     arr[9] = YYY;
-    const hal::libs::array<int, 10> arr2(arr);
+    const hal::libs::array<uint32_t, 10> arr2(arr);
     EXPECT_EQ(arr == arr2, true);
     EXPECT_EQ(arr.begin(), arr.data());
     EXPECT_EQ(arr2.begin(), arr2.data());
@@ -53,28 +53,34 @@ TEST(array, at) {
 }
 
 TEST(array, swap) {
-    hal::libs::array<int, 20> arr;
-    hal::libs::array<int, 20> arr2;
+    hal::libs::array<int, 5> arr = {1, 1, 1, 1, 1};
+    hal::libs::array<int, 5> arr2 = {1, 2, 3, 4, 5};
     arr = arr2;
     EXPECT_EQ(arr == arr2, true);
 
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 5; ++i) {
         arr[i] = i;
-        arr2[i] = 20 - i;
+        arr2[i] = 5 - i;
     }
 
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 5; ++i) {
         EXPECT_EQ(arr[i], i);
-        EXPECT_EQ(arr2[i], 20 - i);
+        EXPECT_EQ(arr2[i], 5 - i);
     }
 
     EXPECT_EQ(arr == arr2, false);
-    swap(arr, arr2);
+    std::swap(arr, arr2);
     EXPECT_EQ(arr == arr2, false);
 
-    for (int i = 0; i < 20; ++i) {
-        EXPECT_EQ(arr[i], 20 - i);
+    for (int i = 0; i < 5; ++i) {
+        EXPECT_EQ(arr[i], 5 - i);
         EXPECT_EQ(arr2[i], i);
+    }
+
+    std::swap(arr, arr2);
+    for (int i = 0; i < 5; ++i) {
+        EXPECT_EQ(arr[i], i);
+        EXPECT_EQ(arr2[i], 5 - i);
     }
 }
 
@@ -86,3 +92,5 @@ TEST(array, assign) {
         EXPECT_EQ(x, 3);
     }
 }
+
+DEFINE_TESTSUITE(array);

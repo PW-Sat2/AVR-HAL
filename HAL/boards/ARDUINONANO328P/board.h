@@ -1,8 +1,8 @@
 #ifndef HAL_BOARDS_ARDUINONANO328P_BOARD_H_
 #define HAL_BOARDS_ARDUINONANO328P_BOARD_H_
 
-#include "periph/DigitalIO.h"
-#include "devices/LED.h"
+#include "DigitalIO.h"
+#include "LED.h"
 
 namespace hal {
 
