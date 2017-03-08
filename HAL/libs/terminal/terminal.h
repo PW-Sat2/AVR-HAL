@@ -1,5 +1,5 @@
-#ifndef SRC_TERMINAL_H_
-#define SRC_TERMINAL_H_
+#ifndef HAL_LIBS_TERMINAL_TERMINAL_H_
+#define HAL_LIBS_TERMINAL_TERMINAL_H_
 
 #include <cstdint>
 #include "span.h"
@@ -18,8 +18,7 @@ using TerminalCommandHandler = void (*)(std::uint8_t argc, char* argv[]);
 /**
  * Structure describing single terminal command
  */
-struct TerminalCommandDescription
-{
+struct TerminalCommandDescription {
     /** @brief Name of the command */
     const char* name;
     /** Pointer to handler function */
@@ -29,14 +28,14 @@ struct TerminalCommandDescription
 /**
  * @brief Terminal class
  */
-class Terminal
-{
-  public:
+class Terminal {
+ public:
     /**
      * @brief Sets supported commands list
      * @param[in] commands Commands list
      */
-    void SetCommandList(hal::libs::span<const TerminalCommandDescription> commands);
+    void SetCommandList(
+        hal::libs::span<const TerminalCommandDescription> commands);
 
     /**
      * @brief Starts terminal
@@ -51,7 +50,7 @@ class Terminal
      */
     void HandleCommand(char* buffer);
 
-  private:
+ private:
     /**
      * @brief Sends prefix
      */
@@ -65,4 +64,4 @@ class Terminal
 
 /** @} */
 
-#endif
+#endif  // HAL_LIBS_TERMINAL_TERMINAL_H_

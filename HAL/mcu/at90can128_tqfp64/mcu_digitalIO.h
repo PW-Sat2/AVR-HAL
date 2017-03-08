@@ -37,13 +37,13 @@ constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
     {0, 0, 0, 0},     // 22 -- GND
     {0, 0, 0, 0},     // 23 -- XTAL2
     {0, 0, 0, 0},     // 24 -- XTAL1
-    PIN_DEF(D, 0),    // 25 -- PD0 (SCL / INT0) 
-    PIN_DEF(D, 1),    // 26 -- PD1 (SDA / INT1) 
+    PIN_DEF(D, 0),    // 25 -- PD0 (SCL / INT0)
+    PIN_DEF(D, 1),    // 26 -- PD1 (SDA / INT1)
     PIN_DEF(D, 2),    // 27 -- PD2 (RXD1 / INT2)
     PIN_DEF(D, 3),    // 28 -- PD3 (TXD1 / INT3)
     PIN_DEF(D, 4),    // 29 -- PD4 (ICP1)
-    PIN_DEF(D, 5),    // 30 -- PD5 (TXCAN / XCK1) 
-    PIN_DEF(D, 6),    // 31 -- PD6 (RXCAN / T1)   
+    PIN_DEF(D, 5),    // 30 -- PD5 (TXCAN / XCK1)
+    PIN_DEF(D, 6),    // 31 -- PD6 (RXCAN / T1)
     PIN_DEF(D, 7),    // 32 -- PD7 (T0)
     PIN_DEF(G, 0),    // 33 -- PG0 (WR)
     PIN_DEF(G, 1),    // 34 -- PG1 (RD)

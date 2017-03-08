@@ -13,7 +13,7 @@ static EepromStorage<int> eepromVariable;
 int main() {
     Serial0.init(9600, hal::STDIO::ENABLE);
 
-    while(1) {
+    while (1) {
         printf("Choose: r - read, w - write: ");
         char c;
         scanf("%c", &c);

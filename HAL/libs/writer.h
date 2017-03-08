@@ -1,5 +1,5 @@
-#ifndef LIBS_WRITER_H_
-#define LIBS_WRITER_H_
+#ifndef HAL_LIBS_WRITER_H_
+#define HAL_LIBS_WRITER_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -17,9 +17,8 @@
  * that is independent of both current memory layout and the actual
  * buffer location in memory.
  */
-class Writer final
-{
-  public:
+class Writer final {
+ public:
     /**
      * @brief Default ctor
      */
@@ -42,7 +41,8 @@ class Writer final
     /**
      * @brief Returns current writer status.
      * @retval true Buffer is valid and there is still some space left in it.
-     * @retval false An attempt to write data beyond the buffer end has been made.
+     * @retval false An attempt to write data beyond the buffer end has been
+     * made.
      */
     inline bool Status() const;
 
@@ -54,56 +54,69 @@ class Writer final
 
     /**
      * @brief Returns the number of not yet used bytes in the buffer.
-     * @retval true Buffer is valid and there is still some unread data left in it.
-     * @retval false An attempt to write data beyond the buffer end has been made.
+     * @retval true Buffer is valid and there is still some unread data left in
+     * it.
+     * @retval false An attempt to write data beyond the buffer end has been
+     * made.
      */
     std::int32_t RemainingSize() const;
 
     /**
-     * @brief Appends single byte to the buffer and moves the current position to the next byte.
+     * @brief Appends single byte to the buffer and moves the current position
+     * to the next byte.
      * @param[in] byte Byte that should be added to writer output.
      * @return Operation status.
      */
     bool WriteByte(std::uint8_t byte);
 
     /**
-     * @brief Writes single 16 bit word with little-endian memory orientation to the buffer
+     * @brief Writes single 16 bit word with little-endian memory orientation to
+     * the buffer
      * and advances the current buffer position to the next unused byte.
-     * @param[in] word Word that should be added to writer output using little endian byte ordering.
+     * @param[in] word Word that should be added to writer output using little
+     * endian byte ordering.
      * @return Operation status.
      */
     bool WriteWordLE(std::uint16_t word);
 
     /**
-     * @brief Writes single 32 bit word with little-endian memory orientation to the buffer
+     * @brief Writes single 32 bit word with little-endian memory orientation to
+     * the buffer
      * and advances the current buffer position to the next unused byte.
-     * @param[in] dword Doubleword that should be added to writer output using little endian byte ordering.
+     * @param[in] dword Doubleword that should be added to writer output using
+     * little endian byte ordering.
      * @return Operation status.
      */
     bool WriteDoubleWordLE(std::uint32_t dword);
 
     /**
-     * @brief Writes single 16 bit signed value with little-endian memory orientation to the buffer
+     * @brief Writes single 16 bit signed value with little-endian memory
+     * orientation to the buffer
      * and advances the current buffer position to the next unused byte.
      * Value is written in 2's complement notation.
-     * @param[in] word Word that should be added to writer output using little endian byte ordering.
+     * @param[in] word Word that should be added to writer output using little
+     * endian byte ordering.
      * @return Operation status.
      */
     bool WriteSignedWordLE(std::int16_t word);
 
     /**
-     * @brief Writes single 64 bit word with little-endian memory orientation to the buffer
+     * @brief Writes single 64 bit word with little-endian memory orientation to
+     * the buffer
      * and advances the current buffer position to the next unused byte.
-     * @param[in] dword Quadword that should be added to writer output using little endian byte ordering.
+     * @param[in] dword Quadword that should be added to writer output using
+     * little endian byte ordering.
      * @return Operation status.
      */
     bool WriteQuadWordLE(std::uint64_t dword);
 
     /**
-     * @brief Writes single 32 bit signed value with little-endian memory orientation to the buffer
+     * @brief Writes single 32 bit signed value with little-endian memory
+     * orientation to the buffer
      * and advances the current buffer position to the next unused byte.
      * Value is written in 2's complement notation.
-     * @param[in] dword Doubleword that should be added to writer output using little endian byte ordering.
+     * @param[in] dword Doubleword that should be added to writer output using
+     * little endian byte ordering.
      * @return Operation status.
      */
     bool WriteSignedDoubleWordLE(std::int32_t dword);
@@ -111,7 +124,8 @@ class Writer final
     /**
      * @brief Writes the requested memory block to the buffer.
      *
-     * @param[in] buffer Span whose contents should be appended to writer output.
+     * @param[in] buffer Span whose contents should be appended to writer
+     * output.
      * @return Operation status.
      */
     bool WriteArray(hal::libs::span<const std::uint8_t> buffer);
@@ -128,7 +142,8 @@ class Writer final
      * @brief Reserves part of buffer for direct operation
      * @param count Number of bytes to reserve
      * @return Span with reserved area
-     * @remark If not enough space is available in target buffer, reserved area is trimmed to fit
+     * @remark If not enough space is available in target buffer, reserved area
+     * is trimmed to fit
      */
     hal::libs::span<std::uint8_t> Reserve(std::size_t count);
 
@@ -138,7 +153,7 @@ class Writer final
      */
     hal::libs::span<std::uint8_t> Capture();
 
-  private:
+ private:
     /**
      * @brief Updates internal writer status
      * @param requestedSize Number of bytes that will be written to buffer
@@ -173,22 +188,19 @@ class Writer final
     bool _isValid;
 };
 
-inline bool Writer::Status() const
-{
+inline bool Writer::Status() const {
     return this->_isValid;
 }
 
-inline void Writer::Reset()
-{
+inline void Writer::Reset() {
     this->_position = 0;
     this->_isValid = this->_buffer.size() > 0;
 }
 
-inline uint16_t Writer::GetDataLength() const
-{
+inline uint16_t Writer::GetDataLength() const {
     return this->_position;
 }
 
 /** @}*/
 
-#endif  // LIBS_WRITER_H_
+#endif  // HAL_LIBS_WRITER_H_
