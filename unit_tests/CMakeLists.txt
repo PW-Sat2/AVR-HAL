@@ -18,6 +18,7 @@ add_hal_executable(${NAME}
     bit_operations.cpp
     array.cpp
     fifo.cpp
+    gcc_static.cpp
     ReaderTest.cpp
     WriterTest.cpp
     span.cpp
