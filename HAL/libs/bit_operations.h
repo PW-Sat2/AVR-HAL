@@ -8,7 +8,7 @@ constexpr inline void set_bit(reg_type & val, const int bit_pos) __attribute__((
 
 template<typename reg_type>
 constexpr inline void set_bit(reg_type & val, const int bit_pos) {
-    val |= (1 << bit_pos);
+    val |= (1UL << bit_pos);
 }
 
 
@@ -17,7 +17,7 @@ constexpr inline void set_bit(reg_type * val, const int bit_pos) __attribute__((
 
 template<typename reg_type>
 constexpr inline void set_bit(reg_type * val, const int bit_pos) {
-    (*val) |= (1 << bit_pos);
+    (*val) |= (1UL << bit_pos);
 }
 
 
@@ -25,7 +25,7 @@ template<typename reg_type>
 constexpr inline void clear_bit(reg_type & val, const int bit_pos) __attribute__((always_inline));
 template<typename reg_type>
 constexpr inline void clear_bit(reg_type & val, const int bit_pos) {
-    val &= (~(1 << bit_pos));
+    val &= (~(1UL << bit_pos));
 }
 
 
@@ -34,7 +34,7 @@ constexpr inline void clear_bit(reg_type * val, const int bit_pos) __attribute__
 
 template<typename reg_type>
 constexpr inline void clear_bit(reg_type * val, const int bit_pos) {
-    (*val) &= (~(1 << bit_pos));
+    (*val) &= (~(1UL << bit_pos));
 }
 
 
