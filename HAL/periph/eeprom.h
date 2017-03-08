@@ -46,11 +46,11 @@ class EepromStorage : details::AddressCounter {
 
  private:
     void * getPointerFromAddess(size_t address) {
-        return (void *)(address);
+        return reinterpret_cast<void *>(address);
     }
 
     void read(libs::span<T> data_out) const {
-        eeprom_read_block((void*)data_out.begin(), eeprom_ptr, sizeof(T));
+        eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr, sizeof(T));
     }
     void write(libs::span<const T> data_in) const {
         eeprom_write_block(data_in.begin(), eeprom_ptr, sizeof(T));
