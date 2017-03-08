@@ -21,6 +21,7 @@ find_program(GDB NAMES avr-gdb-py)
 find_program(CMAKE_MAKE_PROGRAM NAMES make)
 
 find_program(AVRDUDE NAMES avrdude)
+find_program(PICOCOM NAMES picocom)
 
 find_program(SIMULAVR NAMES simulavr)
 
@@ -30,6 +31,7 @@ CMAKE_FORCE_CXX_COMPILER(${CXX} GNU)
 message(STATUS "Using HAL from ${CMAKE_CURRENT_LIST_DIR}")
 message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
 message(STATUS "SimulAVR: ${SIMULAVR}")
+message(STATUS "PicoCOM: ${PICOCOM}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
 
@@ -44,6 +46,9 @@ set (CMCU "-mmcu=${GCC_TARGET} -DF_CPU=${F_CPU}L")
 set (CMAKE_C_FLAGS "-std=gnu11 ${CMCU} ${CWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
 set (CMAKE_CXX_FLAGS "-std=gnu++1y ${CMCU} -fno-exceptions ${CXXWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
 
+set (TERMINAL_PORT "" CACHE STRING "Port for terminal operations")
+set (TERMINAL_BAUD "" CACHE STRING "Baudrate for terminal operations")
+set (TERMINAL_PICOCOM_OPTIONS -l --imap lfcrlf --omap crlf CACHE STRING "Options for picocom")
 
 macro(add_hal_executable target_name)
 	set(elf_file ${target_name})
@@ -60,7 +65,6 @@ macro(add_hal_executable target_name)
 	set_target_properties(
 		${elf_file}
 		PROPERTIES
-
 			LINK_FLAGS "-mmcu=${GCC_TARGET} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
 	)
 
@@ -120,4 +124,23 @@ macro(add_hal_executable target_name)
 		DEPENDS ${hex_file}
 	)
 
+	# terminal handling
+	add_custom_command(
+		OUTPUT "${target_name}.term_"
+		COMMAND
+			${PICOCOM} ${TERMINAL_PORT} -b${TERMINAL_BAUD} ${TERMINAL_PICOCOM_OPTIONS}
+	)
+	add_custom_target(
+		"${target_name}.term"
+		DEPENDS "${target_name}.term_"
+	)
+	add_custom_target(
+		"term"
+		DEPENDS "${target_name}.term_"
+	)
+
+	add_custom_target(
+		"${target_name}.flash_and_term"
+		DEPENDS ${hex_file} "${hex_file}.flash" "${target_name}.term_"
+	)
 endmacro(add_hal_executable)
