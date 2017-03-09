@@ -16,6 +16,7 @@ int main() {
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);
     // RUN_TESTSUITE(pure_virtual);
+    RUN_TESTSUITE(DigitalIO);
 
     return 0;
 }
