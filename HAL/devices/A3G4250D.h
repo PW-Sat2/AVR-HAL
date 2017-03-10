@@ -15,31 +15,6 @@ class A3G4250D {
         int16_t Z_axis;
     };
 
-    enum LatchMode {
-        PULSE = 0,
-        LATCH = 1
-    };
-
-    enum LatchClearMethod {
-        STATUS_REG_READ = 0,
-        ANY_REG_READ = 1
-    };
-
-    enum InterruptControl {
-        INT_DISABLED = 0,
-        INT_ENABLED = 1
-    };
-
-    enum InterruptPinLogic {
-        ACTIVE_HIGH = 0,
-        ACTIVE_LOW = 1
-    };
-
-    enum InterruptDriveType {
-        PUSH_PULL = 0,
-        OPEN_DRAIN = 1
-    };
-
     enum PowerMode {
         SLEEP = 0,
         ACTIVE = 1
@@ -49,26 +24,6 @@ class A3G4250D {
         POWER_DOWN = 0,
         NORMAL = 1
     };
-
-    enum LowPassFilter {
-        LPF_256_HZ = 0,
-        LPF_188_HZ = 1,
-        LPF_98_HZ = 2,
-        LPF_42_HZ = 3,
-        LPF_20_HZ = 4,
-        LPF_10_HZ = 5,
-        LPF_5_HZ = 6
-    };
-
-    enum ClockSource {
-        INTERNAL_OSC = 0,
-        PLL_X_GYRO_REF = 1,
-        PLL_Y_GYRO_REF = 2,
-        PLL_Z_GYRO_REF = 3,
-        PLL_32_KHZ_REF = 4,
-        PLL_19_MHZ_REF = 5
-    };
-
 
     struct Status {
         bool ZYXOR;
