@@ -15,42 +15,42 @@ class ITG3200 {
         int16_t Z_axis;
     };
 
-    enum LatchMode {
+    enum class LatchMode {
         PULSE = 0,
         LATCH = 1
     };
 
-    enum LatchClearMethod {
+    enum class LatchClearMethod {
         STATUS_REG_READ = 0,
         ANY_REG_READ = 1
     };
 
-    enum InterruptControl {
+    enum class InterruptControl {
         INT_DISABLED = 0,
         INT_ENABLED = 1
     };
 
-    enum InterruptPinLogic {
+    enum class InterruptPinLogic {
         ACTIVE_HIGH = 0,
         ACTIVE_LOW = 1
     };
 
-    enum InterruptDriveType {
+    enum class InterruptDriveType {
         PUSH_PULL = 0,
         OPEN_DRAIN = 1
     };
 
-    enum PowerMode {
+    enum class PowerMode {
         ACTIVE = 0,
         SLEEP = 1
     };
 
-    enum AxisPowerMode {
+    enum class AxisPowerMode {
         NORMAL = 0,
         STANDBY = 1
     };
 
-    enum LowPassFilter {
+    enum class LowPassFilter {
         LPF_256_HZ = 0,
         LPF_188_HZ = 1,
         LPF_98_HZ = 2,
@@ -60,7 +60,7 @@ class ITG3200 {
         LPF_5_HZ = 6
     };
 
-    enum ClockSource {
+    enum class ClockSource {
         INTERNAL_OSC = 0,
         PLL_X_GYRO_REF = 1,
         PLL_Y_GYRO_REF = 2,
@@ -83,7 +83,7 @@ class ITG3200 {
     }
 
     void set_filters(uint8_t sample_rate_div, LowPassFilter lpf) const {
-        libs::array<uint8_t, 2> data = {sample_rate_div, (0x18 | lpf)};
+        libs::array<uint8_t, 2> data = {sample_rate_div, (0x18 | static_cast<uint8_t>(lpf))};
         i2cdevice.write_register(Registers::SMPLRT_DIV, data);
     }
 
@@ -115,7 +115,7 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11111000) | clock};
+        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11111000) | static_cast<uint8_t>(clock)};
         i2cdevice.write_register(Registers::PWR_MGM, data);
     }
 
@@ -123,7 +123,12 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00000111) | (sleep << 6) | (x_standby << 5) | (y_standby << 4) | (z_standby << 3)};
+        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00000111) |
+                                 (static_cast<uint8_t>(sleep) << 6) | 
+                             (static_cast<uint8_t>(x_standby) << 5) | 
+                             (static_cast<uint8_t>(y_standby) << 4) | 
+                             (static_cast<uint8_t>(z_standby) << 3)};
+
         i2cdevice.write_register(Registers::PWR_MGM, data);
     }
 
@@ -158,7 +163,7 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00111111) | (logic << 7) | (otype << 6)};
+        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00111111) | (static_cast<uint8_t>(logic) << 7) | (static_cast<uint8_t>(otype) << 6)};
         i2cdevice.write_register(Registers::INT_CFG, data);
     }
 
@@ -166,7 +171,11 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11000000) | (latch_mode << 5) | (latch_method << 4) | (itg_rdy << 2) | data_rdy};
+        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11000000) |
+                            (static_cast<uint8_t>(latch_mode) << 5) |
+                          (static_cast<uint8_t>(latch_method) << 4) |
+                               (static_cast<uint8_t>(itg_rdy) << 2) |
+                                     static_cast<uint8_t>(data_rdy)};
         i2cdevice.write_register(Registers::INT_CFG, data);
     }
 
