@@ -26,7 +26,7 @@ class AD5641 {
         libs::Writer writer{data};
         writer.WriteLowerBytesBE(data_lsb, 2);
 
-        spi_dev.transmit(data);
+        spi_dev.write(data);
     }
 
  private:
