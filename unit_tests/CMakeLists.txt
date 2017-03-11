@@ -25,6 +25,7 @@ add_hal_executable(${NAME}
     data_types.cpp
     eeprom.cpp
     terminal.cpp
+    devices_compilation.cpp
 )
 
 target_link_libraries(${NAME}

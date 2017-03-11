@@ -199,7 +199,7 @@ TEST(i2c, device) {
     span<uint8_t> arv_tx(tab_tx);
     uint8_t tab_rx[2];
     span<uint8_t> arv_rx(tab_rx);
-    dev.data_transfer(arv_tx, arv_rx);
+    dev.transfer(arv_tx, arv_rx);
     PUSHv(START, addr_w);
     PUSHv(WRITE, 9);
     PUSHv(WRITE, 8);
