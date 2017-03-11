@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "hal_assert.h"
+#include <algorithm>
 
 namespace hal {
 namespace libs {
@@ -170,11 +171,12 @@ class span final {
     }
 
     //
-    // Compare for same array pointer and size:
+    // Compare for same data
     //
 
     constexpr bool operator ==(const span & other) const {
-        return data() == other.data() && size() == other.size();
+        return (this->size() == other.size() && 
+                std::equal(this->begin(), this->end(), other.begin()));
     }
     constexpr bool operator !=(const span & other) const {
         return !(*this == other);
