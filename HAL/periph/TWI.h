@@ -79,12 +79,12 @@ class TWI : public I2C {
 
  private:
     static void wait_for_finish() {
-        while (read_bit(TWCR, TWINT) == false) {}
+        while (libs::read_bit(TWCR, TWINT) == false) {}
     }
 
     template<uint32_t frequency, int twps>
     struct calc_twbr {
-        static const int32_t value = ((F_CPU/frequency)-16)/(2*power<4, twps>::value);
+        static const int32_t value = ((F_CPU/frequency)-16)/(2*libs::power<4, twps>::value);
     };
 
     template<uint32_t frequency, int twps = 0>

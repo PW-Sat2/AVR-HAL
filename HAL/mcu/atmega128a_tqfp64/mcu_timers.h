@@ -37,11 +37,11 @@ class Timer0 {
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(TIMSK, TOIE0);
+        libs::set_bit(TIMSK, TOIE0);
     }
 
     static void enable_compare_interrupt() {
-        set_bit(TIMSK, OCIE0);
+        libs::set_bit(TIMSK, OCIE0);
     }
 };
 
@@ -95,19 +95,19 @@ class Timer1 {
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(TIMSK, TOIE1);
+        libs::set_bit(TIMSK, TOIE1);
     }
 
     static void enable_compare_A_interrupt() {
-        set_bit(TIMSK, OCIE1A);
+        libs::set_bit(TIMSK, OCIE1A);
     }
 
     static void enable_compare_B_interrupt() {
-        set_bit(TIMSK, OCIE1B);
+        libs::set_bit(TIMSK, OCIE1B);
     }
 
     static void enable_compare_C_interrupt() {
-        set_bit(ETIMSK, OCIE1C);
+        libs::set_bit(ETIMSK, OCIE1C);
     }
 };
 
@@ -161,19 +161,19 @@ class Timer3 {
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(ETIMSK, TOIE3);
+        libs::set_bit(ETIMSK, TOIE3);
     }
 
     static void enable_compare_A_interrupt() {
-        set_bit(ETIMSK, OCIE3A);
+        libs::set_bit(ETIMSK, OCIE3A);
     }
 
     static void enable_compare_B_interrupt() {
-        set_bit(ETIMSK, OCIE3B);
+        libs::set_bit(ETIMSK, OCIE3B);
     }
 
     static void enable_compare_C_interrupt() {
-        set_bit(ETIMSK, OCIE3C);
+        libs::set_bit(ETIMSK, OCIE3C);
     }
 };
 
@@ -208,11 +208,11 @@ class Timer2 {
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(TIMSK, TOIE2);
+        libs::set_bit(TIMSK, TOIE2);
     }
 
     static void enable_compare_interrupt() {
-        set_bit(TIMSK, OCIE2);
+        libs::set_bit(TIMSK, OCIE2);
     }
 };
 

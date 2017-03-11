@@ -39,11 +39,11 @@ class ExternalInterrupt {
             EICRB &= (~(0b11 << (2*(int_nr-4))));
             EICRB |= (static_cast<uint8_t>(mode) << (2*(int_nr-4)));
         }
-        set_bit(EIMSK, int_nr);
+        libs::set_bit(EIMSK, int_nr);
     }
 
     void disable() const {
-        clear_bit(EIMSK, int_nr);
+        libs::clear_bit(EIMSK, int_nr);
     }
 
  private:

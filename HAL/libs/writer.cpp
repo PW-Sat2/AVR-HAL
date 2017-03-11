@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <utility>
 
+using namespace hal::libs;
+
 Writer::Writer() : _position(0), _isValid(false) {
 }
 

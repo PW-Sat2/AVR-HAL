@@ -6,8 +6,9 @@
 #include <numeric>
 #include <limits>
 
+using namespace hal::libs;
+
 TEST(bit_operations, set_bit) {
-    using hal::set_bit;
     uint32_t val = 0;
     for (int i = 0; i < 32; ++i) {
         val = 0;
@@ -59,7 +60,6 @@ TEST(bit_operations, set_bit) {
 }
 
 TEST(bit_operations, set_bit_ptr) {
-    using hal::set_bit;
     uint32_t value = 0;
     uint32_t * val = &value;
     for (int i = 0; i < 32; ++i) {
@@ -112,7 +112,6 @@ TEST(bit_operations, set_bit_ptr) {
 }
 
 TEST(bit_operations, clear_bit) {
-    using hal::clear_bit;
     uint32_t val = 0xFFFFFFFF;
     const auto MAX = std::numeric_limits<decltype(val)>::max();
     for (int i = 0; i < 32; ++i) {
@@ -165,7 +164,6 @@ TEST(bit_operations, clear_bit) {
 }
 
 TEST(bit_operations, clear_bit_ptr) {
-    using hal::clear_bit;
     uint32_t value = 0xFFFFFFFF;
     auto val = &value;
     const auto MAX = std::numeric_limits<decltype(value)>::max();
@@ -221,37 +219,37 @@ TEST(bit_operations, clear_bit_ptr) {
 TEST(bit_operations, read_bit) {
     uint32_t val = 0;
     for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(hal::read_bit(val, i), 0);
+        EXPECT_EQ(read_bit(val, i), 0);
     }
     val = 0xFFFFFFFF;
     for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(hal::read_bit(val, i), 1);
+        EXPECT_EQ(read_bit(val, i), 1);
     }
     val = 0xAAAAAAAA;
     for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(hal::read_bit(val, i), (i % 2));
+        EXPECT_EQ(read_bit(val, i), (i % 2));
     }
     val = 0x55555555;
     for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(hal::read_bit(val, i), !(i % 2));
+        EXPECT_EQ(read_bit(val, i), !(i % 2));
     }
 
     for (int set = 0; set < 32; ++set) {
         val = (1UL << set);
         for (int i = 0; i < 32; ++i) {
-            EXPECT_EQ(hal::read_bit(val, i), (i == set));
+            EXPECT_EQ(read_bit(val, i), (i == set));
         }
     }
 
     uint8_t val2 = 0xA9;
-    EXPECT_EQ(hal::read_bit(val2, 0), 1);
-    EXPECT_EQ(hal::read_bit(val2, 1), 0);
-    EXPECT_EQ(hal::read_bit(val2, 2), 0);
-    EXPECT_EQ(hal::read_bit(val2, 3), 1);
-    EXPECT_EQ(hal::read_bit(val2, 4), 0);
-    EXPECT_EQ(hal::read_bit(val2, 5), 1);
-    EXPECT_EQ(hal::read_bit(val2, 6), 0);
-    EXPECT_EQ(hal::read_bit(val2, 7), 1);
+    EXPECT_EQ(read_bit(val2, 0), 1);
+    EXPECT_EQ(read_bit(val2, 1), 0);
+    EXPECT_EQ(read_bit(val2, 2), 0);
+    EXPECT_EQ(read_bit(val2, 3), 1);
+    EXPECT_EQ(read_bit(val2, 4), 0);
+    EXPECT_EQ(read_bit(val2, 5), 1);
+    EXPECT_EQ(read_bit(val2, 6), 0);
+    EXPECT_EQ(read_bit(val2, 7), 1);
 }
 
 

@@ -31,7 +31,7 @@ class Timer0 {
     }
 
     static void enable_overflow_interrupt() {
-        set_bit(TIMSK0, TOIE0);
+        libs::set_bit(TIMSK0, TOIE0);
     }
 
     static void set_output_compare(uint8_t value) {
@@ -39,7 +39,7 @@ class Timer0 {
     }
 
     static void enable_compare_interrupt() {
-        set_bit(TIMSK0, OCIE0A);
+        libs::set_bit(TIMSK0, OCIE0A);
     }
 };
 

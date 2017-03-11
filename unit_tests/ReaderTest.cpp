@@ -4,6 +4,8 @@
 #include "array.h"
 #include "reader.h"
 
+using namespace hal::libs;
+
 TEST(ReaderTest, TestDefaultCtor) {
     Reader reader;
     EXPECT_FALSE(reader.Status());

@@ -2,6 +2,7 @@
 #define HAL_LIBS_BIT_OPERATIONS_H_
 
 namespace hal {
+namespace libs {
 
 template<typename reg_type>
 constexpr inline void set_bit(reg_type & val, const int bit_pos) __attribute__((always_inline));
@@ -46,6 +47,7 @@ constexpr inline bool read_bit(const reg_type val, const int bit_pos) {
     return static_cast<bool>((val >> bit_pos) & 0b1);
 }
 
+}  // namespace libs
 }  // namespace hal
 
 #endif  // HAL_LIBS_BIT_OPERATIONS_H_

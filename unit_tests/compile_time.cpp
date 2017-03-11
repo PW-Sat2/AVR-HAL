@@ -4,7 +4,8 @@
 #include "compile_time.h"
 #include <cmath>
 #include <cstdio>
-using namespace hal;
+
+using namespace hal::libs;
 
 template<int base, int exp>
 struct test {

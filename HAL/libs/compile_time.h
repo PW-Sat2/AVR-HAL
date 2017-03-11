@@ -5,6 +5,7 @@
 #include <type_traits>
 
 namespace hal {
+namespace libs {
 
 template <std::int32_t base, int exp>
 struct power {
@@ -37,6 +38,7 @@ constexpr uint8_t power_of_two<0>() {
     return 1;
 }
 
+}  // namespace libs
 }  // namespace hal
 
 #endif  // HAL_LIBS_COMPILE_TIME_H_

@@ -22,11 +22,11 @@ inline void set_sleep_mode(SleepModes mode) {
 }
 
 inline void sleep_enable() {
-    set_bit(MCUCR, SE);
+    libs::set_bit(MCUCR, SE);
 }
 
 inline void sleep_disable() {
-    clear_bit(MCUCR, SE);
+    libs::clear_bit(MCUCR, SE);
 }
 
 inline void sleep_cpu() {
@@ -39,7 +39,7 @@ inline void set_clock_divider() {
     static_assert((divisor >= 1) && (divisor <= 129), "Clock divisor can be in rage 1..129!");
     if (divisor > 1) {
         XDIV = 129-divisor;
-        set_bit(XDIV, 7);
+        libs::set_bit(XDIV, 7);
     }
 }
 
