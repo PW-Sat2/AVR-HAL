@@ -3,6 +3,8 @@
 
 #include "I2C.h"
 #include "array.h"
+#include "reader.h"
+#include "bit_operations.h"
 
 namespace hal {
 template<typename I2C>
@@ -78,18 +80,19 @@ class ITG3200 {
     uint8_t get_id() const {
         libs::array<uint8_t, 1> data;
         i2cdevice.read_register(Registers::WHO_AM_I, data);
-        return (data[0] >> 1) & 0b00111111;
+        return libs::read_mask<1, 5>(data[0]);
     }
 
     void set_filters(uint8_t sample_rate_div, LowPassFilter lpf) const {
-        libs::array<uint8_t, 2> data = {sample_rate_div, (0x18 | static_cast<uint8_t>(lpf))};
+        libs::array<uint8_t, 2> data = {sample_rate_div, static_cast<uint8_t>((0x18 | static_cast<uint8_t>(lpf)))};
         i2cdevice.write_register(Registers::SMPLRT_DIV, data);
     }
 
     int16_t get_temperature_raw() const {
         libs::array<uint8_t, 2> data;
         i2cdevice.read_register(Registers::TEMP_OUT_H, data);
-        return ((static_cast<int16_t>(data[0]) << 8) | data[1]);
+        libs::Reader reader{data};
+        return (reader.ReadSignedWordBE());
     }
 
     float get_temperature() const {
@@ -101,11 +104,12 @@ class ITG3200 {
         libs::array<uint8_t, 6> data;
         i2cdevice.read_register(Registers::GYRO_XOUT_H, data);
 
+        libs::Reader reader{data};
         GyroData gyro_data;
 
-        gyro_data.X_axis = ((static_cast<int16_t>(data[0]) << 8) | data[1]);
-        gyro_data.Y_axis = ((static_cast<int16_t>(data[2]) << 8) | data[3]);
-        gyro_data.Z_axis = ((static_cast<int16_t>(data[4]) << 8) | data[5]);
+        gyro_data.X_axis = reader.ReadSignedWordBE();
+        gyro_data.Y_axis = reader.ReadSignedWordBE();
+        gyro_data.Z_axis = reader.ReadSignedWordBE();
 
         return gyro_data;
     }
@@ -114,29 +118,28 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11111000) | static_cast<uint8_t>(clock)};
-        i2cdevice.write_register(Registers::PWR_MGM, data);
+        libs::write_mask<0, 3>(read_data[0], static_cast<uint8_t>(clock));
+        i2cdevice.write_register(Registers::PWR_MGM, read_data);
     }
 
     void set_power(PowerMode sleep, AxisPowerMode x_standby, AxisPowerMode y_standby, AxisPowerMode z_standby) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00000111) |
-                                 (static_cast<uint8_t>(sleep) << 6) | 
-                             (static_cast<uint8_t>(x_standby) << 5) | 
-                             (static_cast<uint8_t>(y_standby) << 4) | 
-                             (static_cast<uint8_t>(z_standby) << 3)};
+        libs::write_mask<6, 1>(read_data[0], static_cast<uint8_t>(sleep));
+        libs::write_mask<5, 1>(read_data[0], static_cast<uint8_t>(x_standby));
+        libs::write_mask<4, 1>(read_data[0], static_cast<uint8_t>(y_standby));
+        libs::write_mask<3, 1>(read_data[0], static_cast<uint8_t>(z_standby));
 
-        i2cdevice.write_register(Registers::PWR_MGM, data);
+        i2cdevice.write_register(Registers::PWR_MGM, read_data);
     }
 
     void hardware_reset() const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::array<uint8_t, 1> data = {read_data[0] | (1 << 7)};
-        i2cdevice.write_register(Registers::PWR_MGM, data);
+        libs::set_bit(read_data[0], 7);
+        i2cdevice.write_register(Registers::PWR_MGM, read_data);
     }
 
     void init() const {
@@ -148,34 +151,36 @@ class ITG3200 {
         libs::array<uint8_t, 1> data;
         i2cdevice.read_register(Registers::INT_STATUS, data);
 
-        return static_cast<bool>(data[0] & (1 << 2));
+        return libs::read_bit(data[0], 2);
     }
 
     bool data_ready() const {
         libs::array<uint8_t, 1> data;
         i2cdevice.read_register(Registers::INT_STATUS, data);
 
-        return static_cast<bool>(data[0] & 0x01);
+        return libs::read_bit(data[0], 1);
     }
 
     void set_interrupt_pin(InterruptPinLogic logic, InterruptDriveType otype) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00111111) | (static_cast<uint8_t>(logic) << 7) | (static_cast<uint8_t>(otype) << 6)};
-        i2cdevice.write_register(Registers::INT_CFG, data);
+        libs::write_mask<7, 1>(read_data[0], static_cast<uint8_t>(logic));
+        libs::write_mask<6, 1>(read_data[0], static_cast<uint8_t>(otype));
+
+        i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
 
     void set_interrupt_flags(LatchMode latch_mode, LatchClearMethod latch_method, InterruptControl itg_rdy, InterruptControl data_rdy) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11000000) |
-                            (static_cast<uint8_t>(latch_mode) << 5) |
-                          (static_cast<uint8_t>(latch_method) << 4) |
-                               (static_cast<uint8_t>(itg_rdy) << 2) |
-                                     static_cast<uint8_t>(data_rdy)};
-        i2cdevice.write_register(Registers::INT_CFG, data);
+        libs::write_mask<5, 1>(read_data[0], static_cast<uint8_t>(latch_mode));
+        libs::write_mask<4, 1>(read_data[0], static_cast<uint8_t>(latch_method));
+        libs::write_mask<2, 1>(read_data[0], static_cast<uint8_t>(itg_rdy));
+        libs::write_mask<0, 1>(read_data[0], static_cast<uint8_t>(data_rdy));
+        
+        i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
 
  private:

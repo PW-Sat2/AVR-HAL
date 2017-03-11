@@ -107,6 +107,21 @@ TEST(ReaderTest, TestReadingSignedWordLE) {
     EXPECT_TRUE(reader.Status());
 }
 
+TEST(ReaderTest, TestReadingSignedWordBE) {
+    uint8_t array[] = {0x00, 0x00, 0xFF, 0xFF, 0x7F, 0xFF,
+                       0x80, 0x00, 0xC5, 0x68, 0x3A, 0x98};
+    Reader reader;
+    reader.Initialize(hal::libs::make_span(array));
+
+    EXPECT_EQ(reader.ReadSignedWordBE(), 0);
+    EXPECT_EQ(reader.ReadSignedWordBE(), -1);
+    EXPECT_EQ(reader.ReadSignedWordBE(), 32767);
+    EXPECT_EQ(reader.ReadSignedWordBE(), -32768);
+    EXPECT_EQ(reader.ReadSignedWordBE(), -15000);
+    EXPECT_EQ(reader.ReadSignedWordBE(), 15000);
+    EXPECT_TRUE(reader.Status());
+}
+
 TEST(ReaderTest, TestReadingWordBE) {
     Reader reader;
     uint8_t array[] = {0x55, 0xaa};
@@ -159,6 +174,26 @@ TEST(ReaderTest, TestReadingSignedDWordLE) {
     EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -2147483648);
     EXPECT_EQ(reader.ReadSignedDoubleWordLE(), 1234567890);
     EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -1234567890);
+
+    EXPECT_TRUE(reader.Status());
+}
+
+TEST(ReaderTest, TestReadingSignedDWordBE) {
+    uint8_t array[] = {0x0,  0x0,  0x0,  0x0,  0xFF, 0xFF, 0xFF, 0xFF,
+                       0x0, 0x0, 0x7F,  0xFF,  0xFF,  0xFF, 0x80, 0x0,
+                       0x7F, 0xFF, 0xFF, 0xFF, 0x80,  0x0,  0x0,  0x0,
+                       0x49, 0x96,  0x2, 0xD2, 0xB6, 0x69, 0xFD, 0x2E};
+    Reader reader;
+    reader.Initialize(array);
+
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 0);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -1);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 32767);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -32768);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 2147483647);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -2147483648);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 1234567890);
+    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -1234567890);
 
     EXPECT_TRUE(reader.Status());
 }
