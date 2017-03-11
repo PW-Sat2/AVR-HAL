@@ -1,7 +1,7 @@
 #ifndef HAL_DEVICES_A3G4250D_H_
 #define HAL_DEVICES_A3G4250D_H_
 
-#include <stdlib.h>
+#include <cstdlib.h>
 #include "I2C.h"
 #include "array.h"
 
@@ -15,19 +15,19 @@ class A3G4250D {
         int16_t Z_axis;
     };
 
-    enum PowerMode {
+    enum class PowerMode {
         SLEEP = 0,
         ACTIVE = 1
     };
 
-    enum AxisPowerMode {
+    enum class AxisPowerMode {
         POWER_DOWN = 0,
         NORMAL = 1
     };
 
     struct Status {
-        bool ZYXOR;
-        bool ZYXDA;
+        bool DATA_OVERRUN;
+        bool DATA_AVAILABLE;
     };
 
     enum class DataOutputPath {
@@ -75,8 +75,8 @@ class A3G4250D {
         DR_11_BW_11_800_Hz_CF_110 = 0b1111
     };
 
-    enum class SelfTest {
-        DISABLED = 0b00,
+    enum class Mode {
+        NORMAL = 0b00,
         SELF_TEST_0 = 0b01,
         SELF_TEST_1 = 0b11
     };
@@ -142,22 +142,22 @@ class A3G4250D {
         Status stat;
 
         if (read_data[0] & 0b00000001) {
-            stat.ZYXOR = true;
+            stat.DATA_OVERRUN = true;
         } else {
-            stat.ZYXOR = false;
+            stat.DATA_OVERRUN = false;
         }
 
         if (read_data[0] & 0b00010000) {
-            stat.ZYXDA = true;
+            stat.DATA_AVAILABLE = true;
         } else {
-            stat.ZYXDA = false;
+            stat.DATA_AVAILABLE = false;
         }
 
         return stat;
     }
 
     bool data_ready() const {
-        return status().ZYXDA;
+        return status().DATA_AVAILABLE;
     }
 
     GyroData get_raw_gyro() const {
@@ -172,11 +172,11 @@ class A3G4250D {
         return data;
     }
 
-    void self_test(SelfTest st) const {
+    void mode(Mode mode) const {
         libs::array<uint8_t, 1> data_rcv;
         i2cdevice.read_register(Registers::CTRL_REG4, data_rcv);
 
-        libs::array<uint8_t, 1> data_snd = {((data_rcv[0] & 0b11111001) | (static_cast<uint8_t>(st) << 1))};
+        libs::array<uint8_t, 1> data_snd = {((data_rcv[0] & 0b11111001) | (static_cast<uint8_t>(mode) << 1))};
         i2cdevice.write_register(Registers::CTRL_REG4, data_snd);
     }
 
