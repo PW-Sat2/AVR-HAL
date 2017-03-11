@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1997
  * Moscow Center for SPARC Technology

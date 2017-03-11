@@ -1,21 +1,12 @@
-SUBDIRS := $(subst /,,$(wildcard */))
-CLEAN_SUBDIRS := $(addprefix clean_,$(SUBDIRS))
-GIT_SUBDIRS := $(addprefix git_,$(SUBDIRS))
+all: EASYAVR128
+
+build:
+	mkdir $@
+EASYAVR128: build
+	cmake -Bbuild -H. -G "Unix Makefiles"
+	make -C build
 
 
-all: $(SUBDIRS)
 
-$(SUBDIRS): force
-	$(MAKE) -C $@ all
-
-clean: $(CLEAN_SUBDIRS)
-
-$(CLEAN_SUBDIRS): force
-	$(MAKE) -C $(patsubst clean_%,%,$@) clean
-
-gitignores: $(GIT_SUBDIRS)
-
-$(GIT_SUBDIRS): force
-	$(MAKE) -C $(patsubst git_%,%,$@) gitignores
-
-.PHONY: all gitignores force clean $(SUBDIRS)
+clean:
+	rm -rf build

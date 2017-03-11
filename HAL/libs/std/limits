@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1997
  * Silicon Graphics Computer Systems, Inc.
@@ -249,6 +250,7 @@ class numeric_limits<unsigned long>
   : public _STLP_PRIV _Integer_limits<unsigned long, 0, ULONG_MAX, -1, true>
 {};
 
+#define _STLP_LONG_LONG long long
 #if defined (_STLP_LONG_LONG)
 
 #  if defined (_STLP_MSVC) || defined (__BORLANDC__)
@@ -328,6 +330,7 @@ public:
 #  endif /* __GNUC__ > 2000-11-01 */
 
 #endif /* _STLP_LONG_LONG */
+#undef _STLP_LONG_LONG
 
 _STLP_MOVE_TO_PRIV_NAMESPACE
 

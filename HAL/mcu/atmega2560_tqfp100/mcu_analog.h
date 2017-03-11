@@ -112,10 +112,11 @@ class InternalADCMcuSpecific {
 
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::Disable) {
-            clear_bit(ADCSRA, ADATE);
+            libs::clear_bit(ADCSRA, ADATE);
         } else {
-            ADCSRB = static_cast<uint8_t>(trigger);
-            set_bit(ADCSRA, ADATE);
+            ADCSRB &= 0b11111000;
+            ADCSRB |= static_cast<uint8_t>(trigger);
+            libs::set_bit(ADCSRA, ADATE);
         }
     }
 };
@@ -125,18 +126,18 @@ class InternalADCMux {
     InternalADCMux() = delete;
 
     static void select(const InternalADCMcuSpecific::Input input) {
-        ADMUX &= 0b11110000;
-        ADMUX |= get_last_4_bits(input);
+        ADMUX &= 0b11100000;
+        ADMUX |= get_last_5_bits(input);
         ADCSRB &= 0b11110111;
-        ADCSRB |= get_5th_bit(input) << 3;
+        ADCSRB |= get_6th_bit(input) << 3;
     }
 
  private:
-    constexpr static uint8_t get_last_4_bits(const InternalADCMcuSpecific::Input input) {
-        return (static_cast<uint8_t>(input) & 0b1111);
+    constexpr static uint8_t get_last_5_bits(const InternalADCMcuSpecific::Input input) {
+        return (static_cast<uint8_t>(input) & 0b11111);
     }
-    constexpr static uint8_t get_5th_bit(const InternalADCMcuSpecific::Input input) {
-        return ((static_cast<uint8_t>(input) & 0b10000) >> 4);
+    constexpr static uint8_t get_6th_bit(const InternalADCMcuSpecific::Input input) {
+        return ((static_cast<uint8_t>(input) & 0b100000) >> 5);
     }
 };
 

@@ -70,7 +70,7 @@ ISR(TWI_vect) {
 
     case TW_ST_SLA_ACK:
         TWISlave::tx_buffer_cnt = 0;
-        [[fallthrough]];
+        // fallthrough
     case TW_ST_DATA_ACK:
         // [TODO]: implement buffer overflow checking
         TWDR = TWISlave::tx_buffer[TWISlave::tx_buffer_cnt++];

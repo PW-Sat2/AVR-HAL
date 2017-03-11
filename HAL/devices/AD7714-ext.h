@@ -8,7 +8,8 @@
 
 namespace hal {
 
-class AD7714 {
+template<typename spi>
+class AD7714_ext {
  public:
     enum ADC_Registers {
         COMM_REG = 0,
@@ -70,9 +71,9 @@ class AD7714 {
         unipolar = 1
     };
 
-    explicit AD7714(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY,
-                    DigitalIO::Pin pin_RESET, DigitalIO::Pin pin_STANDBY,
-                    DigitalIO::Pin pin_BUFFER)
+    explicit AD7714_ext(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY,
+                        DigitalIO::Pin pin_RESET, DigitalIO::Pin pin_STANDBY,
+                        DigitalIO::Pin pin_BUFFER)
         : spi_dev(pin_cs),
           pin_DRDY{pin_DRDY},
           pin_RESET{pin_RESET},
@@ -179,7 +180,7 @@ class AD7714 {
  private:
     ADC_Channels actual_channel;
     DataLength dataLen;
-    const SPI_Device spi_dev;
+    const SPI::Device<spi> spi_dev;
     const DigitalIO pin_DRDY, pin_RESET, pin_STANDBY, pin_BUFFER;
 };
 

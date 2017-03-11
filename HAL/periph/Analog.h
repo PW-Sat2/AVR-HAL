@@ -38,11 +38,11 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static void disable() {
-        clear_bit(ADCSRA, ADEN);
+        libs::clear_bit(ADCSRA, ADEN);
     }
 
     static void enable() {
-        set_bit(ADCSRA, ADEN);
+        libs::set_bit(ADCSRA, ADEN);
     }
 
     static uint16_t read() {
@@ -56,7 +56,7 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static void trigger_conversion() {
-        set_bit(ADCSRA, ADSC);
+        libs::set_bit(ADCSRA, ADSC);
     }
 
     static void wait_for_conversion_finish() {
@@ -65,15 +65,15 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 
     static bool conversion_finished() {
-        return !read_bit(ADCSRA, ADSC);
+        return !libs::read_bit(ADCSRA, ADSC);
     }
 
     static void enable_interrupt() {
-        set_bit(ADCSRA, ADIE);
+        libs::set_bit(ADCSRA, ADIE);
     }
 
     static void disable_interrupt() {
-        clear_bit(ADCSRA, ADIE);
+        libs::clear_bit(ADCSRA, ADIE);
     }
 
     static void select_channel(Input input) {

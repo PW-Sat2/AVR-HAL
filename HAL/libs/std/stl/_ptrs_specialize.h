@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef _STLP_PTRS_SPECIALIZE_H
 #define _STLP_PTRS_SPECIALIZE_H
 

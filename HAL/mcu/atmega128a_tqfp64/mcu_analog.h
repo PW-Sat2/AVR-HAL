@@ -60,9 +60,9 @@ class InternalADCMcuSpecific {
 
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::FreeRunning) {
-            set_bit(ADCSRA, ADFR);
+            libs::set_bit(ADCSRA, ADFR);
         } else {
-            clear_bit(ADCSRA, ADFR);
+            libs::clear_bit(ADCSRA, ADFR);
         }
     }
 };
@@ -72,7 +72,7 @@ class InternalADCMux {
     InternalADCMux() = delete;
 
     static void select(InternalADCMcuSpecific::Input input) {
-        ADMUX &= 0b11110000;
+        ADMUX &= 0b11100000;
         ADMUX |= static_cast<uint8_t>(input);
     }
 };

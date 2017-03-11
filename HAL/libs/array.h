@@ -4,7 +4,9 @@
 #include <stddef.h>
 #include <type_traits>
 #include <utility>
-#include "array_view.h"
+#include <cstring>
+#include <algorithm>
+#include "span.h"
 #include "hal_assert.h"
 
 namespace hal {
@@ -78,11 +80,6 @@ class array {
     }
     enum { static_size = N };
 
-    // swap (note: linear complexity in N, constant for given instantiation)
-    void swap(array<T, N>& y) noexcept {
-        std::swap(this->elems, y.elems);
-    }
-
     // direct access to data (read-only)
     const T* data() const {
         return elems;
@@ -110,11 +107,11 @@ class array {
     }
 
     // get array view to this array
-    array_view<T> as_array_view() {
-        return make_array_view(elems, N);
+    span<T> as_span() {
+        return make_span(elems, N);
     }
-    const array_view<const T> as_array_view() const {
-        return make_array_view(elems, N);
+    const span<const T> as_span() const {
+        return make_span(elems, N);
     }
 
     T elems[N];  // fixed-size array of elements of type T

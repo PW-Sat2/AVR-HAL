@@ -1,3 +1,4 @@
+#pragma GCC system_header
 #ifndef __stl_config__linux_h
 #define __stl_config__linux_h
 

@@ -75,10 +75,10 @@ class InternalADCMcuSpecific {
 
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::Disable) {
-            clear_bit(ADCSRA, ADATE);
+            libs::clear_bit(ADCSRA, ADATE);
         } else {
             ADCSRB = static_cast<uint8_t>(trigger);
-            set_bit(ADCSRA, ADATE);
+            libs::set_bit(ADCSRA, ADATE);
         }
     }
 };
@@ -88,7 +88,7 @@ class InternalADCMux {
     InternalADCMux() = delete;
 
     static void select(InternalADCMcuSpecific::Input input) {
-        ADMUX &= 0b11110000;
+        ADMUX &= 0b11100000;
         ADMUX |= static_cast<uint8_t>(input);
     }
 };

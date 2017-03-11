@@ -1,0 +1,60 @@
+set(        includes_AT90CAN128_TQFP64    at90can128_tqfp64)
+set(      GCC_TARGET_AT90CAN128_TQFP64    at90can128)
+set(  AVRDUDE_TARGET_AT90CAN128_TQFP64    at90can128)
+set( SIMULAVR_TARGET_AT90CAN128_TQFP64    at90can128)
+
+set(        includes_ATMEGA128A_TQFP64    atmega128a_tqfp64)
+set(      GCC_TARGET_ATMEGA128A_TQFP64    atmega128a)
+set(  AVRDUDE_TARGET_ATMEGA128A_TQFP64    m128)
+set( SIMULAVR_TARGET_ATMEGA128A_TQFP64    atmega128)
+
+set(            includes_ATMEGA164A_44    atmega164p_324p_644p_44)
+set(          GCC_TARGET_ATMEGA164A_44    atmega164a)
+set(      AVRDUDE_TARGET_ATMEGA164A_44    m164p)
+set(     SIMULAVR_TARGET_ATMEGA164A_44    atmega164a)
+
+set(            includes_ATMEGA164P_44    atmega164p_324p_644p_44)
+set(          GCC_TARGET_ATMEGA164P_44    atmega164p)
+set(      AVRDUDE_TARGET_ATMEGA164P_44    m164p)
+set(     SIMULAVR_TARGET_ATMEGA164P_44    atmega164)
+
+set(            includes_ATMEGA324A_44    atmega164p_324p_644p_44)
+set(          GCC_TARGET_ATMEGA324A_44    atmega324a)
+set(      AVRDUDE_TARGET_ATMEGA324A_44    m324p)
+set(     SIMULAVR_TARGET_ATMEGA324A_44    atmega324a)
+
+set(            includes_ATMEGA324P_44    atmega164p_324p_644p_44)
+set(          GCC_TARGET_ATMEGA324P_44    atmega324p)
+set(      AVRDUDE_TARGET_ATMEGA324P_44    m324pa)
+set(     SIMULAVR_TARGET_ATMEGA324P_44    atmega324)
+
+set(        includes_ATMEGA328P_TQFP32    atmega328p_tqfp32)
+set(      GCC_TARGET_ATMEGA328P_TQFP32    atmega328p)
+set(  AVRDUDE_TARGET_ATMEGA328P_TQFP32    m328p)
+set( SIMULAVR_TARGET_ATMEGA328P_TQFP32    atmega328)
+
+set(         includes_ATMEGA644P_DIP40    atmega644p_dip40)
+set(       GCC_TARGET_ATMEGA644P_DIP40    atmega644p)
+set(   AVRDUDE_TARGET_ATMEGA644P_DIP40    m644p)
+set(  SIMULAVR_TARGET_ATMEGA644P_DIP40    atmega644)
+
+set(       includes_ATMEGA2560_TQFP100    atmega2560_tqfp100)
+set(     GCC_TARGET_ATMEGA2560_TQFP100    atmega2560)
+set( AVRDUDE_TARGET_ATMEGA2560_TQFP100    atmega2560)
+set(SIMULAVR_TARGET_ATMEGA2560_TQFP100    atmega2560)
+
+if(includes_${HAL_MCU})
+else()
+    message(FATAL_ERROR "Incorrect MCU defined! HAL_MCU=${HAL_MCU}")
+endif(includes_${HAL_MCU})
+
+set(include ${includes_${HAL_MCU}})
+set(GCC_TARGET ${GCC_TARGET_${HAL_MCU}} CACHE STRING "gcc target passed to -mmcu flag")
+set(AVRDUDE_TARGET ${AVRDUDE_TARGET_${HAL_MCU}} CACHE STRING "avrdude target passed to -p flag")
+set(SIMULAVR_TARGET ${SIMULAVR_TARGET_${HAL_MCU}} CACHE STRING "simulavr target passed to --device flag")
+
+message(STATUS "HAL_MCU: ${HAL_MCU}")
+message(STATUS "GCC_TARGET: ${GCC_TARGET}")
+message(STATUS "AVRDUDE_TARGET: ${AVRDUDE_TARGET}")
+message(STATUS "MCU include: ${include}")
+message(STATUS "SIMULAVR_TARGET: ${SIMULAVR_TARGET}")

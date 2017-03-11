@@ -1,33 +1,31 @@
+LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int --linelength=120
 
-LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces --linelength=120
-
-all: checkStyle cppcheck flawFinder
-.PHONY: all clean tmp checkStyle cppcheck flawFinder
+all: checkStyle examples unit_tests_run
 
 clean:
 	rm -Rvf tmp
+	make -C examples clean
+	rm -rf unit_tests/build
 
 tmp:
 	mkdir -p tmp
 
-tmp/cpplint.py:
+tmp/cpplint.py: tmp
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 
-checkStyle: tmp tmp/cpplint.py
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+checkStyle: tmp/cpplint.py
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "HAL/libs/std/"  | grep -v "unit_tests/build" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
 
-clangformat: tmp
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs clang-format -i
+examples: force
+	make -C examples
+
+unit_tests_run: force
+	cd unit_tests; mkdir build; cd build; cmake ..
+	make -C unit_tests/build unit_tests
+	make -C unit_tests/build unit_tests.sim | tee unit_tests/build/out
+	if grep -q "FAIL" unit_tests/build/out; then exit 1; fi
+	@echo "Success!"
 
 
-cppcheck:
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "unit_tests/googletest-" | grep -v "HAL/libs/std/" | xargs cppcheck --enable=all --inconclusive --std=c++11
+force:
 
-tmp/flawfinder:
-	wget http://www.dwheeler.com/flawfinder/flawfinder-1.31.tar.gz -O tmp/flawFinder.tar.gz
-	tar xvzf tmp/flawFinder.tar.gz flawfinder-1.31/flawfinder
-	mv flawfinder-1.31/flawfinder tmp/flawfinder
-	rmdir flawfinder-1.31
-
-flawFinder: tmp tmp/flawfinder
-	./tmp/flawfinder ./

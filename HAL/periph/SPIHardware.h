@@ -9,6 +9,21 @@
 #include "DigitalIO.h"
 #include "array.h"
 
+// workaround for newer MCUs...
+#ifndef SPCR
+#define SPCR SPCR0
+#define SPSR SPSR0
+#define SPIF SPIF0
+#define SPDR SPDR0
+
+#define SPE SPE0
+#define SPIE SPIE0
+#define MSTR MSTR0
+#define CPHA CPHA0
+#define CPOL CPOL0
+#define DORD DORD0
+#endif
+
 namespace hal {
 namespace SPI {
 
@@ -55,7 +70,7 @@ class Hardware {
     }
 
     static bool is_transmission_complete() {
-        return (read_bit(SPSR, SPIF) == true);
+        return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
@@ -69,7 +84,7 @@ class Hardware {
     }
 
     static void enable_interrupt() {
-        set_bit(SPCR, SPIE);
+        libs::set_bit(SPCR, SPIE);
     }
 
  private:

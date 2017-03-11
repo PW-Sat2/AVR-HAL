@@ -1,3 +1,4 @@
+#pragma GCC system_header
 // -*- C++ -*- Time-stamp: <2012-03-02 13:23:52 ptr>
 
 /*
@@ -143,8 +144,12 @@ class thread_base
         callstack( s );
 
         std::cerr << "Suspected uncatched exception, threas id " << me._id
-                  << "\nStack when thread was created:\n" << _stack_on_create
-                  << "\nCurrent stack is:\n" << s.str() << std::endl;
+                  << "
+Stack when thread was created:
+" << _stack_on_create
+                  << "
+Current stack is:
+" << s.str() << std::endl;
 #endif
       }
 

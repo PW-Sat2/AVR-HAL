@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*========================================== */
 #if 1 /* def _STLP_3_COMPATIBILITY */
 
@@ -45,4 +46,3 @@
 # define __vector__        vector
 
 #endif
-

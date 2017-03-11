@@ -20,7 +20,7 @@ class PingCmd: libs::CLI::Command {
  public:
     PingCmd() : libs::CLI::Command("ping") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         for (auto &&x : parameters) {
             printf("%s ", x);
@@ -33,7 +33,7 @@ class ResetCmd: libs::CLI::Command {
  public:
     ResetCmd() : libs::CLI::Command("reset") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         hal::Watchdog::enable(mcu::Watchdog::Period::p_2000ms);
     }
@@ -44,7 +44,7 @@ class GPIOCmd: libs::CLI::Command {
     GPIOCmd() :
             libs::CLI::Command("gpio") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         uint8_t pin = atoi(parameters[0]);
         DigitalIO io { pin, hal::DigitalIO::RUNTIME::ENABLED };
@@ -85,7 +85,7 @@ class ADCCmd: libs::CLI::Command {
     ADCCmd() :
             libs::CLI::Command("an") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         char cmd = parameters[0][0];
         if (cmd == 'i') {
@@ -121,7 +121,7 @@ class AnalogIOCmd: libs::CLI::Command {
  public:
     AnalogIOCmd() : libs::CLI::Command("ang") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         auto ch = static_cast<InternalADC::Input>(atoi(parameters[1]));
         AnalogGPIO pin{ch};
@@ -140,7 +140,7 @@ class SPIMasterCmd: hal::libs::CLI::Command {
     SPIMasterCmd() :
             hal::libs::CLI::Command("spi") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         if (parameters[0][0] == 'i') {
             auto polarity   = static_cast<SPI::Polarity>(atoi(parameters[1]));
@@ -167,7 +167,7 @@ class SPIDeviceCmd: hal::libs::CLI::Command {
     SPIDeviceCmd() :
             hal::libs::CLI::Command("spid") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         auto pin = static_cast<DigitalIO::Pin>(atoi(parameters[0]));
         SPI_Device dev{pin, DigitalIO::RUNTIME::ENABLED};
@@ -178,8 +178,8 @@ class SPIDeviceCmd: hal::libs::CLI::Command {
         for (uint8_t i = 0; i < parameters.size()-1; ++i) {
             buf[i] = atoi(parameters[i+1]);
         }
-        dev.transfer(libs::make_array_view(buf.data(), parameters.size()-1),
-                     libs::make_array_view(buf.data(), parameters.size()-1));
+        dev.transfer(libs::make_span(buf.data(), parameters.size()-1),
+                     libs::make_span(buf.data(), parameters.size()-1));
         for (uint8_t i = 0; i < parameters.size()-1; ++i) {
             printf("%d ", buf[i]);
         }
@@ -193,7 +193,7 @@ class SPISlaveCmd: hal::libs::CLI::Command {
     SPISlaveCmd() :
             hal::libs::CLI::Command("ss") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         if (parameters[0][0] == 'i') {
             auto polarity   = static_cast<SPISlave::Polarity>(atoi(parameters[1]));
@@ -232,7 +232,7 @@ class I2CMasterCmd: hal::libs::CLI::Command {
  public:
     I2CMasterCmd() : hal::libs::CLI::Command("im") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         if (parameters[0][0] == 'i') {
             TWI::disable();
@@ -250,8 +250,8 @@ class I2CMasterCmd: hal::libs::CLI::Command {
                 tx_buf[i] = atoi(parameters[1+i]);
             }
 
-            auto tx_data = hal::libs::array_view<uint8_t>{tx_buf.data(), bytes_to_write};
-            auto rx_data = hal::libs::array_view<uint8_t>{rx_buf.data(), bytes_to_read};
+            auto tx_data = hal::libs::span<uint8_t>{tx_buf.data(), bytes_to_write};
+            auto rx_data = hal::libs::span<uint8_t>{rx_buf.data(), bytes_to_read};
 
             I2C_Device<TWI> device{addr};
             if (bytes_to_read == 0) {
@@ -280,7 +280,7 @@ class I2CSlaveCmd: hal::libs::CLI::Command {
  public:
     I2CSlaveCmd() : hal::libs::CLI::Command("is") {
     }
-    void callback(const hal::libs::array_view<char *> & parameters)
+    void callback(const hal::libs::span<char *> & parameters)
             override {
         if (parameters[0][0] == 'i') {
             uint8_t address = atoi(parameters[1]);

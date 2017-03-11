@@ -2,7 +2,7 @@
 #define HAL_PERIPH_I2C_H_
 
 #include "array.h"
-#include "array_view.h"
+#include "span.h"
 #include <type_traits>
 #include <utility>
 
@@ -38,15 +38,9 @@ class I2C_Device {
         I2C::stop();
     }
 
-    template<typename T, typename =
-             typename std::enable_if<
-                          !std::is_integral<
-                              typename std::remove_reference<T>::type
-                          >::value
-                      >::type>
-    void write(T&& arv) const {
+    void write(libs::span<const uint8_t> data) const {
         I2C::start(address, I2C::StartAction::write);
-        raw_write(std::forward<T>(arv));
+        raw_write(data);
         I2C::stop();
     }
 
@@ -57,59 +51,53 @@ class I2C_Device {
         return val;
     }
 
-    template<typename T>
-    void read(T&& arv, typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
+    void read(libs::span<uint8_t> data, typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
         I2C::start(address, I2C::StartAction::read);
-        raw_read(std::forward<T>(arv), last_byte_ACK);
+        raw_read(data, last_byte_ACK);
         I2C::stop();
     }
 
-    template<typename T, typename T2>
-    void data_transfer(T&& transmit, T2&& receive) const {
+    void transfer(libs::span<const uint8_t> transmit, libs::span<uint8_t> receive) const {
         I2C::start(address, I2C::StartAction::write);
-        raw_write(std::forward<T>(transmit));
+        raw_write(transmit);
         I2C::start(address, I2C::StartAction::read);
-        raw_read(std::forward<T>(receive));
+        raw_read(receive);
         I2C::stop();
     }
 
-    template<typename T>
-    void write_register(uint8_t register_address, T&& data) const {
+    void write_register(uint8_t register_address, libs::span<const uint8_t> data) const {
         I2C::start(address, I2C::StartAction::write);
         I2C::write(register_address);
-        raw_write(std::forward<T>(data));
+        raw_write(data);
         I2C::stop();
     }
 
-    template<typename T>
-    void read_register(uint8_t register_address, T&& data) const {
+    void read_register(uint8_t register_address, libs::span<uint8_t> data) const {
         I2C::start(address, I2C::StartAction::write);
         I2C::write(register_address);
         I2C::start(address, I2C::StartAction::read);
-        raw_read(std::forward<T>(data));
+        raw_read(data);
         I2C::stop();
     }
 
-    template<typename T>
-    void raw_write(T&& arv) const {
-        auto size = arv.size();
-        auto data = arv.data();
+    void raw_write(libs::span<const uint8_t> data) const {
+        auto size = data.size();
+        auto ptr = data.data();
         while (size--) {
-            I2C::write(*data);
-            data++;
+            I2C::write(*ptr);
+            ptr++;
         }
     }
 
-    template<typename T>
-    void raw_read(T&& arv, typename I2C::Acknowledge last_byte_ACK =
+    void raw_read(libs::span<uint8_t> data, typename I2C::Acknowledge last_byte_ACK =
             I2C::NACK) const {
-        auto size = arv.size() - 1;
-        auto data = arv.data();
+        auto size = data.size() - 1;
+        auto ptr = data.data();
         while (size--) {
-            *data = I2C::read(I2C::ACK);
-            data++;
+            *ptr = I2C::read(I2C::ACK);
+            ptr++;
         }
-        *data = I2C::read(last_byte_ACK);
+        *ptr = I2C::read(last_byte_ACK);
     }
 
  private:

@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /* Helper header to give feedback about build environment configuration
  * thanks to #pragma message directives.
  */

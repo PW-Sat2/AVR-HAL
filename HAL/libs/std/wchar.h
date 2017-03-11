@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1999
  * Boris Fomitchev
@@ -61,4 +62,3 @@ using _STLP_VENDOR_CSTD::strspn;
 #    undef  _STLP_DONT_POP_HEADER_ID
 #  endif
 #endif
-

@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * File to have Microsoft eMbedded Visual C++ 3.0 and .NET working with STLport
  * May 2004

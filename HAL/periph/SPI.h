@@ -60,8 +60,7 @@ class Device {
         return x;
     }
 
-    template<typename T, typename T2>
-    void transfer(T&& output, T2&& input) const {
+    void transfer(libs::span<const uint8_t> output, libs::span<uint8_t> input) const {
         this->enable();
         const uint8_t * out_ptr = output.data();
         uint8_t * in_ptr = input.data();
@@ -74,8 +73,7 @@ class Device {
         this->disable();
     }
 
-    template<typename T>
-    void transmit(T&& data) const {
+    void write(libs::span<const uint8_t> data) const {
         this->enable();
         for (auto&& x : data) {
             spi::shift(x);
@@ -83,8 +81,7 @@ class Device {
         this->disable();
     }
 
-    template<typename T>
-    void receive(T&& data, uint8_t output_value = 0) const {
+    void read(libs::span<uint8_t> data, uint8_t output_value = 0) const {
         this->enable();
         for (auto& x : data) {
             x = spi::shift(output_value);

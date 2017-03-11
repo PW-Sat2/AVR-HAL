@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  * Copyright (c) 1999
  * Silicon Graphics Computer Systems, Inc.
@@ -132,18 +133,21 @@ public:                         // get() for single characters
 public:                         // get() for character arrays.
   _Self& get(char_type* __s, streamsize __n, char_type __delim);
   _Self& get(char_type* __s, streamsize __n)
-    { return get(__s, __n, this->widen('\n')); }
+    { return get(__s, __n, this->widen('
+')); }
 
 public:                         // get() for streambufs
   _Self& get(basic_streambuf<_CharT, _Traits>& __buf,
                      char_type __delim);
   _Self& get(basic_streambuf<_CharT, _Traits>& __buf)
-    { return get(__buf, this->widen('\n')); }
+    { return get(__buf, this->widen('
+')); }
 
 public:                         // getline()
   _Self& getline(char_type* __s, streamsize __n, char_type delim);
   _Self& getline(char_type* __s, streamsize __n)
-    { return getline(__s, __n, this->widen('\n')); }
+    { return getline(__s, __n, this->widen('
+')); }
 
 public:                         // read(), readsome(), ignore()
   _Self& ignore();

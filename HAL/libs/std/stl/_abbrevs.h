@@ -1,3 +1,4 @@
+#pragma GCC system_header
 /*
  *
  * Copyright (c) 1999
@@ -74,4 +75,3 @@
 #    define _DBG_iter              _d__It
 #  endif
 #endif
-
