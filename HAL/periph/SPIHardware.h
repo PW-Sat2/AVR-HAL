@@ -70,7 +70,7 @@ class Hardware {
     }
 
     static bool is_transmission_complete() {
-        return (read_bit(SPSR, SPIF) == true);
+        return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
@@ -84,7 +84,7 @@ class Hardware {
     }
 
     static void enable_interrupt() {
-        set_bit(SPCR, SPIE);
+        libs::set_bit(SPCR, SPIE);
     }
 
  private:

@@ -79,7 +79,7 @@ class TWI : public I2C {
 
  private:
     static void wait_for_finish() {
-        while (read_bit(TWCR, TWINT) == false) {}
+        while (libs::read_bit(TWCR, TWINT) == false) {}
     }
 
     template<uint32_t frequency, int twps>
