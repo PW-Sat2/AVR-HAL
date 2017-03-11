@@ -29,25 +29,25 @@ TEST(compile_time, pow) {
 
 
 template<int exp, int size, uint64_t value>
-void powerOfTwoTest() {
-    constexpr auto res = powerOfTwo<exp>();
-    static_assert(res == value, "powerOfTwo (template) failed!");
-    static_assert(sizeof(res) == size, "powerOfTwo (template) incorrect size!");
+void power_of_twoTest() {
+    constexpr auto res = power_of_two<exp>();
+    static_assert(res == value, "power_of_two (template) failed!");
+    static_assert(sizeof(res) == size, "power_of_two (template) incorrect size!");
 
-    constexpr auto res2 = powerOfTwo(exp);
-    static_assert(res2 == value, "powerOfTwo (constexpr) failed!");
-    static_assert(sizeof(res2) == 8, "powerOfTwo (constexpr) incorrect size!");
+    constexpr auto res2 = power_of_two(exp);
+    static_assert(res2 == value, "power_of_two (constexpr) failed!");
+    static_assert(sizeof(res2) == 8, "power_of_two (constexpr) incorrect size!");
 }
 
-TEST(compile_time, powerOfTwoTest) {
-    powerOfTwoTest<0, 1, 1>();
-    powerOfTwoTest<7, 1, 128>();
-    powerOfTwoTest<8, 2, 256>();
-    powerOfTwoTest<15, 2, 32768>();
-    powerOfTwoTest<16, 4, 65536>();
-    powerOfTwoTest<31, 4, 2147483648L>();
-    powerOfTwoTest<32, 8, 4294967296ULL>();
-    powerOfTwoTest<63, 8, 9223372036854775808ULL>();
+TEST(compile_time, power_of_twoTest) {
+    power_of_twoTest<0, 1, 1>();
+    power_of_twoTest<7, 1, 128>();
+    power_of_twoTest<8, 2, 256>();
+    power_of_twoTest<15, 2, 32768>();
+    power_of_twoTest<16, 4, 65536>();
+    power_of_twoTest<31, 4, 2147483648L>();
+    power_of_twoTest<32, 8, 4294967296ULL>();
+    power_of_twoTest<63, 8, 9223372036854775808ULL>();
 }
 
 TEST(compile_time, type_with_bits) {
