@@ -15,6 +15,7 @@ int main() {
     RUN_TESTSUITE(data_types);
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);
+    RUN_TESTSUITE(AD5641);
 
     return 0;
 }
