@@ -175,7 +175,7 @@ class span final {
     //
 
     constexpr bool operator ==(const span & other) const {
-        return (this->size() == other.size() && 
+        return (this->size() == other.size() &&
                 std::equal(this->begin(), this->end(), other.begin()));
     }
     constexpr bool operator !=(const span & other) const {

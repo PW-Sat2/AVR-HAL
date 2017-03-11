@@ -154,17 +154,17 @@ TEST(span, slice) {
 
 TEST(span, equal) {
     uint8_t table[100];
-    for(int i = 0; i < 10; ++i) {
-        for(int j = 0; j < 10; ++j) {
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
             table[10*i+j] = j;
         }
     }
-    
-    EXPECT_TRUE( make_span(table, 10) == make_span(table+10, 10) );
-    EXPECT_TRUE( make_span(table, 20) == make_span(table+30, 20) );
-    EXPECT_FALSE( make_span(table, 20) == make_span(table+30, 21) );
-    EXPECT_FALSE( make_span(table+1, 20) == make_span(table+30, 20) );
-    EXPECT_TRUE( make_span(table, 50) == make_span(table+30, 50) );
+
+     EXPECT_TRUE(make_span(table, 10) == make_span(table+10, 10));
+     EXPECT_TRUE(make_span(table, 20) == make_span(table+30, 20));
+    EXPECT_FALSE(make_span(table, 20) == make_span(table+30, 21));
+    EXPECT_FALSE(make_span(table+1, 20) == make_span(table+30, 20));
+     EXPECT_TRUE(make_span(table, 50) == make_span(table+30, 50));
 }
 
 
