@@ -10,9 +10,9 @@ using namespace hal;
 TEST(DigitalIO, mode) {
     DDRG = 0;
     PORTG = 0;
-    
+
     constexpr hal::DigitalIO io{1};
-    
+
     io.init(DigitalIO::INPUT);
     EXPECT_EQ(DDRG, 0);
     EXPECT_EQ(PORTG, 0);
