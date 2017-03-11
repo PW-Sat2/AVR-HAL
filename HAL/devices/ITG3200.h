@@ -1,7 +1,6 @@
 #ifndef HAL_DEVICES_ITG3200_H_
 #define HAL_DEVICES_ITG3200_H_
 
-#include <stdlib.h>
 #include "I2C.h"
 #include "array.h"
 
