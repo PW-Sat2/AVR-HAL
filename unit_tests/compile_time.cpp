@@ -4,7 +4,7 @@
 #include "compile_time.h"
 #include <cmath>
 #include <cstdio>
-using hal::libs::power;
+using namespace hal;
 
 template<int base, int exp>
 struct test {
@@ -25,6 +25,37 @@ TEST(compile_time, pow) {
 
     now = test<11, 6>::value;
     TEST_ASSERT_EQUAL(now, true);
+}
+
+
+template<int exp, int size>
+void powerOfTwoTest(uint64_t value) {
+    constexpr auto res = powerOfTwo<exp>();
+    EXPECT_EQ(sizeof(res), size);
+    EXPECT_EQ(res, value);
+    EXPECT_EQ(powerOfTwo(exp), value);
+}
+
+TEST(compile_time, powerOfTwoTest) {
+    powerOfTwoTest<0, 1>(1);
+    powerOfTwoTest<7, 1>(128);
+    powerOfTwoTest<8, 2>(256);
+    powerOfTwoTest<15, 2>(32768);
+    powerOfTwoTest<16, 4>(65536);
+    powerOfTwoTest<31, 4>(2147483648L);
+    powerOfTwoTest<32, 8>(4294967296ULL);
+    powerOfTwoTest<63, 8>(9223372036854775808ULL);
+}
+
+TEST(compile_time, type_with_bits) {
+    EXPECT_EQ(sizeof(type_with_bits<0>), 1);
+    EXPECT_EQ(sizeof(type_with_bits<8>), 1);
+    EXPECT_EQ(sizeof(type_with_bits<9>), 2);
+    EXPECT_EQ(sizeof(type_with_bits<16>), 2);
+    EXPECT_EQ(sizeof(type_with_bits<17>), 4);
+    EXPECT_EQ(sizeof(type_with_bits<32>), 4);
+    EXPECT_EQ(sizeof(type_with_bits<33>), 8);
+    EXPECT_EQ(sizeof(type_with_bits<64>), 8);
 }
 
 DEFINE_TESTSUITE(compile_time);

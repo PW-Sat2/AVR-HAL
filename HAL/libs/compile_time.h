@@ -2,9 +2,9 @@
 #define HAL_LIBS_COMPILE_TIME_H_
 
 #include <cstdint>
+#include <type_traits>
 
 namespace hal {
-namespace libs {
 
 template <std::int32_t base, int exp>
 struct power {
@@ -17,7 +17,26 @@ struct power<base, 0> {
     static const int32_t value = 1;
 };
 
-}  // namespace libs
+constexpr uint64_t powerOfTwo(uint8_t exp) {
+    return (exp == 0) ? 1 : 2*powerOfTwo(exp-1);
+}
+
+template<uint8_t i>
+using type_with_bits = typename std::conditional<(i <= 8), uint8_t,
+                       typename std::conditional<(i <= 16), uint16_t,
+                       typename std::conditional<(i <= 32), uint32_t,
+                       uint64_t>::type>::type>::type;
+
+template<uint8_t exp>
+constexpr type_with_bits<exp+1> powerOfTwo() {
+    return 2ULL* static_cast<type_with_bits<exp+1>>(powerOfTwo<exp-1>());
+}
+
+template<>
+constexpr uint8_t powerOfTwo<0>() {
+    return 1;
+}
+
 }  // namespace hal
 
 #endif  // HAL_LIBS_COMPILE_TIME_H_
