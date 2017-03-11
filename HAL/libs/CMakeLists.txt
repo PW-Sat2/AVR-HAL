@@ -8,10 +8,11 @@ add_library(${NAME} STATIC
 )
 
 if(ENABLE_HAL_STD)
-    add_subdirectory(std)
     message(STATUS "Using hal std library")
-    target_link_libraries(${NAME} stdlib)
-    #target_include_directories(${NAME} INTERFACE stdlib)
+
+    add_subdirectory(std)
+    add_subdirectory(gcc_addons)
+    target_link_libraries(${NAME} stdlib gcc_addons)
 endif(ENABLE_HAL_STD)
 
 target_include_directories(${NAME} INTERFACE
