@@ -14,18 +14,23 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error" CACHE STRING "" FORCE)
 
 add_hal_executable(${NAME}
     main.cpp
-    compile_time.cpp
-    bit_operations.cpp
+
     array.cpp
+    bit_operations.cpp
+    compile_time.cpp
+    data_types.cpp
+    DigitalIO.cpp
     fifo.cpp
     ReaderTest.cpp
     WriterTest.cpp
     span.cpp
     I2C.cpp
-    data_types.cpp
+    pure_virtual.cpp
     eeprom.cpp
     terminal.cpp
     drivers/AD5641.cpp
+
+    devices_compilation.cpp
 )
 
 include_directories(.)

@@ -33,7 +33,7 @@ public:
     }
 
 private:
-    constexpr DigitalIO pin_on, pin_flag, pin_pgood;
+    const DigitalIO pin_on, pin_flag, pin_pgood;
 };
 
 }  // namespace hal
