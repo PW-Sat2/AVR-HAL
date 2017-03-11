@@ -51,6 +51,7 @@ constexpr inline bool read_bit(const reg_type val, const int bit_pos) {
 
 template<uint8_t start, uint8_t length>
 constexpr type_with_bits<start+length> bit_mask() {
+    static_assert(start+length <= 64, "too large bit_mask (exceeding uint64_t)!");
     return (power_of_two<length>() - 1ULL) << start;
 }
 
