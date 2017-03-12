@@ -10,17 +10,19 @@ namespace hal {
 class Watchdog {
  public:
     enum class Period : int {
-        p_15ms = 0,
-        p_30ms = 1,
-        p_60ms = 2,
-        p_120ms = 3,
-        p_250ms = 4,
-        p_500ms = 5,
-        p_1000ms = 6,
-        p_2000ms = 7,
+        p15ms   = 0,
+        p30ms   = 1,
+        p60ms   = 2,
+        p120ms  = 3,
+        p250ms  = 4,
+        p500ms  = 5,
+        p1000ms = 6,
+        p2000ms = 7,
+#ifdef WDTO_4S
+        p4000ms = 8,
+#endif
 #ifdef WDTO_8S
-        p_4000ms = 8,
-        p_8000ms = 9
+        p8000ms = 9
 #endif
     };
 
