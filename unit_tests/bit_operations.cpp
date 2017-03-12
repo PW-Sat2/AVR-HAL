@@ -252,6 +252,22 @@ TEST(bit_operations, read_bit) {
     EXPECT_EQ(read_bit(val2, 7), 1);
 }
 
+TEST(bit_operations, read_bit_template) {
+    uint8_t val2 = 0b10101010;
+    EXPECT_EQ(read_bit<0>(val2), 0);
+    EXPECT_EQ(read_bit<1>(val2), 1);
+    EXPECT_EQ(read_bit<2>(val2), 0);
+    EXPECT_EQ(read_bit<3>(val2), 1);
+    EXPECT_EQ(read_bit<4>(val2), 0);
+    EXPECT_EQ(read_bit<5>(val2), 1);
+    EXPECT_EQ(read_bit<6>(val2), 0);
+    EXPECT_EQ(read_bit<7>(val2), 1);
+
+    uint32_t val3 = 0xFFFFFFF0;
+    EXPECT_EQ(read_bit<0>(val3), 0);
+    EXPECT_EQ(read_bit<31>(val3), 1);
+}
+
 template<int start, int length>
 void bit_maskTest(uint8_t size, uint64_t value) {
     constexpr auto res = bit_mask<start, length>();
@@ -426,4 +442,26 @@ TEST(compile_time, write_with_bit_mask) {
     EXPECT_EQ(0x7FFF80C, x);
 }
 
+TEST(compile_time, write_bit) {
+    uint32_t x = 0;
+
+    write_bit<0>(x, 1);
+    EXPECT_EQ(1, x);
+
+    write_bit<1>(x, 1);
+    EXPECT_EQ(0b11, x);
+
+    write_bit<0>(x, 0);
+    EXPECT_EQ(0b10, x);
+
+    write_bit<1>(x, 0);
+    EXPECT_EQ(0, x);
+
+    write_bit<1>(x, 0);
+    EXPECT_EQ(0, x);
+
+    x = 0xFFFFFFFF;
+    write_bit<31>(x, 0);
+    EXPECT_EQ(0x7FFFFFFFUL, x);
+}
 DEFINE_TESTSUITE(bit_operations);
