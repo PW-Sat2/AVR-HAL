@@ -1,7 +1,6 @@
 #ifndef HAL_DEVICES_A3G4250D_H_
 #define HAL_DEVICES_A3G4250D_H_
 
-#include <stdlib.h>
 #include "I2C.h"
 #include "array.h"
 #include "reader.h"
