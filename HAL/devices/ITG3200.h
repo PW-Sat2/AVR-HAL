@@ -80,7 +80,7 @@ class ITG3200 {
     uint8_t get_id() const {
         libs::array<uint8_t, 1> data;
         i2cdevice.read_register(Registers::WHO_AM_I, data);
-        return libs::read_mask<1, 5>(data[0]);
+        return libs::read_mask<1, 6>(data[0]);
     }
 
     void set_filters(uint8_t sample_rate_div, LowPassFilter lpf) const {
