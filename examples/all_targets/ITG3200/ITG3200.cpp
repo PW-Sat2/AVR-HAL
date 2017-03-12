@@ -15,8 +15,10 @@ int main() {
     hal::TWI::enable_internal_pullups();
     constexpr ITG3200 gyro(0x68);
 
-    // set up the gyro
-    gyro.set_interrupt_flags(ITG3200::LatchMode::LATCH, ITG3200::LatchClearMethod::STATUS_REG_READ, ITG3200::InterruptControl::INT_ENABLED, ITG3200::InterruptControl::INT_ENABLED);
+    gyro.set_interrupt_flags(ITG3200::LatchMode::LATCH,
+                             ITG3200::LatchClearMethod::STATUS_REG_READ,
+                             ITG3200::InterruptControl::INT_ENABLED,
+                             ITG3200::InterruptControl::INT_ENABLED);
     gyro.init();
     gyro.set_clock(ITG3200::ClockSource::PLL_X_GYRO_REF);
     gyro.set_filters(1, ITG3200::LowPassFilter::LPF_256_HZ);
@@ -24,12 +26,9 @@ int main() {
     _delay_ms(1000);
 
     while (true) {
-        //printf("Rcv: %u\r\n", gyro.get_id());
-
-        while(false == gyro.data_ready()) {};
+        while (false == gyro.data_ready()) {}
 
         if (gyro.is_present()) {
-            //printf("Gyro OK!\r\n");
             ITG3200::GyroData data = gyro.get_raw_gyro();
             printf("T: %f\tX: %d\tY: %d\tZ: %d\r\n", gyro.get_temperature(), data.X_axis, data.Y_axis, data.Z_axis);
         } else {

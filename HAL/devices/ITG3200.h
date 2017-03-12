@@ -171,7 +171,8 @@ class ITG3200 {
         i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
 
-    void set_interrupt_flags(LatchMode latch_mode, LatchClearMethod latch_method, InterruptControl itg_rdy, InterruptControl data_rdy) const {
+    void set_interrupt_flags(LatchMode latch_mode, LatchClearMethod latch_method,
+                             InterruptControl itg_rdy, InterruptControl data_rdy) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
@@ -179,7 +180,7 @@ class ITG3200 {
         libs::write_bit<4>(read_data[0], static_cast<uint8_t>(latch_method));
         libs::write_bit<2>(read_data[0], static_cast<uint8_t>(itg_rdy));
         libs::write_bit<0>(read_data[0], static_cast<uint8_t>(data_rdy));
-        
+
         i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
 
