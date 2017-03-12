@@ -9,20 +9,22 @@ namespace hal {
 
 class Watchdog {
  public:
-    enum class Period : int {
-        p15ms   = 0,
-        p30ms   = 1,
-        p60ms   = 2,
-        p120ms  = 3,
-        p250ms  = 4,
-        p500ms  = 5,
-        p1000ms = 6,
-        p2000ms = 7,
+    Watchdog() = delete;
+
+    enum class Period : uint8_t {
+        p15ms   = WDTO_15MS,
+        p30ms   = WDTO_30MS,
+        p60ms   = WDTO_60MS,
+        p120ms  = WDTO_120MS,
+        p250ms  = WDTO_250MS,
+        p500ms  = WDTO_500MS,
+        p1000ms = WDTO_1S,
+        p2000ms = WDTO_2S,
 #ifdef WDTO_4S
-        p4000ms = 8,
+        p4000ms = WDTO_4S,
 #endif
 #ifdef WDTO_8S
-        p8000ms = 9
+        p8000ms = WDTO_8S
 #endif
     };
 
@@ -31,7 +33,7 @@ class Watchdog {
     }
 
     static void enable(Period period) {
-        wdt_enable(static_cast<int>(period));
+        wdt_enable(static_cast<uint8_t>(period));
     }
 
     static void disable() {
