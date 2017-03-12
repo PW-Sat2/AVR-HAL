@@ -126,10 +126,10 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::PWR_MGM, read_data);
 
-        libs::write_mask<6, 1>(read_data[0], static_cast<uint8_t>(sleep));
-        libs::write_mask<5, 1>(read_data[0], static_cast<uint8_t>(x_standby));
-        libs::write_mask<4, 1>(read_data[0], static_cast<uint8_t>(y_standby));
-        libs::write_mask<3, 1>(read_data[0], static_cast<uint8_t>(z_standby));
+        libs::write_bit<6>(read_data[0], static_cast<uint8_t>(sleep));
+        libs::write_bit<5>(read_data[0], static_cast<uint8_t>(x_standby));
+        libs::write_bit<4>(read_data[0], static_cast<uint8_t>(y_standby));
+        libs::write_bit<3>(read_data[0], static_cast<uint8_t>(z_standby));
 
         i2cdevice.write_register(Registers::PWR_MGM, read_data);
     }
@@ -165,8 +165,8 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::write_mask<7, 1>(read_data[0], static_cast<uint8_t>(logic));
-        libs::write_mask<6, 1>(read_data[0], static_cast<uint8_t>(otype));
+        libs::write_bit<7>(read_data[0], static_cast<uint8_t>(logic));
+        libs::write_bit<6>(read_data[0], static_cast<uint8_t>(otype));
 
         i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
@@ -175,10 +175,10 @@ class ITG3200 {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::INT_CFG, read_data);
 
-        libs::write_mask<5, 1>(read_data[0], static_cast<uint8_t>(latch_mode));
-        libs::write_mask<4, 1>(read_data[0], static_cast<uint8_t>(latch_method));
-        libs::write_mask<2, 1>(read_data[0], static_cast<uint8_t>(itg_rdy));
-        libs::write_mask<0, 1>(read_data[0], static_cast<uint8_t>(data_rdy));
+        libs::write_bit<5>(read_data[0], static_cast<uint8_t>(latch_mode));
+        libs::write_bit<4>(read_data[0], static_cast<uint8_t>(latch_method));
+        libs::write_bit<2>(read_data[0], static_cast<uint8_t>(itg_rdy));
+        libs::write_bit<0>(read_data[0], static_cast<uint8_t>(data_rdy));
         
         i2cdevice.write_register(Registers::INT_CFG, read_data);
     }
