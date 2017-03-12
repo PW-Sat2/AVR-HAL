@@ -8,7 +8,6 @@
 #include "mcu_timers.h"
 #include "mcu_watchdog.h"
 #include "mcu_spi.h"
-#include "mcu_exti.h"
 #include "mcu_i2c.h"
 
 #endif  // HAL_MCU_ATMEGA128A_TQFP64_MCU_H_

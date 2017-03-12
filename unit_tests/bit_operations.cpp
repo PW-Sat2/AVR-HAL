@@ -383,47 +383,44 @@ TEST(compile_time, read_with_bit_mask) {
     test_read_with_bit_mask<5, 21, 4>(x, 0b011010111101000100001UL);
 }
 
+template<int start, int size>
+void test_write_with_bit_mask(uint32_t& reg, uint32_t value, uint32_t expected) {
+    write_mask<start, size>(reg, value);
+    EXPECT_EQ(expected, reg);
+
+    uint32_t reg_copy = reg;
+    write_mask(start, size, reg_copy, value);
+    EXPECT_EQ(expected, reg_copy);
+}
+
 TEST(compile_time, write_with_bit_mask) {
     uint32_t x = 0;
 
-    write_mask<0, 1>(x, 1);
-    EXPECT_EQ(1, x);
+    test_write_with_bit_mask<0, 1>(x, 1, 1);
 
-    write_mask<1, 1>(x, 1);
-    EXPECT_EQ(0b11, x);
+    test_write_with_bit_mask<1, 1>(x, 1, 0b11);
 
-    write_mask<4, 4>(x, 0b1101);
-    EXPECT_EQ(0b11010011, x);
+    test_write_with_bit_mask<4, 4>(x, 0b1101, 0b11010011);
 
-    write_mask<0, 3>(x, 0b101);
-    EXPECT_EQ(0b11010101, x);
+    test_write_with_bit_mask<0, 3>(x, 0b101, 0b11010101);
 
-    write_mask<0, 5>(x, 0b101);
-    EXPECT_EQ(0b11000101, x);
+    test_write_with_bit_mask<0, 5>(x, 0b101, 0b11000101);
 
-    write_mask<8, 5>(x, 0b11101);
-    EXPECT_EQ(0b1110111000101, x);
+    test_write_with_bit_mask<8, 5>(x, 0b11101, 0b1110111000101);
 
-    write_mask<9, 5>(x, 0b11101);
-    EXPECT_EQ(0b11101111000101, x);
+    test_write_with_bit_mask<9, 5>(x, 0b11101, 0b11101111000101);
 
-    write_mask<0, 16>(x, 0);
-    EXPECT_EQ(0, x);
+    test_write_with_bit_mask<0, 16>(x, 0, 0);
 
-    write_mask<31, 1>(x, 1);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<31, 1>(x, 1, 0x80000000UL);
 
-    write_mask<0, 31>(x, 0);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<0, 31>(x, 0, 0x80000000UL);
 
-    write_mask<1, 30>(x, 0);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<1, 30>(x, 0, 0x80000000UL);
 
-    write_mask<1, 5>(x, 0xA);
-    EXPECT_EQ(0x80000014UL, x);
+    test_write_with_bit_mask<1, 5>(x, 0xA, 0x80000014UL);
 
-    write_mask<3, 29>(x, 0xFFFF01);
-    EXPECT_EQ(0x7FFF80C, x);
+    test_write_with_bit_mask<3, 29>(x, 0xFFFF01, 0x7FFF80C);
 }
 
 DEFINE_TESTSUITE(bit_operations);

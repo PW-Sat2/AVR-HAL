@@ -4,7 +4,6 @@
 #include "mcu_analog.h"
 #include "mcu_core.h"
 #include "mcu_digitalIO.h"
-#include "mcu_exti.h"
 #include "mcu_i2c.h"
 #include "mcu_serial.h"
 #include "mcu_spi.h"
