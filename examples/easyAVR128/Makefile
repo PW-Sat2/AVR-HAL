@@ -4,7 +4,7 @@ build:
 	mkdir $@
 EASYAVR128: build
 	cmake -Bbuild -H. -G "Unix Makefiles"
-	make -C build
+	make -C build -j5
 
 
 

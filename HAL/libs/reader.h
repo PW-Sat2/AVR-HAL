@@ -6,6 +6,9 @@
 #include <cstdint>
 #include "span.h"
 
+namespace hal {
+namespace libs {
+
 /**
  * @defgroup utilities General Purpose Utilities
  * @{
@@ -197,5 +200,8 @@ inline void Reader::Reset() {
 }
 
 /** @}*/
+
+}  // namespace libs
+}  // namespace hal
 
 #endif  // HAL_LIBS_READER_H_

@@ -2,6 +2,7 @@
 #define HAL_LIBS_DEVICE_SUPPORTS_RTD_H_
 
 namespace hal {
+namespace libs {
 
 class RTD {
  public:
@@ -16,6 +17,7 @@ class RTD {
     const float R0, a, b;
 };
 
+}  // namespace libs
 }  // namespace hal
 
 #endif  // HAL_LIBS_DEVICE_SUPPORTS_RTD_H_

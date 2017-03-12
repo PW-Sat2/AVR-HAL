@@ -1,6 +1,8 @@
 #include "reader.h"
 #include <utility>
 
+using namespace hal::libs;
+
 Reader::Reader() : position(0), isValid(false) {
 }
 

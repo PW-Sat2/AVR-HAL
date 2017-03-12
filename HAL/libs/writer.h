@@ -5,6 +5,9 @@
 #include <cstdint>
 #include "span.h"
 
+namespace hal {
+namespace libs {
+
 /**
  * @addtogroup utilities
  * @{
@@ -202,5 +205,8 @@ inline uint16_t Writer::GetDataLength() const {
 }
 
 /** @}*/
+
+}  // namespace libs
+}  // namespace hal
 
 #endif  // HAL_LIBS_WRITER_H_

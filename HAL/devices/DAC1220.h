@@ -8,6 +8,7 @@
 
 namespace hal {
 
+template<typename spi>
 class DAC1220 {
  public:
     enum DataLength {
@@ -94,7 +95,7 @@ class DAC1220 {
     }
 
  private:
-    const SPI_Device spi_dev;
+    const SPI::Device<spi> spi_dev;
 };
 
 }  // namespace hal

@@ -2,6 +2,8 @@
 #include "tests.h"
 #include "writer.h"
 
+using namespace hal::libs;
+
 void CheckBuffer(const uint8_t* current, const uint16_t currentLength,
                  const uint8_t* expected, const uint16_t expectedLength) {
     auto in = hal::libs::make_span(current, currentLength);

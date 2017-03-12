@@ -116,12 +116,18 @@ macro(add_hal_executable target_name)
 	)
 	add_custom_target(
 		"${target_name}.flash"
-		DEPENDS ${hex_file} "${hex_file}.flash"
+		DEPENDS ${target_name}.build "${hex_file}.flash"
 	)
 
 	add_custom_target(${target_name}.sim
 		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${target_name} -W 0xC6,- -R 0x22,- -T exit
-		DEPENDS ${hex_file}
+		DEPENDS ${target_name}.build
+	)
+
+	add_custom_command(
+		OUTPUT "${target_name}.term_"
+		COMMAND
+			${PICOCOM} ${TERMINAL_PORT} -b${TERMINAL_BAUD} ${TERMINAL_PICOCOM_OPTIONS}
 	)
 
 	# terminal handling
@@ -130,17 +136,27 @@ macro(add_hal_executable target_name)
 		COMMAND
 			${PICOCOM} ${TERMINAL_PORT} -b${TERMINAL_BAUD} ${TERMINAL_PICOCOM_OPTIONS}
 	)
+
 	add_custom_target(
 		"${target_name}.term"
-		DEPENDS "${target_name}.term_"
-	)
-	add_custom_target(
-		"term"
 		DEPENDS "${target_name}.term_"
 	)
 
 	add_custom_target(
 		"${target_name}.flash_and_term"
-		DEPENDS ${hex_file} "${hex_file}.flash" "${target_name}.term_"
+		DEPENDS "${target_name}.build" "${hex_file}.flash" "${target_name}.term_"
 	)
 endmacro(add_hal_executable)
+
+if(NOT TARGET term)
+	add_custom_command(
+		OUTPUT "term_"
+		COMMAND
+			${PICOCOM} ${TERMINAL_PORT} -b${TERMINAL_BAUD} ${TERMINAL_PICOCOM_OPTIONS}
+	)
+
+	add_custom_target(
+		"term"
+		DEPENDS "term_"
+	)
+endif(NOT TARGET term)
