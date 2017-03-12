@@ -1,9 +1,12 @@
 #ifndef HAL_DEVICES_A3G4250D_H_
 #define HAL_DEVICES_A3G4250D_H_
 
-#include <cstdlib.h>
+#include <stdlib.h>
 #include "I2C.h"
 #include "array.h"
+#include "reader.h"
+#include "writer.h"
+#include "bit_operations.h"
 
 namespace hal {
 template<typename I2C>
@@ -81,7 +84,12 @@ class A3G4250D {
         SELF_TEST_1 = 0b11
     };
 
-    constexpr A3G4250D(const uint8_t address) : i2cdevice{address} {
+    enum class I2C_Address {
+        SEL_LOW = 0x68,
+        SEL_HIGH = 0x69
+    };
+
+    constexpr A3G4250D(const I2C_Address address) : i2cdevice{static_cast<uint8_t>(address)} {
     }
 
     bool is_present() const {
@@ -98,35 +106,38 @@ class A3G4250D {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::CTRL_REG1, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b00001111) | (static_cast<uint8_t>(dr_cf) << 4)};
-        i2cdevice.write_register(Registers::CTRL_REG1, data);
+        libs::write_mask<4, 4>(read_data[0], static_cast<uint8_t>(dr_cf));
+
+        i2cdevice.write_register(Registers::CTRL_REG1, read_data);
     }
 
     void set_power_mode(PowerMode power, AxisPowerMode x_standby, AxisPowerMode y_standby, AxisPowerMode z_standby) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::CTRL_REG1, read_data);
 
-        libs::array<uint8_t, 1> data = {(read_data[0] & 0b11110000) 
-            | (static_cast<uint8_t>(power) << 3)
-            | (static_cast<uint8_t>(x_standby) << 2)
-            | (static_cast<uint8_t>(y_standby) << 1)
-            | (static_cast<uint8_t>(z_standby) << 0)
-        };
+        libs::write_bit<3>(read_data[0], static_cast<uint8_t>(power));
+        libs::write_bit<2>(read_data[0], static_cast<uint8_t>(x_standby));
+        libs::write_bit<1>(read_data[0], static_cast<uint8_t>(y_standby));
+        libs::write_bit<0>(read_data[0], static_cast<uint8_t>(z_standby));
 
-        i2cdevice.write_register(Registers::CTRL_REG1, data);
+        i2cdevice.write_register(Registers::CTRL_REG1, read_data);
     }
 
     void high_pass_filter(HighPassFilterMode mode, HighPassFilterCutOff cutoff) const {
-        libs::array<uint8_t, 1> data1 = {(static_cast<uint8_t>(mode) << 4) | (static_cast<uint8_t>(cutoff))};
-        i2cdevice.write_register(Registers::CTRL_REG2, data1);
+        libs::array<uint8_t, 1> data = {0};
+        libs::write_mask<4, 2>(data[0], static_cast<uint8_t>(mode));
+        libs::write_mask<0, 4>(data[0], static_cast<uint8_t>(cutoff));
+        i2cdevice.write_register(Registers::CTRL_REG2, data);
     }
 
     void data_output_path(DataOutputPath path) const {
-        libs::array<uint8_t, 1> read_data;
-        i2cdevice.read_register(Registers::CTRL_REG5, read_data);
+        libs::array<uint8_t, 1> data;
+        i2cdevice.read_register(Registers::CTRL_REG5, data);
 
-        libs::array<uint8_t, 1> data2 = {((read_data[0] & 0b11101100) | ((static_cast<uint8_t>(path) & 0b100) << 4) | (static_cast<uint8_t>(path) & 0b011))};
-        i2cdevice.write_register(Registers::CTRL_REG5, data2);
+        libs::write_bit<4>(data[0], libs::read_bit<2>(static_cast<uint8_t>(path)));
+        libs::write_mask<0, 2>(data[0], static_cast<uint8_t>(path));
+
+        i2cdevice.write_register(Registers::CTRL_REG5, data);
     }
 
     uint8_t get_temperature_raw() const {
@@ -139,20 +150,7 @@ class A3G4250D {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::STATUS_REG, read_data);
         
-        Status stat;
-
-        if (read_data[0] & 0b00000001) {
-            stat.DATA_OVERRUN = true;
-        } else {
-            stat.DATA_OVERRUN = false;
-        }
-
-        if (read_data[0] & 0b00010000) {
-            stat.DATA_AVAILABLE = true;
-        } else {
-            stat.DATA_AVAILABLE = false;
-        }
-
+        Status stat = {libs::read_bit<0>(read_data[0]), libs::read_bit<4>(read_data[0])};
         return stat;
     }
 
@@ -165,19 +163,22 @@ class A3G4250D {
         i2cdevice.read_register(Registers::OUT_X_L | (1 << 7), read_data);
         GyroData data;
 
-        data.X_axis = (static_cast<int16_t>(read_data[1]) << 8) | read_data[0];
-        data.Y_axis = (static_cast<int16_t>(read_data[3]) << 8) | read_data[2];
-        data.Z_axis = (static_cast<int16_t>(read_data[5]) << 8) | read_data[4];
+        libs::Reader reader{read_data};
+
+        data.X_axis = reader.ReadSignedWordLE();
+        data.Y_axis = reader.ReadSignedWordLE();
+        data.Z_axis = reader.ReadSignedWordLE();
 
         return data;
     }
 
     void mode(Mode mode) const {
-        libs::array<uint8_t, 1> data_rcv;
-        i2cdevice.read_register(Registers::CTRL_REG4, data_rcv);
+        libs::array<uint8_t, 1> data;
+        i2cdevice.read_register(Registers::CTRL_REG4, data);
 
-        libs::array<uint8_t, 1> data_snd = {((data_rcv[0] & 0b11111001) | (static_cast<uint8_t>(mode) << 1))};
-        i2cdevice.write_register(Registers::CTRL_REG4, data_snd);
+        libs::write_mask<1, 2>(data[0], static_cast<uint8_t>(mode));
+
+        i2cdevice.write_register(Registers::CTRL_REG4, data);
     }
 
  private:
