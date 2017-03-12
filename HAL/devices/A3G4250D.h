@@ -111,7 +111,10 @@ class A3G4250D {
         i2cdevice.write_register(Registers::CTRL_REG1, read_data);
     }
 
-    void set_power_mode(PowerMode power, AxisPowerMode x_standby, AxisPowerMode y_standby, AxisPowerMode z_standby) const {
+    void set_power_mode(PowerMode power,
+                        AxisPowerMode x_standby,
+                        AxisPowerMode y_standby,
+                        AxisPowerMode z_standby) const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::CTRL_REG1, read_data);
 
@@ -149,7 +152,7 @@ class A3G4250D {
     Status status() const {
         libs::array<uint8_t, 1> read_data;
         i2cdevice.read_register(Registers::STATUS_REG, read_data);
-        
+
         Status stat = {libs::read_bit<0>(read_data[0]), libs::read_bit<4>(read_data[0])};
         return stat;
     }
@@ -216,4 +219,4 @@ class A3G4250D {
 
 }  // namespace hal
 
-#endif  // HAL_DEVICES_ITG3200_H_
+#endif  // HAL_DEVICES_A3G4250D_H_
