@@ -1,6 +1,7 @@
 if(BOARD)
     if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/${BOARD}/board.cmake)
         message(STATUS "Use HAL board: ${BOARD}")
+        set(HAL_BOARD ${BOARD})
         include(${CMAKE_CURRENT_LIST_DIR}/${BOARD}/board.cmake)
     else()
         message(STATUS "BOARD defined but not existing in HAL! BOARD=${BOARD}")
