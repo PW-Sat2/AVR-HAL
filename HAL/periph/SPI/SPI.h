@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SPI_H_
-#define HAL_PERIPH_SPI_H_
+#ifndef HAL_PERIPH_SPI_SPI_H_
+#define HAL_PERIPH_SPI_SPI_H_
 
 #include <avr/io.h>
 #include "mcu.h"
@@ -96,4 +96,4 @@ class Device {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPI_H_
+#endif  // HAL_PERIPH_SPI_SPI_H_

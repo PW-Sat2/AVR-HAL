@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_EEPROM_H_
-#define HAL_PERIPH_EEPROM_H_
+#ifndef HAL_PERIPH_MCU_EEPROM_H_
+#define HAL_PERIPH_MCU_EEPROM_H_
 
 #include <avr/eeprom.h>
 
@@ -65,4 +65,4 @@ class EepromStorage : details::AddressCounter {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_EEPROM_H_
+#endif  // HAL_PERIPH_MCU_EEPROM_H_

@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_ANALOG_H_
-#define HAL_PERIPH_ANALOG_H_
+#ifndef HAL_PERIPH_ANALOG_ANALOG_H_
+#define HAL_PERIPH_ANALOG_ANALOG_H_
 
 #include <avr/io.h>
 #include "bit_operations.h"
@@ -106,4 +106,4 @@ class AnalogGPIO {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_ANALOG_H_
+#endif  // HAL_PERIPH_ANALOG_ANALOG_H_

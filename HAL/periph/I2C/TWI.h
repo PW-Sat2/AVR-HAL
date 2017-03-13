@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_TWI_H_
-#define HAL_PERIPH_TWI_H_
+#ifndef HAL_PERIPH_I2C_TWI_H_
+#define HAL_PERIPH_I2C_TWI_H_
 
 #include <avr/io.h>
 #include <util/twi.h>
@@ -103,4 +103,4 @@ class TWI : public I2C {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_TWI_H_
+#endif  // HAL_PERIPH_I2C_TWI_H_

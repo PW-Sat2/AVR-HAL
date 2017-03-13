@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_I2C_H_
-#define HAL_PERIPH_I2C_H_
+#ifndef HAL_PERIPH_I2C_I2C_H_
+#define HAL_PERIPH_I2C_I2C_H_
 
 #include "array.h"
 #include "span.h"
@@ -106,4 +106,4 @@ class I2C_Device {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_I2C_H_
+#endif  // HAL_PERIPH_I2C_I2C_H_

@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_WATCHDOG_H_
-#define HAL_PERIPH_WATCHDOG_H_
+#ifndef HAL_PERIPH_MCU_WATCHDOG_H_
+#define HAL_PERIPH_MCU_WATCHDOG_H_
 
 #include <avr/wdt.h>
 #include "mcu.h"
@@ -24,4 +24,4 @@ class Watchdog : public mcu::Watchdog {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_WATCHDOG_H_
+#endif  // HAL_PERIPH_MCU_WATCHDOG_H_

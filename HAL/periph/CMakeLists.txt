@@ -8,7 +8,7 @@ target_link_libraries(${NAME}
 )
 
 target_include_directories(${NAME} INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/AnalogIO
+    ${CMAKE_CURRENT_LIST_DIR}/Analog
     ${CMAKE_CURRENT_LIST_DIR}/GPIO
     ${CMAKE_CURRENT_LIST_DIR}/I2C
     ${CMAKE_CURRENT_LIST_DIR}/MCU

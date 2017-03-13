@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SPISLAVE_H_
-#define HAL_PERIPH_SPISLAVE_H_
+#ifndef HAL_PERIPH_SPI_SPISLAVE_H_
+#define HAL_PERIPH_SPI_SPISLAVE_H_
 
 #include <avr/io.h>
 #include "mcu.h"
@@ -88,4 +88,4 @@ class SPISlave {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPISLAVE_H_
+#endif  // HAL_PERIPH_SPI_SPISLAVE_H_

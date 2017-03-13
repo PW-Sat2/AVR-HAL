@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SERIAL_H_
-#define HAL_PERIPH_SERIAL_H_
+#ifndef HAL_PERIPH_SERIAL_SERIAL_H_
+#define HAL_PERIPH_SERIAL_SERIAL_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -211,4 +211,4 @@ int uart_getchar(__attribute__((unused)) FILE *stream) {
 
 }  // namespace hal
 
-#endif  //  HAL_PERIPH_SERIAL_H_
+#endif  //  HAL_PERIPH_SERIAL_SERIAL_H_

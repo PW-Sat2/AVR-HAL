@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_TWISLAVE_H_
-#define HAL_PERIPH_TWISLAVE_H_
+#ifndef HAL_PERIPH_I2C_TWISLAVE_H_
+#define HAL_PERIPH_I2C_TWISLAVE_H_
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -93,4 +93,4 @@ ISR(TWI_vect) {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_TWISLAVE_H_
+#endif  // HAL_PERIPH_I2C_TWISLAVE_H_

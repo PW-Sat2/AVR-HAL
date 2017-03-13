@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_DIGITALIO_H_
-#define HAL_PERIPH_DIGITALIO_H_
+#ifndef HAL_PERIPH_GPIO_DIGITALIO_H_
+#define HAL_PERIPH_GPIO_DIGITALIO_H_
 
 #include "PeriphDescriptors.h"
 #include "bit_operations.h"
@@ -104,4 +104,4 @@ class DigitalIO {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_DIGITALIO_H_
+#endif  // HAL_PERIPH_GPIO_DIGITALIO_H_

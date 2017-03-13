@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SPISOFTWARE_H_
-#define HAL_PERIPH_SPISOFTWARE_H_
+#ifndef HAL_PERIPH_SPI_SPISOFTWARE_H_
+#define HAL_PERIPH_SPI_SPISOFTWARE_H_
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -95,4 +95,4 @@ class Software {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPISOFTWARE_H_
+#endif  // HAL_PERIPH_SPI_SPISOFTWARE_H_

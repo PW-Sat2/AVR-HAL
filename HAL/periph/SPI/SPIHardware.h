@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SPIHARDWARE_H_
-#define HAL_PERIPH_SPIHARDWARE_H_
+#ifndef HAL_PERIPH_SPI_SPIHARDWARE_H_
+#define HAL_PERIPH_SPI_SPIHARDWARE_H_
 
 #include <avr/io.h>
 #include "SPI.h"
@@ -96,4 +96,4 @@ class Hardware {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPIHARDWARE_H_
+#endif  // HAL_PERIPH_SPI_SPIHARDWARE_H_

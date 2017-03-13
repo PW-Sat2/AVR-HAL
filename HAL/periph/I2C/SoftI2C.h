@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SOFTI2C_H_
-#define HAL_PERIPH_SOFTI2C_H_
+#ifndef HAL_PERIPH_I2C_SOFTI2C_H_
+#define HAL_PERIPH_I2C_SOFTI2C_H_
 
 #include "DigitalIO.h"
 #include "I2C.h"
@@ -139,4 +139,4 @@ class SoftI2C: public I2C {
 
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SOFTI2C_H_
+#endif  // HAL_PERIPH_I2C_SOFTI2C_H_
