@@ -1,5 +1,5 @@
-#ifndef	HAL_PERIPH_SERIAL_DEVICE_H_
-#define	HAL_PERIPH_SERIAL_DEVICE_H_
+#ifndef HAL_PERIPH_SERIAL_SERIAL_DEVICE_H_
+#define HAL_PERIPH_SERIAL_SERIAL_DEVICE_H_
 
 #include <avr/io.h>
 #include "Serial_defines.h"
@@ -17,7 +17,7 @@ SERIAL_REG(UBRR, L);
 SERIAL_REG(UCSR, A);
 SERIAL_REG(UCSR, B);
 SERIAL_REG(UCSR, C);
-SERIAL_REG(UDR ,  );
+SERIAL_REG(UDR, );  // NOLINT
 
 #undef SERIAL_REG
 
@@ -54,4 +54,4 @@ volatile uint8_t& reg_p ## n ## reg_s  \
 #undef SERIAL_MAKE_REG
 #undef SERIAL_DEF
 
-#endif	// HAL_PERIPH_SERIAL_DEVICE_H_
+#endif  // HAL_PERIPH_SERIAL_SERIAL_DEVICE_H_

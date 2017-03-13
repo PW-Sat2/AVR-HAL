@@ -1,5 +1,5 @@
-#ifndef PERIPH_SERIAL_SERIAL_H_
-#define PERIPH_SERIAL_SERIAL_H_
+#ifndef HAL_PERIPH_SERIAL_SERIAL_H_
+#define HAL_PERIPH_SERIAL_SERIAL_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,7 +48,7 @@ class Serial {
 
     void print_byte(const char byte) const __attribute__((always_inline)) {
         UDRn<nr>() = byte;
-        while (! libs::read_bit(UCSRnA<nr>(), UDRE0) ) {
+        while (!libs::read_bit(UCSRnA<nr>(), UDRE0)) {
         }
     }
 
@@ -204,4 +204,4 @@ int uart_getchar(__attribute__((unused)) FILE *stream) {
 
 }  // namespace hal
 
-#endif  //  PERIPH_SERIAL_SERIAL_H_
+#endif  //  HAL_PERIPH_SERIAL_SERIAL_H_
