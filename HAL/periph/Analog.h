@@ -98,7 +98,7 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         FreeRunning = 0,
         Disable = 1,
     };
-    
+
     static void set_trigger(const TriggerSource trigger) {
         if (trigger == TriggerSource::FreeRunning) {
             libs::set_bit(ADCSRA, ADFR);
