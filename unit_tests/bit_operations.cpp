@@ -460,6 +460,9 @@ TEST(compile_time, write_bit) {
     write_bit<1>(x, 0);
     EXPECT_EQ(0, x);
 
+    write_bit<1>(x, 5);
+    EXPECT_EQ(0b10, x);
+
     x = 0xFFFFFFFF;
     write_bit<31>(x, 0);
     EXPECT_EQ(0x7FFFFFFFUL, x);
