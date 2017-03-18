@@ -1,3 +1,5 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include "Serial.h"
 
 #ifdef USART0_RX_vect
