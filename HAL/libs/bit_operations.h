@@ -78,8 +78,8 @@ constexpr void write_mask(T& destination, T2 value) {
     destination |= (static_cast<T>(value) << start);
 }
 
-template<uint8_t start, typename T, typename T2>
-constexpr auto write_bit(T& destination, T2 value) {
+template<uint8_t start, typename T>
+constexpr auto write_bit(T& destination, bool value) {
     write_mask<start, 1>(destination, value);
 }
 
