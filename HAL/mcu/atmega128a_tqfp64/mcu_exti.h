@@ -1,6 +1,8 @@
 #ifndef HAL_MCU_ATMEGA128A_TQFP64_MCU_EXTI_H_
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_EXTI_H_
 
+#include "bit_operations.h"
+
 namespace hal {
 
 extern int impossible_exti_line;
