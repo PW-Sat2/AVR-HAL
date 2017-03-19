@@ -63,7 +63,7 @@ constexpr uint64_t read_mask(uint8_t start, uint8_t length, uint64_t value) {
 
 template<uint8_t bit_pos, typename T>
 constexpr bool read_bit(T value) {
-    return static_cast<bool>(read_mask<bit_pos, 1>(value));
+    return read_mask<bit_pos, 1>(value);
 }
 
 template<typename T>
