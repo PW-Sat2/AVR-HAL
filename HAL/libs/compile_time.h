@@ -23,10 +23,11 @@ constexpr uint64_t power_of_two(uint8_t exp) {
 }
 
 template<uint8_t i>
-using type_with_bits = typename std::conditional<(i <= 8), uint8_t,
+using type_with_bits = typename std::conditional<(i <= 1), bool,
+                       typename std::conditional<(i <= 8), uint8_t,
                        typename std::conditional<(i <= 16), uint16_t,
                        typename std::conditional<(i <= 32), uint32_t,
-                       uint64_t>::type>::type>::type;
+                       uint64_t>::type>::type>::type>::type;
 
 template<uint8_t exp>
 constexpr type_with_bits<exp+1> power_of_two() {
@@ -34,7 +35,7 @@ constexpr type_with_bits<exp+1> power_of_two() {
 }
 
 template<>
-constexpr uint8_t power_of_two<0>() {
+constexpr bool power_of_two<0>() {
     return 1;
 }
 
