@@ -51,19 +51,21 @@ set (TERMINAL_BAUD "" CACHE STRING "Baudrate for terminal operations")
 set (TERMINAL_PICOCOM_OPTIONS -l --imap lfcrlf --omap crlf CACHE STRING "Options for picocom")
 
 macro(add_hal_executable target_name)
-	set(elf_file ${target_name})
-	set(map_file ${target_name}-${GCC_TARGET}.map)
-	set(hex_file ${target_name}-${GCC_TARGET}.hex)
-	set(lst_file ${target_name}-${GCC_TARGET}.lst)
+	set(target ${target_name})
+	set(elf_file ${target_name}.elf)
+	set(map_file ${target_name}.map)
+	set(hex_file ${target_name}.hex)
+	set(lst_file ${target_name}.lst)
 
 	# create elf file
-	add_executable(${elf_file}
+	add_executable(${target}
 		${ARGN}
 	)
-	target_link_libraries(${elf_file} hal)
+	target_link_libraries(${target} hal)
+	set_target_properties(${target} PROPERTIES OUTPUT_NAME ${elf_file})
 
 	set_target_properties(
-		${elf_file}
+		${target}
 		PROPERTIES
 			LINK_FLAGS "-mmcu=${GCC_TARGET} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
 	)
@@ -73,7 +75,7 @@ macro(add_hal_executable target_name)
 		OUTPUT ${lst_file}
 		COMMAND
 			${CMAKE_OBJDUMP} -h -S ${elf_file} > ${lst_file}
-		DEPENDS ${elf_file}
+		DEPENDS ${target}
 	)
 
 	# create hex file
@@ -81,38 +83,32 @@ macro(add_hal_executable target_name)
 		OUTPUT ${hex_file}
 		COMMAND
 			${CMAKE_OBJCOPY} -j .text -j .data -O ihex ${elf_file} ${hex_file}
-		DEPENDS ${elf_file}
+		DEPENDS ${target}
 	)
 	add_custom_command(
-		OUTPUT "print-size-${elf_file}"
+		OUTPUT "print-size-${target}"
 		COMMAND
 			${CMAKE_GCC_SIZE} ${elf_file}
-		DEPENDS ${elf_file}
+		DEPENDS ${target}
 	)
 
 	# build the intel hex file for the device
 	add_custom_target(
 		${target_name}.build
 		ALL
-		DEPENDS ${hex_file} ${lst_file} "print-size-${elf_file}"
+		DEPENDS ${hex_file} ${lst_file} "print-size-${target}"
 	)
 	set_target_properties(
 		${target_name}.build
 		PROPERTIES
-			OUTPUT_NAME ${elf_file}
+			OUTPUT_NAME ${target}
 	)
 
-
 	# flash command
-	message(STATUS "Avrdude parameters: -c${AVRDUDE_TOOL} -p${AVRDUDE_TARGET} ${AVRDUDE_OPTIONS}")
-
-	set(AVRDUDE_ARGS -c${AVRDUDE_TOOL} -p${AVRDUDE_TARGET} ${AVRDUDE_OPTIONS} -U flash:w:${hex_file})
-	message(STATUS "Command: ${AVRDUDE_ARGS}")
-
 	add_custom_command(
 		OUTPUT "${hex_file}.flash"
 		COMMAND
-			${AVRDUDE} ${AVRDUDE_ARGS}
+			${AVRDUDE} -c${AVRDUDE_TOOL} -p${AVRDUDE_TARGET} ${AVRDUDE_OPTIONS} -U flash:w:${hex_file}
 	)
 	add_custom_target(
 		"${target_name}.flash"
@@ -120,7 +116,7 @@ macro(add_hal_executable target_name)
 	)
 
 	add_custom_target(${target_name}.sim
-		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${target_name} -W 0xC6,- -R 0x22,- -T exit
+		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${elf_file} -W 0xC6,- -R 0x22,- -T exit
 		DEPENDS ${target_name}.build
 	)
 
