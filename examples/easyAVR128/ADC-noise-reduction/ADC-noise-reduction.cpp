@@ -1,8 +1,4 @@
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
-#include "Analog.h"
-#include "Serial.h"
+#include <hal/hal>
 
 using hal::InternalADC;
 using hal::Serial0;

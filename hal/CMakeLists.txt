@@ -1,6 +1,10 @@
 set(NAME hal)
 add_library(${NAME} INTERFACE)
 
+target_include_directories(hal INTERFACE
+    ../
+)
+
 add_subdirectory(devices)
 add_subdirectory(libs)
 add_subdirectory(mcu)

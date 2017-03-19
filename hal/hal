@@ -1,0 +1,5 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include "hal/periph/Analog/Analog.h"
+#include "hal/periph/Serial/Serial.h"

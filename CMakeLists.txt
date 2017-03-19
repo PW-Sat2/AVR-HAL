@@ -1,1 +1,1 @@
-add_subdirectory(HAL)
+add_subdirectory(hal)
