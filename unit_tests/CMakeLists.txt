@@ -28,15 +28,14 @@ add_hal_executable(${NAME}
     pure_virtual.cpp
     eeprom.cpp
     terminal.cpp
+    drivers/AD5641.cpp
+
     devices_compilation.cpp
 )
+
+include_directories(.)
 
 target_link_libraries(${NAME}
     unity
     terminal
-)
-
-add_custom_target(unit_tests.run
-  COMMAND ${SIMULAVR} -d atmega2560 -f ${NAME} -W 0xC6,- -T exit
-  DEPENDS ${NAME}
 )
