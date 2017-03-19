@@ -15,6 +15,7 @@ int main() {
     RUN_TESTSUITE(data_types);
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);
+    RUN_TESTSUITE(AD5641);
     // RUN_TESTSUITE(pure_virtual);
     RUN_TESTSUITE(DigitalIO);
 

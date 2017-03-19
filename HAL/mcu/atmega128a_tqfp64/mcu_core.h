@@ -1,11 +1,11 @@
 #ifndef HAL_MCU_ATMEGA128A_TQFP64_MCU_CORE_H_
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_CORE_H_
 
-namespace hal {
-namespace cpu {
-
 #include <avr/io.h>
 #include "bit_operations.h"
+
+namespace hal {
+namespace cpu {
 
 enum class SleepModes : uint8_t {
     Idle = 0,

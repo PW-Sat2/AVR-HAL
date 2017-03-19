@@ -1,11 +1,6 @@
 #ifndef HAL_MCU_ATMEGA128A_TQFP64_MCU_ANALOG_H_
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_ANALOG_H_
 
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "bit_operations.h"
-
 namespace hal {
 namespace mcu {
 
@@ -13,11 +8,6 @@ class InternalADCMcuSpecific {
  public:
     InternalADCMcuSpecific() = delete;
 
-    enum class Reference : uint8_t {
-        AREF = 0,
-        AVcc = 1,
-        Internal_2V56 = 3
-    };
     enum class Input : uint8_t {
         ADC0 = 0,
         ADC1 = 1,
@@ -52,29 +42,6 @@ class InternalADCMcuSpecific {
         REF1V23 = 30,
         GND = 31
     };
-
-    enum class TriggerSource : uint8_t {
-        FreeRunning = 0,
-        Disable = 1,
-    };
-
-    static void set_trigger(const TriggerSource trigger) {
-        if (trigger == TriggerSource::FreeRunning) {
-            libs::set_bit(ADCSRA, ADFR);
-        } else {
-            libs::clear_bit(ADCSRA, ADFR);
-        }
-    }
-};
-
-class InternalADCMux {
- public:
-    InternalADCMux() = delete;
-
-    static void select(InternalADCMcuSpecific::Input input) {
-        ADMUX &= 0b11100000;
-        ADMUX |= static_cast<uint8_t>(input);
-    }
 };
 
 }  // namespace mcu
