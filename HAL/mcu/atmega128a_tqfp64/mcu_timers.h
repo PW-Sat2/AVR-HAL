@@ -1,10 +1,10 @@
 #ifndef HAL_MCU_ATMEGA128A_TQFP64_MCU_TIMERS_H_
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_TIMERS_H_
 
-namespace hal {
-
 #include <avr/io.h>
 #include "bit_operations.h"
+
+namespace hal {
 
 class Timer0 {
  public:
