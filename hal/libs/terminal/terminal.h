@@ -2,7 +2,7 @@
 #define HAL_LIBS_TERMINAL_TERMINAL_H_
 
 #include <cstdint>
-#include "span.h"
+#include "hal/libs.h"
 
 /**
  * @defgroup terminal Terminal module

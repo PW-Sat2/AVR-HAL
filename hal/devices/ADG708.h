@@ -1,7 +1,7 @@
 #ifndef HAL_DEVICES_ADG708_H_
 #define HAL_DEVICES_ADG708_H_
 
-#include "DigitalIO.h"
+#include "hal/periph.h"
 
 namespace hal {
 

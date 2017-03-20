@@ -1,10 +1,7 @@
 #ifndef HAL_DEVICES_AT24C02_H_
 #define HAL_DEVICES_AT24C02_H_
 
-#include <stdlib.h>
-#include "I2C.h"
-#include "array.h"
-#include "span.h"
+#include "hal/periph.h"
 
 namespace hal {
 

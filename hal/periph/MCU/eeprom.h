@@ -3,7 +3,7 @@
 
 #include <avr/eeprom.h>
 
-#include "span.h"
+#include "hal/libs.h"
 
 namespace hal {
 
@@ -26,12 +26,12 @@ template <typename T>
 class EepromStorage : details::AddressCounter {
  public:
     constexpr EepromStorage()
-        : eeprom_ptr(getPointerFromAddess(getAndIncreaseBy(sizeof(T)))) {
+        : eeprom_ptr(getPointerFromAddess(getAndIncreaseBy(size))) {
     }
 
     T read() const {
         T data;
-        this->read(libs::make_span(&data, sizeof(T)));
+        this->read(libs::make_span(&data, size));
         return data;
     }
 
@@ -40,7 +40,7 @@ class EepromStorage : details::AddressCounter {
     }
 
     void write(const T& data) const {
-        this->write(libs::make_span(&data, sizeof(T)));
+        this->write(libs::make_span(&data, size));
     }
 
     void operator=(const T& data) const {
@@ -54,13 +54,14 @@ class EepromStorage : details::AddressCounter {
 
     void read(libs::span<T> data_out) const {
         eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr,
-                          sizeof(T));
+                          size);
     }
     void write(libs::span<const T> data_in) const {
-        eeprom_write_block(data_in.begin(), eeprom_ptr, sizeof(T));
+        eeprom_write_block(data_in.begin(), eeprom_ptr, size);
     }
 
     void* const eeprom_ptr;
+    constexpr static auto size = sizeof(T);
 };
 
 }  // namespace hal

@@ -1,4 +1,4 @@
-LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int --linelength=120
+LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int,-build/header_guard --linelength=120
 
 all: checkStyle examples unit_tests_run
 
@@ -14,7 +14,7 @@ tmp/cpplint.py: tmp
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 
 checkStyle: tmp/cpplint.py
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "HAL/libs/std/"  | grep -v "unit_tests/build" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "unit_tests/build" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
 
 examples: force
 	make -C examples

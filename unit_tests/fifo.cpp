@@ -1,9 +1,6 @@
 #include "tests.h"
 #include <cstring>
 
-#include "fifo.h"
-
-
 using hal::libs::FIFO_data;
 
 TEST(fifo, simple) {

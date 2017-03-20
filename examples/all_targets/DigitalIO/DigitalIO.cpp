@@ -1,6 +1,4 @@
-#include <util/delay.h>
-#include "DigitalIO.h"
-#include "mcu.h"
+#include <hal/hal>
 
 constexpr hal::DigitalIO pin2(hal::mcu::pin_scl);
 

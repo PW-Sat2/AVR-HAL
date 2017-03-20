@@ -1,10 +1,7 @@
 #ifndef HAL_DEVICES_AD7714_H_
 #define HAL_DEVICES_AD7714_H_
 
-#include "SPI.h"
-#include "DigitalIO.h"
-#include "array.h"
-#include <util/delay.h>
+#include "hal/periph.h"
 
 namespace hal {
 

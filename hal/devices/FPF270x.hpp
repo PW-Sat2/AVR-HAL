@@ -1,6 +1,8 @@
 #ifndef FPF270X_H_
 #define FPF270X_H_
 
+#include "hal/periph.h"
+
 namespace hal {
 
 class FPF270x {

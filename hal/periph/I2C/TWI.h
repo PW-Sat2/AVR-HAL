@@ -3,10 +3,11 @@
 
 #include <avr/io.h>
 #include <util/twi.h>
-#include "mcu.h"
-#include "DigitalIO.h"
+#include "hal/mcu.h"
+#include "hal/libs.h"
+
+#include "hal/periph/GPIO/DigitalIO.h"
 #include "I2C.h"
-#include "compile_time.h"
 
 namespace hal {
 

@@ -2,7 +2,6 @@
 #include "tests.h"
 
 #include <math.h>
-#include "bit_operations.h"
 #include <numeric>
 #include <limits>
 

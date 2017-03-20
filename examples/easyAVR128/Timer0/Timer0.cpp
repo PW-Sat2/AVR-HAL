@@ -1,7 +1,4 @@
-#include <util/delay.h>
-#include <avr/interrupt.h>
-#include "mcu.h"
-#include "Serial.h"
+#include <hal/hal>
 
 ISR(TIMER0_OVF_vect) {
     hal::Serial0.print_byte('x');

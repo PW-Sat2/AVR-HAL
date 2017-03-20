@@ -1,8 +1,4 @@
-#include "SPIHardware.h"
-#include "SPISoftware.h"
-#include "SPI.h"
-#include "mcu.h"
-#include "span.h"
+#include <hal/hal>
 
 using namespace hal;
 

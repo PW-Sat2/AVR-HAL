@@ -1,4 +1,4 @@
-set(NAME stdlib)
+set(NAME hal_stdlib)
 
 add_library(${NAME} INTERFACE)
 

@@ -4,10 +4,9 @@
 #include <avr/io.h>
 #include "SPI.h"
 
-#include "mcu.h"
-#include "bit_operations.h"
-#include "DigitalIO.h"
-#include "array.h"
+#include "hal/mcu.h"
+#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/libs.h"
 
 // workaround for newer MCUs...
 #ifndef SPCR

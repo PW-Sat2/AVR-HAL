@@ -1,7 +1,8 @@
 #ifndef HAL_PERIPH_I2C_SOFTI2C_H_
 #define HAL_PERIPH_I2C_SOFTI2C_H_
 
-#include "DigitalIO.h"
+#include <util/delay.h>
+#include "hal/periph/GPIO/DigitalIO.h"
 #include "I2C.h"
 
 namespace hal {

@@ -1,7 +1,6 @@
 #include <avr/io.h>
 
 #include "tests.h"
-#include "DigitalIO.h"
 
 using namespace hal;
 

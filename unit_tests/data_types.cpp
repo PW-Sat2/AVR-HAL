@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <cstdlib>
+
 #include "tests.h"
 
 #define DATA_ASSERT(type, size) \

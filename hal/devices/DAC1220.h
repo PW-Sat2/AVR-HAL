@@ -1,10 +1,7 @@
 #ifndef HAL_DEVICES_DAC1220_H_
 #define HAL_DEVICES_DAC1220_H_
 
-#include <util/delay.h>
-#include "DigitalIO.h"
-#include "SPI.h"
-#include "array.h"
+#include "hal/periph.h"
 
 namespace hal {
 

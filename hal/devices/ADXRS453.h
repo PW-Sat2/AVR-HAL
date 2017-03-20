@@ -1,9 +1,7 @@
 #ifndef HAL_DEVICES_ADXRS453_H_
 #define HAL_DEVICES_ADXRS453_H_
 
-#include "SPI.h"
-#include "DigitalIO.h"
-#include "array.h"
+#include "hal/periph.h"
 
 namespace hal {
 

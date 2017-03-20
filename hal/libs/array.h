@@ -6,7 +6,7 @@
 #include <utility>
 #include <cstring>
 #include <algorithm>
-#include "span.h"
+#include "hal/libs/span.h"
 #include "hal_assert.h"
 
 namespace hal {

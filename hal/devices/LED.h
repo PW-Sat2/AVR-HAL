@@ -1,6 +1,8 @@
 #ifndef HAL_DEVICES_LED_H_
 #define HAL_DEVICES_LED_H_
 
+#include "hal/periph.h"
+
 namespace hal {
 
 class LED {

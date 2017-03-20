@@ -1,10 +1,10 @@
 #ifndef HAL_PERIPH_I2C_I2C_H_
 #define HAL_PERIPH_I2C_I2C_H_
 
-#include "array.h"
-#include "span.h"
 #include <type_traits>
 #include <utility>
+
+#include "hal/libs.h"
 
 namespace hal {
 

@@ -1,9 +1,4 @@
-#include <util/delay.h>
-#include "Serial.h"
-#include "I2C.h"
-#include "SoftI2C.h"
-#include "PCF8563.h"
-#include "array.h"
+#include <hal/hal>
 
 int main() {
     hal::Serial0.init(4800, hal::STDIO::ENABLE);

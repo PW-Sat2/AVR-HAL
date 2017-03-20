@@ -5,18 +5,15 @@
 #include <stdio.h>
 #include <avr/io.h>
 
-#include "mcu.h"
+#include "hal/mcu.h"
+#include "Serial_device.h"
 
 namespace hal {
 
-#define REG(reg) (*((volatile uint8_t *)(mcu::UART_map[serial_num].UCSRnB)))
-#define READ_REG(reg) (*((volatile uint8_t *)(mcu::UART_map[serial_num].reg)))
-#define WRITE_REG(reg, val) (*((volatile uint8_t *)(mcu::UART_map[serial_num].reg)) = val)
-
-template<int serial_num>
+template<int nr>
 int uart_putchar(char x, FILE *stream);
 
-template<int serial_num>
+template<int nr>
 int uart_getchar(FILE *stream);
 
 enum class STDIO : bool {
@@ -24,25 +21,25 @@ enum class STDIO : bool {
     DISABLE = false
 };
 
-template<int serial_num>
+template<int nr>
 class Serial {
  public:
-    static_assert(serial_num >= 0, "Bad Serial number!");
-    static_assert(serial_num < MCU_NR_OF_SERIALS, "Bad Serial number!");
+    static_assert(nr >= 0, "Bad Serial number!");
+    static_assert(nr < MCU_NR_OF_SERIALS, "Bad Serial number!");
 
     void init(const uint32_t baudrate, STDIO enable_stdio = STDIO::DISABLE)
               const __attribute__((always_inline)) {
         const uint16_t ubrr = baud_to_ubrr(baudrate);
-        WRITE_REG(UBRRnH, ubrr >> 8);
-        WRITE_REG(UBRRnL, ubrr & 0xFF);
+        UBRRnH<nr>() = (ubrr >> 8);
+        UBRRnL<nr>() = (ubrr & 0xFF);
 
-        WRITE_REG(UCSRnC, (1 << UCSZ01) | (1 << UCSZ00));
-        WRITE_REG(UCSRnB, (1 << RXEN0) | (1 << TXEN0));
+        UCSRnC<nr>() = (1 << UCSZ01) | (1 << UCSZ00);
+        UCSRnB<nr>() = (1 << RXEN0) | (1 << TXEN0);
 
         if (static_cast<bool>(enable_stdio)) {
             static FILE uart_output;
-            uart_output.put = uart_putchar<serial_num>;
-            uart_output.get = uart_getchar<serial_num>;
+            uart_output.put = uart_putchar<nr>;
+            uart_output.get = uart_getchar<nr>;
             uart_output.flags = _FDEV_SETUP_RW;
             stdout = &uart_output;
             stdin = &uart_output;
@@ -50,13 +47,13 @@ class Serial {
     }
 
     void print_byte(const char byte) const __attribute__((always_inline)) {
-        WRITE_REG(UDRn, byte);
-        while (!(READ_REG(UCSRnA) & (1 << UDRE0))) {
+        UDRn<nr>() = byte;
+        while (!libs::read_bit(UCSRnA<nr>(), UDRE0)) {
         }
     }
 
     bool available() const __attribute__((always_inline)) {
-        return ((READ_REG(UCSRnA) & (1 << RXC0)));
+        return UCSRnA<nr>() & (1 << RXC0);
     }
 
     uint8_t read_byte() const __attribute__((always_inline)) {
@@ -66,7 +63,7 @@ class Serial {
     }
 
     uint8_t read_byte_nowait() const __attribute__((always_inline)) {
-        return READ_REG(UDRn);
+        return UDRn<nr>();
     }
 
     void printf(const char* format, ...) const {
@@ -115,7 +112,7 @@ class Serial {
     }
 
     void enable_rx_interrupt() const {
-         REG(UCSRnB) |= (1 << RXCIE0);
+        UCSRnB<nr>() |= (1 << RXCIE0);
     }
 
  private:
@@ -130,10 +127,6 @@ class Serial {
         return (((F_CPU / 16.) / (baud)) - 0.5);
     }
 };
-
-#undef REG
-#undef READ_REG
-#undef WRITE_REG
 
 #if MCU_NR_OF_SERIALS > 0
 constexpr Serial<0> Serial0;
@@ -151,59 +144,59 @@ constexpr Serial<2> Serial2;
 constexpr Serial<3> Serial3;
 #endif
 
-template<int serial_num>
-char Serial<serial_num>::buffer[] = { 0 };
+template<int nr>
+char Serial<nr>::buffer[] = { 0 };
 
-template<int serial_num>
+template<int nr>
 int uart_putchar(char x, __attribute__((unused)) FILE *stream) {
 #if MCU_NR_OF_SERIALS > 0
-    if (serial_num == 0) {
+    if (nr == 0) {
         Serial0.print_byte(x);
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 1
-    if (serial_num == 1) {
+    if (nr == 1) {
         Serial1.print_byte(x);
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 2
-    if (serial_num == 2) {
+    if (nr == 2) {
         Serial2.print_byte(x);
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 3
-    if (serial_num == 3) {
+    if (nr == 3) {
         Serial3.print_byte(x);
     }
 #endif
     return 1;
 }
 
-template<int serial_num>
+template<int nr>
 int uart_getchar(__attribute__((unused)) FILE *stream) {
 #if MCU_NR_OF_SERIALS > 0
-    if (serial_num == 0) {
+    if (nr == 0) {
         return Serial0.read_byte();
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 1
-    if (serial_num == 1) {
+    if (nr == 1) {
         return Serial1.read_byte();
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 2
-    if (serial_num == 2) {
+    if (nr == 2) {
         return Serial2.read_byte();
     }
 #endif
 
 #if MCU_NR_OF_SERIALS > 3
-    if (serial_num == 3) {
+    if (nr == 3) {
         return Serial3.read_byte();
     }
 #endif

@@ -1,10 +1,4 @@
-#include <util/delay.h>
-#include "Serial.h"
-#include "I2C.h"
-#include "TWI.h"
-#include "A3G4250D.h"
-#include "array.h"
-
+#include <hal/hal>
 
 int main() {
     hal::Serial0.init(4800, hal::STDIO::ENABLE);

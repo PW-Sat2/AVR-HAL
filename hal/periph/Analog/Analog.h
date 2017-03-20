@@ -3,7 +3,7 @@
 
 #include <avr/io.h>
 #include "hal/libs/bit_operations.h"
-#include "mcu.h"
+#include "hal/mcu.h"
 
 namespace hal {
 

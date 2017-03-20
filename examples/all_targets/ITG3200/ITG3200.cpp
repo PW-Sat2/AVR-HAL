@@ -1,9 +1,4 @@
-#include <util/delay.h>
-#include "Serial.h"
-#include "I2C.h"
-#include "TWI.h"
-#include "ITG3200.h"
-#include "array.h"
+#include <hal/hal>
 
 
 int main() {

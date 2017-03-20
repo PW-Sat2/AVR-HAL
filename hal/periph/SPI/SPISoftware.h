@@ -5,10 +5,9 @@
 #include <util/delay.h>
 #include "SPI.h"
 
-#include "mcu.h"
-#include "bit_operations.h"
-#include "DigitalIO.h"
-#include "array.h"
+#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/mcu.h"
+#include "hal/libs.h"
 
 namespace hal {
 namespace SPI {

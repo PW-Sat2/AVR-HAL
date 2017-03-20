@@ -2,10 +2,10 @@
 #define HAL_PERIPH_SPI_SPI_H_
 
 #include <avr/io.h>
-#include "mcu.h"
-#include "bit_operations.h"
-#include "DigitalIO.h"
-#include "array.h"
+#include "hal/mcu.h"
+#include "hal/libs/bit_operations.h"
+#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/libs/array.h"
 
 namespace hal {
 namespace SPI {

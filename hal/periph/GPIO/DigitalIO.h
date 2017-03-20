@@ -1,10 +1,10 @@
 #ifndef HAL_PERIPH_GPIO_DIGITALIO_H_
 #define HAL_PERIPH_GPIO_DIGITALIO_H_
 
-#include "PeriphDescriptors.h"
-#include "bit_operations.h"
+#include "hal/periph/GPIO/PeriphDescriptors.h"
 
-#include "mcu.h"
+#include "hal/libs.h"
+#include "hal/mcu.h"
 
 namespace hal {
 
