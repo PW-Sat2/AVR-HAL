@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_EXTI_H_
-#define HAL_PERIPH_EXTI_H_
+#ifndef HAL_PERIPH_GPIO_EXTI_H_
+#define HAL_PERIPH_GPIO_EXTI_H_
 
 #include "hal/libs.h"
 
@@ -48,4 +48,4 @@ class Line {
 }  // namespace ExternalInterrupt
 }  // namespace hal
 
-#endif  // HAL_PERIPH_EXTI_H_
+#endif  // HAL_PERIPH_GPIO_EXTI_H_

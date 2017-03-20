@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_AT90CAN128_TQFP64_MCU_CORE_H_
-#define HAL_MCU_AT90CAN128_TQFP64_MCU_CORE_H_
+#ifndef HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_CORE_H_
+#define HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_CORE_H_
 
 namespace hal {
 namespace cpu {
@@ -34,4 +34,4 @@ inline void sleep_cpu() {
 }  // namespace cpu
 }  // namespace hal
 
-#endif  // HAL_MCU_AT90CAN128_TQFP64_MCU_CORE_H_
+#endif  // HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_CORE_H_

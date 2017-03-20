@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_AT90CAN128_TQFP64_MCU_H_
-#define HAL_MCU_AT90CAN128_TQFP64_MCU_H_
+#ifndef HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_H_
+#define HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_H_
 
 #include "mcu_analog.h"
 #include "mcu_core.h"
@@ -9,4 +9,4 @@
 #include "mcu_spi.h"
 #include "mcu_timers.h"
 
-#endif  // HAL_MCU_AT90CAN128_TQFP64_MCU_H_
+#endif  // HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_H_

@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_AT90CAN128_TQFP64_MCU_SPI_H_
-#define HAL_MCU_AT90CAN128_TQFP64_MCU_SPI_H_
+#ifndef HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_SPI_H_
+#define HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_SPI_H_
 
 #include "hal/periph/GPIO/PeriphDescriptors.h"
 
@@ -14,4 +14,4 @@ constexpr static int pin_ss = 10;
 }
 }
 
-#endif  // HAL_MCU_AT90CAN128_TQFP64_MCU_SPI_H_
+#endif  // HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_SPI_H_

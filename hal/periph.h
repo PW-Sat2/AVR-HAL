@@ -1,3 +1,6 @@
+#ifndef HAL_PERIPH_H_
+#define HAL_PERIPH_H_
+
 #include "hal/periph/Analog/Analog.h"
 
 #include "hal/periph/Serial/Serial.h"
@@ -18,3 +21,5 @@
 #include "hal/periph/SPI/SPIHardware.h"
 #include "hal/periph/SPI/SPISoftware.h"
 #include "hal/periph/SPI/SPISlave.h"
+
+#endif  // HAL_PERIPH_H_

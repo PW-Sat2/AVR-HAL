@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_
-#define HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_
+#ifndef HAL_MCU_ATMEGA328P_TQFP32_HAL_MCU_SPI_H_
+#define HAL_MCU_ATMEGA328P_TQFP32_HAL_MCU_SPI_H_
 
 namespace hal {
 namespace mcu {
@@ -12,4 +12,4 @@ constexpr static int pin_ss = 14;
 }
 }
 
-#endif /* HAL_MCU_ATMEGA328P_TQFP32_MCU_SPI_H_ */
+#endif /* HAL_MCU_ATMEGA328P_TQFP32_HAL_MCU_SPI_H_ */

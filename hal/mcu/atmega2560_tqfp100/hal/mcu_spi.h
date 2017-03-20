@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA2560_TQFP100_MCU_SPI_H_
-#define HAL_MCU_ATMEGA2560_TQFP100_MCU_SPI_H_
+#ifndef HAL_MCU_ATMEGA2560_TQFP100_HAL_MCU_SPI_H_
+#define HAL_MCU_ATMEGA2560_TQFP100_HAL_MCU_SPI_H_
 
 namespace hal {
 namespace mcu {
@@ -12,4 +12,4 @@ constexpr static int pin_ss = 19;
 }
 }
 
-#endif /* HAL_MCU_ATMEGA2560_TQFP100_MCU_SPI_H_ */
+#endif /* HAL_MCU_ATMEGA2560_TQFP100_HAL_MCU_SPI_H_ */

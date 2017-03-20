@@ -1,5 +1,5 @@
-#ifndef HAL_BOARDS_ARDUINONANO328P_BOARD_H_
-#define HAL_BOARDS_ARDUINONANO328P_BOARD_H_
+#ifndef HAL_BOARDS_ARDUINONANO328P_HAL_BOARD_H_
+#define HAL_BOARDS_ARDUINONANO328P_HAL_BOARD_H_
 
 #include "hal/periph.h"
 
@@ -39,4 +39,4 @@ constexpr static hal::LED led(pins::LED);
 
 }  // namespace bsp
 }  // namespace hal
-#endif  // HAL_BOARDS_ARDUINONANO328P_BOARD_H_
+#endif  // HAL_BOARDS_ARDUINONANO328P_HAL_BOARD_H_
