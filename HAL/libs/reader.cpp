@@ -67,6 +67,10 @@ uint16_t Reader::ReadWordBE() {
     }
 }
 
+int16_t Reader::ReadSignedWordBE() {
+    return static_cast<int16_t>(this->ReadWordBE());
+}
+
 uint32_t Reader::ReadDoubleWordLE() {
     if (!UpdateState(4)) {
         return 0;
@@ -99,6 +103,10 @@ uint32_t Reader::ReadDoubleWordBE() {
         value += this->buffer[this->position - 1];
         return value;
     }
+}
+
+int32_t Reader::ReadSignedDoubleWordBE() {
+    return static_cast<int32_t>(this->ReadDoubleWordBE());
 }
 
 uint64_t Reader::ReadQuadWordLE() {

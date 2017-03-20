@@ -2,7 +2,6 @@
 #define HAL_MCU_ATMEGA128A_TQFP64_MCU_H_
 
 #include "mcu_digitalIO.h"
-#include "mcu_serial.h"
 #include "mcu_analog.h"
 #include "mcu_core.h"
 #include "mcu_timers.h"
