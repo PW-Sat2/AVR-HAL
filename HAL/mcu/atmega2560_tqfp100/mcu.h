@@ -5,6 +5,5 @@
 #include "mcu_spi.h"
 #include "mcu_i2c.h"
 #include "mcu_analog.h"
-#include "mcu_watchdog.h"
 
 #endif  // HAL_MCU_ATMEGA2560_TQFP100_MCU_H_

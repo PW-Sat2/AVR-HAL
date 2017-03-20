@@ -14,6 +14,11 @@ constexpr inline void set_bit(reg_type & val, const int bit_pos) {
     val |= (1UL << bit_pos);
 }
 
+template<int bit_pos, typename reg_type>
+constexpr inline void set_bit(reg_type & val) {
+    val |= (1UL << bit_pos);
+}
+
 
 template<typename reg_type>
 constexpr inline void set_bit(reg_type * val, const int bit_pos) __attribute__((always_inline));
@@ -28,6 +33,11 @@ template<typename reg_type>
 constexpr inline void clear_bit(reg_type & val, const int bit_pos) __attribute__((always_inline));
 template<typename reg_type>
 constexpr inline void clear_bit(reg_type & val, const int bit_pos) {
+    val &= (~(1UL << bit_pos));
+}
+
+template<int bit_pos, typename reg_type>
+constexpr inline void clear_bit(reg_type & val) {
     val &= (~(1UL << bit_pos));
 }
 
@@ -81,6 +91,12 @@ constexpr void write_mask(T& destination, T2 value) {
 template<uint8_t start, typename T>
 constexpr auto write_bit(T& destination, bool value) {
     write_mask<start, 1>(destination, value);
+}
+
+template<typename T, typename T2>
+constexpr void write_mask(uint8_t start, uint8_t length, T& destination, T2 value) {
+    destination &= (~static_cast<T>(bit_mask(start, length)));
+    destination |= (static_cast<T>(value) << start);
 }
 
 }  // namespace libs
