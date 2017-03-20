@@ -8,5 +8,4 @@ add_subdirectory(../../ hal)
 
 add_subdirectory(ADC-noise-reduction)
 add_subdirectory(ClockPrescaler)
-add_subdirectory(EXTI)
 add_subdirectory(Timer0)

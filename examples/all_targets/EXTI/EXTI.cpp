@@ -14,17 +14,13 @@ int main() {
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
     printf("INIT!\r\n");
 
-    constexpr hal::ExternalInterrupt line(0, hal::ExternalInterrupt::Mode::rising);
-    constexpr hal::ExternalInterrupt line2(1, hal::ExternalInterrupt::Mode::rising);
+    constexpr hal::ExternalInterrupt::Line<0> line(hal::ExternalInterrupt::Mode::rising);
+    constexpr hal::ExternalInterrupt::Line<1> line2(hal::ExternalInterrupt::Mode::rising);
     line.enable();
     line2.enable();
 
     sei();
 
-    hal::cpu::set_sleep_mode(hal::cpu::SleepModes::Idle);
-    hal::cpu::sleep_enable();
-
     while (true) {
-        hal::cpu::sleep_cpu();
     }
 }
