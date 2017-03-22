@@ -60,7 +60,7 @@ TEST(AD5641, init) {
 }
 
 template<typename T>
-void test(T& ad5641, uint16_t value) {
+void AD5641test(T& ad5641, uint16_t value) {
     ad5641.write(value);
     auto x = TestSPI::data_exchanged();
     auto sp = array<uint8_t, 2>{read_mask<8, 8>(value),
@@ -71,14 +71,14 @@ void test(T& ad5641, uint16_t value) {
 TEST(AD5641, writeLowByte) {
     AD5641<TestSPI> ad5641(2);
     for (size_t i = 0; i < power_of_two<14>(); i += 100) {
-        test(ad5641, i);
+        AD5641test(ad5641, i);
     }
 }
 
 TEST(AD5641, edge_cases) {
     AD5641<TestSPI> ad5641(2);
-    test(ad5641, 0);
-    test(ad5641, 0x3FFF);
+    AD5641test(ad5641, 0);
+    AD5641test(ad5641, 0x3FFF);
 }
 
 TEST(AD5641, overflow) {

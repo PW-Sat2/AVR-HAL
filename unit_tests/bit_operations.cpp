@@ -252,6 +252,22 @@ TEST(bit_operations, read_bit) {
     EXPECT_EQ(read_bit(val2, 7), 1);
 }
 
+TEST(bit_operations, read_bit_template) {
+    uint8_t val2 = 0b10101010;
+    EXPECT_EQ(read_bit<0>(val2), 0);
+    EXPECT_EQ(read_bit<1>(val2), 1);
+    EXPECT_EQ(read_bit<2>(val2), 0);
+    EXPECT_EQ(read_bit<3>(val2), 1);
+    EXPECT_EQ(read_bit<4>(val2), 0);
+    EXPECT_EQ(read_bit<5>(val2), 1);
+    EXPECT_EQ(read_bit<6>(val2), 0);
+    EXPECT_EQ(read_bit<7>(val2), 1);
+
+    uint32_t val3 = 0xFFFFFFF0;
+    EXPECT_EQ(read_bit<0>(val3), 0);
+    EXPECT_EQ(read_bit<31>(val3), 1);
+}
+
 template<int start, int length>
 void bit_maskTest(uint8_t size, uint64_t value) {
     constexpr auto res = bit_mask<start, length>();
@@ -383,47 +399,69 @@ TEST(compile_time, read_with_bit_mask) {
     test_read_with_bit_mask<5, 21, 4>(x, 0b011010111101000100001UL);
 }
 
+template<int start, int size>
+void test_write_with_bit_mask(uint32_t& reg, uint32_t value, uint32_t expected) {
+    write_mask<start, size>(reg, value);
+    EXPECT_EQ(expected, reg);
+
+    uint32_t reg_copy = reg;
+    write_mask(start, size, reg_copy, value);
+    EXPECT_EQ(expected, reg_copy);
+}
+
 TEST(compile_time, write_with_bit_mask) {
     uint32_t x = 0;
 
-    write_mask<0, 1>(x, 1);
-    EXPECT_EQ(1, x);
+    test_write_with_bit_mask<0, 1>(x, 1, 1);
 
-    write_mask<1, 1>(x, 1);
-    EXPECT_EQ(0b11, x);
+    test_write_with_bit_mask<1, 1>(x, 1, 0b11);
 
-    write_mask<4, 4>(x, 0b1101);
-    EXPECT_EQ(0b11010011, x);
+    test_write_with_bit_mask<4, 4>(x, 0b1101, 0b11010011);
 
-    write_mask<0, 3>(x, 0b101);
-    EXPECT_EQ(0b11010101, x);
+    test_write_with_bit_mask<0, 3>(x, 0b101, 0b11010101);
 
-    write_mask<0, 5>(x, 0b101);
-    EXPECT_EQ(0b11000101, x);
+    test_write_with_bit_mask<0, 5>(x, 0b101, 0b11000101);
 
-    write_mask<8, 5>(x, 0b11101);
-    EXPECT_EQ(0b1110111000101, x);
+    test_write_with_bit_mask<8, 5>(x, 0b11101, 0b1110111000101);
 
-    write_mask<9, 5>(x, 0b11101);
-    EXPECT_EQ(0b11101111000101, x);
+    test_write_with_bit_mask<9, 5>(x, 0b11101, 0b11101111000101);
 
-    write_mask<0, 16>(x, 0);
-    EXPECT_EQ(0, x);
+    test_write_with_bit_mask<0, 16>(x, 0, 0);
 
-    write_mask<31, 1>(x, 1);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<31, 1>(x, 1, 0x80000000UL);
 
-    write_mask<0, 31>(x, 0);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<0, 31>(x, 0, 0x80000000UL);
 
-    write_mask<1, 30>(x, 0);
-    EXPECT_EQ(0x80000000UL, x);
+    test_write_with_bit_mask<1, 30>(x, 0, 0x80000000UL);
 
-    write_mask<1, 5>(x, 0xA);
-    EXPECT_EQ(0x80000014UL, x);
+    test_write_with_bit_mask<1, 5>(x, 0xA, 0x80000014UL);
 
-    write_mask<3, 29>(x, 0xFFFF01);
-    EXPECT_EQ(0x7FFF80C, x);
+    test_write_with_bit_mask<3, 29>(x, 0xFFFF01, 0x7FFF80C);
 }
 
+TEST(compile_time, write_bit) {
+    uint32_t x = 0;
+
+    write_bit<0>(x, 1);
+    EXPECT_EQ(1, x);
+
+    write_bit<1>(x, 1);
+    EXPECT_EQ(0b11, x);
+
+    write_bit<0>(x, 0);
+    EXPECT_EQ(0b10, x);
+
+    write_bit<1>(x, 0);
+    EXPECT_EQ(0, x);
+
+    write_bit<1>(x, 0);
+    EXPECT_EQ(0, x);
+
+    write_bit<1>(x, 5);
+    EXPECT_EQ(0b10, x);
+
+    x = 0xFFFFFFFF;
+    write_bit<31>(x, 0);
+    EXPECT_EQ(0x7FFFFFFFUL, x);
+}
 DEFINE_TESTSUITE(bit_operations);
