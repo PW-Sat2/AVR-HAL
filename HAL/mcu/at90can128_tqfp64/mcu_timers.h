@@ -12,7 +12,7 @@ class Timer0 {
         No_Clock = 0,
         DIV_1 = 1,
         DIV_8 = 2,
-        DIV_32 = 3,
+        DIV_64 = 3,
         DIV_256 = 4,
         DIV_1024 = 5,
         T0_falling = 6,

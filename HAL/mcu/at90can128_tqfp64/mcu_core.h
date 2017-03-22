@@ -20,11 +20,11 @@ inline void set_sleep_mode(SleepModes mode) {
 }
 
 inline void sleep_enable() {
-    set_bit(SMCR, SE);
+    libs::set_bit(SMCR, SE);
 }
 
 inline void sleep_disable() {
-    clear_bit(SMCR, SE);
+    libs::clear_bit(SMCR, SE);
 }
 
 inline void sleep_cpu() {
