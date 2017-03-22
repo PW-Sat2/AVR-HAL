@@ -78,7 +78,7 @@ constexpr bool read_bit(T value) {
 
 template<typename T>
 constexpr bool read_bit(T value, uint8_t bit_pos) {
-    return static_cast<bool>(read_mask(bit_pos, 1, value));
+    return (value >> bit_pos) & 0x1;
 }
 
 template<uint8_t start, uint8_t length, typename T, typename T2>

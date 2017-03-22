@@ -8,7 +8,7 @@ extern bool serial_wrong_number;
 
 #define SERIAL_REG(reg_p, reg_s) \
 template<int uart_nr>                \
-volatile uint8_t& reg_p ## n ## reg_s() { \
+static constexpr volatile uint8_t& reg_p ## n ## reg_s() { \
     return serial_wrong_number; \
 }
 
