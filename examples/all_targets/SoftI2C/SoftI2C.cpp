@@ -1,5 +1,4 @@
-#include <util/delay.h>
-#include "SoftI2C.h"
+#include <hal/hal>
 
 int main() {
     using SoftI2C = hal::SoftI2C<hal::mcu::pin_sda, hal::mcu::pin_scl>;

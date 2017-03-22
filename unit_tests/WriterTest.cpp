@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "tests.h"
-#include "writer.h"
 
 using namespace hal::libs;
 

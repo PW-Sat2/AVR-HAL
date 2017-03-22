@@ -2,7 +2,7 @@
 #define UNIT_TESTS_TESTS_H_
 
 #include "unity.h"
-#include "fifo.h"
+#include <hal/hal>
 
 
 static hal::libs::FIFO_data<void (*)(), 100> data;

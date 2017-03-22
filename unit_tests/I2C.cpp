@@ -1,10 +1,5 @@
 #include "tests.h"
 
-#include "I2C.h"
-#include "compile_time.h"
-
-#include "fifo.h"
-
 namespace hal {
 
 class I2C_Event {

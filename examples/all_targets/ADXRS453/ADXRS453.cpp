@@ -1,9 +1,4 @@
-#include <util/delay.h>
-#include "SPI.h"
-#include "SPIHardware.h"
-#include "ADXRS453.h"
-#include "Serial.h"
-#include "mcu.h"
+#include <hal/hal>
 
 using spi = hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
                                hal::SPI::Polarity::idle_high,

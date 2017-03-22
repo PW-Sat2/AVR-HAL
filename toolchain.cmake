@@ -4,9 +4,9 @@ INCLUDE(CMakeForceCompiler)
 set(CMAKE_SYSTEM_NAME Generic)
 
 # resolve board -> mcu if board from HAL
-include(${CMAKE_CURRENT_LIST_DIR}/HAL/boards/board.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/hal/boards/board.cmake)
 # resolve mcu -> build variables
-include(${CMAKE_CURRENT_LIST_DIR}/HAL/mcu/mcu.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/hal/mcu/mcu.cmake)
 
 find_program(CC NAMES avr-gcc)
 find_program(CXX NAMES avr-g++)

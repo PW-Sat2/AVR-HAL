@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <avr/io.h>
-#include <util/delay.h>
-
-#include "Serial.h"
-#include "eeprom.h"
+#include <hal/hal>
 
 using namespace hal;
 
