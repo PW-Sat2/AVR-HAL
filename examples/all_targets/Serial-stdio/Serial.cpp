@@ -1,6 +1,4 @@
-#include <cstdio>
-#include "Serial.h"
-
+#include <hal/hal>
 
 int main() {
     hal::Serial0.init(9600, hal::STDIO::ENABLE);

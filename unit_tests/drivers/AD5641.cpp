@@ -2,11 +2,6 @@
 #include "tests.h"
 
 #include <math.h>
-#include "array.h"
-#include "span.h"
-#include "bit_operations.h"
-#include "compile_time.h"
-#include "AD5641.h"
 
 using namespace hal;
 using namespace hal::libs;

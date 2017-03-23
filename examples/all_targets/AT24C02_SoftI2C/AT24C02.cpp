@@ -1,11 +1,4 @@
-#include <util/delay.h>
-#include "Serial.h"
-#include "I2C.h"
-#include "TWI.h"
-#include "AT24C02.h"
-#include "array.h"
-
-#include "SoftI2C.h"
+#include <hal/hal>
 
 using softI2C_1 = hal::SoftI2C<hal::mcu::pin_sda, hal::mcu::pin_scl>;
 constexpr hal::AT24C02<softI2C_1> memory;

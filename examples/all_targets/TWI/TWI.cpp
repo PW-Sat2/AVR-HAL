@@ -1,6 +1,4 @@
-#include <util/delay.h>
-
-#include "TWI.h"
+#include <hal/hal>
 
 int main() {
     hal::TWI::init<100000>();

@@ -1,6 +1,4 @@
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "Serial.h"
+#include <hal/hal>
 
 #ifdef USART0_RX_vect
 ISR(USART0_RX_vect) {

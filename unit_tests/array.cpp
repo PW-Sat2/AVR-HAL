@@ -1,5 +1,4 @@
 #include "tests.h"
-#include "array.h"
 
 TEST(array, refs) {
     uint32_t XXX = 73923874, YYY = 2938481092;

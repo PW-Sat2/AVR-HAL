@@ -1,10 +1,8 @@
 #include <cstdio>
 #include <cstdint>
 
-#include "terminal.h"
 #include "tests.h"
-#include "array.h"
-#include "span.h"
+#include "hal/libs/terminal/terminal.h"
 
 using namespace hal::libs;
 

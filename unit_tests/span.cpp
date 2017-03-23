@@ -1,5 +1,4 @@
 #include "tests.h"
-#include "span.h"
 
 using namespace hal::libs;
 

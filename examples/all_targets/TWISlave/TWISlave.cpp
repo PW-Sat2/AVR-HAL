@@ -1,7 +1,4 @@
-#include <util/delay.h>
-#include "Serial.h"
-#include "span.h"
-#include "TWISlave.h"
+#include <hal/hal>
 
 void hal::TWISlave::callbackRx() {
     printf("callbackRx!: %d\n", TWISlave::rx_buffer_cnt);

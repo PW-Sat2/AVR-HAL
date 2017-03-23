@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
-#include "EXTI.h"
-#include "Serial.h"
+#include <hal/hal>
 
 ISR(INT0_vect) {
     printf("a");

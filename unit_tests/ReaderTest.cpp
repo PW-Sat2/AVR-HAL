@@ -1,9 +1,6 @@
 #include <cstdint>
 #include "tests.h"
 
-#include "array.h"
-#include "reader.h"
-
 using namespace hal::libs;
 
 TEST(ReaderTest, TestDefaultCtor) {

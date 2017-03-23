@@ -1,6 +1,5 @@
 #include <avr/io.h>
 
-#include "eeprom.h"
 #include "tests.h"
 
 using namespace hal;
