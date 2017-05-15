@@ -8,6 +8,11 @@ set(      GCC_TARGET_ATMEGA128A_TQFP64    atmega128a)
 set(  AVRDUDE_TARGET_ATMEGA128A_TQFP64    m128)
 set( SIMULAVR_TARGET_ATMEGA128A_TQFP64    atmega128)
 
+set(        includes_ATMEGA128_TQFP64    atmega128a_tqfp64)
+set(      GCC_TARGET_ATMEGA128_TQFP64    atmega128)
+set(  AVRDUDE_TARGET_ATMEGA128_TQFP64    m128)
+set( SIMULAVR_TARGET_ATMEGA128_TQFP64    atmega128)
+
 set(            includes_ATMEGA164A_44    atmega164p_324p_644p_44)
 set(          GCC_TARGET_ATMEGA164A_44    atmega164a)
 set(      AVRDUDE_TARGET_ATMEGA164A_44    m164p)
