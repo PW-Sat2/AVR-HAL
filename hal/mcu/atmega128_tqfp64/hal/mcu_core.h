@@ -1,5 +1,5 @@
-#ifndef HAL_MCU_ATMEGA128A_TQFP64_HAL_MCU_CORE_H_
-#define HAL_MCU_ATMEGA128A_TQFP64_HAL_MCU_CORE_H_
+#ifndef HAL_MCU_ATMEGA128_TQFP64_HAL_MCU_CORE_H_
+#define HAL_MCU_ATMEGA128_TQFP64_HAL_MCU_CORE_H_
 
 namespace hal {
 namespace cpu {
@@ -46,4 +46,4 @@ inline void set_clock_divider() {
 }  // namespace cpu
 }  // namespace hal
 
-#endif  // HAL_MCU_ATMEGA128A_TQFP64_HAL_MCU_CORE_H_
+#endif  // HAL_MCU_ATMEGA128_TQFP64_HAL_MCU_CORE_H_
