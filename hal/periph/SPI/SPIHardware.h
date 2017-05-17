@@ -38,12 +38,12 @@ template<HardwareClockDivisor clock_divisor,
          SPI::Polarity polarity,
          SPI::Phase phase,
          SPI::DataOrder data_order>
-class Hardware {
+class Hardware : public ISPI {
  public:
-    static void init() {
-        pin_mosi.init(DigitalIO::OUTPUT);
-        pin_sck.init(DigitalIO::OUTPUT);
-        pin_ss.init(DigitalIO::OUTPUT);
+    void init() {
+        pin_mosi.init(IDigitalIO::Mode::OUTPUT);
+        pin_sck.init(IDigitalIO::Mode::OUTPUT);
+        pin_ss.init(IDigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE)  |
                (1 << MSTR) |
@@ -53,43 +53,43 @@ class Hardware {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
-    static void disable() {
+    void disable() {
         SPCR = 0;
     }
 
-    static uint8_t shift(const uint8_t data) {
+    uint8_t shift(const uint8_t data) override {
         write_data_nowait(data);
         wait_for_transmission_complete();
         return get_data_nowait();
     }
 
-    static void wait_for_transmission_complete() {
+    void wait_for_transmission_complete() {
         while (!is_transmission_complete()) {
         }
     }
 
-    static bool is_transmission_complete() {
+    bool is_transmission_complete() {
         return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
 
-    static void write_data_nowait(uint8_t data) {
+    void write_data_nowait(uint8_t data) {
         SPDR = data;
     }
 
-    static uint8_t get_data_nowait() {
+    uint8_t get_data_nowait() {
         return SPDR;
     }
 
-    static void enable_interrupt() {
+    void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
 
  private:
-    static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
-                               pin_sck{mcu::pin_sck},
-                               pin_ss{mcu::pin_ss};
+    DigitalIO<mcu::pin_mosi> pin_mosi;
+    DigitalIO<mcu::pin_sck> pin_sck;
+    DigitalIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace SPI

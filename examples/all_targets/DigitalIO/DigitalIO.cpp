@@ -1,20 +1,20 @@
 #include <hal/hal>
 
-constexpr hal::DigitalIO pin2(hal::mcu::pin_scl);
+hal::DigitalIO<hal::mcu::pin_scl> pin2;
 
 int main() {
-    pin2.init(hal::DigitalIO::OUTPUT);
+    pin2.init(hal::IDigitalIO::Mode::OUTPUT);
 
-    constexpr auto pin3 = hal::DigitalIO(hal::mcu::pin_sda);
-    pin3.init(hal::DigitalIO::INPUT);
+    auto pin3 = hal::DigitalIO<hal::mcu::pin_sda>();
+    pin3.init(hal::IDigitalIO::Mode::INPUT);
+
+    hal::IDigitalIO& interface = pin2;
 
     while (true) {
         pin2.set();
         pin2.reset();
-        pin2.set();
-        pin2.reset();
-        pin2.set();
-        pin2.reset();
+        interface.set();
+        interface.reset();
 
         _delay_ms(200);
         bool pin_state = pin3.read();

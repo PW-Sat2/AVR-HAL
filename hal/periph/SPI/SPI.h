@@ -25,19 +25,21 @@ enum class DataOrder : int {
     LSB_first = 1
 };
 
-template<typename spi>
+
+class ISPI {
+ public:
+    virtual uint8_t shift(const uint8_t data) = 0;
+};
+
+
 class Device {
  public:
-    constexpr explicit Device(const DigitalIO::Pin pin_cs) :
-            pin_cs{pin_cs} {
-    }
-
-    constexpr explicit Device(const DigitalIO::Pin pin_cs, DigitalIO::RUNTIME) :
-            pin_cs{pin_cs, DigitalIO::RUNTIME::ENABLED} {
+    constexpr Device(ISPI& spi, IDigitalIO& pin_cs) :
+            spi{spi}, pin_cs{pin_cs} {
     }
 
     void init() const {
-        this->pin_cs.init(DigitalIO::OUTPUT);
+        this->pin_cs.init(IDigitalIO::Mode::OUTPUT);
         this->disable();
     }
 
@@ -50,12 +52,12 @@ class Device {
     }
 
     uint8_t shift(const uint8_t data) const {
-        return spi::shift(data);
+        return spi.shift(data);
     }
 
     uint8_t transfer(const uint8_t data) const {
         this->enable();
-        uint8_t x = spi::shift(data);
+        uint8_t x = spi.shift(data);
         this->disable();
         return x;
     }
@@ -66,7 +68,7 @@ class Device {
         uint8_t * in_ptr = input.data();
         int len = input.size();
         while (len--) {
-            (*in_ptr) = spi::shift(*out_ptr);
+            (*in_ptr) = spi.shift(*out_ptr);
             in_ptr++;
             out_ptr++;
         }
@@ -76,7 +78,7 @@ class Device {
     void write(libs::span<const uint8_t> data) const {
         this->enable();
         for (auto&& x : data) {
-            spi::shift(x);
+            spi.shift(x);
         }
         this->disable();
     }
@@ -84,13 +86,14 @@ class Device {
     void read(libs::span<uint8_t> data, uint8_t output_value = 0) const {
         this->enable();
         for (auto& x : data) {
-            x = spi::shift(output_value);
+            x = spi.shift(output_value);
         }
         this->disable();
     }
 
  private:
-     const DigitalIO pin_cs;
+    ISPI& spi;
+    IDigitalIO& pin_cs;
 };
 
 }  // namespace SPI

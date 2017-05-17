@@ -10,13 +10,13 @@ TEST(DigitalIO, mode) {
     DDRG = 0;
     PORTG = 0;
 
-    constexpr hal::DigitalIO io{1};
+    hal::DigitalIO<1> io;
 
-    io.init(DigitalIO::INPUT);
+    io.init(IDigitalIO::Mode::INPUT);
     EXPECT_EQ(DDRG, 0);
     EXPECT_EQ(PORTG, 0);
 
-    io.init(DigitalIO::INPUT_PULLUP);
+    io.init(IDigitalIO::Mode::INPUT_PULLUP);
     EXPECT_EQ(DDRG, 0);
     EXPECT_EQ(PORTG, (1 << 5));
 
@@ -24,7 +24,7 @@ TEST(DigitalIO, mode) {
     EXPECT_EQ(DDRG, 0);
     EXPECT_EQ(PORTG, 0);
 
-    io.init(DigitalIO::OUTPUT);
+    io.init(IDigitalIO::Mode::OUTPUT);
     EXPECT_EQ(DDRG, (1 << 5));
     EXPECT_EQ(PORTG, 0);
 
@@ -32,8 +32,8 @@ TEST(DigitalIO, mode) {
     EXPECT_EQ(DDRG, (1 << 5));
     EXPECT_EQ(PORTG, (1 << 5));
 
-    io.init(DigitalIO::OUTPUT);
-    EXPECT_EQ(PORTG, (1 << 5));
+    io.init(IDigitalIO::Mode::OUTPUT);
+    EXPECT_EQ(DDRG, (1 << 5));
     EXPECT_EQ(PORTG, (1 << 5));
 }
 

@@ -5,10 +5,9 @@
 
 namespace hal {
 
-template<typename spi>
 class AD5641 {
  public:
-    constexpr AD5641(DigitalIO::Pin pin_sync) : spi_dev(pin_sync) {
+    constexpr AD5641(hal::SPI::Device device) : spi_dev(device) {
     }
 
     void init() {
@@ -26,7 +25,7 @@ class AD5641 {
     }
 
  private:
-    const SPI::Device<spi> spi_dev;
+    const SPI::Device spi_dev;
 };
 
 }  // namespace hal

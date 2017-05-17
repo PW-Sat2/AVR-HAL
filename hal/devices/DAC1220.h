@@ -5,7 +5,6 @@
 
 namespace hal {
 
-template<typename spi>
 class DAC1220 {
  public:
     enum DataLength {
@@ -39,7 +38,7 @@ class DAC1220 {
         Clear = 1
     };
 
-    explicit DAC1220(DigitalIO::Pin pin_cs) : spi_dev(pin_cs) {
+    explicit DAC1220(SPI::Device spi_dev) : spi_dev{spi_dev} {
     }
 
     void init() const {
@@ -92,7 +91,7 @@ class DAC1220 {
     }
 
  private:
-    const SPI::Device<spi> spi_dev;
+    const SPI::Device spi_dev;
 };
 
 }  // namespace hal

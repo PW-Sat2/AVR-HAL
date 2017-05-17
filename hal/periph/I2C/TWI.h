@@ -11,32 +11,32 @@
 
 namespace hal {
 
-class TWI : public I2C {
+class TWI : public II2C {
  public:
     template<uint32_t frequency>
-    static void init() {
+    void init() {
         set_frequency<frequency>();
         TWCR = (1 << TWEN);
     }
 
-    static void enable_internal_pullups() {
-        DigitalIO pin_scl{mcu::pin_scl},
-                  pin_sda{mcu::pin_sda};
-        pin_scl.init(hal::DigitalIO::INPUT_PULLUP);
-        pin_sda.init(hal::DigitalIO::INPUT_PULLUP);
+    void enable_internal_pullups() {
+        DigitalIO<mcu::pin_scl> pin_scl;
+        DigitalIO<mcu::pin_sda> pin_sda;
+        pin_scl.init(hal::IDigitalIO::Mode::INPUT_PULLUP);
+        pin_sda.init(hal::IDigitalIO::Mode::INPUT_PULLUP);
     }
 
-    static void disable() {
+    void disable() {
         TWCR = 0;
     }
 
     template<uint32_t frequency>
-    static void set_frequency() {
+    void set_frequency() {
         TWSR = calc_twps<frequency>::value;
         TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
 
-    static bool start(uint8_t address, const StartAction start_action) {
+    bool start(uint8_t address, const StartAction start_action) override {
         uint8_t twst;
         TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
         wait_for_finish();
@@ -55,12 +55,12 @@ class TWI : public I2C {
         return true;
     }
 
-    static void stop() {
+    void stop() override {
         TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
         while (TWCR & (1 << TWSTO)) {}
     }
 
-    static bool write(const uint8_t data) {
+    bool write(const uint8_t data) override {
         TWDR = data;
         TWCR = (1 << TWINT) | (1 << TWEN);
         wait_for_finish();
@@ -72,14 +72,14 @@ class TWI : public I2C {
         return 0;
     }
 
-    static uint8_t read(Acknowledge ACK) {
+    uint8_t read(Acknowledge ACK) override {
         TWCR =  (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
         wait_for_finish();
         return TWDR;
     }
 
  private:
-    static void wait_for_finish() {
+    void wait_for_finish() {
         while (libs::read_bit(TWCR, TWINT) == false) {}
     }
 

@@ -2,25 +2,28 @@
 
 using namespace hal;
 
-using spi = hal::SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_4,
-                               SPI::Polarity::idle_high,
-                               SPI::Phase::leading_sample,
-                               SPI::DataOrder::LSB_first>;
+hal::SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_4,
+                   SPI::Polarity::idle_high,
+                   SPI::Phase::leading_sample,
+                   SPI::DataOrder::LSB_first> spi;
 
-using spiSoft = hal::SPI::Software<hal::mcu::pin_mosi,
-                                   hal::mcu::pin_miso,
-                                   hal::mcu::pin_sck,
-                                   SPI::Polarity::idle_high,
-                                   SPI::Phase::leading_sample>;
+hal::DigitalIO<hal::mcu::pin_mosi> pin_mosi;
+hal::DigitalIO<hal::mcu::pin_miso> pin_miso;
+hal::DigitalIO<hal::mcu::pin_sck> pin_sck;
+hal::DigitalIO<hal::mcu::pin_sda> pin_sda;
+hal::DigitalIO<hal::mcu::pin_scl> pin_scl;
+
+hal::SPI::Software<SPI::Polarity::idle_high,
+                   SPI::Phase::leading_sample> spiSoft{pin_mosi, pin_miso, pin_sck};
 
 int main() {
-    spi::init();
-    spiSoft::init();
+    spi.init();
+    spiSoft.init();
 
-    constexpr SPI::Device<spi> dev1{hal::mcu::pin_sda};  // I2C pin because we know
+    constexpr SPI::Device dev1{spi, pin_sda};  // I2C pin because we know
                                                         // it exists on every board!
 
-    constexpr SPI::Device<spiSoft> dev2{hal::mcu::pin_scl};  // I2C pin because we know
+    constexpr SPI::Device dev2{spiSoft, pin_scl};  // I2C pin because we know
                                                             // it exists on every board!
     dev1.init();
     dev2.init();

@@ -12,17 +12,20 @@
 namespace hal {
 namespace SPI {
 
-template<DigitalIO::Pin pin_mosi_nr,
-         DigitalIO::Pin pin_miso_nr,
-         DigitalIO::Pin pin_sck_nr,
-         SPI::Polarity polarity,
+template<SPI::Polarity polarity,
          SPI::Phase phase>
-class Software {
+class Software : public ISPI {
  public:
-    static void init() {
-        pin_miso.init(DigitalIO::INPUT_PULLUP);
-        pin_mosi.init(DigitalIO::OUTPUT);
-        pin_sck.init(DigitalIO::OUTPUT);
+    Software(IDigitalIO& pin_mosi,
+             IDigitalIO& pin_miso,
+             IDigitalIO& pin_sck) : pin_mosi{pin_mosi},
+                                    pin_miso{pin_miso},
+                                    pin_sck{pin_sck} {}
+
+    void init() {
+        pin_miso.init(IDigitalIO::Mode::INPUT_PULLUP);
+        pin_mosi.init(IDigitalIO::Mode::OUTPUT);
+        pin_sck.init(IDigitalIO::Mode::OUTPUT);
 
         if (polarity == SPI::Polarity::idle_high) {
             pin_sck.set();
@@ -31,13 +34,13 @@ class Software {
         }
     }
 
-    static void disable() {
-        pin_miso.init(DigitalIO::INPUT);
-        pin_mosi.init(DigitalIO::INPUT);
-        pin_sck.init(DigitalIO::INPUT);
+    void disable() {
+        pin_miso.init(IDigitalIO::Mode::INPUT);
+        pin_mosi.init(IDigitalIO::Mode::INPUT);
+        pin_sck.init(IDigitalIO::Mode::INPUT);
     }
 
-    static uint8_t shift(const uint8_t data) {
+    uint8_t shift(const uint8_t data) {
         if (phase == SPI::Phase::leading_sample) {
             return shift_leading_sample(data);
         } else {
@@ -45,7 +48,7 @@ class Software {
         }
     }
 
-    static uint8_t shift_trailing_sample(const uint8_t data) {
+    uint8_t shift_trailing_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
@@ -59,7 +62,7 @@ class Software {
         return output;
     }
 
-    static uint8_t shift_leading_sample(const uint8_t data) {
+    uint8_t shift_leading_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
@@ -74,19 +77,19 @@ class Software {
     }
 
  private:
-    static constexpr DigitalIO pin_mosi{pin_mosi_nr},
-                               pin_miso{pin_miso_nr},
-                               pin_sck{pin_sck_nr};
+    IDigitalIO& pin_mosi;
+    IDigitalIO& pin_miso;
+    IDigitalIO& pin_sck;
 
-    static bool sample_phase() {
+    bool sample_phase() {
         return pin_miso.read();
     }
 
-    static void output_phase(bool value) {
+    void output_phase(bool value) {
         pin_mosi.write(value);
     }
 
-    static void delay() {
+    void delay() {
         _delay_us(10);
     }
 };

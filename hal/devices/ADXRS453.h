@@ -5,7 +5,6 @@
 
 namespace hal {
 
-template<typename spi>
 class ADXRS453 {
  public:
     enum RegisterMap {
@@ -20,8 +19,8 @@ class ADXRS453 {
         SN_LOW = 0x10
     };
 
-    constexpr explicit ADXRS453(DigitalIO::Pin pin_cs) :
-            spi_dev(pin_cs) {
+    constexpr ADXRS453(SPI::ISPI& spi, IDigitalIO& pin_cs) :
+            spi_dev(spi, pin_cs) {
     }
 
     void init() const {
@@ -153,9 +152,9 @@ class ADXRS453 {
             dataBuffer[3] |= 1;
         }
 
-        this->spi_dev.transmit(dataBuffer);
+        this->spi_dev.write(dataBuffer);
     }
-    const SPI::Device<spi> spi_dev;
+    SPI::Device spi_dev;
 };
 
 }  // namespace hal

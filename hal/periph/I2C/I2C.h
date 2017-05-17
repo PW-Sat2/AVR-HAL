@@ -8,7 +8,7 @@
 
 namespace hal {
 
-class I2C {
+class II2C {
  public:
     enum class StartAction : int {
         write = 0,
@@ -20,87 +20,87 @@ class I2C {
         ACK = 1
     };
 
-    static bool start(uint8_t address, const StartAction start_action);
-    static void stop();
-    static bool write(const uint8_t data);
-    static uint8_t read(Acknowledge ACK);
+    virtual bool start(uint8_t address, const StartAction start_action) = 0;
+    virtual void stop() = 0;
+    virtual bool write(const uint8_t data) = 0;
+    virtual uint8_t read(Acknowledge ACK) = 0;
 };
 
-template<typename I2C>
 class I2C_Device {
  public:
-    constexpr I2C_Device(uint8_t address) : address{address} {
+    constexpr I2C_Device(II2C& i2c, uint8_t address) : i2c{i2c}, address{address} {
     }
 
     void write(uint8_t data) const {
-        I2C::start(address, I2C::StartAction::write);
-        I2C::write(data);
-        I2C::stop();
+        i2c.start(address, II2C::StartAction::write);
+        i2c.write(data);
+        i2c.stop();
     }
 
     void write(libs::span<const uint8_t> data) const {
-        I2C::start(address, I2C::StartAction::write);
+        i2c.start(address, II2C::StartAction::write);
         raw_write(data);
-        I2C::stop();
+        i2c.stop();
     }
 
-    uint8_t read(typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
-        I2C::start(address, I2C::StartAction::read);
-        uint8_t val = I2C::read(last_byte_ACK);
-        I2C::stop();
+    uint8_t read(II2C::Acknowledge last_byte_ACK = II2C::NACK) const {
+        i2c.start(address, II2C::StartAction::read);
+        uint8_t val = i2c.read(last_byte_ACK);
+        i2c.stop();
         return val;
     }
 
-    void read(libs::span<uint8_t> data, typename I2C::Acknowledge last_byte_ACK = I2C::NACK) const {
-        I2C::start(address, I2C::StartAction::read);
+    void read(libs::span<uint8_t> data, II2C::Acknowledge last_byte_ACK = II2C::NACK) const {
+        i2c.start(address, II2C::StartAction::read);
         raw_read(data, last_byte_ACK);
-        I2C::stop();
+        i2c.stop();
     }
 
     void transfer(libs::span<const uint8_t> transmit, libs::span<uint8_t> receive) const {
-        I2C::start(address, I2C::StartAction::write);
+        i2c.start(address, II2C::StartAction::write);
         raw_write(transmit);
-        I2C::start(address, I2C::StartAction::read);
+        i2c.start(address, II2C::StartAction::read);
         raw_read(receive);
-        I2C::stop();
+        i2c.stop();
     }
 
     void write_register(uint8_t register_address, libs::span<const uint8_t> data) const {
-        I2C::start(address, I2C::StartAction::write);
-        I2C::write(register_address);
+        i2c.start(address, II2C::StartAction::write);
+        i2c.write(register_address);
         raw_write(data);
-        I2C::stop();
+        i2c.stop();
     }
 
     void read_register(uint8_t register_address, libs::span<uint8_t> data) const {
-        I2C::start(address, I2C::StartAction::write);
-        I2C::write(register_address);
-        I2C::start(address, I2C::StartAction::read);
+        i2c.start(address, II2C::StartAction::write);
+        i2c.write(register_address);
+        i2c.start(address, II2C::StartAction::read);
         raw_read(data);
-        I2C::stop();
+        i2c.stop();
     }
 
     void raw_write(libs::span<const uint8_t> data) const {
         auto size = data.size();
         auto ptr = data.data();
         while (size--) {
-            I2C::write(*ptr);
+            i2c.write(*ptr);
             ptr++;
         }
     }
 
-    void raw_read(libs::span<uint8_t> data, typename I2C::Acknowledge last_byte_ACK =
-            I2C::NACK) const {
+    void raw_read(libs::span<uint8_t> data, II2C::Acknowledge last_byte_ACK =
+            II2C::NACK) const {
         auto size = data.size() - 1;
         auto ptr = data.data();
         while (size--) {
-            *ptr = I2C::read(I2C::ACK);
+            *ptr = i2c.read(II2C::ACK);
             ptr++;
         }
-        *ptr = I2C::read(last_byte_ACK);
+        *ptr = i2c.read(last_byte_ACK);
     }
 
  private:
+    II2C& i2c;
     uint8_t address;
 };
 

@@ -5,51 +5,37 @@
 
 #include "hal/libs.h"
 #include "hal/mcu.h"
+#include "IDigitalIO.h"
 
 namespace hal {
 
-// hack for checking bad pin association
-extern int DigitalIO_bad_pin_or_cannot_be_evaluated_at_compiletime;
-
-class DigitalIO {
+template<int pin_nr>
+class DigitalIO : public IDigitalIO {
  public:
-    using Pin = uint8_t;
+    constexpr DigitalIO() {}
+    constexpr static auto PORTx = mcu::DigitalIOPinMap[pin_nr].PORTx;
+    constexpr static auto DDRx = mcu::DigitalIOPinMap[pin_nr].DDRx;
+    constexpr static auto PINx = mcu::DigitalIOPinMap[pin_nr].PINx;
+    constexpr static auto pin = mcu::DigitalIOPinMap[pin_nr].pin;
 
-    enum Mode {
-        INPUT, OUTPUT, INPUT_PULLUP
-    };
+    static_assert(PORTx != 0, "Incorrect pin!");
+    static_assert(DDRx != 0, "Incorrect pin!");
+    static_assert(PINx != 0, "Incorrect pin!");
+    static_assert(pin <= 7, "Incorrect pin!");
 
-    constexpr explicit DigitalIO(Pin pin) :
-            pin(mcu::DigitalIOPinMap[pin].pin), DDRx(
-                    (mcu::DigitalIOPinMap[pin].DDRx == 0) ?
-                            DigitalIO_bad_pin_or_cannot_be_evaluated_at_compiletime :
-                            mcu::DigitalIOPinMap[pin].DDRx), PORTx(
-                    mcu::DigitalIOPinMap[pin].PORTx), PINx(
-                    mcu::DigitalIOPinMap[pin].PINx) {
-    }
-    enum class RUNTIME {
-        ENABLED
-    };
-    constexpr explicit DigitalIO(Pin pin, __attribute__((unused)) RUNTIME) :
-            pin(mcu::DigitalIOPinMap[pin].pin),
-            DDRx(mcu::DigitalIOPinMap[pin].DDRx),
-            PORTx(mcu::DigitalIOPinMap[pin].PORTx),
-            PINx(mcu::DigitalIOPinMap[pin].PINx) {
-    }
-
-    void init(const DigitalIO::Mode mode) const __attribute__((always_inline)) {
+    void init(const Mode mode) override {
         pinmode(mode);
     }
 
-    void set() const __attribute__((always_inline)) {
+    void set() override {
         set_bit_dio(PORTx);
     }
 
-    void reset() const __attribute__((always_inline)) {
+    void reset() override {
         clear_bit_dio(PORTx);
     }
 
-    void write(bool value) const __attribute__((always_inline)) {
+    void write(bool value) override {
         if (value) {
             this->set();
         } else {
@@ -57,11 +43,11 @@ class DigitalIO {
         }
     }
 
-    bool read() const __attribute__((always_inline)) {
+    bool read() override {
         return libs::read_bit(*((volatile uint8_t *)(PINx)), pin);
     }
 
-    void toggle() const __attribute__((always_inline)) {
+    void toggle() override {
         if (read()) {
             reset();
         } else {
@@ -72,15 +58,15 @@ class DigitalIO {
     inline void pinmode(const DigitalIO::Mode mode) const
             __attribute__((always_inline)) {
         switch (mode) {
-        case OUTPUT:
+        case Mode::OUTPUT:
             set_bit_dio(DDRx);
-//            clear_bit_dio(PORTx);
+            // clear_bit_dio(PORTx);
             break;
-        case INPUT_PULLUP:
+        case Mode::INPUT_PULLUP:
             clear_bit_dio(DDRx);
             set_bit_dio(PORTx);
             break;
-        case INPUT:
+        case Mode::INPUT:
             [[fallthrought]]
         default:
             clear_bit_dio(DDRx);
@@ -90,9 +76,6 @@ class DigitalIO {
     }
 
  private:
-    const Pin pin;
-    const int DDRx, PORTx, PINx;
-
     void set_bit_dio(int reg) const __attribute__((always_inline)) {
         libs::set_bit(*((volatile uint8_t *)(reg)), pin);
     }

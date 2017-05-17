@@ -31,12 +31,12 @@ class SPISlave {
         DIV_128 = 3
     };
 
-    static void init(const Polarity polarity, const Phase phase,
+    void init(const Polarity polarity, const Phase phase,
                   const DataOrder data_order) {
-        pin_mosi.init(DigitalIO::INPUT);
-        pin_sck.init(DigitalIO::INPUT);
-        pin_ss.init(DigitalIO::INPUT);
-        pin_miso.init(DigitalIO::OUTPUT);
+        pin_mosi.init(IDigitalIO::Mode::INPUT);
+        pin_sck.init(IDigitalIO::Mode::INPUT);
+        pin_ss.init(IDigitalIO::Mode::INPUT);
+        pin_miso.init(IDigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |
                (static_cast<uint8_t>(phase) << CPHA) |
@@ -44,44 +44,44 @@ class SPISlave {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
-    static void disable() {
+    void disable() {
         SPCR = 0;
     }
 
-    static uint8_t shift(const uint8_t data) {
+    uint8_t shift(const uint8_t data) {
         write_data_nowait(data);
         wait_for_transmission_complete();
         return get_data_nowait();
     }
 
-    static void wait_for_transmission_complete() {
+    void wait_for_transmission_complete() {
         while (!is_transmission_complete()) {
         }
     }
 
-    static bool is_transmission_complete() {
+    bool is_transmission_complete() {
         return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
 
-    static void write_data_nowait(uint8_t data) {
+    void write_data_nowait(uint8_t data) {
         SPDR = data;
     }
 
-    static uint8_t get_data_nowait() {
+    uint8_t get_data_nowait() {
         return SPDR;
     }
 
-    static void enable_interrupt() {
+    void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
 
  private:
-    static constexpr DigitalIO pin_mosi{mcu::pin_mosi},
-                               pin_miso{mcu::pin_miso},
-                               pin_sck{mcu::pin_sck},
-                               pin_ss{mcu::pin_ss};
+    DigitalIO<mcu::pin_mosi> pin_mosi;
+    DigitalIO<mcu::pin_miso> pin_miso;
+    DigitalIO<mcu::pin_sck> pin_sck;
+    DigitalIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace hal

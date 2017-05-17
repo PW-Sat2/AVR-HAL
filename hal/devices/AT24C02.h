@@ -5,9 +5,9 @@
 
 namespace hal {
 
-template<typename I2C>
 class AT24C02 {
  public:
+    AT24C02(II2C& i2c) : i2cdevice{i2c, 0x50} {}
     void write(uint8_t addr, const libs::span<const uint8_t> arr) const {
         i2cdevice.write_register(addr, arr);
     }
@@ -17,7 +17,7 @@ class AT24C02 {
     }
 
  private:
-    const I2C_Device<I2C> i2cdevice{0x50};
+    I2C_Device i2cdevice;
 };
 
 }  // namespace hal

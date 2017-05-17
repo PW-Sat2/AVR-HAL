@@ -6,18 +6,19 @@
 #include "I2C.h"
 
 namespace hal {
-
-template<int pin_nr_sda, int pin_nr_scl>
-class SoftI2C: public I2C {
+class SoftI2C: public II2C {
  public:
-    static void init() {
-        pin_scl.init(DigitalIO::Mode::INPUT);
-        pin_sda.init(DigitalIO::Mode::INPUT);
+    SoftI2C(IDigitalIO& pin_sda, IDigitalIO& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
+    }
+
+    void init() {
+        pin_scl.init(IDigitalIO::Mode::INPUT);
+        pin_sda.init(IDigitalIO::Mode::INPUT);
         pin_scl.reset();
         pin_sda.reset();
     }
 
-    static bool start(uint8_t address, const StartAction start_action) {
+    bool start(uint8_t address, const StartAction start_action) override {
         scl_high();
         hDelay();
 
@@ -27,7 +28,7 @@ class SoftI2C: public I2C {
         return write((address << 1) | static_cast<int>(start_action));
     }
 
-    static void stop() {
+    void stop() override {
         sda_low();
         hDelay();
         scl_high();
@@ -36,7 +37,7 @@ class SoftI2C: public I2C {
         hDelay();
     }
 
-    static bool write(uint8_t data) {
+    bool write(uint8_t data) override {
         for (uint8_t i = 0; i < 8; ++i) {
             scl_low();
             qDelay();
@@ -75,7 +76,7 @@ class SoftI2C: public I2C {
         return ack;
     }
 
-    static uint8_t read(Acknowledge ACK) {
+    uint8_t read(Acknowledge ACK) override {
         uint8_t data = 0;
 
         for (uint8_t i = 0; i < 8; ++i) {
@@ -113,28 +114,28 @@ class SoftI2C: public I2C {
     }
 
  private:
-    constexpr static DigitalIO pin_sda{pin_nr_sda},
-                               pin_scl{pin_nr_scl};
+    IDigitalIO& pin_sda;
+    IDigitalIO& pin_scl;
 
-    static void qDelay() {
+    void qDelay() {
         _delay_loop_1(3);
     }
-    static void hDelay() {
+    void hDelay() {
         _delay_loop_1(5);
     }
 
-    static void sda_high() __attribute__((always_inline)) {
-        pin_sda.pinmode(DigitalIO::Mode::INPUT);
+    void sda_high() __attribute__((always_inline)) {
+        pin_sda.init(IDigitalIO::Mode::INPUT);
     }
-    static void sda_low() __attribute__((always_inline)) {
-        pin_sda.pinmode(DigitalIO::Mode::OUTPUT);
+    void sda_low() __attribute__((always_inline)) {
+        pin_sda.init(IDigitalIO::Mode::OUTPUT);
     }
 
-    static void scl_high() __attribute__((always_inline)) {
-        pin_scl.pinmode(DigitalIO::Mode::INPUT);
+    void scl_high() __attribute__((always_inline)) {
+        pin_scl.init(IDigitalIO::Mode::INPUT);
     }
-    static void scl_low() __attribute__((always_inline)) {
-        pin_scl.pinmode(DigitalIO::Mode::OUTPUT);
+    void scl_low() __attribute__((always_inline)) {
+        pin_scl.init(IDigitalIO::Mode::OUTPUT);
     }
 };
 

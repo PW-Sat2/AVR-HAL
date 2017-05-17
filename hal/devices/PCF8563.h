@@ -4,9 +4,11 @@
 #include "hal/periph.h"
 
 namespace hal {
-template<typename I2C>
+
 class PCF8563 {
  public:
+    PCF8563(II2C& i2c) : i2cdevice{i2c, 0x51} {}
+
     enum class ClockStatus {
         STOPPED = 0,
         RUNNING = 1
@@ -121,7 +123,7 @@ class PCF8563 {
         TIMER = 0x0F
     };
 
-    const I2C_Device<I2C> i2cdevice{0x51};
+    I2C_Device i2cdevice;
 
     uint8_t decToBcd(uint8_t val) const {
         return ((val/10*16) + (val%10));

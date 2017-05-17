@@ -1,12 +1,16 @@
 #include <hal/hal>
 
-using softI2C_1 = hal::SoftI2C<hal::mcu::pin_sda, hal::mcu::pin_scl>;
-constexpr hal::AT24C02<softI2C_1> memory;
-
 int main() {
+    hal::DigitalIO<hal::mcu::pin_sda> pin_sda;
+    hal::DigitalIO<hal::mcu::pin_scl> pin_scl;
+
+    hal::SoftI2C i2c{pin_sda, pin_scl};
+
+    hal::AT24C02 memory{i2c};
+
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
 
-    softI2C_1::init();
+    i2c.init();
 
     hal::libs::array<uint8_t, 10> arr;
     for (int i = 0; i < 10; ++i) {

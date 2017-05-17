@@ -6,17 +6,17 @@
 using namespace hal;
 using namespace hal::libs;
 
-struct TestSPI {
+struct TestSPI : public SPI::ISPI {
     static array<uint8_t, 100> data_buffer;
     static uint8_t length;
 
-    static span<uint8_t> data_exchanged() {
+    span<uint8_t> data_exchanged() {
         auto ret =  make_span(data_buffer.begin(), length);
         length = 0;
         return ret;
     }
 
-    static uint8_t shift(const uint8_t data) {
+    uint8_t shift(const uint8_t data) override {
         auto from_buf = data_buffer[length];
         data_buffer[length++] = data;
         return from_buf;
@@ -27,7 +27,10 @@ array<uint8_t, 100> TestSPI::data_buffer;
 uint8_t TestSPI::length;
 
 TEST(AD5641, init) {
-    AD5641<TestSPI> ad5641(2);  // pin 2 on ATMEGA2560 is PE0
+    TestSPI spi;
+    DigitalIO<2> pin;
+    SPI::Device dev{spi, pin};
+    AD5641 ad5641{dev};  // pin 2 on ATMEGA2560 is PE0
 
     DDRE = 0;
     PORTE = 0;
@@ -55,37 +58,48 @@ TEST(AD5641, init) {
 }
 
 template<typename T>
-void AD5641test(T& ad5641, uint16_t value) {
+void AD5641test(AD5641 ad5641, T spi, uint16_t value) {
     ad5641.write(value);
-    auto x = TestSPI::data_exchanged();
+    auto x = spi.data_exchanged();
     auto sp = array<uint8_t, 2>{read_mask<8, 8>(value),
                                 read_mask<0, 8>(value)};
     EXPECT_TRUE(x == sp);
 }
 
 TEST(AD5641, writeLowByte) {
-    AD5641<TestSPI> ad5641(2);
+    TestSPI spi;
+    DigitalIO<2> pin;
+    SPI::Device dev{spi, pin};
+    AD5641 ad5641{dev};
+
     for (size_t i = 0; i < power_of_two<14>(); i += 100) {
-        AD5641test(ad5641, i);
+        AD5641test(ad5641, spi, i);
     }
 }
 
 TEST(AD5641, edge_cases) {
-    AD5641<TestSPI> ad5641(2);
-    AD5641test(ad5641, 0);
-    AD5641test(ad5641, 0x3FFF);
+    TestSPI spi;
+    DigitalIO<2> pin;
+    SPI::Device dev{spi, pin};
+    AD5641 ad5641{dev};
+
+    AD5641test(ad5641, spi, 0);
+    AD5641test(ad5641, spi, 0x3FFF);
 }
 
 TEST(AD5641, overflow) {
-    AD5641<TestSPI> ad5641(2);
+    TestSPI spi;
+    DigitalIO<2> pin;
+    SPI::Device dev{spi, pin};
+    AD5641 ad5641{dev};
 
     ad5641.write(0x4000);
-    auto x = TestSPI::data_exchanged();
+    auto x = spi.data_exchanged();
     auto sp = array<uint8_t, 2>{0, 0};
     EXPECT_TRUE(x == sp);
 
     ad5641.write(0xFFFF);
-    x = TestSPI::data_exchanged();
+    x = spi.data_exchanged();
     sp = array<uint8_t, 2>{0x3F, 0xFF};
     EXPECT_TRUE(x == sp);
 }

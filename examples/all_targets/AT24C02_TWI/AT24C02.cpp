@@ -1,12 +1,13 @@
 #include <hal/hal>
 
-constexpr hal::AT24C02<hal::TWI> memory;
+hal::TWI twi;
+hal::AT24C02 memory{twi};
 
 int main() {
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
 
-    hal::TWI::init<10000>();
-    hal::TWI::enable_internal_pullups();
+    twi.init<10000>();
+    twi.enable_internal_pullups();
 
     hal::libs::array<uint8_t, 10> arr;
     for (int i = 0; i < 10; ++i) {
