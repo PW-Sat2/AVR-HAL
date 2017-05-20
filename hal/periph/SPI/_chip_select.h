@@ -8,11 +8,11 @@
 namespace hal {
 namespace SPI {
 
-constexpr static IDigitalIO::Pin NoChipSelect = 0xFF;
+constexpr static DigitalIO::Interface::Pin NoChipSelect = 0xFF;
 
 namespace details {
 
-template<IDigitalIO::Pin pin>
+template<DigitalIO::Interface::Pin pin>
 class ChipSelectHandling {
  public:
     static void enable() {
@@ -23,7 +23,7 @@ class ChipSelectHandling {
         pin_cs.set();
     }
  private:
-    static DigitalIO<pin> pin_cs;
+    static DigitalIO::GPIO<pin> pin_cs;
 };
 
 template<>
@@ -36,7 +36,7 @@ class ChipSelectHandling<NoChipSelect> {
     }
 };
 
-template<IDigitalIO::Pin pin>
+template<DigitalIO::Interface::Pin pin>
 class BlockTransfer : public Interface {
  public:
     void transfer(libs::span<const uint8_t> output, libs::span<uint8_t> input) override {

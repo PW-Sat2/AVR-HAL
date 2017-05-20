@@ -1,9 +1,10 @@
-#ifndef HAL_PERIPH_GPIO_IDIGITALIO_H_
-#define HAL_PERIPH_GPIO_IDIGITALIO_H_
+#ifndef HAL_PERIPH_DIGITALIO_INTERFACE_H_
+#define HAL_PERIPH_DIGITALIO_INTERFACE_H_
 
 namespace hal {
+namespace DigitalIO {
 
-class IDigitalIO {
+class Interface {
  public:
     using Pin = uint8_t;
 
@@ -21,6 +22,7 @@ class IDigitalIO {
     virtual bool read() = 0;
 };
 
+}  // namespace DigitalIO
 }  // namespace hal
 
-#endif  // HAL_PERIPH_GPIO_IDIGITALIO_H_
+#endif  // HAL_PERIPH_DIGITALIO_INTERFACE_H_

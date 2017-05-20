@@ -6,7 +6,7 @@
 #include "hal/mcu.h"
 #include "hal/libs.h"
 
-#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/periph/DigitalIO/GPIO.h"
 #include "Interface.h"
 #include "_details.h"
 
@@ -22,10 +22,10 @@ class Hardware : public details::_Interface {
     }
 
     void enable_internal_pullups() {
-        DigitalIO<mcu::pin_scl> pin_scl;
-        DigitalIO<mcu::pin_sda> pin_sda;
-        pin_scl.init(hal::IDigitalIO::Mode::INPUT_PULLUP);
-        pin_sda.init(hal::IDigitalIO::Mode::INPUT_PULLUP);
+        DigitalIO::GPIO<mcu::pin_scl> pin_scl;
+        DigitalIO::GPIO<mcu::pin_sda> pin_sda;
+        pin_scl.init(hal::DigitalIO::Interface::Mode::INPUT_PULLUP);
+        pin_sda.init(hal::DigitalIO::Interface::Mode::INPUT_PULLUP);
     }
 
     void disable() {

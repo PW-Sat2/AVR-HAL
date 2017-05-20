@@ -1,18 +1,18 @@
-#ifndef HAL_PERIPH_GPIO_DIGITALIO_H_
-#define HAL_PERIPH_GPIO_DIGITALIO_H_
+#ifndef HAL_PERIPH_DIGITALIO_GPIO_H_
+#define HAL_PERIPH_DIGITALIO_GPIO_H_
 
-#include "hal/periph/GPIO/PeriphDescriptors.h"
+#include "hal/periph/DigitalIO/PeriphDescriptors.h"
 
 #include "hal/libs.h"
 #include "hal/mcu.h"
-#include "IDigitalIO.h"
+#include "Interface.h"
 
 namespace hal {
+namespace DigitalIO {
 
 template<int pin_nr>
-class DigitalIO : public IDigitalIO {
+class GPIO : public Interface {
  public:
-    constexpr DigitalIO() {}
     constexpr static auto PORTx = mcu::DigitalIOPinMap[pin_nr].PORTx;
     constexpr static auto DDRx = mcu::DigitalIOPinMap[pin_nr].DDRx;
     constexpr static auto PINx = mcu::DigitalIOPinMap[pin_nr].PINx;
@@ -55,7 +55,7 @@ class DigitalIO : public IDigitalIO {
         }
     }
 
-    inline void pinmode(const DigitalIO::Mode mode) const
+    inline void pinmode(const DigitalIO::Interface::Mode mode) const
             __attribute__((always_inline)) {
         switch (mode) {
         case Mode::OUTPUT:
@@ -85,6 +85,7 @@ class DigitalIO : public IDigitalIO {
     }
 };
 
+}  // namespace DigitalIO
 }  // namespace hal
 
-#endif  // HAL_PERIPH_GPIO_DIGITALIO_H_
+#endif  // HAL_PERIPH_DIGITALIO_GPIO_H_

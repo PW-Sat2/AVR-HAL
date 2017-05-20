@@ -1,8 +1,8 @@
 #include <hal/hal>
 
 int main() {
-    hal::DigitalIO<hal::mcu::pin_sda> pin_sda;
-    hal::DigitalIO<hal::mcu::pin_scl> pin_scl;
+    hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
+    hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;
 
     hal::I2C::Software i2c{pin_sda, pin_scl};
 

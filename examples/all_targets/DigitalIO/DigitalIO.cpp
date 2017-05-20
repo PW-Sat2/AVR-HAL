@@ -1,14 +1,14 @@
 #include <hal/hal>
 
-hal::DigitalIO<hal::mcu::pin_scl> pin2;
+hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin2;
 
 int main() {
-    pin2.init(hal::IDigitalIO::Mode::OUTPUT);
+    pin2.init(hal::DigitalIO::Interface::Mode::OUTPUT);
 
-    auto pin3 = hal::DigitalIO<hal::mcu::pin_sda>();
-    pin3.init(hal::IDigitalIO::Mode::INPUT);
+    auto pin3 = hal::DigitalIO::GPIO<hal::mcu::pin_sda>();
+    pin3.init(hal::DigitalIO::Interface::Mode::INPUT);
 
-    hal::IDigitalIO& interface = pin2;
+    hal::DigitalIO::Interface& interface = pin2;
 
     while (true) {
         pin2.set();

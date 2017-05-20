@@ -32,7 +32,7 @@ void AD5641test(AD5641 ad5641, uint16_t value) {
 }
 
 TEST(AD5641, writeLowByte) {
-    DigitalIO<2> pin;
+    DigitalIO::GPIO<2> pin;
     SPI::Interface& dev{spi};
     AD5641 ad5641{dev};
 
@@ -42,7 +42,7 @@ TEST(AD5641, writeLowByte) {
 }
 
 TEST(AD5641, edge_cases) {
-    DigitalIO<2> pin;
+    DigitalIO::GPIO<2> pin;
     SPI::Interface& dev{spi};
     AD5641 ad5641{dev};
 
@@ -51,7 +51,7 @@ TEST(AD5641, edge_cases) {
 }
 
 TEST(AD5641, overflow) {
-    DigitalIO<2> pin;
+    DigitalIO::GPIO<2> pin;
     SPI::Interface& dev{spi};
     AD5641 ad5641{dev};
 

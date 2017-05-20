@@ -67,7 +67,7 @@ class AD7714 {
     };
 
 
-    explicit AD7714(SPI::Interface& spi, IDigitalIO& pin_DRDY) :
+    explicit AD7714(SPI::Interface& spi, DigitalIO::Interface& pin_DRDY) :
             spi_dev(spi), pin_DRDY{pin_DRDY} {
     }
 
@@ -92,7 +92,7 @@ class AD7714 {
 
 
     void init() const {
-        this->pin_DRDY.init(IDigitalIO::Mode::INPUT);
+        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
     }
 
     void writeToCommReg(ADC_Registers reg, bool read) const {
@@ -140,7 +140,7 @@ class AD7714 {
     ADC_Channels actual_channel;
 
     SPI::Interface& spi_dev;
-    IDigitalIO& pin_DRDY;
+    DigitalIO::Interface& pin_DRDY;
 };
 
 }  // namespace hal

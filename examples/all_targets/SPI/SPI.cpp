@@ -14,11 +14,11 @@ hal::SPI::Hardware<SPI::NoChipSelect,
                    SPI::Phase::leading_sample,
                    SPI::DataOrder::LSB_first> spi_hard_nocs;
 
-hal::DigitalIO<hal::mcu::pin_mosi> pin_mosi;
-hal::DigitalIO<hal::mcu::pin_miso> pin_miso;
-hal::DigitalIO<hal::mcu::pin_sck> pin_sck;
-hal::DigitalIO<hal::mcu::pin_sda> pin_sda;
-hal::DigitalIO<hal::mcu::pin_scl> pin_scl;
+hal::DigitalIO::GPIO<hal::mcu::pin_mosi> pin_mosi;
+hal::DigitalIO::GPIO<hal::mcu::pin_miso> pin_miso;
+hal::DigitalIO::GPIO<hal::mcu::pin_sck> pin_sck;
+hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
+hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;
 
 hal::SPI::Software<hal::mcu::pin_scl,
                    SPI::Polarity::idle_high,

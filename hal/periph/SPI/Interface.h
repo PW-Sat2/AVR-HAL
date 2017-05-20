@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include "hal/mcu.h"
 #include "hal/libs/bit_operations.h"
-#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/periph/DigitalIO/Interface.h"
 #include "hal/libs/array.h"
 
 namespace hal {

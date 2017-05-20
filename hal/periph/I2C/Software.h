@@ -2,7 +2,7 @@
 #define HAL_PERIPH_I2C_SOFTWARE_H_
 
 #include <util/delay.h>
-#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/periph/DigitalIO/Interface.h"
 #include "_details.h"
 
 namespace hal {
@@ -10,12 +10,12 @@ namespace I2C {
 
 class Software : public details::_Interface {
  public:
-    Software(IDigitalIO& pin_sda, IDigitalIO& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
+    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
     }
 
     void init() {
-        pin_scl.init(IDigitalIO::Mode::INPUT);
-        pin_sda.init(IDigitalIO::Mode::INPUT);
+        pin_scl.init(DigitalIO::Interface::Mode::INPUT);
+        pin_sda.init(DigitalIO::Interface::Mode::INPUT);
         pin_scl.reset();
         pin_sda.reset();
     }
@@ -116,8 +116,8 @@ class Software : public details::_Interface {
     }
 
  private:
-    IDigitalIO& pin_sda;
-    IDigitalIO& pin_scl;
+    DigitalIO::Interface& pin_sda;
+    DigitalIO::Interface& pin_scl;
 
     void qDelay() {
         _delay_loop_1(3);
@@ -127,17 +127,17 @@ class Software : public details::_Interface {
     }
 
     void sda_high() __attribute__((always_inline)) {
-        pin_sda.init(IDigitalIO::Mode::INPUT);
+        pin_sda.init(DigitalIO::Interface::Mode::INPUT);
     }
     void sda_low() __attribute__((always_inline)) {
-        pin_sda.init(IDigitalIO::Mode::OUTPUT);
+        pin_sda.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 
     void scl_high() __attribute__((always_inline)) {
-        pin_scl.init(IDigitalIO::Mode::INPUT);
+        pin_scl.init(DigitalIO::Interface::Mode::INPUT);
     }
     void scl_low() __attribute__((always_inline)) {
-        pin_scl.init(IDigitalIO::Mode::OUTPUT);
+        pin_scl.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 };
 

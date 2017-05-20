@@ -5,28 +5,28 @@
 #include <util/delay.h>
 #include "Interface.h"
 
-#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/periph/DigitalIO/Interface.h"
 #include "hal/mcu.h"
 #include "hal/libs.h"
 
 namespace hal {
 namespace SPI {
 
-template<hal::IDigitalIO::Pin pin_chip_select,
+template<hal::DigitalIO::Interface::Pin pin_chip_select,
          SPI::Polarity polarity,
          SPI::Phase phase>
 class Software : public details::BlockTransfer<pin_chip_select> {
  public:
-    Software(IDigitalIO& pin_mosi,
-             IDigitalIO& pin_miso,
-             IDigitalIO& pin_sck) : pin_mosi{pin_mosi},
+    Software(DigitalIO::Interface& pin_mosi,
+             DigitalIO::Interface& pin_miso,
+             DigitalIO::Interface& pin_sck) : pin_mosi{pin_mosi},
                                     pin_miso{pin_miso},
                                     pin_sck{pin_sck} {}
 
     void init() {
-        pin_miso.init(IDigitalIO::Mode::INPUT_PULLUP);
-        pin_mosi.init(IDigitalIO::Mode::OUTPUT);
-        pin_sck.init(IDigitalIO::Mode::OUTPUT);
+        pin_miso.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+        pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
 
         if (polarity == SPI::Polarity::idle_high) {
             pin_sck.set();
@@ -36,9 +36,9 @@ class Software : public details::BlockTransfer<pin_chip_select> {
     }
 
     void disable() {
-        pin_miso.init(IDigitalIO::Mode::INPUT);
-        pin_mosi.init(IDigitalIO::Mode::INPUT);
-        pin_sck.init(IDigitalIO::Mode::INPUT);
+        pin_miso.init(DigitalIO::Interface::Mode::INPUT);
+        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
+        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
     }
 
     uint8_t transfer(const uint8_t data) override {
@@ -78,9 +78,9 @@ class Software : public details::BlockTransfer<pin_chip_select> {
     }
 
  private:
-    IDigitalIO& pin_mosi;
-    IDigitalIO& pin_miso;
-    IDigitalIO& pin_sck;
+    DigitalIO::Interface& pin_mosi;
+    DigitalIO::Interface& pin_miso;
+    DigitalIO::Interface& pin_sck;
 
     bool sample_phase() {
         return pin_miso.read();

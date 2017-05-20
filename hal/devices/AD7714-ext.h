@@ -68,9 +68,9 @@ class AD7714_ext {
         unipolar = 1
     };
 
-    explicit AD7714_ext(SPI::Interface& spi_dev, IDigitalIO& pin_DRDY,
-                        IDigitalIO& pin_RESET, IDigitalIO& pin_STANDBY,
-                        IDigitalIO& pin_BUFFER)
+    explicit AD7714_ext(SPI::Interface& spi_dev, DigitalIO::Interface& pin_DRDY,
+                        DigitalIO::Interface& pin_RESET, DigitalIO::Interface& pin_STANDBY,
+                        DigitalIO::Interface& pin_BUFFER)
         : spi_dev(spi_dev),
           pin_DRDY{pin_DRDY},
           pin_RESET{pin_RESET},
@@ -102,10 +102,10 @@ class AD7714_ext {
     }
 
     void init() const {
-        this->pin_DRDY.init(IDigitalIO::Mode::INPUT);
-        this->pin_RESET.init(IDigitalIO::Mode::OUTPUT);
-        this->pin_STANDBY.init(IDigitalIO::Mode::OUTPUT);
-        this->pin_BUFFER.init(IDigitalIO::Mode::OUTPUT);
+        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
+        this->pin_RESET.init(DigitalIO::Interface::Mode::OUTPUT);
+        this->pin_STANDBY.init(DigitalIO::Interface::Mode::OUTPUT);
+        this->pin_BUFFER.init(DigitalIO::Interface::Mode::OUTPUT);
 
         this->reset();
         this->buffer(ON);
@@ -173,7 +173,7 @@ class AD7714_ext {
     ADC_Channels actual_channel;
     DataLength dataLen;
     SPI::Interface& spi_dev;
-    IDigitalIO &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
+    DigitalIO::Interface &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 
 }  // namespace hal

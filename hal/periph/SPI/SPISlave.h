@@ -33,10 +33,10 @@ class SPISlave {
 
     void init(const Polarity polarity, const Phase phase,
                   const DataOrder data_order) {
-        pin_mosi.init(IDigitalIO::Mode::INPUT);
-        pin_sck.init(IDigitalIO::Mode::INPUT);
-        pin_ss.init(IDigitalIO::Mode::INPUT);
-        pin_miso.init(IDigitalIO::Mode::OUTPUT);
+        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
+        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
+        pin_ss.init(DigitalIO::Interface::Mode::INPUT);
+        pin_miso.init(DigitalIO::Interface::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |
                (static_cast<uint8_t>(phase) << CPHA) |
@@ -78,10 +78,10 @@ class SPISlave {
     }
 
  private:
-    DigitalIO<mcu::pin_mosi> pin_mosi;
-    DigitalIO<mcu::pin_miso> pin_miso;
-    DigitalIO<mcu::pin_sck> pin_sck;
-    DigitalIO<mcu::pin_ss> pin_ss;
+    DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
+    DigitalIO::GPIO<mcu::pin_miso> pin_miso;
+    DigitalIO::GPIO<mcu::pin_sck> pin_sck;
+    DigitalIO::GPIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace hal

@@ -6,8 +6,8 @@
 
 #include "hal/mcu.h"
 #include "hal/libs.h"
-#include "hal/periph/GPIO/IDigitalIO.h"
-#include "hal/periph/GPIO/DigitalIO.h"
+#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/periph/DigitalIO/Interface.h"
 
 #include "_chip_select.h"
 
@@ -51,7 +51,7 @@ enum class HardwareClockDivisor {
     SPIHard_DIV_128 = 3
 };
 
-template<IDigitalIO::Pin pin_chip_select,
+template<DigitalIO::Interface::Pin pin_chip_select,
          HardwareClockDivisor clock_divisor,
          SPI::Polarity polarity,
          SPI::Phase phase,
@@ -59,9 +59,9 @@ template<IDigitalIO::Pin pin_chip_select,
 class Hardware : public details::BlockTransfer<pin_chip_select> {
  public:
     void init() {
-        pin_mosi.init(IDigitalIO::Mode::OUTPUT);
-        pin_sck.init(IDigitalIO::Mode::OUTPUT);
-        pin_ss.init(IDigitalIO::Mode::OUTPUT);
+        pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_ss.init(DigitalIO::Interface::Mode::OUTPUT);
 
         SPCR = (1 << SPE)  |
                (1 << MSTR) |
@@ -105,9 +105,9 @@ class Hardware : public details::BlockTransfer<pin_chip_select> {
     }
 
  private:
-    DigitalIO<mcu::pin_mosi> pin_mosi;
-    DigitalIO<mcu::pin_sck> pin_sck;
-    DigitalIO<mcu::pin_ss> pin_ss;
+    DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
+    DigitalIO::GPIO<mcu::pin_sck> pin_sck;
+    DigitalIO::GPIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace SPI
