@@ -5,10 +5,10 @@
 
 #include "hal/periph/Serial/Serial.h"
 
-#include "hal/periph/I2C/TWI.h"
-#include "hal/periph/I2C/I2C.h"
+#include "hal/periph/I2C/Interface.h"
+#include "hal/periph/I2C/Hardware.h"
+#include "hal/periph/I2C/Software.h"
 #include "hal/periph/I2C/TWISlave.h"
-#include "hal/periph/I2C/SoftI2C.h"
 
 #include "hal/periph/GPIO/DigitalIO.h"
 #include "hal/periph/GPIO/PeriphDescriptors.h"

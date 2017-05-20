@@ -6,7 +6,7 @@ int main() {
     hal::DigitalIO<hal::mcu::pin_sda> pin_sda;
     hal::DigitalIO<hal::mcu::pin_scl> pin_scl;
 
-    hal::SoftI2C i2c{pin_sda, pin_scl};
+    hal::I2C::Software i2c{pin_sda, pin_scl};
     i2c.init();
 
     hal::PCF8563 rtc{i2c};

@@ -1,14 +1,16 @@
-#ifndef HAL_PERIPH_I2C_SOFTI2C_H_
-#define HAL_PERIPH_I2C_SOFTI2C_H_
+#ifndef HAL_PERIPH_I2C_SOFTWARE_H_
+#define HAL_PERIPH_I2C_SOFTWARE_H_
 
 #include <util/delay.h>
 #include "hal/periph/GPIO/DigitalIO.h"
-#include "I2C.h"
+#include "_details.h"
 
 namespace hal {
-class SoftI2C: public II2C {
+namespace I2C {
+
+class Software : public details::_Interface {
  public:
-    SoftI2C(IDigitalIO& pin_sda, IDigitalIO& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
+    Software(IDigitalIO& pin_sda, IDigitalIO& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
     }
 
     void init() {
@@ -139,6 +141,7 @@ class SoftI2C: public II2C {
     }
 };
 
+}  // namespace I2C
 }  // namespace hal
 
-#endif  // HAL_PERIPH_I2C_SOFTI2C_H_
+#endif  // HAL_PERIPH_I2C_SOFTWARE_H_

@@ -10,7 +10,6 @@ int main() {
     RUN_TESTSUITE(ReaderTest);
     RUN_TESTSUITE(WriterTest);
     RUN_TESTSUITE(span);
-    RUN_TESTSUITE(i2c);
     RUN_TESTSUITE(data_types);
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);

@@ -24,7 +24,6 @@ add_hal_executable(${NAME}
     ReaderTest.cpp
     WriterTest.cpp
     span.cpp
-    I2C.cpp
     pure_virtual.cpp
     eeprom.cpp
     terminal.cpp

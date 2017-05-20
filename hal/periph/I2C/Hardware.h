@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_I2C_TWI_H_
-#define HAL_PERIPH_I2C_TWI_H_
+#ifndef HAL_PERIPH_I2C_HARDWARE_H_
+#define HAL_PERIPH_I2C_HARDWARE_H_
 
 #include <avr/io.h>
 #include <util/twi.h>
@@ -7,11 +7,13 @@
 #include "hal/libs.h"
 
 #include "hal/periph/GPIO/DigitalIO.h"
-#include "I2C.h"
+#include "Interface.h"
+#include "_details.h"
 
 namespace hal {
+namespace I2C {
 
-class TWI : public II2C {
+class Hardware : public details::_Interface {
  public:
     template<uint32_t frequency>
     void init() {
@@ -102,6 +104,7 @@ class TWI : public II2C {
     };
 };
 
+}  // namespace I2C
 }  // namespace hal
 
-#endif  // HAL_PERIPH_I2C_TWI_H_
+#endif  // HAL_PERIPH_I2C_HARDWARE_H_
