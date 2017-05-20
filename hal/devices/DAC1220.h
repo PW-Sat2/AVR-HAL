@@ -38,12 +38,7 @@ class DAC1220 {
         Clear = 1
     };
 
-    explicit DAC1220(SPI::Device spi_dev) : spi_dev{spi_dev} {
-    }
-
-    void init() const {
-        this->spi_dev.init();
-        this->spi_dev.disable();
+    explicit DAC1220(SPI::Interface& spi_dev) : spi_dev{spi_dev} {
     }
 
     void writeToCommandReg(Calibration CRST, DataLength RES, DataFormat DF,
@@ -70,28 +65,24 @@ class DAC1220 {
         // MD
         CommandRegLSB |= (MD << 0);
 
-        this->spi_dev.enable();
-        // write two bytes to command register
-        this->spi_dev.shift(0b00100100);
-        this->spi_dev.shift(CommandRegMSB);
-        this->spi_dev.shift(CommandRegLSB);
-        this->spi_dev.disable();
+        libs::array<uint8_t, 3> arr = {0b00100100,      //
+                                       CommandRegMSB,   //
+                                       CommandRegLSB};
+        this->spi_dev.write(arr);
     }
 
     void WriteToOutput(uint16_t RawValue) {
-        this->spi_dev.enable();
-        // write to output registers
-        this->spi_dev.shift(0b01000000);
+        libs::array<uint8_t, 4> arr;
+        libs::Writer writer{arr};
+        writer.WriteByte(0b01000000);
+        writer.WriteWordLE(RawValue);
+        writer.WriteByte(0);
 
-        // write raw data
-        this->spi_dev.shift(static_cast<uint8_t>(RawValue >> 8));
-        this->spi_dev.shift(static_cast<uint8_t>(RawValue & 0x00FF));
-        this->spi_dev.shift(0x00);
-        this->spi_dev.disable();
+        this->spi_dev.write(arr);
     }
 
  private:
-    const SPI::Device spi_dev;
+    SPI::Interface& spi_dev;
 };
 
 }  // namespace hal

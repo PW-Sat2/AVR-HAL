@@ -1,12 +1,15 @@
-#ifndef HAL_PERIPH_SPI_SPIHARDWARE_H_
-#define HAL_PERIPH_SPI_SPIHARDWARE_H_
+#ifndef HAL_PERIPH_SPI_HARDWARE_H_
+#define HAL_PERIPH_SPI_HARDWARE_H_
 
 #include <avr/io.h>
-#include "SPI.h"
+#include "Interface.h"
 
 #include "hal/mcu.h"
-#include "hal/periph/GPIO/DigitalIO.h"
 #include "hal/libs.h"
+#include "hal/periph/GPIO/IDigitalIO.h"
+#include "hal/periph/GPIO/DigitalIO.h"
+
+#include "_chip_select.h"
 
 // workaround for newer MCUs...
 #ifndef SPCR
@@ -26,6 +29,20 @@
 namespace hal {
 namespace SPI {
 
+enum class Polarity : int {
+    idle_low = 0,
+    idle_high = 1
+};
+
+enum class Phase : int {
+    leading_sample = 0,
+    trailing_sample = 1
+};
+
+enum class DataOrder : int {
+    MSB_first = 0,
+    LSB_first = 1
+};
 
 enum class HardwareClockDivisor {
     SPIHard_DIV_4 = 0,
@@ -34,11 +51,12 @@ enum class HardwareClockDivisor {
     SPIHard_DIV_128 = 3
 };
 
-template<HardwareClockDivisor clock_divisor,
+template<IDigitalIO::Pin pin_chip_select,
+         HardwareClockDivisor clock_divisor,
          SPI::Polarity polarity,
          SPI::Phase phase,
          SPI::DataOrder data_order>
-class Hardware : public ISPI {
+class Hardware : public details::BlockTransfer<pin_chip_select> {
  public:
     void init() {
         pin_mosi.init(IDigitalIO::Mode::OUTPUT);
@@ -53,14 +71,14 @@ class Hardware : public ISPI {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
-    void disable() {
-        SPCR = 0;
-    }
-
-    uint8_t shift(const uint8_t data) override {
+    uint8_t transfer(const uint8_t data) override {
         write_data_nowait(data);
         wait_for_transmission_complete();
         return get_data_nowait();
+    }
+
+    void disable() {
+        SPCR = 0;
     }
 
     void wait_for_transmission_complete() {
@@ -95,4 +113,4 @@ class Hardware : public ISPI {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPI_SPIHARDWARE_H_
+#endif  // HAL_PERIPH_SPI_HARDWARE_H_

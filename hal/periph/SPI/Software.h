@@ -1,9 +1,9 @@
-#ifndef HAL_PERIPH_SPI_SPISOFTWARE_H_
-#define HAL_PERIPH_SPI_SPISOFTWARE_H_
+#ifndef HAL_PERIPH_SPI_SOFTWARE_H_
+#define HAL_PERIPH_SPI_SOFTWARE_H_
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "SPI.h"
+#include "Interface.h"
 
 #include "hal/periph/GPIO/DigitalIO.h"
 #include "hal/mcu.h"
@@ -12,9 +12,10 @@
 namespace hal {
 namespace SPI {
 
-template<SPI::Polarity polarity,
+template<hal::IDigitalIO::Pin pin_chip_select,
+         SPI::Polarity polarity,
          SPI::Phase phase>
-class Software : public ISPI {
+class Software : public details::BlockTransfer<pin_chip_select> {
  public:
     Software(IDigitalIO& pin_mosi,
              IDigitalIO& pin_miso,
@@ -40,7 +41,7 @@ class Software : public ISPI {
         pin_sck.init(IDigitalIO::Mode::INPUT);
     }
 
-    uint8_t shift(const uint8_t data) {
+    uint8_t transfer(const uint8_t data) override {
         if (phase == SPI::Phase::leading_sample) {
             return shift_leading_sample(data);
         } else {
@@ -97,4 +98,4 @@ class Software : public ISPI {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPI_SPISOFTWARE_H_
+#endif  // HAL_PERIPH_SPI_SOFTWARE_H_

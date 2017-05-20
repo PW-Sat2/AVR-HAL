@@ -2,6 +2,7 @@
 #define HAL_DEVICES_AD7714_EXT_H_
 
 #include "hal/periph.h"
+#include "hal/libs.h"
 
 namespace hal {
 
@@ -67,7 +68,7 @@ class AD7714_ext {
         unipolar = 1
     };
 
-    explicit AD7714_ext(SPI::Device spi_dev, IDigitalIO& pin_DRDY,
+    explicit AD7714_ext(SPI::Interface& spi_dev, IDigitalIO& pin_DRDY,
                         IDigitalIO& pin_RESET, IDigitalIO& pin_STANDBY,
                         IDigitalIO& pin_BUFFER)
         : spi_dev(spi_dev),
@@ -101,8 +102,6 @@ class AD7714_ext {
     }
 
     void init() const {
-        this->spi_dev.init();
-
         this->pin_DRDY.init(IDigitalIO::Mode::INPUT);
         this->pin_RESET.init(IDigitalIO::Mode::OUTPUT);
         this->pin_STANDBY.init(IDigitalIO::Mode::OUTPUT);
@@ -130,26 +129,23 @@ class AD7714_ext {
     uint32_t read_data() {
         waitForDRDY();
         writeToCommReg(DATA_REG, true);
-        spi_dev.enable();
-        uint32_t tmp = spi_dev.shift(0);
-
-        uint32_t read = 0;
 
         if (dataLen == Data_16bit) {
-            read = (tmp << 8);
-            tmp = spi_dev.shift(0);
-            read |= (tmp);
-        } else {
-            read = (tmp << 16);
-            tmp = spi_dev.shift(0);
-            read |= (tmp << 8);
-            tmp = spi_dev.shift(0);
-            read |= (tmp);
+            libs::array<uint8_t, 2> data;
+            spi_dev.read(data);
+            libs::Reader reader{data};
+            return reader.ReadWordBE();
+        } else {  // dataLen == Data_24bit
+            libs::array<uint8_t, 3> data;
+            spi_dev.read(data);
+
+            uint32_t read = 0;
+            read |= data[0]; read <<= 8;
+            read |= data[1]; read <<= 8;
+            read |= data[2];
+
+            return read;
         }
-
-        spi_dev.disable();
-
-        return read;
     }
 
     void writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
@@ -176,7 +172,7 @@ class AD7714_ext {
  private:
     ADC_Channels actual_channel;
     DataLength dataLen;
-    const SPI::Device spi_dev;
+    SPI::Interface& spi_dev;
     IDigitalIO &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 

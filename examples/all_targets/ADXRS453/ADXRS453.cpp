@@ -1,17 +1,18 @@
 #include <hal/hal>
 
-hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
+hal::SPI::Hardware<hal::mcu::pin_sda,
+                   hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
                    hal::SPI::Polarity::idle_high,
                    hal::SPI::Phase::leading_sample,
                    hal::SPI::DataOrder::LSB_first> spi;
 
 int main() {
     hal::Serial0.init(115200);
-    hal::DigitalIO<hal::mcu::pin_sda> cs;
-    hal::ADXRS453 gyro1(spi, cs);
+
+    spi.init();
+    hal::ADXRS453 gyro1(spi);
 
     hal::Serial0.printf("Start \r\n");
-    gyro1.init();
 
     bool status = gyro1.deviceStatus();
     hal::Serial0.printf("Sensor init = %d\r\n", status);

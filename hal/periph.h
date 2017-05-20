@@ -17,9 +17,9 @@
 #include "hal/periph/MCU/Watchdog.h"
 #include "hal/periph/MCU/eeprom.h"
 
-#include "hal/periph/SPI/SPI.h"
-#include "hal/periph/SPI/SPIHardware.h"
-#include "hal/periph/SPI/SPISoftware.h"
+#include "hal/periph/SPI/Interface.h"
+#include "hal/periph/SPI/Hardware.h"
+#include "hal/periph/SPI/Software.h"
 #include "hal/periph/SPI/SPISlave.h"
 
 #endif  // HAL_PERIPH_H_

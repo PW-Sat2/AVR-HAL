@@ -7,11 +7,7 @@ namespace hal {
 
 class AD5641 {
  public:
-    constexpr AD5641(hal::SPI::Device device) : spi_dev(device) {
-    }
-
-    void init() {
-        spi_dev.init();
+    constexpr AD5641(hal::SPI::Interface& device) : spi_dev(device) {
     }
 
     void write(uint16_t data_lsb) {
@@ -25,7 +21,7 @@ class AD5641 {
     }
 
  private:
-    const SPI::Device spi_dev;
+    hal::SPI::Interface& spi_dev;
 };
 
 }  // namespace hal
