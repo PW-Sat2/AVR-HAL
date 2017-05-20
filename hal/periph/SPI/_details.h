@@ -1,5 +1,5 @@
-#ifndef HAL_PERIPH_SPI__CHIP_SELECT_H_
-#define HAL_PERIPH_SPI__CHIP_SELECT_H_
+#ifndef HAL_PERIPH_SPI__DETAILS_H_
+#define HAL_PERIPH_SPI__DETAILS_H_
 
 #include <avr/io.h>
 #include "hal/mcu.h"
@@ -76,4 +76,4 @@ class BlockTransfer : public Interface {
 }  // namespace SPI
 }  // namespace hal
 
-#endif  // HAL_PERIPH_SPI__CHIP_SELECT_H_
+#endif  // HAL_PERIPH_SPI__DETAILS_H_

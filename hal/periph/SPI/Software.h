@@ -3,11 +3,12 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "Interface.h"
 
 #include "hal/periph/DigitalIO/Interface.h"
 #include "hal/mcu.h"
 #include "hal/libs.h"
+
+#include "Interface.h"
 
 namespace hal {
 namespace SPI {

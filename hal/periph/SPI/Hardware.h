@@ -9,7 +9,7 @@
 #include "hal/periph/DigitalIO/Interface.h"
 #include "hal/periph/DigitalIO/Interface.h"
 
-#include "_chip_select.h"
+#include "_details.h"
 
 // workaround for newer MCUs...
 #ifndef SPCR
