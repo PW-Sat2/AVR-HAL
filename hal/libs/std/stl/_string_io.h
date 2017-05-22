@@ -65,8 +65,7 @@ template <class _CharT, class _Traits, class _Alloc>
 inline basic_istream<_CharT, _Traits>& _STLP_CALL
 getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s) {
-  return getline(__is, __s, __is.widen('
-'));
+  return getline(__is, __s, __is.widen('\n'));
 }
 #endif
 
