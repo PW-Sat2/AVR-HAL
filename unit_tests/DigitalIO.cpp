@@ -4,37 +4,140 @@
 
 using namespace hal;
 
+template<int pin_>
+struct PinTest {
+    volatile uint8_t& DDRx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].DDRx);
+    volatile uint8_t& PORTx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PORTx);
+    volatile uint8_t& PINx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PINx);
+    int pin = hal::mcu::DigitalIOPinMap[pin_].pin;
+};
 
+TEST(DigitalIO, init) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
 
-TEST(DigitalIO, mode) {
-    DDRG = 0;
-    PORTG = 0;
+    pinTest.DDRx  = 0xFF;
+    pinTest.PORTx = 0xFF;
+    pin.init(DigitalIO::Interface::Mode::INPUT);
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.DDRx);
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.PORTx);
 
-    hal::DigitalIO::GPIO<1> io;
+    pinTest.DDRx  = 0xFF;
+    pinTest.PORTx = 0x00;
+    pin.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.DDRx);
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.PORTx);
 
-    io.init(DigitalIO::Interface::Mode::INPUT);
-    EXPECT_EQ(DDRG, 0);
-    EXPECT_EQ(PORTG, 0);
+    pinTest.DDRx  = 0x00;
+    pinTest.PORTx = 0x00;
+    pin.init(DigitalIO::Interface::Mode::OUTPUT);
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.DDRx);
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.PORTx);
 
-    io.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-    EXPECT_EQ(DDRG, 0);
-    EXPECT_EQ(PORTG, (1 << 5));
+    pinTest.DDRx  = 0x00;
+    pinTest.PORTx = 0xFF;
+    pin.init(DigitalIO::Interface::Mode::OUTPUT);
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.DDRx);
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.PORTx);
+}
 
-    io.reset();
-    EXPECT_EQ(DDRG, 0);
-    EXPECT_EQ(PORTG, 0);
+TEST(DigitalIO, set) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
 
-    io.init(DigitalIO::Interface::Mode::OUTPUT);
-    EXPECT_EQ(DDRG, (1 << 5));
-    EXPECT_EQ(PORTG, 0);
+    pinTest.PORTx = 0;
+    pin.set();
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.PORTx);
+}
 
-    io.set();
-    EXPECT_EQ(DDRG, (1 << 5));
-    EXPECT_EQ(PORTG, (1 << 5));
+TEST(DigitalIO, reset) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
 
-    io.init(DigitalIO::Interface::Mode::OUTPUT);
-    EXPECT_EQ(DDRG, (1 << 5));
-    EXPECT_EQ(PORTG, (1 << 5));
+    pinTest.PORTx = 0xFF;
+    pin.reset();
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.PORTx);
+}
+
+TEST(DigitalIO, write) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
+
+    pinTest.PORTx = 0xFF;
+    pin.write(false);
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.PORTx);
+
+    pinTest.PORTx = 0x00;
+    pin.write(true);
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.PORTx);
+}
+
+TEST(DigitalIO, read) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
+
+    pinTest.PORTx = 0xFF;
+    TEST_ASSERT_EQUAL(1, pin.read());
+
+    pinTest.PORTx = 0x00;
+    TEST_ASSERT_EQUAL(0, pin.read());
+}
+
+TEST(DigitalIO, toggle) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
+
+    pinTest.PORTx = 0xFF;
+    pin.toggle();
+    TEST_ASSERT_BIT_LOW(pinTest.pin, pinTest.PORTx);
+
+    pinTest.PORTx = 0x00;
+    pin.toggle();
+    TEST_ASSERT_BIT_HIGH(pinTest.pin, pinTest.PORTx);
+}
+
+TEST(DigitalIO, operationsDoesNotChangeMode) {
+    PinTest<hal::mcu::pin_scl> pinTest;
+    DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
+    DigitalIO::Interface& pin{gpio};
+
+#define CHECK(ddr_val) \
+        TEST_ASSERT_BIT_## ddr_val(pinTest.pin, pinTest.DDRx);
+
+    pin.init(DigitalIO::Interface::Mode::INPUT);
+    CHECK(LOW);
+    pin.set(); CHECK(LOW);
+    pin.reset(); CHECK(LOW);
+    pin.write(false); CHECK(LOW);
+    pin.write(true); CHECK(LOW);
+    pin.toggle(); CHECK(LOW);
+    pin.read(); CHECK(LOW);
+
+    pin.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+    CHECK(LOW);
+    pin.set(); CHECK(LOW);
+    pin.reset(); CHECK(LOW);
+    pin.write(false); CHECK(LOW);
+    pin.write(true); CHECK(LOW);
+    pin.toggle(); CHECK(LOW);
+    pin.read(); CHECK(LOW);
+
+    pin.init(DigitalIO::Interface::Mode::OUTPUT);
+    CHECK(HIGH);
+    pin.set(); CHECK(HIGH);
+    pin.reset(); CHECK(HIGH);
+    pin.write(false); CHECK(HIGH);
+    pin.write(true); CHECK(HIGH);
+    pin.toggle(); CHECK(HIGH);
+    pin.read(); CHECK(HIGH);
+
+#undef CHECK
 }
 
 DEFINE_TESTSUITE(DigitalIO);
