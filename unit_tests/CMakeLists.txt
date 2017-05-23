@@ -24,7 +24,6 @@ add_hal_executable(${NAME}
     ReaderTest.cpp
     WriterTest.cpp
     span.cpp
-    pure_virtual.cpp
     eeprom.cpp
     terminal.cpp
     drivers/AD5641.cpp
@@ -33,6 +32,8 @@ add_hal_executable(${NAME}
     drivers/LED.cpp
 
     devices_compilation.cpp
+
+#    pure_virtual.cpp
 )
 
 include_directories(.)

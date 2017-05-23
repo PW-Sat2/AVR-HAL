@@ -1,22 +1,24 @@
 #include "tests.h"
 #include "mocks/DigitalIO.h"
 
+TEST_GROUP(LED);
+
 using namespace hal;
 using namespace hal::libs;
 
 struct LEDMock : public DigtalIOMock {
     void init(const Mode mode) override {
-        EXPECT_EQ(mode, Mode::OUTPUT);
+        TEST_ASSERT_EQUAL(mode, Mode::OUTPUT);
     }
 
     uint8_t expect;
 
     void toggle() override {
-        EXPECT_EQ(0xFF, expect);
+        TEST_ASSERT_EQUAL(0xFF, expect);
     }
 
     void write(bool value) override {
-        EXPECT_EQ(expect, value);
+        TEST_ASSERT_EQUAL(expect, value);
     }
 };
 
@@ -43,5 +45,3 @@ TEST(LED, toggle) {
     mock.expect = 0xFF; led.toggle();
     mock.expect = 0xFF; led.toggle();
 }
-
-DEFINE_TESTSUITE(LED);

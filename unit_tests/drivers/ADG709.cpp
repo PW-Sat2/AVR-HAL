@@ -1,12 +1,14 @@
 #include "tests.h"
 #include "mocks/DigitalIO.h"
 
+TEST_GROUP(ADG709);
+
 using namespace hal;
 using namespace hal::libs;
 
 struct ADG709Mock : public DigtalIOMock {
     void init(const Mode mode) override {
-        EXPECT_EQ(mode, Mode::OUTPUT);
+        TEST_ASSERT_EQUAL(mode, Mode::OUTPUT);
     }
 
     // 0xFF for don't care
@@ -14,7 +16,7 @@ struct ADG709Mock : public DigtalIOMock {
 
     void write(bool value) override {
         if (expect != 0xFF) {
-            EXPECT_EQ(expect, value);
+            TEST_ASSERT_EQUAL(expect, value);
         }
     }
 };
@@ -58,5 +60,3 @@ TEST(ADG709, enabled) {
         adg.select(x);
     }
 }
-
-DEFINE_TESTSUITE(ADG709);

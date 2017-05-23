@@ -3,6 +3,8 @@
 
 #include "mocks/SPI.h"
 
+TEST_GROUP(AD5641);
+
 using namespace hal;
 using namespace hal::libs;
 
@@ -42,5 +44,3 @@ TEST(AD5641, overflow) {
     mock.expect = 0x3FFF; ad5641.write(0x4000);
     mock.expect = 0x3FFF; ad5641.write(0xFFFF);
 }
-
-DEFINE_TESTSUITE(AD5641);

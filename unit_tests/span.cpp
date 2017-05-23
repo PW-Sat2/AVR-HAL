@@ -2,6 +2,8 @@
 
 using namespace hal::libs;
 
+TEST_GROUP(span);
+
 TEST(span, check_values) {
     constexpr int size = 10;
     int tab[size];
@@ -11,33 +13,33 @@ TEST(span, check_values) {
     span<int> arv(tab);
     const span<int> carv(tab);
 
-    EXPECT_NE(arv.data(), nullptr);
-    EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 20);
+    TEST_ASSERT_NOT_EQUAL(arv.data(), nullptr);
+    TEST_ASSERT_EQUAL(arv.size(), 10);
+    TEST_ASSERT_EQUAL(arv.size_bytes(), 20);
 
     for (int i = 0; i < size; ++i) {
-        EXPECT_EQ(arv[i], i);
-        EXPECT_EQ(carv[i], i);
-        EXPECT_EQ(arv.at(i), i);
-        EXPECT_EQ(carv.at(i), i);
+        TEST_ASSERT_EQUAL(arv[i], i);
+        TEST_ASSERT_EQUAL(carv[i], i);
+        TEST_ASSERT_EQUAL(arv.at(i), i);
+        TEST_ASSERT_EQUAL(carv.at(i), i);
     }
 
-    EXPECT_NE(arv.data(), nullptr);
-    EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 20);
+    TEST_ASSERT_NOT_EQUAL(arv.data(), nullptr);
+    TEST_ASSERT_EQUAL(arv.size(), 10);
+    TEST_ASSERT_EQUAL(arv.size_bytes(), 20);
 
     int i = 0;
     for (auto &x : arv) {
-        EXPECT_EQ(x, i++);
+        TEST_ASSERT_EQUAL(x, i++);
     }
     i = 0;
     for (const auto &x : carv) {
-        EXPECT_EQ(x, i++);
+        TEST_ASSERT_EQUAL(x, i++);
     }
 
-    EXPECT_NE(arv.data(), nullptr);
-    EXPECT_EQ(arv.size(), 10);
-    EXPECT_EQ(arv.size_bytes(), 20);
+    TEST_ASSERT_NOT_EQUAL(arv.data(), nullptr);
+    TEST_ASSERT_EQUAL(arv.size(), 10);
+    TEST_ASSERT_EQUAL(arv.size_bytes(), 20);
 }
 
 TEST(span, equalEmpty) {
@@ -48,25 +50,25 @@ TEST(span, equalEmpty) {
     }
     span<int> arv(tab);
     span<int> arv2;
-    EXPECT_EQ(arv.empty(), false);
-    EXPECT_EQ(arv2.empty(), true);
-    EXPECT_EQ(arv == arv2, false);
-    EXPECT_EQ(arv != arv2, true);
-    EXPECT_EQ(arv == nullptr, false);
-    EXPECT_EQ(arv2 == nullptr, true);
+    TEST_ASSERT_EQUAL(arv.empty(), false);
+    TEST_ASSERT_EQUAL(arv2.empty(), true);
+    TEST_ASSERT_EQUAL(arv == arv2, false);
+    TEST_ASSERT_EQUAL(arv != arv2, true);
+    TEST_ASSERT_EQUAL(arv == nullptr, false);
+    TEST_ASSERT_EQUAL(arv2 == nullptr, true);
     arv2 = arv;
-    EXPECT_EQ(arv == arv2, true);
-    EXPECT_EQ(arv != arv2, false);
-    EXPECT_EQ(arv == nullptr, false);
-    EXPECT_EQ(arv2 == nullptr, false);
-    EXPECT_EQ(arv.empty(), false);
-    EXPECT_EQ(arv2.empty(), false);
+    TEST_ASSERT_EQUAL(arv == arv2, true);
+    TEST_ASSERT_EQUAL(arv != arv2, false);
+    TEST_ASSERT_EQUAL(arv == nullptr, false);
+    TEST_ASSERT_EQUAL(arv2 == nullptr, false);
+    TEST_ASSERT_EQUAL(arv.empty(), false);
+    TEST_ASSERT_EQUAL(arv2.empty(), false);
 
     for (int i = 0; i < size; ++i) {
-        EXPECT_EQ(arv[i], i);
-        EXPECT_EQ(arv2[i], i);
-        EXPECT_EQ(arv.at(i), i);
-        EXPECT_EQ(arv2.at(i), i);
+        TEST_ASSERT_EQUAL(arv[i], i);
+        TEST_ASSERT_EQUAL(arv2[i], i);
+        TEST_ASSERT_EQUAL(arv.at(i), i);
+        TEST_ASSERT_EQUAL(arv2.at(i), i);
     }
 }
 
@@ -79,16 +81,16 @@ TEST(span, reset) {
     span<int32_t> arv(tab);
 
     for (int i = 0; i < size; ++i) {
-        EXPECT_EQ(arv[i], i);
+        TEST_ASSERT_EQUAL(arv[i], i);
     }
-    EXPECT_NE(arv.data(), nullptr);
-    EXPECT_EQ(arv.size(), 100);
-    EXPECT_EQ(arv.size_bytes(), 400);
+    TEST_ASSERT_NOT_EQUAL(arv.data(), nullptr);
+    TEST_ASSERT_EQUAL(arv.size(), 100);
+    TEST_ASSERT_EQUAL(arv.size_bytes(), 400);
 
     arv.reset();
-    EXPECT_EQ(arv.data(), nullptr);
-    EXPECT_EQ(arv.size(), 0);
-    EXPECT_EQ(arv.size_bytes(), 0);
+    TEST_ASSERT_EQUAL(arv.data(), nullptr);
+    TEST_ASSERT_EQUAL(arv.size(), 0);
+    TEST_ASSERT_EQUAL(arv.size_bytes(), 0);
 }
 
 TEST(span, pointers) {
@@ -101,9 +103,9 @@ TEST(span, pointers) {
     const span<int32_t> carv(arv);
 
     int32_t * ptr = arv.data();
-    EXPECT_EQ(ptr, arv.data());
+    TEST_ASSERT_EQUAL(ptr, arv.data());
     const int32_t * cptr = carv.data();
-    EXPECT_EQ(cptr, carv.data());
+    TEST_ASSERT_EQUAL(cptr, carv.data());
 }
 
 TEST(span, references) {
@@ -115,15 +117,15 @@ TEST(span, references) {
     span<int32_t> arv(tab);
     const span<int32_t> carv(tab);
 
-    EXPECT_EQ(&arv[0], arv.begin());
-    EXPECT_EQ(&arv[0]+10, arv.end());
-    EXPECT_EQ(&carv[0], carv.begin());
-    EXPECT_EQ(&carv[0]+10, carv.end());
+    TEST_ASSERT_EQUAL(&arv[0], arv.begin());
+    TEST_ASSERT_EQUAL(&arv[0]+10, arv.end());
+    TEST_ASSERT_EQUAL(&carv[0], carv.begin());
+    TEST_ASSERT_EQUAL(&carv[0]+10, carv.end());
 
-    EXPECT_EQ(arv[0], arv.front());
-    EXPECT_EQ(arv[9], arv.back());
-    EXPECT_EQ(carv[0], arv.front());
-    EXPECT_EQ(carv[9], arv.back());
+    TEST_ASSERT_EQUAL(arv[0], arv.front());
+    TEST_ASSERT_EQUAL(arv[9], arv.back());
+    TEST_ASSERT_EQUAL(carv[0], arv.front());
+    TEST_ASSERT_EQUAL(carv[9], arv.back());
 }
 
 TEST(span, slice) {
@@ -137,16 +139,16 @@ TEST(span, slice) {
 
     span<int32_t> arv2(arv.subspan(0, 50));
 
-    EXPECT_EQ(arv2.size(), 50);
+    TEST_ASSERT_EQUAL(arv2.size(), 50);
     for (size_t i = 0; i < arv2.size(); ++i) {
-        EXPECT_EQ(arv2[i], i);
+        TEST_ASSERT_EQUAL(arv2[i], i);
     }
 
     arv2 = arv.subspan(20, 10);
 
-    EXPECT_EQ(arv2.size(), 10);
+    TEST_ASSERT_EQUAL(arv2.size(), 10);
     for (size_t i = 0; i < arv2.size(); ++i) {
-        EXPECT_EQ(arv2[i], i+20);
+        TEST_ASSERT_EQUAL(arv2[i], i+20);
     }
 }
 
@@ -159,12 +161,9 @@ TEST(span, equal) {
         }
     }
 
-     EXPECT_TRUE(make_span(table, 10) == make_span(table+10, 10));
-     EXPECT_TRUE(make_span(table, 20) == make_span(table+30, 20));
-    EXPECT_FALSE(make_span(table, 20) == make_span(table+30, 21));
-    EXPECT_FALSE(make_span(table+1, 20) == make_span(table+30, 20));
-     EXPECT_TRUE(make_span(table, 50) == make_span(table+30, 50));
+     TEST_ASSERT_TRUE(make_span(table, 10) == make_span(table+10, 10));
+     TEST_ASSERT_TRUE(make_span(table, 20) == make_span(table+30, 20));
+    TEST_ASSERT_FALSE(make_span(table, 20) == make_span(table+30, 21));
+    TEST_ASSERT_FALSE(make_span(table+1, 20) == make_span(table+30, 20));
+     TEST_ASSERT_TRUE(make_span(table, 50) == make_span(table+30, 50));
 }
-
-
-DEFINE_TESTSUITE(span);

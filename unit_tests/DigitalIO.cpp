@@ -1,4 +1,4 @@
-#include <avr/io.h>
+#include <hal/hal>
 
 #include "tests.h"
 
@@ -11,6 +11,8 @@ struct PinTest {
     volatile uint8_t& PINx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PINx);
     int pin = hal::mcu::DigitalIOPinMap[pin_].pin;
 };
+
+TEST_GROUP(DigitalIO);
 
 TEST(DigitalIO, init) {
     PinTest<hal::mcu::pin_scl> pinTest;
@@ -107,37 +109,35 @@ TEST(DigitalIO, operationsDoesNotChangeMode) {
     DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
     DigitalIO::Interface& pin{gpio};
 
-#define CHECK(ddr_val) \
+#define CHECK_DDR(ddr_val) \
         TEST_ASSERT_BIT_## ddr_val(pinTest.pin, pinTest.DDRx);
 
     pin.init(DigitalIO::Interface::Mode::INPUT);
-    CHECK(LOW);
-    pin.set(); CHECK(LOW);
-    pin.reset(); CHECK(LOW);
-    pin.write(false); CHECK(LOW);
-    pin.write(true); CHECK(LOW);
-    pin.toggle(); CHECK(LOW);
-    pin.read(); CHECK(LOW);
+    CHECK_DDR(LOW);
+    pin.set(); CHECK_DDR(LOW);
+    pin.reset(); CHECK_DDR(LOW);
+    pin.write(false); CHECK_DDR(LOW);
+    pin.write(true); CHECK_DDR(LOW);
+    pin.toggle(); CHECK_DDR(LOW);
+    pin.read(); CHECK_DDR(LOW);
 
     pin.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-    CHECK(LOW);
-    pin.set(); CHECK(LOW);
-    pin.reset(); CHECK(LOW);
-    pin.write(false); CHECK(LOW);
-    pin.write(true); CHECK(LOW);
-    pin.toggle(); CHECK(LOW);
-    pin.read(); CHECK(LOW);
+    CHECK_DDR(LOW);
+    pin.set(); CHECK_DDR(LOW);
+    pin.reset(); CHECK_DDR(LOW);
+    pin.write(false); CHECK_DDR(LOW);
+    pin.write(true); CHECK_DDR(LOW);
+    pin.toggle(); CHECK_DDR(LOW);
+    pin.read(); CHECK_DDR(LOW);
 
     pin.init(DigitalIO::Interface::Mode::OUTPUT);
-    CHECK(HIGH);
-    pin.set(); CHECK(HIGH);
-    pin.reset(); CHECK(HIGH);
-    pin.write(false); CHECK(HIGH);
-    pin.write(true); CHECK(HIGH);
-    pin.toggle(); CHECK(HIGH);
-    pin.read(); CHECK(HIGH);
+    CHECK_DDR(HIGH);
+    pin.set(); CHECK_DDR(HIGH);
+    pin.reset(); CHECK_DDR(HIGH);
+    pin.write(false); CHECK_DDR(HIGH);
+    pin.write(true); CHECK_DDR(HIGH);
+    pin.toggle(); CHECK_DDR(HIGH);
+    pin.read(); CHECK_DDR(HIGH);
 
-#undef CHECK
+#undef CHECK_DDR
 }
-
-DEFINE_TESTSUITE(DigitalIO);

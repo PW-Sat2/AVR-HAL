@@ -1,24 +1,36 @@
+#include <hal/hal>
 #include "tests.h"
+
+__extension__ typedef int __guard __attribute__((mode (__DI__)));
+
+extern "C" int __cxa_guard_acquire(__guard *);
+extern "C" void __cxa_guard_release(__guard *);
+extern "C" void __cxa_guard_abort(__guard *);
+int __cxa_guard_acquire(__guard *g) {return !*reinterpret_cast<char *>(g);}
+void __cxa_guard_release(__guard *g) {*reinterpret_cast<char *>(g) = 1;}
+void __cxa_guard_abort(__guard *) {}
+
+typedef void (*fptr)();
+
+fptr add_test_group(void (*fun)(), bool get) {
+    static hal::libs::FIFO_data<void (*)(), 100> test_groups;
+
+    if (get) {
+        return test_groups.get();
+    } else {
+        test_groups.append(fun);
+        return nullptr;
+    }
+}
 
 int main() {
     hal::Serial0.init(9600, hal::STDIO::ENABLE);
 
-    RUN_TESTSUITE(bit_operations);
-    RUN_TESTSUITE(compile_time);
-    RUN_TESTSUITE(array);
-    RUN_TESTSUITE(fifo);
-    RUN_TESTSUITE(ReaderTest);
-    RUN_TESTSUITE(WriterTest);
-    RUN_TESTSUITE(span);
-    RUN_TESTSUITE(data_types);
-    RUN_TESTSUITE(eeprom);
-    RUN_TESTSUITE(terminal);
-    RUN_TESTSUITE(AD5641);
-    RUN_TESTSUITE(ADG708);
-    RUN_TESTSUITE(ADG709);
-    RUN_TESTSUITE(LED);
-    // RUN_TESTSUITE(pure_virtual);
-    RUN_TESTSUITE(DigitalIO);
-
-    return 0;
+    while (true) {
+        auto fun = add_test_group(nullptr, true);
+        if (fun == nullptr) {
+            break;
+        }
+        fun();
+    }
 }

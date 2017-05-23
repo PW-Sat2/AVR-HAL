@@ -4,6 +4,8 @@
 #include "tests.h"
 #include "hal/libs/terminal/terminal.h"
 
+TEST_GROUP(terminal);
+
 using namespace hal::libs;
 
 struct CommandTracker {
@@ -57,91 +59,89 @@ void handle(const char * line) {
 
 TEST(terminal, no_arguments) {
     prepare();
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test ");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test  ");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test\t");
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle(" foo ");
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_TRUE(cmds[1].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[1].wasInvoked());
 }
 
 TEST(terminal, single_argument) {
     prepare();
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test 1");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[0].argc, 1);
-    EXPECT_STREQ(cmds[0].argv[0], "1");
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[0].argc, 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[0], "1");
 
     prepare();
     handle("test abc ");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[0].argc, 1);
-    EXPECT_STREQ(cmds[0].argv[0], "abc");
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[0].argc, 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[0], "abc");
 
     prepare();
     handle(" foo           94m1ie]1db        ");
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_TRUE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[1].argc, 1);
-    EXPECT_STREQ(cmds[1].argv[0], "94m1ie]1db");
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[1].argc, 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[1].argv[0], "94m1ie]1db");
 }
 
 TEST(terminal, more_arguments) {
     prepare();
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
 
     prepare();
     handle("test 1 2.0 abc");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[0].argc, 3);
-    EXPECT_STREQ(cmds[0].argv[0], "1");
-    EXPECT_EQ(atoi(cmds[0].argv[0]), 1);
-    EXPECT_STREQ(cmds[0].argv[1], "2.0");
-    EXPECT_EQ(atof(cmds[0].argv[1]), 2.0);
-    EXPECT_STREQ(cmds[0].argv[2], "abc");
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[0].argc, 3);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[0], "1");
+    TEST_ASSERT_EQUAL(atoi(cmds[0].argv[0]), 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[1], "2.0");
+    TEST_ASSERT_EQUAL(atof(cmds[0].argv[1]), 2.0);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[2], "abc");
 
     prepare();
     handle("test abc  ");
-    EXPECT_TRUE(cmds[0].wasInvoked());
-    EXPECT_FALSE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[0].argc, 1);
-    EXPECT_STREQ(cmds[0].argv[0], "abc");
+    TEST_ASSERT_TRUE(cmds[0].wasInvoked());
+    TEST_ASSERT_FALSE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[0].argc, 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[0].argv[0], "abc");
 
     prepare();
     handle("foo          94m1ie]1db        ");
-    EXPECT_FALSE(cmds[0].wasInvoked());
-    EXPECT_TRUE(cmds[1].wasInvoked());
-    EXPECT_EQ(cmds[1].argc, 1);
-    EXPECT_STREQ(cmds[1].argv[0], "94m1ie]1db");
+    TEST_ASSERT_FALSE(cmds[0].wasInvoked());
+    TEST_ASSERT_TRUE(cmds[1].wasInvoked());
+    TEST_ASSERT_EQUAL(cmds[1].argc, 1);
+    TEST_ASSERT_EQUAL_STRING(cmds[1].argv[0], "94m1ie]1db");
 }
-
-DEFINE_TESTSUITE(terminal);
