@@ -17,6 +17,7 @@ add_hal_executable(${NAME}
 
         periph/DigitalIO.cpp
         periph/eeprom.cpp
+        periph/SPIHardware.cpp
 
         libs/array.cpp
         libs/bit_operations.cpp
