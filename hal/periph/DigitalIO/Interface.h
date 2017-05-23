@@ -14,8 +14,14 @@ class Interface {
 
     virtual void init(const Mode mode) = 0;
 
-    virtual void set() = 0;
-    virtual void reset() = 0;
+    void set() {
+        this->write(1);
+    }
+
+    virtual void reset() {
+        this->write(0);
+    }
+
     virtual void toggle() = 0;
     virtual void write(bool value) = 0;
 

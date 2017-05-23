@@ -27,11 +27,11 @@ class GPIO : public Interface {
         pinmode(mode);
     }
 
-    void set() override {
+    void set() {
         set_bit_dio(PORTx);
     }
 
-    void reset() override {
+    void reset() {
         clear_bit_dio(PORTx);
     }
 

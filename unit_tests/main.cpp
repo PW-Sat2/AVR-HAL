@@ -14,6 +14,9 @@ int main() {
     RUN_TESTSUITE(eeprom);
     RUN_TESTSUITE(terminal);
     RUN_TESTSUITE(AD5641);
+    RUN_TESTSUITE(ADG708);
+    RUN_TESTSUITE(ADG709);
+    RUN_TESTSUITE(LED);
     // RUN_TESTSUITE(pure_virtual);
     RUN_TESTSUITE(DigitalIO);
 

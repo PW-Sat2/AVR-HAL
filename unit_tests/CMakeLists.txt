@@ -28,6 +28,9 @@ add_hal_executable(${NAME}
     eeprom.cpp
     terminal.cpp
     drivers/AD5641.cpp
+    drivers/ADG708.cpp
+    drivers/ADG709.cpp
+    drivers/LED.cpp
 
     devices_compilation.cpp
 )
