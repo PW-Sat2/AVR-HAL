@@ -2,7 +2,7 @@
 #include <cstdio>
 
 #include "unity.h"
-#include "tests.h"
+#include "../tests.h"
 
 TEST_GROUP(compile_time);
 

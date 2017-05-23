@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "tests.h"
+#include "../tests.h"
 
 TEST_GROUP(data_types);
 

@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "tests.h"
+#include "../tests.h"
 
 #include <math.h>
 #include <numeric>
