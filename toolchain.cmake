@@ -39,7 +39,7 @@ set(ENABLE_HAL_STD TRUE)
 
 set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
 set (CXXWARN "-Wall -Wextra -Werror")
-set (CTUNING "-DNDEBUG -O2 -g -ggdb -fomit-frame-pointer -ffunction-sections -fdata-sections")
+set (CTUNING "-DNDEBUG -O2 -fomit-frame-pointer -ffunction-sections -fdata-sections -flto")
 set (CWORKAROUNDS "-Wno-format")
 set (CMCU "-mmcu=${GCC_TARGET} -DF_CPU=${F_CPU}L")
 
@@ -67,7 +67,7 @@ macro(add_hal_executable target_name)
 	set_target_properties(
 		${target}
 		PROPERTIES
-			LINK_FLAGS "-mmcu=${GCC_TARGET} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS}"
+			LINK_FLAGS "-mmcu=${GCC_TARGET} -Wl,-Map,${map_file} -Wl,-u,vfprintf -lprintf_flt -lm ${AVR_LINKER_LIBS} -flto"
 	)
 
 	# generate the lst file
