@@ -12,35 +12,14 @@ constexpr static DigitalIO::Interface::Pin NoChipSelect = 0xFF;
 
 namespace details {
 
-template<DigitalIO::Interface::Pin pin>
-class ChipSelectHandling {
- public:
-    static void enable() {
-        pin_cs.reset();
-    }
-
-    static void disable() {
-        pin_cs.set();
-    }
- private:
-    static DigitalIO::GPIO<pin> pin_cs;
-};
-
-template<>
-class ChipSelectHandling<NoChipSelect> {
- public:
-    static void enable() {
-    }
-
-    static void disable() {
-    }
-};
-
-template<DigitalIO::Interface::Pin pin>
 class BlockTransfer : public Interface {
  public:
+    BlockTransfer(DigitalIO::Interface& pin_cs) : pin_cs{pin_cs} {
+        pin_cs.init(DigitalIO::Interface::Mode::OUTPUT);
+    }
+
     void transfer(libs::span<const uint8_t> output, libs::span<uint8_t> input) override {
-        chipSelectHandling.enable();
+        pin_cs.reset();
         const uint8_t * out_ptr = output.data();
         uint8_t * in_ptr = input.data();
         int len = input.size();
@@ -49,27 +28,27 @@ class BlockTransfer : public Interface {
             in_ptr++;
             out_ptr++;
         }
-        chipSelectHandling.disable();
+        pin_cs.set();
     }
 
     void write(libs::span<const uint8_t> output) override {
-        chipSelectHandling.enable();
+        pin_cs.reset();
         for (auto&& x : output) {
             static_cast<Interface*>(this)->transfer(x);
         }
-        chipSelectHandling.disable();
+        pin_cs.set();
     }
 
     void read(libs::span<uint8_t> input, uint8_t output_value = 0) override {
-        chipSelectHandling.enable();
+        pin_cs.reset();
         for (auto& x : input) {
             x = static_cast<Interface*>(this)->transfer(output_value);
         }
-        chipSelectHandling.disable();
+        pin_cs.set();
     }
 
  private:
-    ChipSelectHandling<pin> chipSelectHandling;
+    DigitalIO::Interface& pin_cs;
 };
 
 }  // namespace details

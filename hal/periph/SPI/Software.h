@@ -13,16 +13,17 @@
 namespace hal {
 namespace SPI {
 
-template<hal::DigitalIO::Interface::Pin pin_chip_select,
-         SPI::Polarity polarity,
+template<SPI::Polarity polarity,
          SPI::Phase phase>
-class Software : public details::BlockTransfer<pin_chip_select> {
+class Software : public details::BlockTransfer {
  public:
     Software(DigitalIO::Interface& pin_mosi,
              DigitalIO::Interface& pin_miso,
-             DigitalIO::Interface& pin_sck) : pin_mosi{pin_mosi},
-                                    pin_miso{pin_miso},
-                                    pin_sck{pin_sck} {}
+             DigitalIO::Interface& pin_sck,
+             DigitalIO::Interface& pin_ss) : BlockTransfer{pin_ss},
+                                             pin_mosi{pin_mosi},
+                                             pin_miso{pin_miso},
+                                             pin_sck{pin_sck} {}
 
     void init() {
         pin_miso.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
@@ -79,9 +80,7 @@ class Software : public details::BlockTransfer<pin_chip_select> {
     }
 
  private:
-    DigitalIO::Interface& pin_mosi;
-    DigitalIO::Interface& pin_miso;
-    DigitalIO::Interface& pin_sck;
+    DigitalIO::Interface &pin_mosi, &pin_miso, &pin_sck;
 
     bool sample_phase() {
         return pin_miso.read();

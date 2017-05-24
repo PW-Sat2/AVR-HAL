@@ -1,10 +1,11 @@
 #include <hal/hal>
 
-hal::SPI::Hardware<hal::mcu::pin_sda,
-                   hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
+hal::DigitalIO::GPIO<hal::mcu::pin_sda> gpio;
+
+hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
                    hal::SPI::Polarity::idle_high,
                    hal::SPI::Phase::leading_sample,
-                   hal::SPI::DataOrder::LSB_first> spi;
+                   hal::SPI::DataOrder::LSB_first> spi(gpio);
 
 int main() {
     hal::Serial0.init(115200);

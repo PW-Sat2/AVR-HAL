@@ -51,13 +51,14 @@ enum class HardwareClockDivisor {
     SPIHard_DIV_128 = 3
 };
 
-template<DigitalIO::Interface::Pin pin_chip_select,
-         HardwareClockDivisor clock_divisor,
+template<HardwareClockDivisor clock_divisor,
          SPI::Polarity polarity,
          SPI::Phase phase,
          SPI::DataOrder data_order>
-class Hardware : public details::BlockTransfer<pin_chip_select> {
+class Hardware : public details::BlockTransfer {
  public:
+    Hardware(DigitalIO::Interface& pin_cs) : BlockTransfer(pin_cs) {}
+
     void init() {
         pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
         pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
