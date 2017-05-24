@@ -4,39 +4,48 @@
 #include "unity.h"
 #include <hal/hal>
 
+typedef void (*fptr)();
 
-static hal::libs::FIFO_data<void (*)(), 100> data;
+struct Case {
+    Case() : function{nullptr}, line{0} {}
+    Case(fptr function_, int line) : function{function_}, line{line} {}
+    fptr function;
+    int line;
+};
+
+static hal::libs::FIFO_data<Case, 50> data;
+
+fptr add_test_group(void (*fun)(), bool get = false);
 
 
-#define TEST(a, b)               \
-void TEST_ ## a ## b();          \
-struct TEST_ ## a ## b ## _str { \
-    TEST_ ## a ## b ## _str() {  \
-        data.append(TEST_ ## a ## b);   \
-    }                            \
-} TEST_ ## a ## b ## _str_inst;  \
-void TEST_ ## a ## b()
+#undef TEST
+#define TEST(group, name) \
+    void TEST_##group##_##name();\
+    struct TEST_##group##_##name##_str { \
+        TEST_##group##_##name##_str() {  \
+            data.append(Case(TEST_##group##_##name, __LINE__));   \
+        }\
+    } TEST_##group##_##name##_str_inst;  \
+    void TEST_##group##_##name()
 
-#define RUN(a, b) RUN_TEST(TEST_ ## a ## b)
 
-#define DEFINE_TESTSUITE(a)         \
-bool TEST_ ## a() {                 \
-    UNITY_BEGIN();                  \
-    while (data.getLength() > 0) {   \
-        RUN_TEST(data.get());       \
-    }                               \
-    return UNITY_END();             \
-}
 
-#define RUN_TESTSUITE(a) \
-bool TEST_ ## a();       \
-TEST_ ## a()
+#define RUN(group, name) RUN_TEST(TEST_##group##_##name##)
 
-#define EXPECT_EQ TEST_ASSERT_EQUAL
-#define EXPECT_NE TEST_ASSERT_NOT_EQUAL
-#define EXPECT_FALSE TEST_ASSERT_FALSE
-#define EXPECT_TRUE TEST_ASSERT_TRUE
-#define EXPECT_FLOAT_EQ TEST_ASSERT_EQUAL_FLOAT
-#define EXPECT_STREQ TEST_ASSERT_EQUAL_STRING
+#define TEST_GROUP(group)\
+    void TEST_##group##_GROUP_RUNNER(void);\
+    struct TEST_##group##_str { \
+        TEST_##group##_str() {  \
+            add_test_group(TEST_##group##_GROUP_RUNNER);\
+        }                            \
+    } TEST_##group##_##name##_str_inst;  \
+    void TEST_##group##_GROUP_RUNNER(void) {\
+        UNITY_BEGIN();\
+        while (data.getLength() > 0) {\
+            auto case_now = data.get();\
+            UnityDefaultTestRun(case_now.function, "", case_now.line);\
+        }\
+        UNITY_END();\
+    }
 
 #endif  // UNIT_TESTS_TESTS_H_

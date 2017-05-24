@@ -1,7 +1,7 @@
 #ifndef HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_SPI_H_
 #define HAL_MCU_AT90CAN128_TQFP64_HAL_MCU_SPI_H_
 
-#include "hal/periph/GPIO/PeriphDescriptors.h"
+#include "hal/periph/DigitalIO/PeriphDescriptors.h"
 
 namespace hal {
 namespace mcu {

@@ -3,31 +3,33 @@
 
 using namespace hal::libs;
 
+TEST_GROUP(ReaderTest);
+
 TEST(ReaderTest, TestDefaultCtor) {
     Reader reader;
-    EXPECT_FALSE(reader.Status());
-    EXPECT_EQ(reader.RemainingSize(), 0);
+    TEST_ASSERT_FALSE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 0);
 }
 
 TEST(ReaderTest, TestStatusNullBuffer) {
     hal::libs::span<const std::uint8_t> span;
     Reader reader(span);
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestStatusZeroSizeBuffer) {
     uint8_t array[1];
     Reader reader;
     reader.Initialize(hal::libs::span<const std::uint8_t>(array, 0));
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestCtorStatusValidBuffer) {
     uint8_t array[] = {0x55, 0xaa};
 
     Reader reader(hal::libs::make_span(array));
-    EXPECT_TRUE(reader.Status());
-    EXPECT_EQ(reader.RemainingSize(), 2);
+    TEST_ASSERT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 2);
 }
 
 TEST(ReaderTest, TestStatusValidBuffer) {
@@ -35,7 +37,7 @@ TEST(ReaderTest, TestStatusValidBuffer) {
     uint8_t array[] = {0x55, 0xaa};
 
     reader.Initialize(hal::libs::make_span(array));
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSingleByte) {
@@ -43,31 +45,31 @@ TEST(ReaderTest, TestReadingSingleByte) {
     uint8_t array[] = {0x55, 0xaa};
 
     reader.Initialize(hal::libs::make_span(array));
-    EXPECT_EQ(reader.ReadByte(), 0x55);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadByte(), 0x55);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestSkip) {
     uint8_t array[] = {0x55, 0xaa};
     Reader reader(hal::libs::make_span(array));
-    EXPECT_TRUE(reader.Skip(1));
-    EXPECT_TRUE(reader.Status());
-    EXPECT_EQ(reader.RemainingSize(), 1);
+    TEST_ASSERT_TRUE(reader.Skip(1));
+    TEST_ASSERT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 1);
 }
 
 TEST(ReaderTest, TestSkipOverTheLimit) {
     uint8_t array[] = {0x55, 0xaa};
     Reader reader(hal::libs::make_span(array));
-    EXPECT_FALSE(reader.Skip(3));
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Skip(3));
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestSkipToTheLimit) {
     uint8_t array[] = {0x55, 0xaa};
     Reader reader(hal::libs::make_span(array));
-    EXPECT_TRUE(reader.Skip(2));
-    EXPECT_TRUE(reader.Status());
-    EXPECT_EQ(reader.RemainingSize(), 0);
+    TEST_ASSERT_TRUE(reader.Skip(2));
+    TEST_ASSERT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 0);
 }
 
 TEST(ReaderTest, TestReadingSingleByteBeyondEnd) {
@@ -77,7 +79,7 @@ TEST(ReaderTest, TestReadingSingleByteBeyondEnd) {
     reader.Initialize(hal::libs::make_span(array));
     reader.ReadByte();
     reader.ReadByte();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingWordLE) {
@@ -85,8 +87,8 @@ TEST(ReaderTest, TestReadingWordLE) {
     uint8_t array[] = {0x55, 0xaa};
 
     reader.Initialize(hal::libs::make_span(array));
-    EXPECT_EQ(reader.ReadWordLE(), 0xaa55);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadWordLE(), 0xaa55);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSignedWordLE) {
@@ -95,13 +97,13 @@ TEST(ReaderTest, TestReadingSignedWordLE) {
     Reader reader;
     reader.Initialize(hal::libs::make_span(array));
 
-    EXPECT_EQ(reader.ReadSignedWordLE(), 0);
-    EXPECT_EQ(reader.ReadSignedWordLE(), -1);
-    EXPECT_EQ(reader.ReadSignedWordLE(), 32767);
-    EXPECT_EQ(reader.ReadSignedWordLE(), -32768);
-    EXPECT_EQ(reader.ReadSignedWordLE(), -15000);
-    EXPECT_EQ(reader.ReadSignedWordLE(), 15000);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), 0);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), -1);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), 32767);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), -32768);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), -15000);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), 15000);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSignedWordBE) {
@@ -110,13 +112,13 @@ TEST(ReaderTest, TestReadingSignedWordBE) {
     Reader reader;
     reader.Initialize(hal::libs::make_span(array));
 
-    EXPECT_EQ(reader.ReadSignedWordBE(), 0);
-    EXPECT_EQ(reader.ReadSignedWordBE(), -1);
-    EXPECT_EQ(reader.ReadSignedWordBE(), 32767);
-    EXPECT_EQ(reader.ReadSignedWordBE(), -32768);
-    EXPECT_EQ(reader.ReadSignedWordBE(), -15000);
-    EXPECT_EQ(reader.ReadSignedWordBE(), 15000);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), 0);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), -1);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), 32767);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), -32768);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), -15000);
+    TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), 15000);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingWordBE) {
@@ -124,8 +126,8 @@ TEST(ReaderTest, TestReadingWordBE) {
     uint8_t array[] = {0x55, 0xaa};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadWordBE(), 0x55aa);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadWordBE(), 0x55aa);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingWordLEBeyondEnd) {
@@ -134,7 +136,7 @@ TEST(ReaderTest, TestReadingWordLEBeyondEnd) {
 
     reader.Initialize(array);
     reader.ReadWordLE();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingWordBEBeyondEnd) {
@@ -143,7 +145,7 @@ TEST(ReaderTest, TestReadingWordBEBeyondEnd) {
 
     reader.Initialize(array);
     reader.ReadWordBE();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingDWordLE) {
@@ -151,8 +153,8 @@ TEST(ReaderTest, TestReadingDWordLE) {
     uint8_t array[] = {0x55, 0xaa, 0x77, 0xee};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadDoubleWordLE(), 0xEE77AA55U);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadDoubleWordLE(), 0xEE77AA55U);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSignedDWordLE) {
@@ -163,16 +165,16 @@ TEST(ReaderTest, TestReadingSignedDWordLE) {
     Reader reader;
     reader.Initialize(array);
 
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), 0);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -1);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), 32767);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -32768);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), 2147483647);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -2147483648);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), 1234567890);
-    EXPECT_EQ(reader.ReadSignedDoubleWordLE(), -1234567890);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), 0);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), -1);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), 32767);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), -32768);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), 2147483647);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), -2147483648);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), 1234567890);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordLE(), -1234567890);
 
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSignedDWordBE) {
@@ -183,16 +185,16 @@ TEST(ReaderTest, TestReadingSignedDWordBE) {
     Reader reader;
     reader.Initialize(array);
 
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 0);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -1);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 32767);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -32768);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 2147483647);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -2147483648);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), 1234567890);
-    EXPECT_EQ(reader.ReadSignedDoubleWordBE(), -1234567890);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), 0);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), -1);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), 32767);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), -32768);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), 2147483647);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), -2147483648);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), 1234567890);
+    TEST_ASSERT_EQUAL(reader.ReadSignedDoubleWordBE(), -1234567890);
 
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingDWordBE) {
@@ -200,8 +202,8 @@ TEST(ReaderTest, TestReadingDWordBE) {
     uint8_t array[] = {0x55, 0xaa, 0x77, 0xee};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadDoubleWordBE(), 0x55AA77EEU);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadDoubleWordBE(), 0x55AA77EEU);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingQuadWordLE) {
@@ -209,8 +211,8 @@ TEST(ReaderTest, TestReadingQuadWordLE) {
     uint8_t array[] = {0x55, 0xaa, 0x77, 0xee, 0x66, 0xcc, 0x44, 0x88};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadQuadWordLE(), 0x8844CC66EE77AA55ULL);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadQuadWordLE(), 0x8844CC66EE77AA55ULL);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingQuadLEBeyondEnd) {
@@ -219,7 +221,7 @@ TEST(ReaderTest, TestReadingQuadLEBeyondEnd) {
 
     reader.Initialize(array);
     reader.ReadQuadWordLE();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingDWordLEBeyondEnd) {
@@ -228,7 +230,7 @@ TEST(ReaderTest, TestReadingDWordLEBeyondEnd) {
 
     reader.Initialize(array);
     reader.ReadDoubleWordLE();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadArray) {
@@ -236,8 +238,8 @@ TEST(ReaderTest, TestReadArray) {
     const uint8_t array[] = {0x55, 0xaa, 0x77};
 
     reader.Initialize(array);
-    EXPECT_TRUE(reader.ReadArray(3) == hal::libs::make_span(array));
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_TRUE(reader.ReadArray(3) == hal::libs::make_span(array));
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadArrayBeyondEnd) {
@@ -245,8 +247,8 @@ TEST(ReaderTest, TestReadArrayBeyondEnd) {
     uint8_t array[] = {0x55, 0xaa, 0x77};
 
     reader.Initialize(array);
-    EXPECT_TRUE(reader.ReadArray(4).empty());
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_TRUE(reader.ReadArray(4).empty());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingMovesPosition) {
@@ -255,14 +257,14 @@ TEST(ReaderTest, TestReadingMovesPosition) {
                        0x44, 0x55, 0x66, 0x77, 0x88, 0x99};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadByte(), 0x55);
-    EXPECT_EQ(reader.ReadWordLE(), 0x77AA);
-    EXPECT_EQ(reader.ReadDoubleWordLE(), 0x332211EEU);
-    EXPECT_TRUE(reader.ReadArray(3) ==
+    TEST_ASSERT_EQUAL(reader.ReadByte(), 0x55);
+    TEST_ASSERT_EQUAL(reader.ReadWordLE(), 0x77AA);
+    TEST_ASSERT_EQUAL(reader.ReadDoubleWordLE(), 0x332211EEU);
+    TEST_ASSERT_TRUE(reader.ReadArray(3) ==
                 hal::libs::span<const std::uint8_t>(array + 7, 3));
-    EXPECT_EQ(reader.ReadByte(), 0x77);
-    EXPECT_EQ(reader.ReadWordBE(), 0x8899);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadByte(), 0x77);
+    TEST_ASSERT_EQUAL(reader.ReadWordBE(), 0x8899);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingWithInvalidState) {
@@ -276,7 +278,7 @@ TEST(ReaderTest, TestReadingWithInvalidState) {
     reader.ReadDoubleWordLE();
     reader.ReadArray(3);
     reader.ReadByte();
-    EXPECT_FALSE(reader.Status());
+    TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestRemainigSizeNoDataRead) {
@@ -284,7 +286,7 @@ TEST(ReaderTest, TestRemainigSizeNoDataRead) {
     uint8_t array[] = {0x55};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.RemainingSize(), 1);
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 1);
 }
 
 TEST(ReaderTest, TestRemainigSize) {
@@ -296,7 +298,7 @@ TEST(ReaderTest, TestRemainigSize) {
     reader.ReadByte();
     reader.ReadWordLE();
     reader.ReadDoubleWordLE();
-    EXPECT_EQ(reader.RemainingSize(), static_cast<int32_t>(sizeof(array) - 7));
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), static_cast<int32_t>(sizeof(array) - 7));
 }
 
 TEST(ReaderTest, TestRemainigSizeAtTheEnd) {
@@ -311,7 +313,7 @@ TEST(ReaderTest, TestRemainigSizeAtTheEnd) {
     reader.ReadArray(3);
     reader.ReadByte();
     reader.ReadWordBE();
-    EXPECT_EQ(reader.RemainingSize(), 0);
+    TEST_ASSERT_EQUAL(reader.RemainingSize(), 0);
 }
 
 TEST(ReaderTest, TestReadingToEnd) {
@@ -322,10 +324,10 @@ TEST(ReaderTest, TestReadingToEnd) {
     reader.ReadByte();
 
     auto toEnd = reader.ReadToEnd();
-    EXPECT_EQ(2, toEnd[0]);
-    EXPECT_EQ(3, toEnd[1]);
-    EXPECT_EQ(4, toEnd[2]);
-    EXPECT_EQ(5, toEnd[3]);
+    TEST_ASSERT_EQUAL(2, toEnd[0]);
+    TEST_ASSERT_EQUAL(3, toEnd[1]);
+    TEST_ASSERT_EQUAL(4, toEnd[2]);
+    TEST_ASSERT_EQUAL(5, toEnd[3]);
 }
 
 TEST(ReaderTest, TestReadingToEndWhenNothingLeftIsCorrect) {
@@ -335,8 +337,8 @@ TEST(ReaderTest, TestReadingToEndWhenNothingLeftIsCorrect) {
 
     reader.ReadByte();
 
-    EXPECT_EQ(reader.ReadToEnd().size(), 0);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadToEnd().size(), 0);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSingleBCDByte) {
@@ -344,8 +346,8 @@ TEST(ReaderTest, TestReadingSingleBCDByte) {
     uint8_t array[] = {0x11, 0xaa};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadByteBCD(0xf0), 11);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadByteBCD(0xf0), 11);
+    TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestReadingSingleBCDByteWithPartialNibbleMask) {
@@ -353,8 +355,6 @@ TEST(ReaderTest, TestReadingSingleBCDByteWithPartialNibbleMask) {
     uint8_t array[] = {0b10100010, 0xaa};
 
     reader.Initialize(array);
-    EXPECT_EQ(reader.ReadByteBCD(0b00110000), 22);
-    EXPECT_TRUE(reader.Status());
+    TEST_ASSERT_EQUAL(reader.ReadByteBCD(0b00110000), 22);
+    TEST_ASSERT_TRUE(reader.Status());
 }
-
-DEFINE_TESTSUITE(ReaderTest);

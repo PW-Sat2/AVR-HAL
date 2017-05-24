@@ -6,6 +6,7 @@
 #include "hal/mcu.h"
 
 namespace hal {
+namespace Analog {
 
 class InternalADC : public mcu::InternalADCMcuSpecific {
  public:
@@ -104,6 +105,7 @@ class AnalogGPIO {
     const InternalADC::Input pin;
 };
 
+}  // namespace Analog
 }  // namespace hal
 
 #endif  // HAL_PERIPH_ANALOG_ANALOG_H_

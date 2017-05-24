@@ -1,26 +1,32 @@
 #include <hal/hal>
 
-using softI2C_1 = hal::SoftI2C<hal::mcu::pin_sda, hal::mcu::pin_scl>;
-constexpr hal::AT24C02<softI2C_1> memory;
-
 int main() {
+    hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
+    hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;
+
+    hal::I2C::Software i2c{pin_sda, pin_scl};
+
+    hal::AT24C02 memory{i2c};
+
     hal::Serial0.init(115200, hal::STDIO::ENABLE);
 
-    softI2C_1::init();
+    i2c.init();
 
-    hal::libs::array<uint8_t, 10> arr;
+    hal::AT24C02::Data<10> mem{0};
+
     for (int i = 0; i < 10; ++i) {
-        arr[i] = i;
+        mem.data[i] = i;
     }
-    memory.write(0, arr);
+
+    memory.write(mem);
 
     _delay_ms(1000);
 
     while (true) {
-        hal::libs::array<uint8_t, 10> arr_r;
-        memory.read(0x00, arr_r);
+        hal::AT24C02::Data<10> mem_read{0};
+        memory.read(mem_read);
 
-        for (const uint8_t x : arr_r) {
+        for (const uint8_t x : mem_read.data) {
             printf("%d, ", x);
         }
         printf("\r\n");
