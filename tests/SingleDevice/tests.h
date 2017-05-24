@@ -1,5 +1,5 @@
-#ifndef UNIT_TESTS_TESTS_H_
-#define UNIT_TESTS_TESTS_H_
+#ifndef TESTS_SINGLEDEVICE_TESTS_H_
+#define TESTS_SINGLEDEVICE_TESTS_H_
 
 #include "unity.h"
 #include <hal/hal>
@@ -48,4 +48,4 @@ fptr add_test_group(void (*fun)(), bool get = false);
         UNITY_END();\
     }
 
-#endif  // UNIT_TESTS_TESTS_H_
+#endif  // TESTS_SINGLEDEVICE_TESTS_H_
