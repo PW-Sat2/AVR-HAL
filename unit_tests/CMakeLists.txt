@@ -33,6 +33,7 @@ add_hal_executable(unit_tests
         drivers/ADG709.cpp
         drivers/LED.cpp
         drivers/devices_compilation.cpp
+        drivers/TMP121.cpp
 
 #    pure_virtual.cpp
 )

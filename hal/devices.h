@@ -11,5 +11,6 @@
 #include "hal/devices/DAC1220.h"
 #include "hal/devices/LED.h"
 #include "hal/devices/PCF8563.h"
+#include "hal/devices/TMP121.h"
 
 #endif  // HAL_DEVICES_H_
