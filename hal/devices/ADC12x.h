@@ -28,7 +28,7 @@ enum class Channels_ADC128 : uint8_t {
 
 template<typename Channel_>
 class ADC12x {
-public:
+ public:
     /*!
      * Default ctor.
      * @param spi_dev SPI interface to use. Interface must support chip select transactions.
@@ -66,7 +66,7 @@ public:
         return word & libs::bit_mask<0, 12>();
     }
 
-private:
+ private:
     SPI::Interface &spi_dev;
 };
 

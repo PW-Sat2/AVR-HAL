@@ -82,7 +82,7 @@ TEST(ADC12x, fullRange) {
     ADC12xMock mock;
     ADC128 adc128(mock);
 
-    for(uint16_t i = 0; i < 4096; ++i) {
+    for (uint16_t i = 0; i < 4096; ++i) {
         mock.value = i;
         TEST_ASSERT_EQUAL_INT(mock.value, adc128.readAndChangeChannel(ADC128::Channel::IN0));
     }
