@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(NAME unit_tests)
 set(BOARD ARDUINOMEGA2560)
 set(CMAKE_TOOLCHAIN_FILE "../toolchain.cmake")
 
-project(${NAME})
+project(unit_tests)
 
 add_subdirectory(unity)
 
@@ -12,7 +11,7 @@ add_subdirectory(../ hal)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error" CACHE STRING "" FORCE)
 
-add_hal_executable(${NAME}
+add_hal_executable(unit_tests
         main.cpp
 
         periph/DigitalIO.cpp
@@ -38,9 +37,15 @@ add_hal_executable(${NAME}
 #    pure_virtual.cpp
 )
 
+add_custom_target(unit_tests.run
+    COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f unit_tests.elf -W 0xC6,- -R 0x22,- -T exit | tee ${CMAKE_BINARY_DIR}/unit_tests.output
+    COMMAND grep "FAIL" ${CMAKE_BINARY_DIR}/unit_tests.output && exit 1; || exit 0;
+    DEPENDS unit_tests
+)
+
 include_directories(.)
 
-target_link_libraries(${NAME}
+target_link_libraries(unit_tests
     unity
     terminal
 )

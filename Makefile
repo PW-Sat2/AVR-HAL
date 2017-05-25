@@ -21,9 +21,7 @@ examples: force
 
 unit_tests_run: force
 	cd unit_tests; mkdir build; cd build; cmake ..
-	make -C unit_tests/build unit_tests -j5
-	make -C unit_tests/build unit_tests.sim | tee unit_tests/build/out
-	if grep -q "FAIL" unit_tests/build/out; then exit 1; fi
+	make -C unit_tests/build unit_tests.run -j5
 	@echo "Success!"
 
 SingleDeviceTests:
