@@ -2,10 +2,10 @@
 #define HAL_DEVICES_AD7714_EXT_H_
 
 #include "hal/periph.h"
+#include "hal/libs.h"
 
 namespace hal {
 
-template<typename spi>
 class AD7714_ext {
  public:
     enum ADC_Registers {
@@ -68,10 +68,10 @@ class AD7714_ext {
         unipolar = 1
     };
 
-    explicit AD7714_ext(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY,
-                        DigitalIO::Pin pin_RESET, DigitalIO::Pin pin_STANDBY,
-                        DigitalIO::Pin pin_BUFFER)
-        : spi_dev(pin_cs),
+    explicit AD7714_ext(SPI::Interface& spi_dev, DigitalIO::Interface& pin_DRDY,
+                        DigitalIO::Interface& pin_RESET, DigitalIO::Interface& pin_STANDBY,
+                        DigitalIO::Interface& pin_BUFFER)
+        : spi_dev(spi_dev),
           pin_DRDY{pin_DRDY},
           pin_RESET{pin_RESET},
           pin_STANDBY{pin_STANDBY},
@@ -102,12 +102,10 @@ class AD7714_ext {
     }
 
     void init() const {
-        this->spi_dev.init();
-
-        this->pin_DRDY.pinmode(DigitalIO::INPUT);
-        this->pin_RESET.pinmode(DigitalIO::OUTPUT);
-        this->pin_STANDBY.pinmode(DigitalIO::OUTPUT);
-        this->pin_BUFFER.pinmode(DigitalIO::OUTPUT);
+        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
+        this->pin_RESET.init(DigitalIO::Interface::Mode::OUTPUT);
+        this->pin_STANDBY.init(DigitalIO::Interface::Mode::OUTPUT);
+        this->pin_BUFFER.init(DigitalIO::Interface::Mode::OUTPUT);
 
         this->reset();
         this->buffer(ON);
@@ -131,26 +129,23 @@ class AD7714_ext {
     uint32_t read_data() {
         waitForDRDY();
         writeToCommReg(DATA_REG, true);
-        spi_dev.enable();
-        uint32_t tmp = spi_dev.shift(0);
-
-        uint32_t read = 0;
 
         if (dataLen == Data_16bit) {
-            read = (tmp << 8);
-            tmp = spi_dev.shift(0);
-            read |= (tmp);
-        } else {
-            read = (tmp << 16);
-            tmp = spi_dev.shift(0);
-            read |= (tmp << 8);
-            tmp = spi_dev.shift(0);
-            read |= (tmp);
+            libs::array<uint8_t, 2> data;
+            spi_dev.read(data);
+            libs::Reader reader{data};
+            return reader.ReadWordBE();
+        } else {  // dataLen == Data_24bit
+            libs::array<uint8_t, 3> data;
+            spi_dev.read(data);
+
+            uint32_t read = 0;
+            read |= data[0]; read <<= 8;
+            read |= data[1]; read <<= 8;
+            read |= data[2];
+
+            return read;
         }
-
-        spi_dev.disable();
-
-        return read;
     }
 
     void writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
@@ -177,8 +172,8 @@ class AD7714_ext {
  private:
     ADC_Channels actual_channel;
     DataLength dataLen;
-    const SPI::Device<spi> spi_dev;
-    const DigitalIO pin_DRDY, pin_RESET, pin_STANDBY, pin_BUFFER;
+    SPI::Interface& spi_dev;
+    DigitalIO::Interface &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 
 }  // namespace hal

@@ -5,7 +5,6 @@
 
 namespace hal {
 
-template<typename spi>
 class AD7714 {
  public:
     enum ADC_Registers {
@@ -43,8 +42,7 @@ class AD7714 {
     };
 
     enum DataLength {
-        Data_24bit = 1,  //
-        Data_16bit = 0
+        Data_24bit = 1
     };
 
     enum ADC_Modes {
@@ -69,94 +67,80 @@ class AD7714 {
     };
 
 
-    explicit AD7714(DigitalIO::Pin pin_cs, DigitalIO::Pin pin_DRDY) :
-            spi_dev(pin_cs), pin_DRDY{pin_DRDY} {
+    explicit AD7714(SPI::Interface& spi, DigitalIO::Interface& pin_DRDY) :
+            spi_dev(spi), pin_DRDY{pin_DRDY} {
     }
 
 
     uint8_t changeChannel(ADC_Channels channel) {
-      actual_channel = channel;
-      writeToCommReg(COMM_REG, true);
-      this->waitForDRDY();
-      return spi_dev.transfer(0);
+        actual_channel = channel;
+        writeToCommReg(COMM_REG, true);
+        this->waitForDRDY();
+        return spi_dev.transfer(0);
     }
 
 
     bool data_available() {
-      return (!(this->pin_DRDY.read()));
+        return (!(this->pin_DRDY.read()));
     }
 
 
     void waitForDRDY() {
-      while (!data_available()) {}
+        while (!data_available()) {}
     }
 
 
 
     void init() const {
-      this->spi_dev.init();
-
-      this->pin_DRDY.pinmode(DigitalIO::INPUT);
+        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
     }
 
     void writeToCommReg(ADC_Registers reg, bool read) const {
-      uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
-      spi_dev.transfer(out);
+        uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
+        spi_dev.transfer(out);
     }
 
 
     uint32_t read_data() {
-      waitForDRDY();
-      writeToCommReg(DATA_REG, true);
-      spi_dev.enable();
-      uint32_t tmp = spi_dev.shift(0);
+        waitForDRDY();
+        writeToCommReg(DATA_REG, true);
 
-      uint32_t read = 0;
+        libs::array<uint8_t, 3> data;
+        spi_dev.read(data);
 
-      if ( dataLen == Data_16bit ) {
-          read = (tmp << 8);
-          tmp = spi_dev.shift(0);
-          read |= (tmp);
-          } else {
-          read = (tmp << 16);
-          tmp = spi_dev.shift(0);
-          read |= (tmp << 8);
-          tmp = spi_dev.shift(0);
-          read |= (tmp);
-      }
+        uint32_t read = 0;
+        read |= data[0]; read <<= 8;
+        read |= data[1]; read <<= 8;
+        read |= data[2];
 
-      spi_dev.disable();
-
-      return read;
+        return read;
     }
 
 
     void writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
-      writeToCommReg(MODE_REG, false);
-      uint8_t data = (mode << 5) | (gain << 2);
-      spi_dev.transfer(data);
-      this->waitForDRDY();
+        writeToCommReg(MODE_REG, false);
+        uint8_t data = (mode << 5) | (gain << 2);
+        spi_dev.transfer(data);
+        this->waitForDRDY();
     }
 
 
-    void setFilter(Polarity set_polarity, DataLength data_length, uint16_t filter) {
-      //  filter: 19-4000
-      //  f notch = fclk/128/filter
-      dataLen = data_length;
-      writeToCommReg(FILTER_HIGH_REG, false);
-      uint8_t val = (static_cast<bool>(set_polarity) << 7) | (data_length << 6) | (1 << 5) | (filter >> 8);
-      spi_dev.transfer(val);
-      writeToCommReg(FILTER_LOW_REG, false);
-      val = (filter & 0xFF);
-      spi_dev.transfer(val);
+    void setFilter(Polarity set_polarity, uint16_t filter) {
+        //  filter: 19-4000
+        //  f notch = fclk/128/filter
+        writeToCommReg(FILTER_HIGH_REG, false);
+        uint8_t val = (static_cast<bool>(set_polarity) << 7) | (DataLength::Data_24bit << 6) | (1 << 5) | (filter >> 8);
+        spi_dev.transfer(val);
+        writeToCommReg(FILTER_LOW_REG, false);
+        val = (filter & 0xFF);
+        spi_dev.transfer(val);
     }
 
  private:
     ADC_Channels actual_channel;
-    DataLength dataLen;
 
-    const SPI::Device<spi> spi_dev;
-    const DigitalIO pin_DRDY;
+    SPI::Interface& spi_dev;
+    DigitalIO::Interface& pin_DRDY;
 };
 
 }  // namespace hal

@@ -5,19 +5,40 @@
 
 namespace hal {
 
-template<typename I2C>
 class AT24C02 {
  public:
-    void write(uint8_t addr, const libs::span<const uint8_t> arr) const {
-        i2cdevice.write_register(addr, arr);
+    template<std::size_t size>
+    class Data {
+     public:
+        Data(uint8_t addr) : data{_data.data() + 1, size} {
+            this->_data[0] = addr;
+        }
+
+        libs::span<uint8_t> data;
+
+     private:
+        libs::array<uint8_t, size+1> _data;
+
+        friend class AT24C02;
+    };
+
+    AT24C02(I2C::Interface& i2c) : i2c{i2c} {}
+
+    template<std::size_t size>
+    void write(const Data<size>& mem) const {
+        i2c.write(I2CAddress, mem._data);
     }
 
-    void read(uint8_t addr, libs::span<uint8_t> dest) const {
-        i2cdevice.read_register(addr, dest);
+    template<std::size_t size>
+    void read(Data<size>& mem) const {
+        libs::array<uint8_t, 1> tx = {mem._data[0]};
+
+        i2c.writeRead(I2CAddress, tx, mem.data);
     }
 
  private:
-    const I2C_Device<I2C> i2cdevice{0x50};
+    static constexpr I2C::Interface::Address I2CAddress = 0x50;
+    I2C::Interface& i2c;
 };
 
 }  // namespace hal

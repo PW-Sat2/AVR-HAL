@@ -5,18 +5,15 @@
 
 namespace hal {
 
-template<typename spi>
 class AD5641 {
  public:
-    constexpr AD5641(DigitalIO::Pin pin_sync) : spi_dev(pin_sync) {
-    }
-
-    void init() {
-        spi_dev.init();
+    constexpr AD5641(hal::SPI::Interface& device) : spi_dev(device) {
     }
 
     void write(uint16_t data_lsb) {
-        data_lsb &= libs::bit_mask<0, 14>();
+        if (data_lsb >= libs::power_of_two<14>()) {
+            data_lsb = libs::power_of_two<14>()-1;
+        }
 
         libs::array<uint8_t, 2> data;
         libs::Writer writer{data};
@@ -26,7 +23,7 @@ class AD5641 {
     }
 
  private:
-    const SPI::Device<spi> spi_dev;
+    hal::SPI::Interface& spi_dev;
 };
 
 }  // namespace hal
