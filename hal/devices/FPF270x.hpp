@@ -13,9 +13,9 @@ public:
     }
 
     void init() {
-        this->pin_on.init(DigitalIO::OUTPUT);
-        this->pin_flag.init(DigitalIO::INPUT_PULLUP);
-        this->pin_pgood.init(DigitalIO::INPUT_PULLUP);
+        this->pin_on.init(IDigitalIO::Mode::OUTPUT);
+        this->pin_flag.init(IDigitalIO::Mode::INPUT_PULLUP);
+        this->pin_pgood.init(IDigitalIO::Mode::INPUT_PULLUP);
     }
 
     void on() {

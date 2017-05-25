@@ -3,7 +3,9 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "tests.h"
+#include "../tests.h"
+
+TEST_GROUP(data_types);
 
 #define DATA_ASSERT(type, size) \
     static_assert(sizeof(type) == (size), #type );
@@ -42,12 +44,12 @@ class TestDataTypes {
 } testDataTypes;
 
 #define NUM_TEST(var, type, mini, maxi)                        \
-    EXPECT_EQ(mini, std::numeric_limits<type>::min());    \
-    EXPECT_EQ(maxi, std::numeric_limits<type>::max());    \
-    EXPECT_TRUE(std::numeric_limits<type>::min() < std::numeric_limits<type>::max()); \
+    TEST_ASSERT_EQUAL(mini, std::numeric_limits<type>::min());    \
+    TEST_ASSERT_EQUAL(maxi, std::numeric_limits<type>::max());    \
+    TEST_ASSERT_TRUE(std::numeric_limits<type>::min() < std::numeric_limits<type>::max()); \
     type var ##_a = std::numeric_limits<type>::max(); \
     type var ##_b = var ##_a+1; \
-    EXPECT_TRUE(var ##_a > var ##_b);
+    TEST_ASSERT_TRUE(var ##_a > var ##_b);
 
 TEST(data_types, numeric_limits) {
     NUM_TEST(b, char,                                   -128, 127);
@@ -67,5 +69,3 @@ TEST(data_types, numeric_limits) {
     NUM_TEST(p, long long,            -9223372036854775808LL, 9223372036854775807LL);
     NUM_TEST(r, int64_t,              -9223372036854775808LL, 9223372036854775807LL);
 }
-
-DEFINE_TESTSUITE(data_types);

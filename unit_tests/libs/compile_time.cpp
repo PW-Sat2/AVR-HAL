@@ -1,279 +1,75 @@
-#include "unity.h"
-#include "tests.h"
+#include <cmath>
+#include <cstdio>
 
-#include <math.h>
-#include <numeric>
-#include <limits>
+#include "unity.h"
+#include "../tests.h"
+
+TEST_GROUP(compile_time);
 
 using namespace hal::libs;
 
-TEST(bit_operations, set_bit) {
-    uint32_t val = 0;
-    for (int i = 0; i < 32; ++i) {
-        val = 0;
-        set_bit(val, i);
-        EXPECT_EQ(val, (1UL << i));
-    }
-    val = 0;
-    for (int i = 0; i < 32; ++i) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(val, 0xFFFFFFFF);
+template<int base, int exp>
+struct test {
+    static const bool value = ((power<base, exp>::value == std::pow(base, exp)) && test<base, exp-1>::value);
+};
 
-    val = 0;
-    for (int i = 0; i < 32; i += 2) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(val, 0x55555555);
+template<int base>
+struct test<base, 0> {
+    static const bool value = true;
+};
 
-    val = 0;
-    for (int i = 1; i < 32; i += 2) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(val, 0xAAAAAAAA);
+TEST(compile_time, pow) {
+    auto now = test<1, 10>::value;
+    TEST_ASSERT_EQUAL(now, true);
 
-    val = 0;
-    set_bit(val, 0);
-    set_bit(val, 3);
-    set_bit(val, 5);
-    set_bit(val, 7);
-    EXPECT_EQ(val, 0xA9);
+    now = test<2, 30>::value;
+    TEST_ASSERT_EQUAL(now, true);
 
-    set_bit(val, 0+8);
-    set_bit(val, 3+8);
-    set_bit(val, 5+8);
-    set_bit(val, 7+8);
-    EXPECT_EQ(val, 0xA9A9);
-
-    set_bit(val, 0+16);
-    set_bit(val, 3+16);
-    set_bit(val, 5+16);
-    set_bit(val, 7+16);
-    EXPECT_EQ(val, 0xA9A9A9);
-
-    set_bit(val, 0+24);
-    set_bit(val, 3+24);
-    set_bit(val, 5+24);
-    set_bit(val, 7+24);
-    EXPECT_EQ(val, 0xA9A9A9A9);
+    now = test<11, 6>::value;
+    TEST_ASSERT_EQUAL(now, true);
 }
 
-TEST(bit_operations, set_bit_ptr) {
-    uint32_t value = 0;
-    uint32_t * val = &value;
-    for (int i = 0; i < 32; ++i) {
-        *val = 0;
-        set_bit(val, i);
-        EXPECT_EQ(*val, (1ULL << i));
-    }
-    *val = 0;
-    for (int i = 0; i < 32; ++i) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0xFFFFFFFF);
 
-    *val = 0;
-    for (int i = 0; i < 32; i += 2) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0x55555555);
+template<int exp, int size, uint64_t value>
+void power_of_twoTest() {
+    constexpr auto res = power_of_two<exp>();
+    static_assert(res == value, "power_of_two (template) failed!");
+    static_assert(sizeof(res) == size, "power_of_two (template) incorrect size!");
 
-    *val = 0;
-    for (int i = 1; i < 32; i += 2) {
-        set_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0xAAAAAAAA);
-
-    *val = 0;
-    set_bit(val, 0);
-    set_bit(val, 3);
-    set_bit(val, 5);
-    set_bit(val, 7);
-    EXPECT_EQ(*val, 0xA9);
-
-    set_bit(val, 0+8);
-    set_bit(val, 3+8);
-    set_bit(val, 5+8);
-    set_bit(val, 7+8);
-    EXPECT_EQ(*val, 0xA9A9);
-
-    set_bit(val, 0+16);
-    set_bit(val, 3+16);
-    set_bit(val, 5+16);
-    set_bit(val, 7+16);
-    EXPECT_EQ(*val, 0xA9A9A9);
-
-    set_bit(val, 0+24);
-    set_bit(val, 3+24);
-    set_bit(val, 5+24);
-    set_bit(val, 7+24);
-    EXPECT_EQ(*val, 0xA9A9A9A9);
+    constexpr auto res2 = power_of_two(exp);
+    static_assert(res2 == value, "power_of_two (constexpr) failed!");
+    static_assert(sizeof(res2) == 8, "power_of_two (constexpr) incorrect size!");
 }
 
-TEST(bit_operations, clear_bit) {
-    uint32_t val = 0xFFFFFFFF;
-    const auto MAX = std::numeric_limits<decltype(val)>::max();
-    for (int i = 0; i < 32; ++i) {
-        val = 0xFFFFFFFF;
-        clear_bit(val, i);
-        EXPECT_EQ(val, 0xFFFFFFFF-(1UL << i));
-    }
-    val = MAX;
-    for (int i = 0; i < 32; ++i) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(val, 0);
-
-    val = MAX;
-    for (int i = 0; i < 32; i += 2) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(val, 0xAAAAAAAA);
-
-    val = MAX;
-    for (int i = 1; i < 32; i += 2) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(val, 0x55555555);
-
-    val = MAX;
-    clear_bit(val, 1);
-    clear_bit(val, 2);
-    clear_bit(val, 4);
-    clear_bit(val, 6);
-    EXPECT_EQ(val, 0xFFFFFFA9);
-
-    clear_bit(val, 1+8);
-    clear_bit(val, 2+8);
-    clear_bit(val, 4+8);
-    clear_bit(val, 6+8);
-    EXPECT_EQ(val, 0xFFFFA9A9);
-
-    clear_bit(val, 1+16);
-    clear_bit(val, 2+16);
-    clear_bit(val, 4+16);
-    clear_bit(val, 6+16);
-    EXPECT_EQ(val, 0xFFA9A9A9);
-
-    clear_bit(val, 1+24);
-    clear_bit(val, 2+24);
-    clear_bit(val, 4+24);
-    clear_bit(val, 6+24);
-    EXPECT_EQ(val, 0xA9A9A9A9);
+TEST(compile_time, power_of_twoTest) {
+    power_of_twoTest<0, 1, 1>();
+    power_of_twoTest<7, 1, 128>();
+    power_of_twoTest<8, 2, 256>();
+    power_of_twoTest<15, 2, 32768>();
+    power_of_twoTest<16, 4, 65536>();
+    power_of_twoTest<31, 4, 2147483648L>();
+    power_of_twoTest<32, 8, 4294967296ULL>();
+    power_of_twoTest<63, 8, 9223372036854775808ULL>();
 }
 
-TEST(bit_operations, clear_bit_ptr) {
-    uint32_t value = 0xFFFFFFFF;
-    auto val = &value;
-    const auto MAX = std::numeric_limits<decltype(value)>::max();
-    for (int i = 0; i < 32; ++i) {
-        *val = 0xFFFFFFFF;
-        clear_bit(val, i);
-        EXPECT_EQ(*val, 0xFFFFFFFF-(1UL << i));
-    }
-    *val = MAX;
-    for (int i = 0; i < 32; ++i) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0);
-
-    *val = MAX;
-    for (int i = 0; i < 32; i += 2) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0xAAAAAAAA);
-
-    *val = MAX;
-    for (int i = 1; i < 32; i += 2) {
-        clear_bit(val, i);
-    }
-    EXPECT_EQ(*val, 0x55555555);
-
-    *val = MAX;
-    clear_bit(val, 1);
-    clear_bit(val, 2);
-    clear_bit(val, 4);
-    clear_bit(val, 6);
-    EXPECT_EQ(*val, 0xFFFFFFA9);
-
-    clear_bit(val, 1+8);
-    clear_bit(val, 2+8);
-    clear_bit(val, 4+8);
-    clear_bit(val, 6+8);
-    EXPECT_EQ(*val, 0xFFFFA9A9);
-
-    clear_bit(val, 1+16);
-    clear_bit(val, 2+16);
-    clear_bit(val, 4+16);
-    clear_bit(val, 6+16);
-    EXPECT_EQ(*val, 0xFFA9A9A9);
-
-    clear_bit(val, 1+24);
-    clear_bit(val, 2+24);
-    clear_bit(val, 4+24);
-    clear_bit(val, 6+24);
-    EXPECT_EQ(*val, 0xA9A9A9A9);
-}
-
-TEST(bit_operations, read_bit) {
-    uint32_t val = 0;
-    for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(read_bit(val, i), 0);
-    }
-    val = 0xFFFFFFFF;
-    for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(read_bit(val, i), 1);
-    }
-    val = 0xAAAAAAAA;
-    for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(read_bit(val, i), (i % 2));
-    }
-    val = 0x55555555;
-    for (int i = 0; i < 32; ++i) {
-        EXPECT_EQ(read_bit(val, i), !(i % 2));
-    }
-
-    for (int set = 0; set < 32; ++set) {
-        val = (1UL << set);
-        for (int i = 0; i < 32; ++i) {
-            EXPECT_EQ(read_bit(val, i), (i == set));
-        }
-    }
-
-    uint8_t val2 = 0xA9;
-    EXPECT_EQ(read_bit(val2, 0), 1);
-    EXPECT_EQ(read_bit(val2, 1), 0);
-    EXPECT_EQ(read_bit(val2, 2), 0);
-    EXPECT_EQ(read_bit(val2, 3), 1);
-    EXPECT_EQ(read_bit(val2, 4), 0);
-    EXPECT_EQ(read_bit(val2, 5), 1);
-    EXPECT_EQ(read_bit(val2, 6), 0);
-    EXPECT_EQ(read_bit(val2, 7), 1);
-}
-
-TEST(bit_operations, read_bit_template) {
-    uint8_t val2 = 0b10101010;
-    EXPECT_EQ(read_bit<0>(val2), 0);
-    EXPECT_EQ(read_bit<1>(val2), 1);
-    EXPECT_EQ(read_bit<2>(val2), 0);
-    EXPECT_EQ(read_bit<3>(val2), 1);
-    EXPECT_EQ(read_bit<4>(val2), 0);
-    EXPECT_EQ(read_bit<5>(val2), 1);
-    EXPECT_EQ(read_bit<6>(val2), 0);
-    EXPECT_EQ(read_bit<7>(val2), 1);
-
-    uint32_t val3 = 0xFFFFFFF0;
-    EXPECT_EQ(read_bit<0>(val3), 0);
-    EXPECT_EQ(read_bit<31>(val3), 1);
+TEST(compile_time, type_with_bits) {
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<0>), 1);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<8>), 1);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<9>), 2);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<16>), 2);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<17>), 4);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<32>), 4);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<33>), 8);
+    TEST_ASSERT_EQUAL_INT(sizeof(type_with_bits<64>), 8);
 }
 
 template<int start, int length>
 void bit_maskTest(uint8_t size, uint64_t value) {
     constexpr auto res = bit_mask<start, length>();
-    EXPECT_EQ(size, sizeof(res));
-    EXPECT_EQ(value, res);
+    TEST_ASSERT_EQUAL(size, sizeof(res));
+    TEST_ASSERT_EQUAL(value, res);
 
-    EXPECT_EQ(value, bit_mask(start, length));
+    TEST_ASSERT_EQUAL(value, bit_mask(start, length));
 }
 
 TEST(compile_time, bit_mask_at_zero) {
@@ -312,10 +108,10 @@ TEST(compile_time, bit_mask) {
 template<int start, int length, int size>
 void test_read_with_bit_mask(uint64_t value, uint64_t result) {
     auto read = read_mask<start, length>(value);
-    EXPECT_EQ(size, sizeof(read));
-    EXPECT_EQ(result, read);
+    TEST_ASSERT_EQUAL(size, sizeof(read));
+    TEST_ASSERT_EQUAL(result, read);
 
-    EXPECT_EQ(result, read_mask(start, length, value));
+    TEST_ASSERT_EQUAL(result, read_mask(start, length, value));
 }
 
 TEST(compile_time, read_with_bit_mask) {
@@ -401,11 +197,11 @@ TEST(compile_time, read_with_bit_mask) {
 template<int start, int size>
 void test_write_with_bit_mask(uint32_t& reg, uint32_t value, uint32_t expected) {
     write_mask<start, size>(reg, value);
-    EXPECT_EQ(expected, reg);
+    TEST_ASSERT_EQUAL(expected, reg);
 
     uint32_t reg_copy = reg;
     write_mask(start, size, reg_copy, value);
-    EXPECT_EQ(expected, reg_copy);
+    TEST_ASSERT_EQUAL(expected, reg_copy);
 }
 
 TEST(compile_time, write_with_bit_mask) {
@@ -442,25 +238,24 @@ TEST(compile_time, write_bit) {
     uint32_t x = 0;
 
     write_bit<0>(x, 1);
-    EXPECT_EQ(1, x);
+    TEST_ASSERT_EQUAL(1, x);
 
     write_bit<1>(x, 1);
-    EXPECT_EQ(0b11, x);
+    TEST_ASSERT_EQUAL(0b11, x);
 
     write_bit<0>(x, 0);
-    EXPECT_EQ(0b10, x);
+    TEST_ASSERT_EQUAL(0b10, x);
 
     write_bit<1>(x, 0);
-    EXPECT_EQ(0, x);
+    TEST_ASSERT_EQUAL(0, x);
 
     write_bit<1>(x, 0);
-    EXPECT_EQ(0, x);
+    TEST_ASSERT_EQUAL(0, x);
 
     write_bit<1>(x, 5);
-    EXPECT_EQ(0b10, x);
+    TEST_ASSERT_EQUAL(0b10, x);
 
     x = 0xFFFFFFFF;
     write_bit<31>(x, 0);
-    EXPECT_EQ(0x7FFFFFFFUL, x);
+    TEST_ASSERT_EQUAL(0x7FFFFFFFUL, x);
 }
-DEFINE_TESTSUITE(bit_operations);

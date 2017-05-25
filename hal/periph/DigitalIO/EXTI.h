@@ -1,9 +1,10 @@
-#ifndef HAL_PERIPH_GPIO_EXTI_H_
-#define HAL_PERIPH_GPIO_EXTI_H_
+#ifndef HAL_PERIPH_DIGITALIO_EXTI_H_
+#define HAL_PERIPH_DIGITALIO_EXTI_H_
 
 #include "hal/libs.h"
 
 namespace hal {
+namespace DigitalIO {
 namespace ExternalInterrupt {
 
 enum class Mode : uint8_t {
@@ -46,6 +47,7 @@ class Line {
 };
 
 }  // namespace ExternalInterrupt
+}  // namespace DigitalIO
 }  // namespace hal
 
-#endif  // HAL_PERIPH_GPIO_EXTI_H_
+#endif  // HAL_PERIPH_DIGITALIO_EXTI_H_
