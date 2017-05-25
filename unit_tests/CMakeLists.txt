@@ -31,6 +31,7 @@ add_hal_executable(unit_tests
         drivers/AD5641.cpp
         drivers/ADG708.cpp
         drivers/ADG709.cpp
+        drivers/ADC12x.cpp
         drivers/LED.cpp
         drivers/devices_compilation.cpp
 
