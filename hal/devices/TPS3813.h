@@ -5,25 +5,25 @@
 
 namespace hal {
 
+template<int pulse_time_ms>
 class TPS3813 {
  public:
-    constexpr explicit TPS3813(DigitalIO::Pin pin_WDI, uint8_t pulse_time_ms) : pin_WDI{pin_WDI}, pulse_time_ms{pulse_time_ms} {
+    constexpr explicit TPS3813(DigitalIO::Interface& pin_WDI) : pin_WDI{pin_WDI} {
     }
 
     void init() const {
-        this->pin_WDI.pinmode(DigitalIO::OUTPUT);
+        this->pin_WDI.init(hal::DigitalIO::Interface::Mode::OUTPUT);
         this->pin_WDI.reset();
     }
 
     void kick() const {
         this->pin_WDI.set();
-        _delay_ms(this->pulse_time_ms);
+        _delay_ms(pulse_time_ms);
         this->pin_WDI.reset();
     }
 
  private:
-    DigitalIO pin_WDI;
-    uint8_t pulse_time_ms;
+    DigitalIO::Interface &pin_WDI;
 };
 
 }  // namespace hal
