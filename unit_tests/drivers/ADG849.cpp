@@ -11,33 +11,26 @@ struct ADG849Mock : public DigtalIOMock {
         TEST_ASSERT_EQUAL(mode, Mode::OUTPUT);
     }
 
-    // 0xFF for don't care
-    uint8_t expect;
+    bool value_written;
 
     void write(bool value) override {
-        if (expect != 0xFF) {
-            TEST_ASSERT_EQUAL(expect, value);
-        }
+        this->value_written = value;
     }
 };
 
-void set_expect(ADG849Mock& in, uint8_t output) {
-    if (output == 0xFF) {
-        in.expect = 0;
-    } else {
-        in.expect = hal::libs::read_bit<0>(output);
-    }
-}
-
 TEST(ADG849, set_channel) {
     ADG849Mock in;
-
-    set_expect(in, 0xFF);
     hal::ADG849 adg(in);
 
-    set_expect(in, 0);
-    adg.select(hal::ADG849::Channel::S1);
+    adg.init(hal::ADG849::Channel::S1);
+    TEST_ASSERT_EQUAL_INT(false, in.value_written);
 
-    set_expect(in, 1);
+    adg.init(hal::ADG849::Channel::S2);
+    TEST_ASSERT_EQUAL_INT(true, in.value_written);
+
+    adg.select(hal::ADG849::Channel::S1);
+    TEST_ASSERT_EQUAL_INT(false, in.value_written);
+
     adg.select(hal::ADG849::Channel::S2);
+    TEST_ASSERT_EQUAL_INT(true, in.value_written);
 }

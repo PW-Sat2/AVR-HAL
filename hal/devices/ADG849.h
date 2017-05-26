@@ -7,7 +7,7 @@ namespace hal {
 
 class ADG849 {
  public:
-    enum class Channel : uint8_t {
+    enum class Channel : bool {
         S1 = 0,
         S2 = 1
     };
@@ -21,11 +21,11 @@ class ADG849 {
 
     /*!
      * Function to initialize device.
-     * Particular channel after initialization can be forced by invoking
-     * @see ADG849#select before.
      * It sets DigitalIO IN pin as OUTPUT.
+     * @param default_channel sets multiplexer channel after initialization
      */
-    void init() const {
+    void init(Channel default_channel) const {
+        this->select(default_channel);
         this->pin_IN.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 
@@ -38,7 +38,7 @@ class ADG849 {
     }
 
  private:
-    DigitalIO::Interface &pin_IN;
+    DigitalIO::Interface& pin_IN;
 };
 
 }  // namespace hal

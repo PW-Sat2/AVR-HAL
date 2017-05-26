@@ -7,8 +7,8 @@ int main() {
     hal::DigitalIO::GPIO<hal::mcu::pin_sda> mux_pin_2;
     hal::ADG849 mux_2(mux_pin_2);
 
-    mux_1.init();
-    mux_2.init();
+    mux_1.init(hal::ADG849::Channel::S1);
+    mux_2.init(hal::ADG849::Channel::S1);
 
     while (true) {
         mux_1.select(hal::ADG849::Channel::S1);
