@@ -7,19 +7,36 @@ namespace hal {
 
 class ADG849 {
  public:
-    constexpr explicit ADG849(DigitalIO::Pin pin_IN) : pin_IN{pin_IN} {
+    enum class Channel : uint8_t {
+        S1 = 0,
+        S2 = 1
+    };
+
+    /*!
+     * Default ctor.
+     * @param pin_IN DigitalIO interface to use as IN pin of ADG849
+     */
+    constexpr explicit ADG849(DigitalIO::Interface& pin_IN) : pin_IN{pin_IN} {
     }
 
+    /*!
+     * Function to initialize device.
+     * It sets DigitalIO IN pin as OUTPUT.
+     */
     void init() const {
-        this->pin_IN.pinmode(DigitalIO::OUTPUT);
+        this->pin_IN.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 
-    void select(uint8_t channel) const {
+    /*!
+     * Function sets desired mux channel.
+     * @param channel Channel to set active mux channel
+     */
+    void select(Channel channel) const {
         this->pin_IN.write(static_cast<bool>(channel));
     }
 
  private:
-    DigitalIO pin_IN;
+    DigitalIO::Interface &pin_IN;
 };
 
 }  // namespace hal
