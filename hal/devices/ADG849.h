@@ -21,6 +21,8 @@ class ADG849 {
 
     /*!
      * Function to initialize device.
+     * Particular channel after initialization can be forced by invoking
+     * @see ADG849#select before.
      * It sets DigitalIO IN pin as OUTPUT.
      */
     void init() const {
