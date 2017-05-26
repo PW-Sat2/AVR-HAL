@@ -1,5 +1,7 @@
 #include "tests.h"
 
+TEST_GROUP(pure_virtual);
+
 struct PureVirtualInterface {
     PureVirtualInterface() {
         auto ptr = this;
@@ -15,6 +17,3 @@ struct PureVirtualImplementation : PureVirtualInterface {
 TEST(pure_virtual, during_construction) {
     PureVirtualImplementation a;
 }
-
-
-DEFINE_TESTSUITE(pure_virtual);

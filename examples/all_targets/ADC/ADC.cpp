@@ -1,6 +1,6 @@
 #include <hal/hal>
 
-using hal::InternalADC;
+using hal::Analog::InternalADC;
 using hal::Serial0;
 
 

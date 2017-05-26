@@ -4,9 +4,11 @@
 #include "hal/periph.h"
 
 namespace hal {
-template<typename I2C>
+
 class PCF8563 {
  public:
+    PCF8563(I2C::Interface& i2c) : i2c{i2c} {}
+
     enum class ClockStatus {
         STOPPED = 0,
         RUNNING = 1
@@ -33,8 +35,8 @@ class PCF8563 {
         uint16_t year;
     };
     void clear_status() const {
-        libs::array<const uint8_t, 2> data = {0x00, 0x00};
-        i2cdevice.write_register(Registers::CONTROL_STATUS_1, data);
+        libs::array<const uint8_t, 3> data = {Registers::CONTROL_STATUS_1, 0x00, 0x00};
+        i2c.write(_addr, data);
     }
 
     void set_date_time(Date date, Time time) const {
@@ -47,7 +49,8 @@ class PCF8563 {
             month_century |= (1 << 7);
         }
 
-        libs::array<const uint8_t, 7> data = {
+        libs::array<const uint8_t, 8> data = {
+            Registers::VL_SECONDS,
             decToBcd(time.seconds),
             decToBcd(time.minutes),
             decToBcd(time.hours),
@@ -57,17 +60,19 @@ class PCF8563 {
             decToBcd(date.year%100)
         };
 
-        i2cdevice.write_register(Registers::VL_SECONDS, data);
+        i2c.write(_addr, data);
     }
 
     void set_square_output(SquareOutput frequency) const {
-        libs::array<const uint8_t, 1> data = {static_cast<uint8_t>(frequency)};
-        i2cdevice.write_register(Registers::CLKOUT_CTRL, data);
+        libs::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
+                                              static_cast<uint8_t>(frequency)};
+        i2c.write(_addr, data);
     }
 
     ClockStatus get_date_time(Date &date, Time &time) const {
+        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         libs::array<uint8_t, 7> data;
-        i2cdevice.read_register(Registers::VL_SECONDS, data);
+        i2c.writeRead(_addr, tx, data);
 
         time.hours = bcdToDec(data[2] & 0x3F);
         time.minutes = bcdToDec(data[1] & 0x7F);
@@ -91,8 +96,9 @@ class PCF8563 {
     }
 
     ClockStatus getClockStatus() const {
+        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         libs::array<uint8_t, 1> data;
-        i2cdevice.read_register(Registers::VL_SECONDS, data);
+        i2c.writeRead(_addr, tx, data);
 
         if (data[0] & 0x80) {
             return ClockStatus::STOPPED;
@@ -121,7 +127,8 @@ class PCF8563 {
         TIMER = 0x0F
     };
 
-    const I2C_Device<I2C> i2cdevice{0x51};
+    I2C::Interface& i2c;
+    I2C::Interface::Address _addr = 0x51;
 
     uint8_t decToBcd(uint8_t val) const {
         return ((val/10*16) + (val%10));

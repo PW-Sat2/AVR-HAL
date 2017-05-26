@@ -2,7 +2,7 @@
 #define HAL_MCU_ATMEGA164P_324P_644P_44_HAL_MCU_DIGITALIO_H_
 
 #include <avr/io.h>
-#include "hal/periph/GPIO/PeriphDescriptors.h"
+#include "hal/periph/DigitalIO/PeriphDescriptors.h"
 
 namespace hal {
 namespace mcu {

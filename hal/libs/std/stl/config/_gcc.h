@@ -250,3 +250,5 @@ typedef unsigned int wint_t;
 #    define _STLP_NO_ALIAS_TEMPLATES /* no alias templates yet */
 #  endif
 #endif
+
+#undef _STLP_NO_NULLPTR_T

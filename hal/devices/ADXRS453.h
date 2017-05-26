@@ -5,7 +5,6 @@
 
 namespace hal {
 
-template<typename spi>
 class ADXRS453 {
  public:
     enum RegisterMap {
@@ -20,12 +19,8 @@ class ADXRS453 {
         SN_LOW = 0x10
     };
 
-    constexpr explicit ADXRS453(DigitalIO::Pin pin_cs) :
-            spi_dev(pin_cs) {
-    }
-
-    void init() const {
-        this->spi_dev.init();
+    constexpr ADXRS453(SPI::Interface& spi) :
+            spi(spi) {
     }
 
     bool deviceStatus() const {
@@ -58,8 +53,8 @@ class ADXRS453 {
             dataBuffer[3] |= 1;
         }
 
-        this->spi_dev.transfer(dataBuffer, dataBuffer);
-        this->spi_dev.transfer(dataBuffer, dataBuffer);
+        this->spi.transfer(dataBuffer, dataBuffer);
+        this->spi.transfer(dataBuffer, dataBuffer);
 
         uint32_t registerValue = (static_cast<uint32_t>(dataBuffer[0]) << 24)
                 | (static_cast<uint32_t>(dataBuffer[1]) << 16)
@@ -119,8 +114,8 @@ class ADXRS453 {
             dataBuffer[3] |= 1;
         }
 
-        this->spi_dev.transfer(dataBuffer, dataBuffer);
-        this->spi_dev.transfer(dataBuffer, dataBuffer);
+        this->spi.transfer(dataBuffer, dataBuffer);
+        this->spi.transfer(dataBuffer, dataBuffer);
 
         uint16_t registerValue = (static_cast<uint16_t>(dataBuffer[1]) << 11)
                 | (static_cast<uint16_t>(dataBuffer[2]) << 3)
@@ -153,9 +148,9 @@ class ADXRS453 {
             dataBuffer[3] |= 1;
         }
 
-        this->spi_dev.transmit(dataBuffer);
+        this->spi.write(dataBuffer);
     }
-    const SPI::Device<spi> spi_dev;
+    SPI::Interface& spi;
 };
 
 }  // namespace hal

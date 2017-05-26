@@ -1,0 +1,9 @@
+#ifndef HAL_PERIPH_DIGITALIO_PERIPHDESCRIPTORS_H_
+#define HAL_PERIPH_DIGITALIO_PERIPHDESCRIPTORS_H_
+
+struct DigitalIOPinDescriptor {
+    int DDRx, PORTx, PINx;
+    uint8_t pin;
+};
+
+#endif  // HAL_PERIPH_DIGITALIO_PERIPHDESCRIPTORS_H_
