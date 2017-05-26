@@ -34,7 +34,7 @@ TEST(ADG849, set_channel) {
 
     set_expect(in, 0xFF);
     hal::ADG849 adg(in);
-    
+
     set_expect(in, 0);
     adg.select(hal::ADG849::Channel::S1);
 
