@@ -7,8 +7,8 @@ namespace hal {
 
 class FPF270x {
 public:
-    constexpr FPF270x(const DigitalIO::Pin pin_on,
-            const DigitalIO::Pin pin_flag, const DigitalIO::Pin pin_pgood) :
+    constexpr FPF270x(const DigitalIO::Interface::Pin pin_on,
+            const DigitalIO::Interface::Pin pin_flag, const DigitalIO::Interface::Pin pin_pgood) :
             pin_on{pin_on}, pin_flag{pin_flag}, pin_pgood{pin_pgood} {
     }
 
