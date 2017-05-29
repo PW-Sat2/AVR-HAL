@@ -5,20 +5,21 @@
 #include <hal/hal>
 
 struct EmptySPIMock : public hal::SPI::Interface {
-    uint8_t transfer(uint8_t output) override {
+    uint8_t transfer(uint8_t) override {
         TEST_FAIL();
         return 0;
     }
 
-    void transfer(hal::libs::span<const uint8_t> output, hal::libs::span<uint8_t> input) override {
+    void transfer(hal::libs::span<const uint8_t> in, hal::libs::span<uint8_t> out) override {
+        TEST_ASSERT_EQUAL_INT(in.size(), out.size());
         TEST_FAIL();
     }
 
-    void write(hal::libs::span<const uint8_t> output) override {
+    void write(hal::libs::span<const uint8_t>) override {
         TEST_FAIL();
     }
 
-    void read(hal::libs::span<uint8_t> input, uint8_t output_value) override {
+    void read(hal::libs::span<uint8_t>, uint8_t) override {
         TEST_FAIL();
     }
 };

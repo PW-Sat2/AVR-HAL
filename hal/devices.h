@@ -12,5 +12,8 @@
 #include "hal/devices/FPF270x.h"
 #include "hal/devices/LED.h"
 #include "hal/devices/PCF8563.h"
+#include "hal/devices/TMP121.h"
+#include "hal/devices/ADC12x.h"
+#include "hal/devices/ADG849.h"
 
 #endif  // HAL_DEVICES_H_
