@@ -1,5 +1,5 @@
-#ifndef FPF270X_H_
-#define FPF270X_H_
+#ifndef HAL_DEVICES_FPF270X_H_
+#define HAL_DEVICES_FPF270X_H_
 
 #include "hal/periph.h"
 
@@ -43,4 +43,4 @@ class FPF270x {
 }  // namespace devices
 }  // namespace hal
 
-#endif /* FPF270X_H_ */
+#endif  // HAL_DEVICES_FPF270X_H_
