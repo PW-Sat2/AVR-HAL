@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.2)
 
 # Download and unpack unity at configure time
 configure_file(CMakeLists.txt.in ${CMAKE_CURRENT_BINARY_DIR}/unity/CMakeLists.txt)
