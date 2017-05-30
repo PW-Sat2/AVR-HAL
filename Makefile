@@ -1,11 +1,12 @@
 LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int --linelength=120
 
-all: checkFormat checkStyle examples unit_tests_run SingleDeviceTests
+all: checkStyle examples unit_tests_run SingleDeviceTests checkFormat
 
 clean:
-	rm -Rvf tmp
+	rm -rf tmp
 	make -C examples clean
 	rm -rf unit_tests/build
+	rm -rf tests/SingleDevice/build
 
 tmp:
 	mkdir -p tmp

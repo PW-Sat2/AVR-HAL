@@ -8,6 +8,7 @@ ExternalProject_Add(unity
   GIT_TAG           master
   SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/unity-src"
   BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/unity-build"
+  UPDATE_DISCONNECTED 1
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
