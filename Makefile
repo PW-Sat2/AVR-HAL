@@ -1,6 +1,6 @@
 LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int --linelength=120
 
-all: checkStyle examples unit_tests_run SingleDeviceTests
+all: checkFormat checkStyle examples unit_tests_run SingleDeviceTests
 
 clean:
 	rm -Rvf tmp
@@ -15,6 +15,12 @@ tmp/cpplint.py: tmp
 
 checkStyle: tmp/cpplint.py
 	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "/cmake-build-debug/" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+
+format:
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "/cmake-build-debug/" | xargs clang-format -i
+
+checkFormat: format
+	git diff --exit-code
 
 examples: force
 	make -C examples
