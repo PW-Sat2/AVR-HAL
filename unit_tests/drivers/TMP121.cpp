@@ -1,5 +1,5 @@
-#include "unity.h"
 #include "tests.h"
+#include "unity.h"
 
 #include "mocks/SPI.h"
 

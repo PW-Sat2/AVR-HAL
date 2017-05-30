@@ -1,8 +1,8 @@
 #ifndef UNIT_TESTS_MOCKS_SPI_H_
 #define UNIT_TESTS_MOCKS_SPI_H_
 
-#include "tests.h"
 #include <hal/hal>
+#include "tests.h"
 
 struct EmptySPIMock : public hal::SPI::Interface {
     uint8_t transfer(uint8_t) override {
@@ -10,7 +10,8 @@ struct EmptySPIMock : public hal::SPI::Interface {
         return 0;
     }
 
-    void transfer(hal::libs::span<const uint8_t> in, hal::libs::span<uint8_t> out) override {
+    void transfer(hal::libs::span<const uint8_t> in,
+                  hal::libs::span<uint8_t> out) override {
         TEST_ASSERT_EQUAL_INT(in.size(), out.size());
         TEST_FAIL();
     }

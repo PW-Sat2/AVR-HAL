@@ -27,7 +27,7 @@ TEST(array, refs) {
 
 TEST(array, at) {
     hal::libs::array<int, 20> arr;
-    int * val = arr.data();
+    int* val = arr.data();
     for (int i = 0; i < 20; ++i) {
         *(val++) = i;
     }
@@ -44,23 +44,23 @@ TEST(array, at) {
     }
 
     int i = 0;
-    for (const auto &x : arr) {
+    for (const auto& x : arr) {
         TEST_ASSERT_EQUAL(x, i++);
     }
     i = 0;
-    for (const auto &x : arr2) {
+    for (const auto& x : arr2) {
         TEST_ASSERT_EQUAL(x, i++);
     }
 }
 
 TEST(array, swap) {
-    hal::libs::array<int, 5> arr = {1, 1, 1, 1, 1};
+    hal::libs::array<int, 5> arr  = {1, 1, 1, 1, 1};
     hal::libs::array<int, 5> arr2 = {1, 2, 3, 4, 5};
-    arr = arr2;
+    arr                           = arr2;
     TEST_ASSERT_EQUAL(arr == arr2, true);
 
     for (int i = 0; i < 5; ++i) {
-        arr[i] = i;
+        arr[i]  = i;
         arr2[i] = 5 - i;
     }
 
@@ -89,7 +89,7 @@ TEST(array, assign) {
     hal::libs::array<unsigned char, 20> arr;
     arr.assign(3);
 
-    for (const auto &x : arr) {
+    for (const auto& x : arr) {
         TEST_ASSERT_EQUAL(x, 3);
     }
 }

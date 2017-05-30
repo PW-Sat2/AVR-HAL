@@ -1,5 +1,5 @@
-#include "tests.h"
 #include "mocks/DigitalIO.h"
+#include "tests.h"
 
 TEST_GROUP(LED);
 
@@ -25,23 +25,23 @@ struct LEDMock : public DigtalIOMock {
 TEST(LED, write) {
     LEDMock mock;
     LED led{mock};
-    mock.expect = 0; led.write(false);
-    mock.expect = 1; led.write(true);
+    mock.expect = 0, led.write(false);
+    mock.expect = 1, led.write(true);
 }
 
 TEST(LED, setReset) {
     LEDMock mock;
     LED led{mock};
-    mock.expect = 0; led.write(false);
-    mock.expect = 1; led.on();
-    mock.expect = 0; led.off();
+    mock.expect = 0, led.write(false);
+    mock.expect = 1, led.on();
+    mock.expect = 0, led.off();
 }
 
 TEST(LED, toggle) {
     LEDMock mock;
     LED led{mock};
-    mock.expect = 0; led.write(false);
-    mock.expect = 0xFF; led.toggle();
-    mock.expect = 0xFF; led.toggle();
-    mock.expect = 0xFF; led.toggle();
+    mock.expect = 0, led.write(false);
+    mock.expect = 0xFF, led.toggle();
+    mock.expect = 0xFF, led.toggle();
+    mock.expect = 0xFF, led.toggle();
 }

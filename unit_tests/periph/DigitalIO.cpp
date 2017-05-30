@@ -6,9 +6,12 @@ using namespace hal;
 
 template<int pin_>
 struct PinTest {
-    volatile uint8_t& DDRx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].DDRx);
-    volatile uint8_t& PORTx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PORTx);
-    volatile uint8_t& PINx = *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PINx);
+    volatile uint8_t& DDRx =
+        *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].DDRx);
+    volatile uint8_t& PORTx =
+        *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PORTx);
+    volatile uint8_t& PINx =
+        *(volatile uint8_t*)(hal::mcu::DigitalIOPinMap[pin_].PINx);
     int pin = hal::mcu::DigitalIOPinMap[pin_].pin;
 };
 
@@ -109,35 +112,52 @@ TEST(DigitalIO, operationsDoesNotChangeMode) {
     DigitalIO::GPIO<hal::mcu::pin_scl> gpio;
     DigitalIO::Interface& pin{gpio};
 
-#define CHECK_DDR(ddr_val) \
-        TEST_ASSERT_BIT_## ddr_val(pinTest.pin, pinTest.DDRx);
+#define CHECK_DDR(ddr_val) TEST_ASSERT_BIT_##ddr_val(pinTest.pin, pinTest.DDRx);
 
     pin.init(DigitalIO::Interface::Mode::INPUT);
     CHECK_DDR(LOW);
-    pin.set(); CHECK_DDR(LOW);
-    pin.reset(); CHECK_DDR(LOW);
-    pin.write(false); CHECK_DDR(LOW);
-    pin.write(true); CHECK_DDR(LOW);
-    pin.toggle(); CHECK_DDR(LOW);
-    pin.read(); CHECK_DDR(LOW);
+    pin.set();
+    CHECK_DDR(LOW);
+    pin.reset();
+    CHECK_DDR(LOW);
+    pin.write(false);
+    CHECK_DDR(LOW);
+    pin.write(true);
+    CHECK_DDR(LOW);
+    pin.toggle();
+    CHECK_DDR(LOW);
+    pin.read();
+    CHECK_DDR(LOW);
 
     pin.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
     CHECK_DDR(LOW);
-    pin.set(); CHECK_DDR(LOW);
-    pin.reset(); CHECK_DDR(LOW);
-    pin.write(false); CHECK_DDR(LOW);
-    pin.write(true); CHECK_DDR(LOW);
-    pin.toggle(); CHECK_DDR(LOW);
-    pin.read(); CHECK_DDR(LOW);
+    pin.set();
+    CHECK_DDR(LOW);
+    pin.reset();
+    CHECK_DDR(LOW);
+    pin.write(false);
+    CHECK_DDR(LOW);
+    pin.write(true);
+    CHECK_DDR(LOW);
+    pin.toggle();
+    CHECK_DDR(LOW);
+    pin.read();
+    CHECK_DDR(LOW);
 
     pin.init(DigitalIO::Interface::Mode::OUTPUT);
     CHECK_DDR(HIGH);
-    pin.set(); CHECK_DDR(HIGH);
-    pin.reset(); CHECK_DDR(HIGH);
-    pin.write(false); CHECK_DDR(HIGH);
-    pin.write(true); CHECK_DDR(HIGH);
-    pin.toggle(); CHECK_DDR(HIGH);
-    pin.read(); CHECK_DDR(HIGH);
+    pin.set();
+    CHECK_DDR(HIGH);
+    pin.reset();
+    CHECK_DDR(HIGH);
+    pin.write(false);
+    CHECK_DDR(HIGH);
+    pin.write(true);
+    CHECK_DDR(HIGH);
+    pin.toggle();
+    CHECK_DDR(HIGH);
+    pin.read();
+    CHECK_DDR(HIGH);
 
 #undef CHECK_DDR
 }

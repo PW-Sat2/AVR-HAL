@@ -1,5 +1,5 @@
-#include "unity.h"
 #include "tests.h"
+#include "unity.h"
 
 #include "mocks/SPI.h"
 
@@ -41,6 +41,6 @@ TEST(AD5641, overflow) {
     MockAD5641 mock;
     AD5641 ad5641{mock};
 
-    mock.expect = 0x3FFF; ad5641.write(0x4000);
-    mock.expect = 0x3FFF; ad5641.write(0xFFFF);
+    mock.expect = 0x3FFF, ad5641.write(0x4000);
+    mock.expect = 0x3FFF, ad5641.write(0xFFFF);
 }

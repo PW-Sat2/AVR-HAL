@@ -1,5 +1,5 @@
-#include "tests.h"
 #include "mocks/DigitalIO.h"
+#include "tests.h"
 
 TEST_GROUP(ADG708);
 
@@ -21,7 +21,11 @@ struct ADG708Mock : public DigtalIOMock {
     }
 };
 
-void set_expect(ADG708Mock& a0, ADG708Mock& a1, ADG708Mock& a2, ADG708Mock& en, uint8_t output) {
+void set_expect(ADG708Mock& a0,
+                ADG708Mock& a1,
+                ADG708Mock& a2,
+                ADG708Mock& en,
+                uint8_t output) {
     if (output == 0xFF) {
         en.expect = 0;
         a0.expect = a1.expect = a2.expect = 0xFF;
