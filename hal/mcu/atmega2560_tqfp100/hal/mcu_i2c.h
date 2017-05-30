@@ -7,7 +7,7 @@ namespace mcu {
 constexpr static int pin_sda = 44;
 constexpr static int pin_scl = 43;
 
-}
-}
+}  // namespace mcu
+}  // namespace hal
 
 #endif  // HAL_MCU_ATMEGA2560_TQFP100_HAL_MCU_I2C_H_

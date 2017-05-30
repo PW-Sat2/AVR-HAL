@@ -8,11 +8,11 @@ namespace hal {
 namespace cpu {
 
 enum class SleepModes : uint8_t {
-    Idle = 0,
+    Idle                = 0,
     ADC_Noise_Reduction = 1,
-    Power_Down = 2,
-    Power_Save = 3,
-    Standby = 6
+    Power_Down          = 2,
+    Power_Save          = 3,
+    Standby             = 6
 };
 
 inline void set_sleep_mode(SleepModes mode) {
@@ -28,7 +28,8 @@ inline void sleep_disable() {
 }
 
 inline void sleep_cpu() {
-    __asm__ __volatile__("sleep" "\n\t" ::);
+    __asm__ __volatile__("sleep"
+                         "\n\t" ::);
 }
 
 }  // namespace cpu

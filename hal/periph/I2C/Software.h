@@ -2,15 +2,16 @@
 #define HAL_PERIPH_I2C_SOFTWARE_H_
 
 #include <util/delay.h>
-#include "hal/periph/DigitalIO/Interface.h"
 #include "_details.h"
+#include "hal/periph/DigitalIO/Interface.h"
 
 namespace hal {
 namespace I2C {
 
 class Software : public details::_Interface {
  public:
-    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
+    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl)
+        : pin_sda{pin_sda}, pin_scl{pin_scl} {
     }
 
     void init() {

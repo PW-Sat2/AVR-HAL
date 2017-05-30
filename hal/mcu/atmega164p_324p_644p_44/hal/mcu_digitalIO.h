@@ -7,10 +7,6 @@
 namespace hal {
 namespace mcu {
 
-#define PIN_DEF(port, pin) {reinterpret_cast<int>(&DDR ## port),      \
-                            reinterpret_cast<int>(&PORT ## port),     \
-                            reinterpret_cast<int>(&PIN ## port), pin}
-
 constexpr static DigitalIOPinDescriptor DigitalIOPinMap[] = {
     {0, 0, 0, 0},   //  0 -- padding
     PIN_DEF(B, 5),  //  1 -- PB5 (PCINT13/MOSI)

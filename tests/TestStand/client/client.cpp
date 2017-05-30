@@ -1,9 +1,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include "DigitalIO.h"
-#include "Serial.h"
-#include "SPISlave.h"
 #include "CLI.h"
+#include "DigitalIO.h"
+#include "SPISlave.h"
+#include "Serial.h"
 
 #include "commands.h"
 
@@ -28,7 +28,7 @@ constexpr DigitalIO pin1{bsp::pins::A1};
 #endif
 
 static char buf[100];
-static uint8_t cnt = 0;
+static uint8_t cnt         = 0;
 static bool cmd_ready_flag = false;
 
 #if defined(MCU_ATMEGA328P_TQFP32)
@@ -36,13 +36,13 @@ ISR(USART_RX_vect) {
 #elif defined(MCU_ATMEGA128A_TQFP64) || defined(MCU_ATMEGA644P_DIP40)
 ISR(USART0_RX_vect) {
 #endif
-    char now = UDR0;
+    char now   = UDR0;
     buf[cnt++] = now;
     if (now == '\r') {
-        buf[cnt-1] = 0;
+        buf[cnt - 1] = 0;
         pin1.set();
         cmd_ready_flag = true;
-        cnt = 0;
+        cnt            = 0;
     }
 }
 

@@ -4,9 +4,8 @@
 #include <avr/io.h>
 #include "Interface.h"
 
-#include "hal/mcu.h"
 #include "hal/libs.h"
-#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/mcu.h"
 #include "hal/periph/DigitalIO/Interface.h"
 
 #include "_details.h"
@@ -30,45 +29,46 @@ namespace hal {
 namespace SPI {
 
 enum class Polarity : int {
-    idle_low = 0,
-    idle_high = 1
+    idle_low  = 0,
+    idle_high = 1,
 };
 
 enum class Phase : int {
-    leading_sample = 0,
-    trailing_sample = 1
+    leading_sample  = 0,
+    trailing_sample = 1,
 };
 
 enum class DataOrder : int {
     MSB_first = 0,
-    LSB_first = 1
+    LSB_first = 1,
 };
 
 enum class HardwareClockDivisor {
-    SPIHard_DIV_4 = 0,
-    SPIHard_DIV_16 = 1,
-    SPIHard_DIV_64 = 2,
-    SPIHard_DIV_128 = 3
+    SPIHard_DIV_4   = 0,
+    SPIHard_DIV_16  = 1,
+    SPIHard_DIV_64  = 2,
+    SPIHard_DIV_128 = 3,
 };
 
-template<HardwareClockDivisor clock_divisor,
-         SPI::Polarity polarity,
-         SPI::Phase phase,
+template<HardwareClockDivisor clock_divisor,  //
+         SPI::Polarity polarity,              //
+         SPI::Phase phase,                    //
          SPI::DataOrder data_order>
 class Hardware : public details::BlockTransfer {
  public:
-    Hardware(DigitalIO::Interface& pin_cs) : BlockTransfer(pin_cs) {}
+    Hardware(DigitalIO::Interface& pin_cs) : BlockTransfer(pin_cs) {
+    }
 
     void init() {
         pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
         pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
         pin_ss.init(DigitalIO::Interface::Mode::OUTPUT);
 
-        SPCR = (1 << SPE)  |
-               (1 << MSTR) |
-               (static_cast<uint8_t>(clock_divisor)) |
-               (static_cast<uint8_t>(phase) << CPHA) |
-               (static_cast<uint8_t>(polarity) << CPOL) |
+        SPCR = (1 << SPE) |                                //
+               (1 << MSTR) |                               //
+               (static_cast<uint8_t>(clock_divisor)) |     //
+               (static_cast<uint8_t>(phase) << CPHA) |     //
+               (static_cast<uint8_t>(polarity) << CPOL) |  //
                (static_cast<uint8_t>(data_order) << DORD);
     }
 

@@ -8,16 +8,16 @@ namespace hal {
 namespace bsp {
 
 namespace pins {
-static constexpr DigitalIO::Pin D0 = 30;
-static constexpr DigitalIO::Pin D1 = 31;
-static constexpr DigitalIO::Pin D2 = 32;
-static constexpr DigitalIO::Pin D3 = 1;
-static constexpr DigitalIO::Pin D4 = 2;
-static constexpr DigitalIO::Pin D5 = 9;
-static constexpr DigitalIO::Pin D6 = 10;
-static constexpr DigitalIO::Pin D7 = 11;
-static constexpr DigitalIO::Pin D8 = 12;
-static constexpr DigitalIO::Pin D9 = 13;
+static constexpr DigitalIO::Pin D0  = 30;
+static constexpr DigitalIO::Pin D1  = 31;
+static constexpr DigitalIO::Pin D2  = 32;
+static constexpr DigitalIO::Pin D3  = 1;
+static constexpr DigitalIO::Pin D4  = 2;
+static constexpr DigitalIO::Pin D5  = 9;
+static constexpr DigitalIO::Pin D6  = 10;
+static constexpr DigitalIO::Pin D7  = 11;
+static constexpr DigitalIO::Pin D8  = 12;
+static constexpr DigitalIO::Pin D9  = 13;
 static constexpr DigitalIO::Pin D10 = 14;
 static constexpr DigitalIO::Pin D11 = 15;
 static constexpr DigitalIO::Pin D12 = 16;

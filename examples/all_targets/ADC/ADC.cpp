@@ -8,7 +8,7 @@ volatile uint8_t flag = 0;
 volatile int x;
 
 ISR(ADC_vect) {
-    x = InternalADC::read_nowait();
+    x    = InternalADC::read_nowait();
     flag = 1;
 }
 

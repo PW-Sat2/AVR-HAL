@@ -9,9 +9,12 @@ int main() {
 
     using A3G4250D = hal::A3G4250D<hal::TWI>;
     constexpr A3G4250D gyro(A3G4250D::I2C_Address::SEL_HIGH);
-    gyro.set_data_rate_bandwidth(A3G4250D::DataRateCutOff::DR_00_BW_00_100_Hz_CF_12_5);
-    gyro.set_power_mode(A3G4250D::PowerMode::ACTIVE, A3G4250D::AxisPowerMode::NORMAL,
-                        A3G4250D::AxisPowerMode::NORMAL, A3G4250D::AxisPowerMode::NORMAL);
+    gyro.set_data_rate_bandwidth(
+        A3G4250D::DataRateCutOff::DR_00_BW_00_100_Hz_CF_12_5);
+    gyro.set_power_mode(A3G4250D::PowerMode::ACTIVE,
+                        A3G4250D::AxisPowerMode::NORMAL,
+                        A3G4250D::AxisPowerMode::NORMAL,
+                        A3G4250D::AxisPowerMode::NORMAL);
     gyro.data_output_path(A3G4250D::DataOutputPath::LP2_FILTERED);
 
     _delay_ms(1000);
@@ -27,7 +30,11 @@ int main() {
             }
 
             A3G4250D::GyroData data = gyro.get_raw_gyro();
-            printf("T: %d\tX: %d\tY: %d\tZ: %d\r\n", gyro.get_temperature_raw(), data.X_axis, data.Y_axis, data.Z_axis);
+            printf("T: %d\tX: %d\tY: %d\tZ: %d\r\n",
+                   gyro.get_temperature_raw(),
+                   data.X_axis,
+                   data.Y_axis,
+                   data.Z_axis);
         } else {
             printf("Gyro NOK!\r\n");
         }

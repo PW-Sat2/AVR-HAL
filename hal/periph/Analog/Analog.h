@@ -13,12 +13,12 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     InternalADC() = delete;
 
     enum class Prescaler : uint8_t {
-        DIV_2 = 0,
-        DIV_4 = 2,
-        DIV_8 = 3,
-        DIV_16 = 4,
-        DIV_32 = 5,
-        DIV_64 = 6,
+        DIV_2   = 0,
+        DIV_4   = 2,
+        DIV_8   = 3,
+        DIV_16  = 4,
+        DIV_32  = 5,
+        DIV_64  = 6,
         DIV_128 = 7
     };
 
@@ -84,8 +84,7 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
 
 class AnalogGPIO {
  public:
-    explicit constexpr AnalogGPIO(InternalADC::Input pin) :
-        pin{pin} {
+    explicit constexpr AnalogGPIO(InternalADC::Input pin) : pin{pin} {
     }
 
     uint16_t read() const {

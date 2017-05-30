@@ -212,7 +212,7 @@ inline bool Reader::Status() const {
 
 inline void Reader::Reset() {
     this->position = 0;
-    this->isValid = !this->buffer.empty();
+    this->isValid  = !this->buffer.empty();
 }
 
 /** @}*/

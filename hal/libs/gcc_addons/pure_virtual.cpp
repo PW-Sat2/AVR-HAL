@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <avr/interrupt.h>
+#include <stdio.h>
 
 extern "C" void __cxa_pure_virtual(void);
 

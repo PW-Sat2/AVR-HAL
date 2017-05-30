@@ -21,11 +21,16 @@ int main() {
     _delay_ms(1000);
 
     while (true) {
-        while (false == gyro.data_ready()) {}
+        while (false == gyro.data_ready()) {
+        }
 
         if (gyro.is_present()) {
             ITG3200::GyroData data = gyro.get_raw_gyro();
-            printf("T: %f\tX: %d\tY: %d\tZ: %d\r\n", gyro.get_temperature(), data.X_axis, data.Y_axis, data.Z_axis);
+            printf("T: %f\tX: %d\tY: %d\tZ: %d\r\n",
+                   gyro.get_temperature(),
+                   data.X_axis,
+                   data.Y_axis,
+                   data.Z_axis);
         } else {
             printf("Gyro NOK!\r\n");
         }

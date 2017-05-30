@@ -17,12 +17,13 @@ class AT24C02 {
         libs::span<uint8_t> data;
 
      private:
-        libs::array<uint8_t, size+1> _data;
+        libs::array<uint8_t, size + 1> _data;
 
         friend class AT24C02;
     };
 
-    AT24C02(I2C::Interface& i2c) : i2c{i2c} {}
+    AT24C02(I2C::Interface& i2c) : i2c{i2c} {
+    }
 
     template<std::size_t size>
     void write(const Data<size>& mem) const {

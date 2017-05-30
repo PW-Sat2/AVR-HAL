@@ -9,7 +9,7 @@ class ADG849 {
  public:
     enum class Channel : bool {
         S1 = 0,
-        S2 = 1
+        S2 = 1,
     };
 
     /*!

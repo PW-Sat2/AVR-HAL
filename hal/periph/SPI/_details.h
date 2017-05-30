@@ -2,8 +2,8 @@
 #define HAL_PERIPH_SPI__DETAILS_H_
 
 #include <avr/io.h>
-#include "hal/mcu.h"
 #include "Interface.h"
+#include "hal/mcu.h"
 
 namespace hal {
 namespace SPI {
@@ -18,11 +18,12 @@ class BlockTransfer : public Interface {
         pin_cs.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 
-    void transfer(libs::span<const uint8_t> output, libs::span<uint8_t> input) override {
+    void transfer(libs::span<const uint8_t> output,
+                  libs::span<uint8_t> input) override {
         pin_cs.reset();
-        const uint8_t * out_ptr = output.data();
-        uint8_t * in_ptr = input.data();
-        int len = input.size();
+        const uint8_t* out_ptr = output.data();
+        uint8_t* in_ptr        = input.data();
+        int len                = input.size();
         while (len--) {
             (*in_ptr) = static_cast<Interface*>(this)->transfer(*out_ptr);
             in_ptr++;
