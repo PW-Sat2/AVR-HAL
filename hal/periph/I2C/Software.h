@@ -21,6 +21,14 @@ class Software : public details::_Interface {
         pin_sda.reset();
     }
 
+    using Interface::read;
+    using Interface::write;
+    using Interface::writeRead;
+
+ private:
+    DigitalIO::Interface& pin_sda;
+    DigitalIO::Interface& pin_scl;
+
     bool start(uint8_t address, const StartAction start_action) override {
         scl_high();
         hDelay();
@@ -115,10 +123,6 @@ class Software : public details::_Interface {
 
         return data;
     }
-
- private:
-    DigitalIO::Interface& pin_sda;
-    DigitalIO::Interface& pin_scl;
 
     void qDelay() {
         _delay_loop_1(3);

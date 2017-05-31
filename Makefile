@@ -15,7 +15,7 @@ tmp/cpplint.py: tmp
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 
 checkStyle: tmp/cpplint.py
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "/cmake-build-debug/" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "cmake-build-" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
 
 format:
 	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "/cmake-build-debug/" | xargs clang-format -i
