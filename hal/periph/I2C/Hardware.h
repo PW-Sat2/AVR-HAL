@@ -32,6 +32,11 @@ class Hardware : public details::_Interface {
         TWCR = 0;
     }
 
+    using Interface::read;
+    using Interface::write;
+    using Interface::writeRead;
+
+ private:
     template<uint32_t frequency>
     void set_frequency() {
         TWSR = calc_twps<frequency>::value;
@@ -80,7 +85,6 @@ class Hardware : public details::_Interface {
         return TWDR;
     }
 
- private:
     void wait_for_finish() {
         while (libs::read_bit(TWCR, TWINT) == false) {}
     }
