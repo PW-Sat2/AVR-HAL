@@ -7,15 +7,16 @@ namespace hal {
 namespace libs {
 
 #undef assert
-#define assert(cond) \
-    if (!(cond)) {     \
+#define assert(cond)                        \
+    if (!(cond)) {                          \
         fail_due_to_error("Assert failed"); \
     }
 
 #undef fail_due_to_error
-#define fail_due_to_error(string) \
+#define fail_due_to_error(string)                                  \
     printf("Error at %s:%d - %s\r\n", __FILE__, __LINE__, string); \
-    while (1) {}
+    while (1) {                                                    \
+    }
 
 }  // namespace libs
 }  // namespace hal

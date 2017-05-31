@@ -22,7 +22,7 @@ class AddressCounter {
 
 }  // namespace details
 
-template <typename T>
+template<typename T>
 class EepromStorage : details::AddressCounter {
  public:
     constexpr EepromStorage()
@@ -53,8 +53,7 @@ class EepromStorage : details::AddressCounter {
     }
 
     void read(libs::span<T> data_out) const {
-        eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr,
-                          size);
+        eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr, size);
     }
     void write(libs::span<const T> data_in) const {
         eeprom_write_block(data_in.begin(), eeprom_ptr, size);

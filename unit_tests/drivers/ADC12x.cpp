@@ -1,6 +1,6 @@
 #include <mocks/SPI.h>
-#include "tests.h"
 #include "mocks/DigitalIO.h"
+#include "tests.h"
 
 TEST_GROUP(ADC12x);
 
@@ -72,10 +72,12 @@ TEST(ADC12x, edgeCases) {
     ADC128 adc128(mock);
 
     mock.value = 4095;
-    TEST_ASSERT_EQUAL_INT(mock.value, adc128.readAndChangeChannel(ADC128::Channel::IN0));
+    TEST_ASSERT_EQUAL_INT(mock.value,
+                          adc128.readAndChangeChannel(ADC128::Channel::IN0));
 
     mock.value = 0;
-    TEST_ASSERT_EQUAL_INT(mock.value, adc128.readAndChangeChannel(ADC128::Channel::IN0));
+    TEST_ASSERT_EQUAL_INT(mock.value,
+                          adc128.readAndChangeChannel(ADC128::Channel::IN0));
 }
 
 TEST(ADC12x, fullRange) {
@@ -84,7 +86,8 @@ TEST(ADC12x, fullRange) {
 
     for (uint16_t i = 0; i < 4096; ++i) {
         mock.value = i;
-        TEST_ASSERT_EQUAL_INT(mock.value, adc128.readAndChangeChannel(ADC128::Channel::IN0));
+        TEST_ASSERT_EQUAL_INT(
+            mock.value, adc128.readAndChangeChannel(ADC128::Channel::IN0));
     }
 }
 

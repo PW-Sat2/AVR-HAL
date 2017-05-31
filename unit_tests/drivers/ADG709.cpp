@@ -1,5 +1,5 @@
-#include "tests.h"
 #include "mocks/DigitalIO.h"
+#include "tests.h"
 
 TEST_GROUP(ADG709);
 

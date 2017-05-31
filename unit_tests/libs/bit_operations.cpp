@@ -1,9 +1,9 @@
-#include "unity.h"
 #include "../tests.h"
+#include "unity.h"
 
 #include <math.h>
-#include <numeric>
 #include <limits>
+#include <numeric>
 
 using namespace hal::libs;
 
@@ -41,28 +41,28 @@ TEST(bit_operations, set_bit) {
     set_bit(val, 7);
     TEST_ASSERT_EQUAL(val, 0xA9);
 
-    set_bit(val, 0+8);
-    set_bit(val, 3+8);
-    set_bit(val, 5+8);
-    set_bit(val, 7+8);
+    set_bit(val, 0 + 8);
+    set_bit(val, 3 + 8);
+    set_bit(val, 5 + 8);
+    set_bit(val, 7 + 8);
     TEST_ASSERT_EQUAL(val, 0xA9A9);
 
-    set_bit(val, 0+16);
-    set_bit(val, 3+16);
-    set_bit(val, 5+16);
-    set_bit(val, 7+16);
+    set_bit(val, 0 + 16);
+    set_bit(val, 3 + 16);
+    set_bit(val, 5 + 16);
+    set_bit(val, 7 + 16);
     TEST_ASSERT_EQUAL(val, 0xA9A9A9);
 
-    set_bit(val, 0+24);
-    set_bit(val, 3+24);
-    set_bit(val, 5+24);
-    set_bit(val, 7+24);
+    set_bit(val, 0 + 24);
+    set_bit(val, 3 + 24);
+    set_bit(val, 5 + 24);
+    set_bit(val, 7 + 24);
     TEST_ASSERT_EQUAL(val, 0xA9A9A9A9);
 }
 
 TEST(bit_operations, set_bit_ptr) {
     uint32_t value = 0;
-    uint32_t * val = &value;
+    uint32_t* val  = &value;
     for (int i = 0; i < 32; ++i) {
         *val = 0;
         set_bit(val, i);
@@ -93,32 +93,32 @@ TEST(bit_operations, set_bit_ptr) {
     set_bit(val, 7);
     TEST_ASSERT_EQUAL(*val, 0xA9);
 
-    set_bit(val, 0+8);
-    set_bit(val, 3+8);
-    set_bit(val, 5+8);
-    set_bit(val, 7+8);
+    set_bit(val, 0 + 8);
+    set_bit(val, 3 + 8);
+    set_bit(val, 5 + 8);
+    set_bit(val, 7 + 8);
     TEST_ASSERT_EQUAL(*val, 0xA9A9);
 
-    set_bit(val, 0+16);
-    set_bit(val, 3+16);
-    set_bit(val, 5+16);
-    set_bit(val, 7+16);
+    set_bit(val, 0 + 16);
+    set_bit(val, 3 + 16);
+    set_bit(val, 5 + 16);
+    set_bit(val, 7 + 16);
     TEST_ASSERT_EQUAL(*val, 0xA9A9A9);
 
-    set_bit(val, 0+24);
-    set_bit(val, 3+24);
-    set_bit(val, 5+24);
-    set_bit(val, 7+24);
+    set_bit(val, 0 + 24);
+    set_bit(val, 3 + 24);
+    set_bit(val, 5 + 24);
+    set_bit(val, 7 + 24);
     TEST_ASSERT_EQUAL(*val, 0xA9A9A9A9);
 }
 
 TEST(bit_operations, clear_bit) {
-    uint32_t val = 0xFFFFFFFF;
+    uint32_t val   = 0xFFFFFFFF;
     const auto MAX = std::numeric_limits<decltype(val)>::max();
     for (int i = 0; i < 32; ++i) {
         val = 0xFFFFFFFF;
         clear_bit(val, i);
-        TEST_ASSERT_EQUAL(val, 0xFFFFFFFF-(1UL << i));
+        TEST_ASSERT_EQUAL(val, 0xFFFFFFFF - (1UL << i));
     }
     val = MAX;
     for (int i = 0; i < 32; ++i) {
@@ -145,33 +145,33 @@ TEST(bit_operations, clear_bit) {
     clear_bit(val, 6);
     TEST_ASSERT_EQUAL(val, 0xFFFFFFA9);
 
-    clear_bit(val, 1+8);
-    clear_bit(val, 2+8);
-    clear_bit(val, 4+8);
-    clear_bit(val, 6+8);
+    clear_bit(val, 1 + 8);
+    clear_bit(val, 2 + 8);
+    clear_bit(val, 4 + 8);
+    clear_bit(val, 6 + 8);
     TEST_ASSERT_EQUAL(val, 0xFFFFA9A9);
 
-    clear_bit(val, 1+16);
-    clear_bit(val, 2+16);
-    clear_bit(val, 4+16);
-    clear_bit(val, 6+16);
+    clear_bit(val, 1 + 16);
+    clear_bit(val, 2 + 16);
+    clear_bit(val, 4 + 16);
+    clear_bit(val, 6 + 16);
     TEST_ASSERT_EQUAL(val, 0xFFA9A9A9);
 
-    clear_bit(val, 1+24);
-    clear_bit(val, 2+24);
-    clear_bit(val, 4+24);
-    clear_bit(val, 6+24);
+    clear_bit(val, 1 + 24);
+    clear_bit(val, 2 + 24);
+    clear_bit(val, 4 + 24);
+    clear_bit(val, 6 + 24);
     TEST_ASSERT_EQUAL(val, 0xA9A9A9A9);
 }
 
 TEST(bit_operations, clear_bit_ptr) {
     uint32_t value = 0xFFFFFFFF;
-    auto val = &value;
+    auto val       = &value;
     const auto MAX = std::numeric_limits<decltype(value)>::max();
     for (int i = 0; i < 32; ++i) {
         *val = 0xFFFFFFFF;
         clear_bit(val, i);
-        TEST_ASSERT_EQUAL(*val, 0xFFFFFFFF-(1UL << i));
+        TEST_ASSERT_EQUAL(*val, 0xFFFFFFFF - (1UL << i));
     }
     *val = MAX;
     for (int i = 0; i < 32; ++i) {
@@ -198,22 +198,22 @@ TEST(bit_operations, clear_bit_ptr) {
     clear_bit(val, 6);
     TEST_ASSERT_EQUAL(*val, 0xFFFFFFA9);
 
-    clear_bit(val, 1+8);
-    clear_bit(val, 2+8);
-    clear_bit(val, 4+8);
-    clear_bit(val, 6+8);
+    clear_bit(val, 1 + 8);
+    clear_bit(val, 2 + 8);
+    clear_bit(val, 4 + 8);
+    clear_bit(val, 6 + 8);
     TEST_ASSERT_EQUAL(*val, 0xFFFFA9A9);
 
-    clear_bit(val, 1+16);
-    clear_bit(val, 2+16);
-    clear_bit(val, 4+16);
-    clear_bit(val, 6+16);
+    clear_bit(val, 1 + 16);
+    clear_bit(val, 2 + 16);
+    clear_bit(val, 4 + 16);
+    clear_bit(val, 6 + 16);
     TEST_ASSERT_EQUAL(*val, 0xFFA9A9A9);
 
-    clear_bit(val, 1+24);
-    clear_bit(val, 2+24);
-    clear_bit(val, 4+24);
-    clear_bit(val, 6+24);
+    clear_bit(val, 1 + 24);
+    clear_bit(val, 2 + 24);
+    clear_bit(val, 4 + 24);
+    clear_bit(val, 6 + 24);
     TEST_ASSERT_EQUAL(*val, 0xA9A9A9A9);
 }
 

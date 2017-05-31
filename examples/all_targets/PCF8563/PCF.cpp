@@ -27,8 +27,13 @@ int main() {
     while (true) {
         if (hal::PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
-                time.hours, time.minutes, time.seconds,
-                date.day, date.month, date.year, date.weekday);
+                   time.hours,
+                   time.minutes,
+                   time.seconds,
+                   date.day,
+                   date.month,
+                   date.year,
+                   date.weekday);
         } else {
             printf("RTC clock is not working...\r\n");
         }

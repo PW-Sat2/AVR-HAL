@@ -197,7 +197,7 @@ inline bool Writer::Status() const {
 
 inline void Writer::Reset() {
     this->_position = 0;
-    this->_isValid = this->_buffer.size() > 0;
+    this->_isValid  = this->_buffer.size() > 0;
 }
 
 inline uint16_t Writer::GetDataLength() const {

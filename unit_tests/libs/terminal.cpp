@@ -1,8 +1,8 @@
-#include <cstdio>
 #include <cstdint>
+#include <cstdio>
 
-#include "tests.h"
 #include "hal/libs/terminal/terminal.h"
+#include "tests.h"
 
 TEST_GROUP(terminal);
 
@@ -11,23 +11,23 @@ using namespace hal::libs;
 struct CommandTracker {
     bool invoked;
     int argc;
-    char ** argv;
+    char** argv;
 
     void clear() {
         invoked = false;
-        argc = -1;
-        argv = NULL;
+        argc    = -1;
+        argv    = NULL;
     }
 
     bool wasInvoked() {
         auto tmp = invoked;
-        invoked = false;
+        invoked  = false;
         return tmp;
     }
 
     void invoke(std::uint8_t argc_, char* argv_[]) {
-        argc = argc_;
-        argv = argv_;
+        argc    = argc_;
+        argv    = argv_;
         invoked = true;
     }
 };
@@ -39,19 +39,17 @@ void handle(std::uint8_t argc, char* argv[]) {
     cmds[i].invoke(argc, argv);
 }
 
-TerminalCommandDescription cmdList[] = {
-    "test", handle<0>,
-    "foo", handle<1>
-};
+TerminalCommandDescription cmdList[] = {"test", handle<0>, "foo", handle<1>};
 
 Terminal terminal;
 
 void prepare() {
     terminal.SetCommandList(cmdList);
-    cmds[0].clear(); cmds[1].clear();
+    cmds[0].clear();
+    cmds[1].clear();
 }
 
-void handle(const char * line) {
+void handle(const char* line) {
     static char lineTmp[100];
     strcpy(lineTmp, line);
     terminal.HandleCommand(lineTmp);

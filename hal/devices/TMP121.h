@@ -15,8 +15,7 @@ class TMP121 {
      * SPI device have to support idle-high chip select.
      * @param spi SPI device to operate on.
      */
-    constexpr TMP121(SPI::Interface& spi) :
-            spi(spi) {
+    constexpr TMP121(SPI::Interface& spi) : spi(spi) {
     }
 
     /*!
@@ -43,7 +42,7 @@ class TMP121 {
      * @return Converted temperature to Celsius.
      */
     float readCelsius() {
-        return static_cast<float>(read())*0.0625;
+        return static_cast<float>(read()) * 0.0625;
     }
 
  private:

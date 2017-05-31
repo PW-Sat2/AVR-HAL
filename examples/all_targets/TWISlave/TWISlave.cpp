@@ -19,7 +19,7 @@ int main() {
     sei();
 
     for (int i = 0; i < 10; ++i) {
-        hal::TWISlave::tx_buffer[i] = 10+i;
+        hal::TWISlave::tx_buffer[i] = 10 + i;
     }
     while (true) {
         _delay_ms(10);

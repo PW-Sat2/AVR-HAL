@@ -2,17 +2,17 @@
 #define HAL_LIBS_ARRAY_H_
 
 #include <stddef.h>
+#include <algorithm>
+#include <cstring>
 #include <type_traits>
 #include <utility>
-#include <cstring>
-#include <algorithm>
 #include "hal/libs/span.h"
 #include "hal_assert.h"
 
 namespace hal {
 namespace libs {
 
-template <typename T, size_t N>
+template<typename T, size_t N>
 class array {
  public:
     static_assert(N > 0, "array size must be positive");
@@ -91,7 +91,7 @@ class array {
     }
 
     // assignment with type conversion
-    template <typename T2>
+    template<typename T2>
     array<T, N>& operator=(const array<T2, N>& rhs) {
         for (size_type i = 0; i < static_size; ++i) {
             memcpy(elems[0], rhs.data(), static_size * sizeof(T));
@@ -126,18 +126,18 @@ class array {
 };
 
 // comparisons
-template <class T, size_t N>
+template<class T, size_t N>
 inline bool operator==(const array<T, N>& x, const array<T, N>& y) {
     return (memcmp(x.data(), y.data(), x.size() * sizeof(T)) == 0);
 }
 
-template <class T, size_t N>
+template<class T, size_t N>
 inline bool operator!=(const array<T, N>& x, const array<T, N>& y) {
     return !(x == y);
 }
 
 // global swap()
-template <class T, size_t N>
+template<class T, size_t N>
 inline void swap(array<T, N>& x, array<T, N>& y) noexcept {
     x.swap(y);
 }

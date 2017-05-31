@@ -14,8 +14,8 @@ class DAC1220 {
 
     enum Mode {
         NormalMode = 0,  //
-        SelfCalib = 1,
-        Sleep = 2
+        SelfCalib  = 1,
+        Sleep      = 2
     };
 
     enum DataOrder {
@@ -30,7 +30,7 @@ class DAC1220 {
 
     enum DataFormat {
         TwosCompement = 0,  //
-        Binary = 1
+        Binary        = 1
     };
 
     enum Calibration {
@@ -41,8 +41,12 @@ class DAC1220 {
     explicit DAC1220(SPI::Interface& spi_dev) : spi_dev{spi_dev} {
     }
 
-    void writeToCommandReg(Calibration CRST, DataLength RES, DataFormat DF,
-                           FilterOut DISF, DataOrder MSB, Mode MD) {
+    void writeToCommandReg(Calibration CRST,
+                           DataLength RES,
+                           DataFormat DF,
+                           FilterOut DISF,
+                           DataOrder MSB,
+                           Mode MD) {
         uint8_t CommandRegMSB = 0;
         // ADPT
         CommandRegMSB |= (DISF << 7);
@@ -65,8 +69,8 @@ class DAC1220 {
         // MD
         CommandRegLSB |= (MD << 0);
 
-        libs::array<uint8_t, 3> arr = {0b00100100,      //
-                                       CommandRegMSB,   //
+        libs::array<uint8_t, 3> arr = {0b00100100,     //
+                                       CommandRegMSB,  //
                                        CommandRegLSB};
         this->spi_dev.write(arr);
     }

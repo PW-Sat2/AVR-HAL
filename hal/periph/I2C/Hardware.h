@@ -3,12 +3,12 @@
 
 #include <avr/io.h>
 #include <util/twi.h>
-#include "hal/mcu.h"
 #include "hal/libs.h"
+#include "hal/mcu.h"
 
-#include "hal/periph/DigitalIO/GPIO.h"
 #include "Interface.h"
 #include "_details.h"
+#include "hal/periph/DigitalIO/GPIO.h"
 
 namespace hal {
 namespace I2C {
@@ -64,7 +64,8 @@ class Hardware : public details::_Interface {
 
     void stop() override {
         TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
-        while (TWCR & (1 << TWSTO)) {}
+        while (TWCR & (1 << TWSTO)) {
+        }
     }
 
     bool write(const uint8_t data) override {
@@ -80,26 +81,27 @@ class Hardware : public details::_Interface {
     }
 
     uint8_t read(Acknowledge ACK) override {
-        TWCR =  (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
+        TWCR = (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
         wait_for_finish();
         return TWDR;
     }
 
     void wait_for_finish() {
-        while (libs::read_bit(TWCR, TWINT) == false) {}
+        while (libs::read_bit(TWCR, TWINT) == false) {
+        }
     }
 
     template<uint32_t frequency, int twps>
     struct calc_twbr {
-        static const int32_t value = ((F_CPU/frequency)-16)/(2*libs::power<4, twps>::value);
+        static const int32_t value =
+            ((F_CPU / frequency) - 16) / (2 * libs::power<4, twps>::value);
     };
 
     template<uint32_t frequency, int twps = 0>
     struct calc_twps {
-        static const int32_t value =
-                (calc_twbr<frequency, twps>::value < 255) ?
-                        twps :
-                        calc_twps<frequency, twps+1>::value;
+        static const int32_t value = (calc_twbr<frequency, twps>::value < 255) ?
+                                         twps :
+                                         calc_twps<frequency, twps + 1>::value;
     };
     // recursion stop at max value of twps
     template<uint32_t frequency>

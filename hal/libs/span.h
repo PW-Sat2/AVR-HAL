@@ -2,8 +2,8 @@
 #define HAL_LIBS_SPAN_H_
 
 #include <stddef.h>
-#include "hal_assert.h"
 #include <algorithm>
+#include "hal_assert.h"
 
 namespace hal {
 namespace libs {
@@ -15,60 +15,58 @@ class span final {
     // Nested types:
     //
 
-    using value_type = T;
-    using size_type = size_t;
+    using value_type      = T;
+    using size_type       = size_t;
     using difference_type = ptrdiff_t;
 
-    using pointer = T *;
-    using iterator = T *;
-    using reference = T &;
-    using const_pointer = const T *;
-    using const_iterator = const T *;
-    using const_reference = const T &;
+    using pointer         = T*;
+    using iterator        = T*;
+    using reference       = T&;
+    using const_pointer   = const T*;
+    using const_iterator  = const T*;
+    using const_reference = const T&;
 
     //
     // Constructors / assignment:
     //
 
-    constexpr span() :
-            m_pointer { nullptr }, m_size_in_items { 0 } {
+    constexpr span() : m_pointer{nullptr}, m_size_in_items{0} {
     }
 
     template<typename ArrayType, size_t ArraySize>
-    constexpr span(ArrayType (&arr)[ArraySize]) :
-            m_pointer(arr), m_size_in_items(ArraySize) {
+    constexpr span(ArrayType (&arr)[ArraySize])
+        : m_pointer(arr), m_size_in_items(ArraySize) {
     }
 
     template<typename ArrayType, size_t ArraySize>
-    constexpr span(ArrayType (&&arr)[ArraySize]) = delete;
+    constexpr span(ArrayType(&&arr)[ArraySize]) = delete;
 
     template<typename ContainerType>
-    constexpr span(ContainerType & container) :
-            m_pointer(container.data()), m_size_in_items(container.size()) {
-    }
-
-    template<typename ContainerType>
-    constexpr span(const ContainerType & container) :
-            m_pointer(container.data()), m_size_in_items(container.size()) {
+    constexpr span(ContainerType& container)
+        : m_pointer(container.data()), m_size_in_items(container.size()) {
     }
 
     template<typename ContainerType>
-    constexpr span(const ContainerType && container) = delete;
+    constexpr span(const ContainerType& container)
+        : m_pointer(container.data()), m_size_in_items(container.size()) {
+    }
+
+    template<typename ContainerType>
+    constexpr span(const ContainerType&& container) = delete;
 
     template<typename ConvertibleType>
-    constexpr span(ConvertibleType * array_ptr,
-            size_type size_in_items) :
-            m_pointer(array_ptr), m_size_in_items(size_in_items) {
+    constexpr span(ConvertibleType* array_ptr, size_type size_in_items)
+        : m_pointer(array_ptr), m_size_in_items(size_in_items) {
     }
 
     template<typename ConvertibleType>
-    constexpr span(span<ConvertibleType> other) :
-            m_pointer(other.data()), m_size_in_items(other.size()) {
+    constexpr span(span<ConvertibleType> other)
+        : m_pointer(other.data()), m_size_in_items(other.size()) {
     }
 
     template<typename ConvertibleType>
-    constexpr span & operator =(span<ConvertibleType> other) {
-        m_pointer = other.data();
+    constexpr span& operator=(span<ConvertibleType> other) {
+        m_pointer       = other.data();
         m_size_in_items = other.size();
         return *this;
     }
@@ -78,16 +76,15 @@ class span final {
     //
 
     void reset() {
-        m_pointer = nullptr;
+        m_pointer       = nullptr;
         m_size_in_items = 0;
     }
 
-    span subspan(const size_type start_offset,
-            const size_type slice_size) const {
+    span subspan(const size_type start_offset, const size_type slice_size) const {
         check_not_null();
 
         pointer slice_ptr = const_cast<pointer>(data()) + start_offset;
-        pointer end_ptr = const_cast<pointer>(data()) + size();
+        pointer end_ptr   = const_cast<pointer>(data()) + size();
 
         if (slice_ptr > end_ptr) {
             fail_due_to_error("span slice start offset is out-of-bounds!");
@@ -115,7 +112,8 @@ class span final {
     }
 
     reference operator[](const size_type index) const {
-        // Unlike with at() these checks can be disabled for ultimate performance.
+        // Unlike with at() these checks can be disabled for ultimate
+        // performance.
         assert(data() != nullptr);
         assert(index < size());
         return *(data() + index);
@@ -163,10 +161,10 @@ class span final {
     // Compare against nullptr (test for a null span):
     //
 
-    constexpr bool operator ==(nullptr_t) const {
+    constexpr bool operator==(nullptr_t) const {
         return this->data() == nullptr;
     }
-    constexpr bool operator !=(nullptr_t) const {
+    constexpr bool operator!=(nullptr_t) const {
         return !(*this == nullptr);
     }
 
@@ -174,11 +172,11 @@ class span final {
     // Compare for same data
     //
 
-    constexpr bool operator ==(const span & other) const {
+    constexpr bool operator==(const span& other) const {
         return (this->size() == other.size() &&
                 std::equal(this->begin(), this->end(), other.begin()));
     }
-    constexpr bool operator !=(const span & other) const {
+    constexpr bool operator!=(const span& other) const {
         return !(*this == other);
     }
 
@@ -200,20 +198,19 @@ class span final {
 
 template<typename ArrayType, size_t ArraySize>
 constexpr auto make_span(ArrayType (&arr)[ArraySize]) {
-    return span<ArrayType> { arr, ArraySize };
+    return span<ArrayType>{arr, ArraySize};
 }
 template<typename ArrayType>
-constexpr auto make_span(ArrayType * array_ptr,
-        const size_t size_in_items) {
-    return span<ArrayType> { array_ptr, size_in_items };
+constexpr auto make_span(ArrayType* array_ptr, const size_t size_in_items) {
+    return span<ArrayType>{array_ptr, size_in_items};
 }
 template<typename ContainerType>
-constexpr auto make_span(ContainerType & container) {
-    return span<typename ContainerType::value_type> { container };
+constexpr auto make_span(ContainerType& container) {
+    return span<typename ContainerType::value_type>{container};
 }
 template<typename ContainerType>
-constexpr auto make_span(const ContainerType & container) {
-    return span<const typename ContainerType::value_type> { container };
+constexpr auto make_span(const ContainerType& container) {
+    return span<const typename ContainerType::value_type>{container};
 }
 
 }  // namespace libs

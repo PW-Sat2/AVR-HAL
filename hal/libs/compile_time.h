@@ -7,31 +7,33 @@
 namespace hal {
 namespace libs {
 
-template <std::int32_t base, int exp>
+template<std::int32_t base, int exp>
 struct power {
     static_assert(base != 0, "Base cannot be equal to 0!");
     static const int32_t value = base * power<base, exp - 1>::value;
 };
 
-template <std::int32_t base>
+template<std::int32_t base>
 struct power<base, 0> {
     static const int32_t value = 1;
 };
 
 constexpr uint64_t power_of_two(uint8_t exp) {
-    return (exp == 0) ? 1 : 2*power_of_two(exp-1);
+    return (exp == 0) ? 1 : 2 * power_of_two(exp - 1);
 }
 
+// clang-format off
 template<uint8_t i>
 using type_with_bits = typename std::conditional<(i <= 1), bool,
                        typename std::conditional<(i <= 8), uint8_t,
                        typename std::conditional<(i <= 16), uint16_t,
                        typename std::conditional<(i <= 32), uint32_t,
                        uint64_t>::type>::type>::type>::type;
+// clang-format on
 
 template<uint8_t exp>
-constexpr type_with_bits<exp+1> power_of_two() {
-    return 2ULL* static_cast<type_with_bits<exp+1>>(power_of_two<exp-1>());
+constexpr type_with_bits<exp + 1> power_of_two() {
+    return 2ULL * static_cast<type_with_bits<exp + 1>>(power_of_two<exp - 1>());
 }
 
 template<>

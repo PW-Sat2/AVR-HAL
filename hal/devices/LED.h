@@ -7,8 +7,7 @@ namespace hal {
 
 class LED {
  public:
-    constexpr LED(DigitalIO::Interface& pin) :
-            led_pin{pin} {
+    constexpr LED(DigitalIO::Interface& pin) : led_pin{pin} {
     }
 
     void init() const {

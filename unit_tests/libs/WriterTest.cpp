@@ -6,9 +6,11 @@ using namespace hal::libs;
 TEST_GROUP(WriterTest);
 
 
-void CheckBuffer(const uint8_t* current, const uint16_t currentLength,
-                 const uint8_t* expected, const uint16_t expectedLength) {
-    auto in = hal::libs::make_span(current, currentLength);
+void CheckBuffer(const uint8_t* current,
+                 const uint16_t currentLength,
+                 const uint8_t* expected,
+                 const uint16_t expectedLength) {
+    auto in  = hal::libs::make_span(current, currentLength);
     auto out = hal::libs::make_span(expected, expectedLength);
     TEST_ASSERT_TRUE(std::equal(in.begin(), in.end(), out.begin()));
 }
@@ -58,8 +60,8 @@ TEST(WriterTest, TestWritingSignedSingleWordLE) {
     uint8_t array[12];
     Writer writer(array);
 
-    const uint8_t expected[] = {0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x7F,
-                                0x00, 0x80, 0x68, 0xC5, 0x98, 0x3A};
+    const uint8_t expected[] = {
+        0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x7F, 0x00, 0x80, 0x68, 0xC5, 0x98, 0x3A};
 
     TEST_ASSERT_TRUE(writer.WriteSignedWordLE(0));
     TEST_ASSERT_TRUE(writer.WriteSignedWordLE(-1));
@@ -102,8 +104,7 @@ TEST(WriterTest, TestWritingSignedDoubleWordLE) {
 
 TEST(WriterTest, TestWritingSingleQuadWordLE) {
     uint8_t array[8];
-    const uint8_t expected[8] = {0xEE, 0x77, 0xAA, 0x55,
-                                 0xCC, 0x66, 0x88, 0x44};
+    const uint8_t expected[8] = {0xEE, 0x77, 0xAA, 0x55, 0xCC, 0x66, 0x88, 0x44};
     Writer writer(array);
     TEST_ASSERT_TRUE(writer.WriteQuadWordLE(0x448866CC55aa77eeull));
     TEST_ASSERT_TRUE(writer.Status());
@@ -160,8 +161,8 @@ TEST(WriterTest, TestWritingArrayBeyondEnd) {
 TEST(WriterTest, TestPositionIsAdvanced) {
     uint8_t input[] = {0x11, 0x22, 0x33};
     uint8_t array[12];
-    const uint8_t expected[] = {0x55, 0xAA, 0x55, 0xEE, 0x77,
-                                0xAA, 0x55, 0x11, 0x22, 0x33};
+    const uint8_t expected[] = {
+        0x55, 0xAA, 0x55, 0xEE, 0x77, 0xAA, 0x55, 0x11, 0x22, 0x33};
     Writer writer(array);
     writer.WriteByte(0x55);
     writer.WriteWordLE(0x55aa);
@@ -210,9 +211,9 @@ TEST(WriterTest, TestReserveBuffer) {
 
     writer.WriteByte(1);
     auto b = writer.Reserve(3);
-    b[0] = 2;
-    b[1] = 3;
-    b[2] = 4;
+    b[0]   = 2;
+    b[1]   = 3;
+    b[2]   = 4;
     writer.WriteByte(5);
 
     // TEST_ASSERT_TRUE(array == {1, 2, 3, 4, 5});

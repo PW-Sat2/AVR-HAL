@@ -8,10 +8,10 @@ namespace devices {
 
 class FPF270x {
  public:
-    constexpr FPF270x(DigitalIO::Interface &pin_on,
-                      DigitalIO::Interface &pin_flag,
-                      DigitalIO::Interface &pin_pgood) :
-            pin_on{pin_on}, pin_flag{pin_flag}, pin_pgood{pin_pgood} {
+    constexpr FPF270x(DigitalIO::Interface& pin_on,
+                      DigitalIO::Interface& pin_flag,
+                      DigitalIO::Interface& pin_pgood)
+        : pin_on{pin_on}, pin_flag{pin_flag}, pin_pgood{pin_pgood} {
     }
 
     void init() {

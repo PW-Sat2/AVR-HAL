@@ -1,8 +1,8 @@
 #ifndef HAL_DEVICES_ADC12X_H_
 #define HAL_DEVICES_ADC12X_H_
 
-#include "hal/periph.h"
 #include "hal/libs.h"
+#include "hal/periph.h"
 
 namespace hal {
 namespace drivers {
@@ -31,10 +31,10 @@ class ADC12x {
  public:
     /*!
      * Default ctor.
-     * @param spi_dev SPI interface to use. Interface must support chip select transactions.
+     * @param spi_dev SPI interface to use. Interface must support chip select
+     * transactions.
      */
-    explicit ADC12x(SPI::Interface &spi_dev)
-            : spi_dev(spi_dev) {
+    explicit ADC12x(SPI::Interface& spi_dev) : spi_dev(spi_dev) {
     }
 
     /*!
@@ -52,10 +52,7 @@ class ADC12x {
      * @return Measurement of previously selected channel
      */
     uint16_t readAndChangeChannel(Channel channel) {
-        const libs::array<uint8_t, 2> data_out = {
-                static_cast<uint8_t>(channel),
-                0
-        };
+        const libs::array<uint8_t, 2> data_out = {static_cast<uint8_t>(channel), 0};
         libs::array<uint8_t, 2> data_read;
 
         spi_dev.transfer(data_out, data_read);
@@ -67,7 +64,7 @@ class ADC12x {
     }
 
  private:
-    SPI::Interface &spi_dev;
+    SPI::Interface& spi_dev;
 };
 
 }  // namespace details
