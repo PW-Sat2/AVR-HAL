@@ -2,8 +2,8 @@
 #define HAL_DEVICES_H_
 
 #include "hal/devices/AD5641.h"
-#include "hal/devices/AD7714.h"
 #include "hal/devices/AD7714-ext.h"
+#include "hal/devices/AD7714.h"
 #include "hal/devices/ADC12x.h"
 #include "hal/devices/ADG708.h"
 #include "hal/devices/ADG709.h"
