@@ -31,7 +31,7 @@ int main() {
     spi_hard.transfer(0xFF);
     spi_soft.transfer(0xFF);
 
-    hal::libs::array<uint8_t, 3> data = {1, 2, 3};
+    std::array<uint8_t, 3> data = {1, 2, 3};
 
     SPI::Interface* interface = &spi_hard;
     interface->transfer(data, data);

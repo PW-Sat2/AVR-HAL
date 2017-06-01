@@ -24,7 +24,7 @@ class TMP121 {
      * @return Read data from the device (13 bit value)
      */
     int16_t read() {
-        libs::array<uint8_t, 2> arr;
+        std::array<uint8_t, 2> arr;
         spi.read(arr);
 
         libs::Reader reader{arr};

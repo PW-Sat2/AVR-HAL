@@ -36,7 +36,7 @@ class ADXRS453 {
     }
 
     uint32_t getSensorData() const {
-        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
+        std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0]    = (1 << 5);
         uint32_t command = (static_cast<uint32_t>(dataBuffer[0]) << 24) |
@@ -99,7 +99,7 @@ class ADXRS453 {
 
 
     uint16_t getRegister(const uint8_t registerAddress) const {
-        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
+        std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0] = (1 << 7) | (registerAddress >> 7);
         dataBuffer[1] = (registerAddress << 1);
@@ -131,8 +131,8 @@ class ADXRS453 {
  private:
     void
     setRegisterValue(const uint8_t registerAddress, uint16_t registerValue) const {
-        libs::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
-        uint32_t command                   = 0;
+        std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
+        uint32_t command                  = 0;
 
         dataBuffer[0] = (1 << 6) | (registerAddress >> 7);
         dataBuffer[1] = (registerAddress << 1) | (registerValue >> 15);

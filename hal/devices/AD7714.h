@@ -103,7 +103,7 @@ class AD7714 {
         waitForDRDY();
         writeToCommReg(DATA_REG, true);
 
-        libs::array<uint8_t, 3> data;
+        std::array<uint8_t, 3> data;
         spi_dev.read(data);
 
         uint32_t read = 0;

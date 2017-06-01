@@ -69,14 +69,14 @@ class DAC1220 {
         // MD
         CommandRegLSB |= (MD << 0);
 
-        libs::array<uint8_t, 3> arr = {0b00100100,     //
-                                       CommandRegMSB,  //
-                                       CommandRegLSB};
+        std::array<uint8_t, 3> arr = {0b00100100,     //
+                                      CommandRegMSB,  //
+                                      CommandRegLSB};
         this->spi_dev.write(arr);
     }
 
     void WriteToOutput(uint16_t RawValue) {
-        libs::array<uint8_t, 4> arr;
+        std::array<uint8_t, 4> arr;
         libs::Writer writer{arr};
         writer.WriteByte(0b01000000);
         writer.WriteWordLE(RawValue);

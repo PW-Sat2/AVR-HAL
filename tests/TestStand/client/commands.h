@@ -164,7 +164,7 @@ class SPIDeviceCmd : hal::libs::CLI::Command {
         SPI_Device dev{pin, DigitalIO::RUNTIME::ENABLED};
         dev.init();
 
-        libs::array<uint8_t, 10> buf;
+        std::array<uint8_t, 10> buf;
 
         for (uint8_t i = 0; i < parameters.size() - 1; ++i) {
             buf[i] = atoi(parameters[i + 1]);
@@ -233,7 +233,7 @@ class I2CMasterCmd : hal::libs::CLI::Command {
             uint8_t bytes_to_write = parameters.size() - 2;
             uint8_t bytes_to_read  = atoi(parameters[1 + bytes_to_write]);
 
-            hal::libs::array<uint8_t, 10> tx_buf, rx_buf;
+            std::array<uint8_t, 10> tx_buf, rx_buf;
 
             for (uint8_t i = 0; i < bytes_to_write; ++i) {
                 tx_buf[i] = atoi(parameters[1 + i]);

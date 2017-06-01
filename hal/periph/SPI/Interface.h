@@ -1,11 +1,7 @@
 #ifndef HAL_PERIPH_SPI_INTERFACE_H_
 #define HAL_PERIPH_SPI_INTERFACE_H_
 
-#include <avr/io.h>
-#include "hal/libs/array.h"
-#include "hal/libs/bit_operations.h"
-#include "hal/mcu.h"
-#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/libs.h"
 
 namespace hal {
 namespace SPI {
