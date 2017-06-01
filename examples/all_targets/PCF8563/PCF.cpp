@@ -1,7 +1,11 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 int main() {
-    hal::Serial0.init(4800, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
     hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;

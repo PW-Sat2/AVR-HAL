@@ -2,11 +2,12 @@
 
 using namespace hal;
 
-
 static EepromStorage<int> eepromVariable;
 
 int main() {
-    Serial0.init(9600, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     while (1) {
         printf("Choose: r - read, w - write: ");

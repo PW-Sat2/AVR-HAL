@@ -1,6 +1,8 @@
 #include <hal/hal>
 #include "tests.h"
 
+using hal::Serial0;
+
 __extension__ typedef int __guard __attribute__((mode(__DI__)));
 
 extern "C" int __cxa_guard_acquire(__guard*);
@@ -29,7 +31,10 @@ fptr add_test_group(void (*fun)(), bool get) {
 }
 
 int main() {
-    hal::Serial0.init(115200, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
+
     printf("MAIN\n");
 
     while (true) {
