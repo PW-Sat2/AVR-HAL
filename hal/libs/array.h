@@ -7,7 +7,6 @@
 #include <type_traits>
 #include <utility>
 #include "hal/libs/span.h"
-#include "hal_assert.h"
 
 namespace hal {
 namespace libs {
@@ -119,9 +118,7 @@ class array {
  private:
     // check range (may be private because it is static)
     static void rangecheck(size_type i) {
-        if (i >= size()) {
-            fail_due_to_error("array<>: index out of range");
-        }
+        assert(i < size());
     }
 };
 
