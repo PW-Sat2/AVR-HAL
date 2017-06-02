@@ -1,5 +1,7 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 hal::DigitalIO::GPIO<hal::mcu::pin_sda> gpio;
 
 hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
@@ -9,7 +11,8 @@ hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
     spi(gpio);
 
 int main() {
-    hal::Serial0.init(115200);
+    Serial0.init(115200);
+    Serial0.redirect_stderr();
 
     spi.init();
     hal::ADXRS453 gyro1(spi);

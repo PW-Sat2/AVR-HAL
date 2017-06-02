@@ -1,11 +1,15 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 ISR(TIMER0_OVF_vect) {
     hal::Serial0.print_byte('x');
 }
 
 int main() {
-    hal::Serial0.init(9600);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     hal::Timer0::init(hal::Timer0::Prescaler::DIV_1024, hal::Timer0::Mode::CTC);
 

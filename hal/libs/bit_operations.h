@@ -20,7 +20,6 @@ constexpr inline void set_bit(reg_type& val) {
     val |= (1UL << bit_pos);
 }
 
-
 template<typename reg_type>
 constexpr inline void
 set_bit(reg_type* val, const int bit_pos) __attribute__((always_inline));
@@ -29,7 +28,6 @@ template<typename reg_type>
 constexpr inline void set_bit(reg_type* val, const int bit_pos) {
     (*val) |= (1UL << bit_pos);
 }
-
 
 template<typename reg_type>
 constexpr inline void
@@ -43,7 +41,6 @@ template<int bit_pos, typename reg_type>
 constexpr inline void clear_bit(reg_type& val) {
     val &= (~(1UL << bit_pos));
 }
-
 
 template<typename reg_type>
 constexpr inline void
@@ -74,7 +71,6 @@ constexpr type_with_bits<length> read_mask(T value) {
 constexpr uint64_t read_mask(uint8_t start, uint8_t length, uint64_t value) {
     return (value & bit_mask(start, length)) >> start;
 }
-
 
 template<uint8_t bit_pos, typename T>
 constexpr bool read_bit(T value) {

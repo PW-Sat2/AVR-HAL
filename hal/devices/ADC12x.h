@@ -72,7 +72,6 @@ class ADC12x {
 using ADC124 = details::ADC12x<details::Channels_ADC124>;
 using ADC128 = details::ADC12x<details::Channels_ADC128>;
 
-
 }  // namespace drivers
 }  // namespace hal
 

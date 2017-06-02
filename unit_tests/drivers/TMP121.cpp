@@ -18,11 +18,9 @@ struct MockTMP121 : public EmptySPIMock {
     }
 };
 
-
 TEST(TMP121, ConversionTableFromDatasheet) {
     MockTMP121 mock;
     TMP121 tmp{mock};
-
 
     mock.data = 0x4B00;
     TEST_ASSERT_EQUAL_INT(2400, tmp.read());

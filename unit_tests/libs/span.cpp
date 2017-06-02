@@ -122,7 +122,6 @@ TEST(span, slice) {
     }
 }
 
-
 TEST(span, equal) {
     uint8_t table[100];
     for (int i = 0; i < 10; ++i) {

@@ -97,7 +97,6 @@ class ADXRS453 {
         return temperature;
     }
 
-
     uint16_t getRegister(const uint8_t registerAddress) const {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 

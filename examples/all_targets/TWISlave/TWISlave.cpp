@@ -13,7 +13,9 @@ void hal::TWISlave::callbackTx() {
 }
 
 int main() {
-    hal::Serial0.init(115200, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
     hal::TWISlave::init(0x1E);
 
     sei();

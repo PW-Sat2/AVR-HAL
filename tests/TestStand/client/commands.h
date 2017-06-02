@@ -178,7 +178,6 @@ class SPIDeviceCmd : hal::libs::CLI::Command {
     }
 };
 
-
 class SPISlaveCmd : hal::libs::CLI::Command {
  public:
     SPISlaveCmd() : hal::libs::CLI::Command("ss") {
@@ -216,7 +215,6 @@ class SPISlaveCmd : hal::libs::CLI::Command {
     volatile uint8_t buffer[10];
     volatile uint8_t buffer_cnt = 0;
 };
-
 
 class I2CMasterCmd : hal::libs::CLI::Command {
  public:

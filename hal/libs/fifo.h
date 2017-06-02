@@ -259,5 +259,4 @@ class FIFO_data : public FIFO<T> {
 }  // namespace libs
 }  // namespace hal
 
-
 #endif  // HAL_LIBS_FIFO_H_

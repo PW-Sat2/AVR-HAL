@@ -9,7 +9,6 @@ DigitalIO::GPIO<mcu::pin_sck> pin_sck;
 DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
 DigitalIO::GPIO<mcu::pin_miso> pin_miso;
 
-
 TEST(SPI, SckIdleState) {
     {
         SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_128,

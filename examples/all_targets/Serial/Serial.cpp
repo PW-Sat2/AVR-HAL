@@ -1,7 +1,10 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 int main() {
-    hal::Serial0.init(9600);
+    Serial0.init(115200);
+    Serial0.redirect_stderr();
 
     while (true) {
         static int counter = 0;
