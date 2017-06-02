@@ -6,8 +6,7 @@ static void parseCommandLine(char line[],
                              char** commandName,
                              char** arguments,
                              uint16_t* argc,
-                             uint8_t maxArgsCount  //
-                             ) {
+                             uint8_t maxArgsCount) {
     *argc = 0;
 
     char* ptr;
