@@ -57,7 +57,8 @@ constexpr uint32_t baudrate = 230400;
 #endif
 
 int main() {
-    hal::Serial0.init(baudrate, hal::STDIO::ENABLE);
+    hal::Serial0.init(baudrate);
+    Serial0.redirect_stdio();
     hal::Serial0.enable_rx_interrupt();
 
     pin1.init(DigitalIO::OUTPUT);

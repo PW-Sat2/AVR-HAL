@@ -1,14 +1,18 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 hal::I2C::Hardware twi;
 
 int main() {
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
+
     twi.init<10000>();
     twi.enable_internal_pullups();
 
     hal::AT24C02 memory{twi};
-
-    hal::Serial0.init(115200, hal::STDIO::ENABLE);
 
     hal::AT24C02::Data<10> mem{0};
 

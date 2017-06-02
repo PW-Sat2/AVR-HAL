@@ -1,5 +1,8 @@
 #include <hal/hal>
 
+using hal::Serial0;
+using namespace hal::DigitalIO::ExternalInterrupt;
+
 ISR(INT0_vect) {
     printf("a");
     _delay_ms(10);
@@ -10,10 +13,10 @@ ISR(INT1_vect) {
     _delay_ms(10);
 }
 
-using namespace hal::DigitalIO::ExternalInterrupt;
-
 int main() {
-    hal::Serial0.init(115200, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
     printf("INIT!\r\n");
 
     constexpr Line<0> line(Mode::rising);

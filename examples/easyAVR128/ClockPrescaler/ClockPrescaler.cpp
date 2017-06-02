@@ -1,7 +1,11 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 int main() {
-    hal::Serial0.init(115200, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     for (int i = 0; i < 10; ++i) {
         printf("X\r\n");
