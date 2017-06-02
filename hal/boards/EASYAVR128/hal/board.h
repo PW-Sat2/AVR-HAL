@@ -115,7 +115,6 @@ static constexpr DigitalIO::Interface::Pin PF2 = 59;
 static constexpr DigitalIO::Interface::Pin PF1 = 60;
 static constexpr DigitalIO::Interface::Pin PF0 = 61;
 
-
 static constexpr DigitalIO::Interface::Pin LED = PA7;
 
 }  // namespace pins

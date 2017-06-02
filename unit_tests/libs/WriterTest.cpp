@@ -5,7 +5,6 @@ using namespace hal::libs;
 
 TEST_GROUP(WriterTest);
 
-
 void CheckBuffer(const uint8_t* current,
                  const uint16_t currentLength,
                  const uint8_t* expected,

@@ -29,5 +29,4 @@ class AD5641 {
 
 }  // namespace hal
 
-
 #endif  // HAL_DEVICES_AD5641_H_

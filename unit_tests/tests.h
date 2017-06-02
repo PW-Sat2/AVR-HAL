@@ -19,7 +19,6 @@ static hal::libs::FIFO_data<Case, 50> data;
 
 fptr add_test_group(void (*fun)(), bool get = false);
 
-
 #undef TEST
 #define TEST(group, name)                                       \
     void TEST_##group##_##name();                               \
@@ -29,7 +28,6 @@ fptr add_test_group(void (*fun)(), bool get = false);
         }                                                       \
     } TEST_##group##_##name##_str_inst;                         \
     void TEST_##group##_##name()
-
 
 #define RUN(group, name) RUN_TEST(TEST_##group##_##name##)
 

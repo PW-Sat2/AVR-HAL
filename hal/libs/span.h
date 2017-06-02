@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 #include <algorithm>
-#include "hal_assert.h"
+#include <cassert>
 
 namespace hal {
 namespace libs {
@@ -86,12 +86,9 @@ class span final {
         pointer slice_ptr = const_cast<pointer>(data()) + start_offset;
         pointer end_ptr   = const_cast<pointer>(data()) + size();
 
-        if (slice_ptr > end_ptr) {
-            fail_due_to_error("span slice start offset is out-of-bounds!");
-        }
-        if (slice_size > (size() - start_offset)) {
-            fail_due_to_error("span slice is larger than size!");
-        }
+        assert(slice_ptr <= end_ptr);
+
+        assert(slice_size <= (size() - start_offset));
 
         return span(slice_ptr, slice_size);
     }
@@ -105,9 +102,7 @@ class span final {
         // operator[] uses assert()s that can be disabled if
         // you care more about performance than runtime checking.
         check_not_null();
-        if (index >= size()) {
-            fail_due_to_error("span::at(): index is out-of-bounds!");
-        }
+        assert(index < size());
         return *(data() + index);
     }
 
@@ -182,9 +177,7 @@ class span final {
 
  private:
     void check_not_null() const {
-        if (data() == nullptr || size() == 0) {
-            fail_due_to_error("span pointer is null or size is zero!");
-        }
+        assert(data() != nullptr && size() != 0);
     }
 
     // Pointer is just a reference to external memory. Not owned by span.
