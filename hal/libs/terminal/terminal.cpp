@@ -46,6 +46,6 @@ void Terminal::SendPrefix() {
     std::printf("\n>");
 }
 
-void Terminal::SetCommandList(hal::libs::span<const TerminalCommandDescription> commands) {
+void Terminal::SetCommandList(gsl::span<const TerminalCommandDescription> commands) {
     this->_commandList = commands;
 }

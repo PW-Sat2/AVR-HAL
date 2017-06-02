@@ -11,7 +11,7 @@ using namespace hal::libs;
 struct MockTMP121 : public EmptySPIMock {
     uint16_t data;
 
-    void read(hal::libs::span<uint8_t> in, uint8_t output_value) override {
+    void read(gsl::span<uint8_t> in, uint8_t output_value) override {
         TEST_ASSERT_EQUAL(2, in.size());
         in[0] = data >> 8;
         in[1] = data & 0xFF;

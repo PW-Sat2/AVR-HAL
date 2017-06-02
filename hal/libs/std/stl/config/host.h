@@ -88,9 +88,9 @@
  * If namespases available, STLport use own namespace (and masquerade
  * it as std). Disable own namespace may cause undefined behaviour.
  */
-/*
+
 #define _STLP_NO_OWN_NAMESPACE  1
-*/
+
 
 /*
  * Uncomment _STLP_LEAKS_PEDANTIC to force deallocation of ALL allocated

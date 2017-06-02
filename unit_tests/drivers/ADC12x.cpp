@@ -9,7 +9,7 @@ using namespace hal::libs;
 using namespace hal::drivers;
 
 struct ADC12xMock : public EmptySPIMock {
-    void transfer(span<const uint8_t> in, span<uint8_t> out) override {
+    void transfer(gsl::span<const uint8_t> in, gsl::span<uint8_t> out) override {
         TEST_ASSERT_EQUAL_INT(2, in.size());
 
         Reader reader_in{in};

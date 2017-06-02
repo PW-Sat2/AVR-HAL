@@ -34,8 +34,7 @@ class Terminal {
      * @brief Sets supported commands list
      * @param[in] commands Commands list
      */
-    void
-    SetCommandList(hal::libs::span<const TerminalCommandDescription> commands);
+    void SetCommandList(gsl::span<const TerminalCommandDescription> commands);
 
     /**
      * @brief Starts terminal
@@ -59,7 +58,7 @@ class Terminal {
     /**
      * @brief Command list
      */
-    hal::libs::span<const TerminalCommandDescription> _commandList;
+    gsl::span<const TerminalCommandDescription> _commandList;
 };
 
 /** @} */
