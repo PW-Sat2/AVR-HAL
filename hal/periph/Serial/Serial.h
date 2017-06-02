@@ -10,13 +10,13 @@
 
 namespace hal {
 
+namespace details {
 template<int nr>
 int uart_putchar(char x, FILE* stream);
 
 template<int nr>
 int uart_getchar(FILE* stream);
-
-enum class STDIO : bool { ENABLE = true, DISABLE = false };
+}  // namespace details
 
 template<int nr>
 class Serial {
@@ -24,23 +24,30 @@ class Serial {
     static_assert(nr >= 0, "Bad Serial number!");
     static_assert(nr < MCU_NR_OF_SERIALS, "Bad Serial number!");
 
-    void init(const uint32_t baudrate, STDIO enable_stdio = STDIO::DISABLE) const
-        __attribute__((always_inline)) {
+    void init(const uint32_t baudrate) const __attribute__((always_inline)) {
         const uint16_t ubrr = baud_to_ubrr(baudrate);
         UBRRnH<nr>()        = (ubrr >> 8);
         UBRRnL<nr>()        = (ubrr & 0xFF);
 
         UCSRnC<nr>() = (1 << UCSZ01) | (1 << UCSZ00);
         UCSRnB<nr>() = (1 << RXEN0) | (1 << TXEN0);
+    }
 
-        if (static_cast<bool>(enable_stdio)) {
-            static FILE uart_output;
-            uart_output.put   = uart_putchar<nr>;
-            uart_output.get   = uart_getchar<nr>;
-            uart_output.flags = _FDEV_SETUP_RW;
-            stdout            = &uart_output;
-            stdin             = &uart_output;
-        }
+    void redirect_stdio() const {
+        static FILE uart_output;
+        uart_output.put   = details::uart_putchar<nr>;
+        uart_output.get   = details::uart_getchar<nr>;
+        uart_output.flags = _FDEV_SETUP_RW;
+        stdout            = &uart_output;
+        stdin             = &uart_output;
+        stderr            = &uart_output;
+    }
+
+    void redirect_stderr() const {
+        static FILE uart_output;
+        uart_output.put   = details::uart_putchar<nr>;
+        uart_output.flags = _FDEV_SETUP_WRITE;
+        stderr            = &uart_output;
     }
 
     void print_byte(const char byte) const __attribute__((always_inline)) {
@@ -145,6 +152,7 @@ constexpr Serial<3> Serial3;
 template<int nr>
 char Serial<nr>::buffer[] = {0};
 
+namespace details {
 template<int nr>
 int uart_putchar(char x, __attribute__((unused)) FILE* stream) {
 #if MCU_NR_OF_SERIALS > 0
@@ -199,6 +207,7 @@ int uart_getchar(__attribute__((unused)) FILE* stream) {
     }
 #endif
 }
+}  // namespace details
 
 }  // namespace hal
 
