@@ -175,7 +175,7 @@ struct array {
         return _AT_Type::_S_ref(_M_elems, __n);
     }
 
-#ifndef NDEBUG
+#ifdef NDEBUG
     constexpr
 #endif
         const_reference
@@ -189,7 +189,7 @@ struct array {
         return _AT_Type::_S_ref(_M_elems, __n);
     }
 
-#ifndef NDEBUG
+#ifdef NDEBUG
     constexpr
 #endif
         const_reference
