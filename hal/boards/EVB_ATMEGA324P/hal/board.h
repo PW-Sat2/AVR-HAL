@@ -40,7 +40,6 @@ namespace pins {
 #undef PD6
 #undef PD7
 
-
 static constexpr DigitalIO::Interface::Pin PA0 = 37;
 static constexpr DigitalIO::Interface::Pin PA1 = 36;
 static constexpr DigitalIO::Interface::Pin PA2 = 35;
@@ -73,7 +72,6 @@ static constexpr DigitalIO::Interface::Pin PC4 = 13;
 static constexpr DigitalIO::Interface::Pin PC5 = 14;
 static constexpr DigitalIO::Interface::Pin PC6 = 15;
 static constexpr DigitalIO::Interface::Pin PC7 = 16;
-
 
 static constexpr DigitalIO::Interface::Pin LED = PB7;
 

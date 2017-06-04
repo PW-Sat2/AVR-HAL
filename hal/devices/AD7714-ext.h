@@ -133,12 +133,12 @@ class AD7714_ext {
         writeToCommReg(DATA_REG, true);
 
         if (dataLen == Data_16bit) {
-            libs::array<uint8_t, 2> data;
+            std::array<uint8_t, 2> data;
             spi_dev.read(data);
             libs::Reader reader{data};
             return reader.ReadWordBE();
         } else {  // dataLen == Data_24bit
-            libs::array<uint8_t, 3> data;
+            std::array<uint8_t, 3> data;
             spi_dev.read(data);
 
             uint32_t read = 0;

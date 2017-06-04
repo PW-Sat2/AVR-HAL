@@ -52,7 +52,6 @@ TEST(ADC12x, SetsProperChannel) {
     adc128.readAndChangeChannel(ADC128::Channel::IN5);
     TEST_ASSERT_EQUAL_INT(mock.channel, 5);
 
-
     adc124.readAndChangeChannel(ADC124::Channel::IN0);
     TEST_ASSERT_EQUAL_INT(mock.channel, 0);
 
@@ -65,7 +64,6 @@ TEST(ADC12x, SetsProperChannel) {
     adc124.readAndChangeChannel(ADC124::Channel::IN3);
     TEST_ASSERT_EQUAL_INT(mock.channel, 3);
 }
-
 
 TEST(ADC12x, edgeCases) {
     ADC12xMock mock;

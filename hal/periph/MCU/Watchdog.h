@@ -50,7 +50,6 @@ class Watchdog {
     }
 };
 
-
 }  // namespace hal
 
 #endif  // HAL_PERIPH_MCU_WATCHDOG_H_

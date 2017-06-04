@@ -15,7 +15,6 @@ int main() {
 
     hal::PCF8563 rtc{i2c};
 
-
     if (hal::PCF8563::ClockStatus::STOPPED == rtc.getClockStatus()) {
         printf("Clock is not working, setting time!\r\n");
         rtc.clear_status();

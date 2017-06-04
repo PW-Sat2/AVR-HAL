@@ -30,7 +30,6 @@ TEST(compile_time, pow) {
     TEST_ASSERT_EQUAL(now, true);
 }
 
-
 template<int exp, int size, uint64_t value>
 void power_of_twoTest() {
     constexpr auto res = power_of_two<exp>();

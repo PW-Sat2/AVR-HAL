@@ -318,7 +318,7 @@ TEST(ReaderTest, TestRemainigSizeAtTheEnd) {
 }
 
 TEST(ReaderTest, TestReadingToEnd) {
-    hal::libs::array<uint8_t, 5> a{1, 2, 3, 4, 5};
+    std::array<uint8_t, 5> a{1, 2, 3, 4, 5};
 
     Reader reader(a);
 
@@ -332,7 +332,7 @@ TEST(ReaderTest, TestReadingToEnd) {
 }
 
 TEST(ReaderTest, TestReadingToEndWhenNothingLeftIsCorrect) {
-    hal::libs::array<uint8_t, 1> a{1};
+    std::array<uint8_t, 1> a{1};
 
     Reader reader(a);
 
