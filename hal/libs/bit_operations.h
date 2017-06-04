@@ -91,7 +91,7 @@ constexpr void write_mask(T& destination, T2 value) {
 }
 
 template<uint8_t start, typename T>
-constexpr auto write_bit(T& destination, bool value) {
+constexpr void write_bit(T& destination, bool value) {
     write_mask<start, 1>(destination, value);
 }
 

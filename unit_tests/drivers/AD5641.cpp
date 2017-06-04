@@ -11,7 +11,7 @@ using namespace hal::libs;
 struct MockAD5641 : public EmptySPIMock {
     uint16_t expect;
 
-    void write(hal::libs::span<const uint8_t> output) override {
+    void write(gsl::span<const uint8_t> output) override {
         TEST_ASSERT_EQUAL(2, output.size());
         Reader reader{output};
         TEST_ASSERT_EQUAL(expect, reader.ReadWordBE());

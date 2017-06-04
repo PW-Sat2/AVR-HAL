@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "span.h"
+#include <gsl/gsl>
 
 namespace hal {
 namespace libs {
@@ -32,14 +32,14 @@ class Writer final {
      *
      * @param[in] view Window into memory buffer to which the data is written.
      */
-    Writer(hal::libs::span<std::uint8_t> view);
+    Writer(gsl::span<std::uint8_t> view);
 
     /**
      * @brief Initializes generic buffer writter.
      *
      * @param[in] view Window into memory buffer to which the data is written.
      */
-    void Initialize(hal::libs::span<std::uint8_t> view);
+    void Initialize(gsl::span<std::uint8_t> view);
 
     /**
      * @brief Returns current writer status.
@@ -131,7 +131,7 @@ class Writer final {
      * output.
      * @return Operation status.
      */
-    bool WriteArray(hal::libs::span<const std::uint8_t> buffer);
+    bool WriteArray(gsl::span<const std::uint8_t> buffer);
 
     /**
      * @brief Writes lower bytes of specified number in big-endian order
@@ -148,13 +148,13 @@ class Writer final {
      * @remark If not enough space is available in target buffer, reserved area
      * is trimmed to fit
      */
-    hal::libs::span<std::uint8_t> Reserve(std::size_t count);
+    gsl::span<std::uint8_t> Reserve(std::size_t count);
 
     /**
      * @brief Returns view for used part of buffer
      * @return Span covering used part of buffer
      */
-    hal::libs::span<std::uint8_t> Capture();
+    gsl::span<std::uint8_t> Capture();
 
  private:
     /**
@@ -173,7 +173,7 @@ class Writer final {
     /**
      * @brief Pointer to the buffer in memory.
      */
-    hal::libs::span<std::uint8_t> _buffer;
+    gsl::span<std::uint8_t> _buffer;
 
     /**
      * @brief Current buffer location.
