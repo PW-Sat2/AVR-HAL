@@ -36,7 +36,7 @@ class PCF8563 {
         uint16_t year;
     };
     void clear_status() const {
-        libs::array<const uint8_t, 3> data = {
+        std::array<const uint8_t, 3> data = {
             Registers::CONTROL_STATUS_1, 0x00, 0x00};
         i2c.write(_addr, data);
     }
@@ -51,27 +51,27 @@ class PCF8563 {
             month_century |= (1 << 7);
         }
 
-        libs::array<const uint8_t, 8> data = {Registers::VL_SECONDS,
-                                              decToBcd(time.seconds),
-                                              decToBcd(time.minutes),
-                                              decToBcd(time.hours),
-                                              decToBcd(date.day),
-                                              decToBcd(date.weekday),
-                                              month_century,
-                                              decToBcd(date.year % 100)};
+        std::array<const uint8_t, 8> data = {Registers::VL_SECONDS,
+                                             decToBcd(time.seconds),
+                                             decToBcd(time.minutes),
+                                             decToBcd(time.hours),
+                                             decToBcd(date.day),
+                                             decToBcd(date.weekday),
+                                             month_century,
+                                             decToBcd(date.year % 100)};
 
         i2c.write(_addr, data);
     }
 
     void set_square_output(SquareOutput frequency) const {
-        libs::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
-                                              static_cast<uint8_t>(frequency)};
+        std::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
+                                             static_cast<uint8_t>(frequency)};
         i2c.write(_addr, data);
     }
 
     ClockStatus get_date_time(Date& date, Time& time) const {
-        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
-        libs::array<uint8_t, 7> data;
+        std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
+        std::array<uint8_t, 7> data;
         i2c.writeRead(_addr, tx, data);
 
         time.hours   = bcdToDec(data[2] & 0x3F);
@@ -96,8 +96,8 @@ class PCF8563 {
     }
 
     ClockStatus getClockStatus() const {
-        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
-        libs::array<uint8_t, 1> data;
+        std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
+        std::array<uint8_t, 1> data;
         i2c.writeRead(_addr, tx, data);
 
         if (data[0] & 0x80) {

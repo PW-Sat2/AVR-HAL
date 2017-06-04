@@ -37,7 +37,6 @@ TEST(fifo, fill) {
     TEST_ASSERT_EQUAL(fifo.getSize(), 10);
     TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10);
 
-
     for (int i = 0; i < 10; ++i) {
         TEST_ASSERT_FALSE(fifo.isFull());
 
@@ -84,7 +83,6 @@ TEST(fifo, fill) {
     TEST_ASSERT_EQUAL(fifo.getSize(), 10);
     TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10);
 }
-
 
 TEST(fifo, pingpong) {
     FIFO_data<int, 11> fifo;

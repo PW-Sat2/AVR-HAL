@@ -64,11 +64,9 @@ class AD7714 {
         unipolar = 1
     };
 
-
     explicit AD7714(SPI::Interface& spi, DigitalIO::Interface& pin_DRDY)
         : spi_dev(spi), pin_DRDY{pin_DRDY} {
     }
-
 
     uint8_t changeChannel(ADC_Channels channel) {
         actual_channel = channel;
@@ -77,17 +75,14 @@ class AD7714 {
         return spi_dev.transfer(0);
     }
 
-
     bool data_available() {
         return (!(this->pin_DRDY.read()));
     }
-
 
     void waitForDRDY() {
         while (!data_available()) {
         }
     }
-
 
     void init() const {
         this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
@@ -98,12 +93,11 @@ class AD7714 {
         spi_dev.transfer(out);
     }
 
-
     uint32_t read_data() {
         waitForDRDY();
         writeToCommReg(DATA_REG, true);
 
-        libs::array<uint8_t, 3> data;
+        std::array<uint8_t, 3> data;
         spi_dev.read(data);
 
         uint32_t read = 0;
@@ -114,14 +108,12 @@ class AD7714 {
         return read;
     }
 
-
     void writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
         writeToCommReg(MODE_REG, false);
         uint8_t data = (mode << 5) | (gain << 2);
         spi_dev.transfer(data);
         this->waitForDRDY();
     }
-
 
     void setFilter(Polarity set_polarity, uint16_t filter) {
         //  filter: 19-4000

@@ -16,5 +16,6 @@ if(ENABLE_HAL_STD)
 
     add_subdirectory(std)
     add_subdirectory(gcc_addons)
-    target_link_libraries(${NAME} hal_stdlib hal_gcc_addons)
+    add_subdirectory(std_addons)
+    target_link_libraries(${NAME} hal_stdlib hal_gcc_addons hal_std_addons)
 endif(ENABLE_HAL_STD)

@@ -52,8 +52,8 @@ class ADC12x {
      * @return Measurement of previously selected channel
      */
     uint16_t readAndChangeChannel(Channel channel) {
-        const libs::array<uint8_t, 2> data_out = {static_cast<uint8_t>(channel), 0};
-        libs::array<uint8_t, 2> data_read;
+        const std::array<uint8_t, 2> data_out = {static_cast<uint8_t>(channel), 0};
+        std::array<uint8_t, 2> data_read;
 
         spi_dev.transfer(data_out, data_read);
 
@@ -71,7 +71,6 @@ class ADC12x {
 
 using ADC124 = details::ADC12x<details::Channels_ADC124>;
 using ADC128 = details::ADC12x<details::Channels_ADC128>;
-
 
 }  // namespace drivers
 }  // namespace hal

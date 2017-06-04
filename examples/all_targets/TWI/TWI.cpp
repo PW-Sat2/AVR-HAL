@@ -6,7 +6,7 @@ int main() {
     twi.enable_internal_pullups();
 
     while (true) {
-        hal::libs::array<uint8_t, 3> arr = {0x00, 0x01, 0x02};
+        std::array<uint8_t, 3> arr = {0x00, 0x01, 0x02};
         twi.write(0xAA, arr);
         twi.read(0xAB, arr);
         twi.writeRead(0xAC, arr, arr);

@@ -37,7 +37,6 @@ class TestDataTypes {
     DATA_ASSERT(long long, 8);
     DATA_ASSERT(unsigned long long, 8);
 
-
     DATA_ASSERT(std::size_t, 2);
     DATA_ASSERT(void*, 2);
 } testDataTypes;

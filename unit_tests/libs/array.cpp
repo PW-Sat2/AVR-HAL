@@ -4,10 +4,10 @@ TEST_GROUP(array);
 
 TEST(array, refs) {
     uint32_t XXX = 73923874, YYY = 2938481092;
-    hal::libs::array<uint32_t, 10> arr;
+    std::array<uint32_t, 10> arr;
     arr[0] = XXX;
     arr[9] = YYY;
-    const hal::libs::array<uint32_t, 10> arr2(arr);
+    const std::array<uint32_t, 10> arr2(arr);
     TEST_ASSERT_EQUAL(arr == arr2, true);
     TEST_ASSERT_EQUAL(arr.begin(), arr.data());
     TEST_ASSERT_EQUAL(arr2.begin(), arr2.data());
@@ -26,12 +26,12 @@ TEST(array, refs) {
 }
 
 TEST(array, at) {
-    hal::libs::array<int, 20> arr;
+    std::array<int, 20> arr;
     int* val = arr.data();
     for (int i = 0; i < 20; ++i) {
         *(val++) = i;
     }
-    const hal::libs::array<int, 20> arr2(arr);
+    const std::array<int, 20> arr2(arr);
 
     TEST_ASSERT_EQUAL(arr == arr2, true);
 
@@ -54,9 +54,9 @@ TEST(array, at) {
 }
 
 TEST(array, swap) {
-    hal::libs::array<int, 5> arr  = {1, 1, 1, 1, 1};
-    hal::libs::array<int, 5> arr2 = {1, 2, 3, 4, 5};
-    arr                           = arr2;
+    std::array<int, 5> arr  = {1, 1, 1, 1, 1};
+    std::array<int, 5> arr2 = {1, 2, 3, 4, 5};
+    arr                     = arr2;
     TEST_ASSERT_EQUAL(arr == arr2, true);
 
     for (int i = 0; i < 5; ++i) {
@@ -82,14 +82,5 @@ TEST(array, swap) {
     for (int i = 0; i < 5; ++i) {
         TEST_ASSERT_EQUAL(arr[i], i);
         TEST_ASSERT_EQUAL(arr2[i], 5 - i);
-    }
-}
-
-TEST(array, assign) {
-    hal::libs::array<unsigned char, 20> arr;
-    arr.assign(3);
-
-    for (const auto& x : arr) {
-        TEST_ASSERT_EQUAL(x, 3);
     }
 }

@@ -3,7 +3,6 @@
 using hal::Analog::InternalADC;
 using hal::Serial0;
 
-
 volatile uint8_t flag = 0;
 volatile int x;
 
@@ -11,7 +10,6 @@ ISR(ADC_vect) {
     x    = InternalADC::read_nowait();
     flag = 1;
 }
-
 
 int main() {
     Serial0.init(115200);

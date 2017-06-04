@@ -1,7 +1,6 @@
 #ifndef HAL_LIBS_H_
 #define HAL_LIBS_H_
 
-#include "libs/array.h"
 #include "libs/bit_operations.h"
 #include "libs/compile_time.h"
 #include "libs/fifo.h"
