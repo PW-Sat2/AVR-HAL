@@ -31,7 +31,7 @@ class EepromStorage : details::AddressCounter {
 
     T read() const {
         T data;
-        this->read(libs::make_span(&data, size));
+        this->read(gsl::make_span(&data, size));
         return data;
     }
 
@@ -40,7 +40,7 @@ class EepromStorage : details::AddressCounter {
     }
 
     void write(const T& data) const {
-        this->write(libs::make_span(&data, size));
+        this->write(gsl::make_span(&data, size));
     }
 
     void operator=(const T& data) const {
@@ -52,10 +52,10 @@ class EepromStorage : details::AddressCounter {
         return reinterpret_cast<void*>(address);
     }
 
-    void read(libs::span<T> data_out) const {
+    void read(gsl::span<T> data_out) const {
         eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr, size);
     }
-    void write(libs::span<const T> data_in) const {
+    void write(gsl::span<const T> data_in) const {
         eeprom_write_block(data_in.begin(), eeprom_ptr, size);
     }
 

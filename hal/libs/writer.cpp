@@ -8,11 +8,11 @@ using namespace hal::libs;
 Writer::Writer() : _position(0), _isValid(false) {
 }
 
-Writer::Writer(hal::libs::span<std::uint8_t> view) {
+Writer::Writer(gsl::span<std::uint8_t> view) {
     this->Initialize(std::move(view));
 }
 
-void Writer::Initialize(hal::libs::span<std::uint8_t> view) {
+void Writer::Initialize(gsl::span<std::uint8_t> view) {
     this->_buffer = view;
     this->Reset();
 }
@@ -87,7 +87,7 @@ bool Writer::WriteQuadWordLE(uint64_t word) {
     }
 }
 
-bool Writer::WriteArray(hal::libs::span<const uint8_t> buffer) {
+bool Writer::WriteArray(gsl::span<const uint8_t> buffer) {
     if (!this->UpdateState(buffer.size())) {
         return false;
     } else {
@@ -99,7 +99,7 @@ bool Writer::WriteArray(hal::libs::span<const uint8_t> buffer) {
     }
 }
 
-hal::libs::span<std::uint8_t> Writer::Reserve(std::size_t count) {
+gsl::span<std::uint8_t> Writer::Reserve(std::size_t count) {
     count = std::min<std::size_t>(count, this->_buffer.size() - this->_position);
 
     auto s = this->_buffer.subspan(this->_position, count);
@@ -110,7 +110,7 @@ hal::libs::span<std::uint8_t> Writer::Reserve(std::size_t count) {
     return s;
 }
 
-hal::libs::span<std::uint8_t> Writer::Capture() {
+gsl::span<std::uint8_t> Writer::Capture() {
     return this->_buffer.subspan(0, this->_position);
 }
 

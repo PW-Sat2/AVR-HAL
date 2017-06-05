@@ -15,7 +15,9 @@ node('linux') {
 	stage 'SingleDeviceTests'
 	sh 'make SingleDeviceTests'	
 
+
 	stage 'checkStyle'
+	sh 'make clean'
 	sh 'make checkStyle'
 	
 	stage 'checkFormat'

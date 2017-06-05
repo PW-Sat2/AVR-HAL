@@ -6,7 +6,7 @@ using namespace hal::libs;
 Reader::Reader() : position(0), isValid(false) {
 }
 
-Reader::Reader(hal::libs::span<const uint8_t> view) {
+Reader::Reader(gsl::span<const uint8_t> view) {
     Initialize(view);
 }
 
@@ -19,7 +19,7 @@ bool Reader::UpdateState(uint16_t requestedSize) {
     return this->isValid;
 }
 
-void Reader::Initialize(hal::libs::span<const uint8_t> view) {
+void Reader::Initialize(gsl::span<const uint8_t> view) {
     this->buffer = view;
     Reset();
 }
@@ -132,9 +132,9 @@ uint64_t Reader::ReadQuadWordLE() {
     }
 }
 
-hal::libs::span<const uint8_t> Reader::ReadArray(uint16_t length) {
+gsl::span<const uint8_t> Reader::ReadArray(uint16_t length) {
     if (!UpdateState(length)) {
-        return hal::libs::span<const uint8_t>();
+        return gsl::span<const uint8_t>();
     } else {
         return this->buffer.subspan(this->position - length, length);
     }
@@ -144,6 +144,6 @@ int32_t Reader::RemainingSize() {
     return this->buffer.size() - this->position;
 }
 
-hal::libs::span<const uint8_t> Reader::ReadToEnd() {
+gsl::span<const uint8_t> Reader::ReadToEnd() {
     return this->ReadArray(this->RemainingSize());
 }

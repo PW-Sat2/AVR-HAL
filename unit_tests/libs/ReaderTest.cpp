@@ -12,7 +12,7 @@ TEST(ReaderTest, TestDefaultCtor) {
 }
 
 TEST(ReaderTest, TestStatusNullBuffer) {
-    hal::libs::span<const std::uint8_t> span;
+    gsl::span<const std::uint8_t> span;
     Reader reader(span);
     TEST_ASSERT_FALSE(reader.Status());
 }
@@ -20,14 +20,14 @@ TEST(ReaderTest, TestStatusNullBuffer) {
 TEST(ReaderTest, TestStatusZeroSizeBuffer) {
     uint8_t array[1];
     Reader reader;
-    reader.Initialize(hal::libs::span<const std::uint8_t>(array, 0));
+    reader.Initialize(gsl::span<const std::uint8_t>(&array[0], 0));
     TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestCtorStatusValidBuffer) {
     uint8_t array[] = {0x55, 0xaa};
 
-    Reader reader(hal::libs::make_span(array));
+    Reader reader(gsl::make_span(array));
     TEST_ASSERT_TRUE(reader.Status());
     TEST_ASSERT_EQUAL(reader.RemainingSize(), 2);
 }
@@ -36,7 +36,7 @@ TEST(ReaderTest, TestStatusValidBuffer) {
     Reader reader;
     uint8_t array[] = {0x55, 0xaa};
 
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
     TEST_ASSERT_TRUE(reader.Status());
 }
 
@@ -44,14 +44,14 @@ TEST(ReaderTest, TestReadingSingleByte) {
     Reader reader;
     uint8_t array[] = {0x55, 0xaa};
 
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
     TEST_ASSERT_EQUAL(reader.ReadByte(), 0x55);
     TEST_ASSERT_TRUE(reader.Status());
 }
 
 TEST(ReaderTest, TestSkip) {
     uint8_t array[] = {0x55, 0xaa};
-    Reader reader(hal::libs::make_span(array));
+    Reader reader(gsl::make_span(array));
     TEST_ASSERT_TRUE(reader.Skip(1));
     TEST_ASSERT_TRUE(reader.Status());
     TEST_ASSERT_EQUAL(reader.RemainingSize(), 1);
@@ -59,14 +59,14 @@ TEST(ReaderTest, TestSkip) {
 
 TEST(ReaderTest, TestSkipOverTheLimit) {
     uint8_t array[] = {0x55, 0xaa};
-    Reader reader(hal::libs::make_span(array));
+    Reader reader(gsl::make_span(array));
     TEST_ASSERT_FALSE(reader.Skip(3));
     TEST_ASSERT_FALSE(reader.Status());
 }
 
 TEST(ReaderTest, TestSkipToTheLimit) {
     uint8_t array[] = {0x55, 0xaa};
-    Reader reader(hal::libs::make_span(array));
+    Reader reader(gsl::make_span(array));
     TEST_ASSERT_TRUE(reader.Skip(2));
     TEST_ASSERT_TRUE(reader.Status());
     TEST_ASSERT_EQUAL(reader.RemainingSize(), 0);
@@ -76,7 +76,7 @@ TEST(ReaderTest, TestReadingSingleByteBeyondEnd) {
     Reader reader;
     uint8_t array[] = {0x55};
 
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
     reader.ReadByte();
     reader.ReadByte();
     TEST_ASSERT_FALSE(reader.Status());
@@ -86,7 +86,7 @@ TEST(ReaderTest, TestReadingWordLE) {
     Reader reader;
     uint8_t array[] = {0x55, 0xaa};
 
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
     TEST_ASSERT_EQUAL(reader.ReadWordLE(), 0xaa55);
     TEST_ASSERT_TRUE(reader.Status());
 }
@@ -95,7 +95,7 @@ TEST(ReaderTest, TestReadingSignedWordLE) {
     uint8_t array[] = {
         0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x7F, 0x00, 0x80, 0x68, 0xC5, 0x98, 0x3A};
     Reader reader;
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
 
     TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), 0);
     TEST_ASSERT_EQUAL(reader.ReadSignedWordLE(), -1);
@@ -110,7 +110,7 @@ TEST(ReaderTest, TestReadingSignedWordBE) {
     uint8_t array[] = {
         0x00, 0x00, 0xFF, 0xFF, 0x7F, 0xFF, 0x80, 0x00, 0xC5, 0x68, 0x3A, 0x98};
     Reader reader;
-    reader.Initialize(hal::libs::make_span(array));
+    reader.Initialize(gsl::make_span(array));
 
     TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), 0);
     TEST_ASSERT_EQUAL(reader.ReadSignedWordBE(), -1);
@@ -238,7 +238,7 @@ TEST(ReaderTest, TestReadArray) {
     const uint8_t array[] = {0x55, 0xaa, 0x77};
 
     reader.Initialize(array);
-    TEST_ASSERT_TRUE(reader.ReadArray(3) == hal::libs::make_span(array));
+    TEST_ASSERT_TRUE(reader.ReadArray(3) == gsl::make_span(array));
     TEST_ASSERT_TRUE(reader.Status());
 }
 
@@ -261,7 +261,7 @@ TEST(ReaderTest, TestReadingMovesPosition) {
     TEST_ASSERT_EQUAL(reader.ReadWordLE(), 0x77AA);
     TEST_ASSERT_EQUAL(reader.ReadDoubleWordLE(), 0x332211EEU);
     TEST_ASSERT_TRUE(reader.ReadArray(3) ==
-                     hal::libs::span<const std::uint8_t>(array + 7, 3));
+                     gsl::span<const std::uint8_t>(array + 7, 3));
     TEST_ASSERT_EQUAL(reader.ReadByte(), 0x77);
     TEST_ASSERT_EQUAL(reader.ReadWordBE(), 0x8899);
     TEST_ASSERT_TRUE(reader.Status());
