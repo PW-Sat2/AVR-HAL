@@ -1,10 +1,10 @@
 #ifndef HAL_MCU_ATMEGA328P_TQFP32_HAL_MCU_TIMERS_H_
 #define HAL_MCU_ATMEGA328P_TQFP32_HAL_MCU_TIMERS_H_
 
-namespace hal {
-
 #include <avr/io.h>
 #include "hal/libs.h"
+
+namespace hal {
 
 class Timer0 {
  public:
