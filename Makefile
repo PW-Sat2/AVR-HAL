@@ -1,5 +1,7 @@
 LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-build/include,-runtime/arrays,-runtime/references,-build/c++11,-build/namespaces,-runtime/explicit,-runtime/printf,-runtime/int --linelength=120
 
+SOURCES := $(shell find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "cmake-build-");
+
 all: checkStyle examples unit_tests_run SingleDeviceTests checkFormat
 
 clean:
@@ -15,10 +17,10 @@ tmp/cpplint.py: tmp
 	wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py -O tmp/cpplint.py
 
 checkStyle: tmp/cpplint.py
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "cmake-build-" | xargs python tmp/cpplint.py $(LINTER_PARAMS)
+	@python tmp/cpplint.py $(LINTER_PARAMS) $(SOURCES)
 
 format:
-	find . -type f \( -name "*.cpp" -o -name "*.h" \) | grep -v "hal/libs/std/"  | grep -v "/build/" | grep -v "/cmake-build-debug/" | xargs clang-format -i
+	@clang-format -i $(SOURCES)
 
 checkFormat: format
 	git diff --exit-code
