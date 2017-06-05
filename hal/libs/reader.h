@@ -4,7 +4,7 @@
 #pragma once
 
 #include <cstdint>
-#include "span.h"
+#include <gsl/gsl>
 
 namespace hal {
 namespace libs {
@@ -32,14 +32,14 @@ class Reader final {
      * @brief ctor.
      * @param[in] view Window into memory buffer from which the data is read.
      */
-    Reader(hal::libs::span<const uint8_t> view);
+    Reader(gsl::span<const uint8_t> view);
 
     /**
      * @brief Initializes generic buffer reader.
      *
      * @param[in] view Window into memory buffer from which the data is read.
      */
-    void Initialize(hal::libs::span<const uint8_t> view);
+    void Initialize(gsl::span<const uint8_t> view);
 
     /**
      * @brief Jumps over the requested amount of bytes.
@@ -169,7 +169,7 @@ class Reader final {
      * @param[in] length Size in bytes of the requested data block.
      * @return Pointer to the first byte of the requested memory block.
      */
-    hal::libs::span<const uint8_t> ReadArray(uint16_t length);
+    gsl::span<const uint8_t> ReadArray(uint16_t length);
 
     /**
      * @brief Resets reader to the initial state.
@@ -180,7 +180,7 @@ class Reader final {
      * @brief Returns span of remaining part of buffer.
      * @return Span for remaining part of buffer
      */
-    hal::libs::span<const uint8_t> ReadToEnd();
+    gsl::span<const uint8_t> ReadToEnd();
 
  private:
     bool UpdateState(uint16_t requestedSize);
@@ -188,7 +188,7 @@ class Reader final {
     /**
      * @brief Window into memory buffer from which the data is read.
      */
-    hal::libs::span<const uint8_t> buffer;
+    gsl::span<const uint8_t> buffer;
 
     /**
      * @brief Current buffer location.

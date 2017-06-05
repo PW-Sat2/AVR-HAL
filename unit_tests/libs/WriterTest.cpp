@@ -9,8 +9,8 @@ void CheckBuffer(const uint8_t* current,
                  const uint16_t currentLength,
                  const uint8_t* expected,
                  const uint16_t expectedLength) {
-    auto in  = hal::libs::make_span(current, currentLength);
-    auto out = hal::libs::make_span(expected, expectedLength);
+    auto in  = gsl::make_span(current, currentLength);
+    auto out = gsl::make_span(expected, expectedLength);
     TEST_ASSERT_TRUE(std::equal(in.begin(), in.end(), out.begin()));
 }
 
@@ -21,7 +21,7 @@ TEST(WriterTest, TestStatusNullBuffer) {
 
 TEST(WriterTest, TestStatusZeroSizeBuffer) {
     uint8_t array[1];
-    Writer writer(hal::libs::make_span(array, 0));
+    Writer writer(gsl::make_span(array, 0));
     TEST_ASSERT_FALSE(writer.Status());
 }
 
@@ -188,7 +188,7 @@ TEST(WriterTest, TestUsedSpan) {
     auto s = writer.Capture();
 
     TEST_ASSERT_EQUAL(s.length(), 2);
-    // TEST_ASSERT_TRUE(s == hal::libs::make_span({0x55, 0x66}));
+    // TEST_ASSERT_TRUE(s == gsl::make_span({0x55, 0x66}));
 }
 
 TEST(WriterTest, TestWriteLowerBytesBE) {

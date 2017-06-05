@@ -14,7 +14,7 @@ class AT24C02 {
             this->_data[0] = addr;
         }
 
-        libs::span<uint8_t> data;
+        gsl::span<uint8_t> data;
 
      private:
         std::array<uint8_t, size + 1> _data;

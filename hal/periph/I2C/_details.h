@@ -12,7 +12,7 @@ namespace details {
 
 class _Interface : public Interface {
  public:
-    void write(uint8_t address, libs::span<const uint8_t> data) override {
+    void write(uint8_t address, gsl::span<const uint8_t> data) override {
         start(address, StartAction::write);
         for (auto i : data) {
             write(i);
@@ -20,15 +20,15 @@ class _Interface : public Interface {
         stop();
     }
 
-    void read(uint8_t address, libs::span<uint8_t> data) override {
+    void read(uint8_t address, gsl::span<uint8_t> data) override {
         start(address, StartAction::read);
         raw_read(data);
         stop();
     }
 
     void writeRead(uint8_t address,
-                   libs::span<const uint8_t> output,
-                   libs::span<uint8_t> input) override {
+                   gsl::span<const uint8_t> output,
+                   gsl::span<uint8_t> input) override {
         start(address, StartAction::write);
         raw_write(output);
         start(address, StartAction::read);
@@ -47,13 +47,13 @@ class _Interface : public Interface {
         ACK  = 1,
     };
 
-    void raw_write(libs::span<const uint8_t> data) {
+    void raw_write(gsl::span<const uint8_t> data) {
         for (auto i : data) {
             write(i);
         }
     }
 
-    void raw_read(libs::span<uint8_t> data) {
+    void raw_read(gsl::span<uint8_t> data) {
         for (size_t i = 0; i < data.size(); ++i) {
             data[i] = read((i == data.size() - 1) ? NACK : ACK);
         }

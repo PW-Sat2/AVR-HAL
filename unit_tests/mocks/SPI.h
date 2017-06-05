@@ -10,17 +10,16 @@ struct EmptySPIMock : public hal::SPI::Interface {
         return 0;
     }
 
-    void transfer(hal::libs::span<const uint8_t> in,
-                  hal::libs::span<uint8_t> out) override {
+    void transfer(gsl::span<const uint8_t> in, gsl::span<uint8_t> out) override {
         TEST_ASSERT_EQUAL_INT(in.size(), out.size());
         TEST_FAIL();
     }
 
-    void write(hal::libs::span<const uint8_t>) override {
+    void write(gsl::span<const uint8_t>) override {
         TEST_FAIL();
     }
 
-    void read(hal::libs::span<uint8_t>, uint8_t) override {
+    void read(gsl::span<uint8_t>, uint8_t) override {
         TEST_FAIL();
     }
 };

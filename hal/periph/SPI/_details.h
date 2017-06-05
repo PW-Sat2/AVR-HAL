@@ -18,8 +18,8 @@ class BlockTransfer : public Interface {
         pin_cs.init(DigitalIO::Interface::Mode::OUTPUT);
     }
 
-    void transfer(libs::span<const uint8_t> output,
-                  libs::span<uint8_t> input) override {
+    void
+    transfer(gsl::span<const uint8_t> output, gsl::span<uint8_t> input) override {
         pin_cs.reset();
         const uint8_t* out_ptr = output.data();
         uint8_t* in_ptr        = input.data();
@@ -32,7 +32,7 @@ class BlockTransfer : public Interface {
         pin_cs.set();
     }
 
-    void write(libs::span<const uint8_t> output) override {
+    void write(gsl::span<const uint8_t> output) override {
         pin_cs.reset();
         for (auto&& x : output) {
             static_cast<Interface*>(this)->transfer(x);
@@ -40,7 +40,7 @@ class BlockTransfer : public Interface {
         pin_cs.set();
     }
 
-    void read(libs::span<uint8_t> input, uint8_t output_value = 0) override {
+    void read(gsl::span<uint8_t> input, uint8_t output_value = 0) override {
         pin_cs.reset();
         for (auto& x : input) {
             x = static_cast<Interface*>(this)->transfer(output_value);
