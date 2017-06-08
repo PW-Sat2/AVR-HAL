@@ -31,7 +31,7 @@ set(     SIMULAVR_TARGET_ATMEGA324A_44    atmega324a)
 set(            includes_ATMEGA324P_44    atmega164p_324p_644p_44)
 set(          GCC_TARGET_ATMEGA324P_44    atmega324p)
 set(      AVRDUDE_TARGET_ATMEGA324P_44    m324pa)
-set(     SIMULAVR_TARGET_ATMEGA324P_44    atmega324)
+set(     SIMULAVR_TARGET_ATMEGA324P_44    atmega644)
 
 set(        includes_ATMEGA328P_TQFP32    atmega328p_tqfp32)
 set(      GCC_TARGET_ATMEGA328P_TQFP32    atmega328p)
