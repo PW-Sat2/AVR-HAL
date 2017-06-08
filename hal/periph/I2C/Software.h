@@ -15,8 +15,8 @@ class Software : public details::_Interface {
     }
 
     void init() {
-        pin_scl.init(DigitalIO::Interface::Mode::INPUT);
-        pin_sda.init(DigitalIO::Interface::Mode::INPUT);
+        pin_scl.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+        pin_sda.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
         pin_scl.reset();
         pin_sda.reset();
     }
