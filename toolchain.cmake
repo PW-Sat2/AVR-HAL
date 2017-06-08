@@ -30,7 +30,7 @@ CMAKE_FORCE_CXX_COMPILER(${CXX} GNU)
 
 message(STATUS "Using HAL from ${CMAKE_CURRENT_LIST_DIR}")
 message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
-message(STATUS "SimulAVR: ${SIMULAVR}")
+message(STATUS "Simavr: ${SIMAVR}")
 message(STATUS "PicoCOM: ${PICOCOM}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
