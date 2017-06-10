@@ -1,44 +1,44 @@
 #ifndef HAL_DEVICES_AD7714_EXT_H_
 #define HAL_DEVICES_AD7714_EXT_H_
 
-#include "hal/periph.h"
 #include "hal/libs.h"
+#include "hal/periph.h"
 
 namespace hal {
 
 class AD7714_ext {
  public:
     enum ADC_Registers {
-        COMM_REG = 0,
-        MODE_REG = 1,
-        FILTER_HIGH_REG = 2,
-        FILTER_LOW_REG = 3,
-        TEST_REG = 4,
-        DATA_REG = 5,
+        COMM_REG             = 0,
+        MODE_REG             = 1,
+        FILTER_HIGH_REG      = 2,
+        FILTER_LOW_REG       = 3,
+        TEST_REG             = 4,
+        DATA_REG             = 5,
         ZERO_SCALE_CALIB_REG = 6,
         FULL_SCALE_CALIB_REG = 7
     };
 
     enum ADC_Channels {
-        AIN1_CH = 0,
-        AIN2_CH = 1,
-        AIN3_CH = 2,
-        AIN4_CH = 3,
-        AIN5_CH = 6,
+        AIN1_CH   = 0,
+        AIN2_CH   = 1,
+        AIN3_CH   = 2,
+        AIN4_CH   = 3,
+        AIN5_CH   = 6,
         AIN1_2_CH = 4,
         AIN3_4_CH = 5,
         AIN5_6_CH = 6,
-        TEST_CH = 7
+        TEST_CH   = 7
     };
 
     enum ADC_Gain {
-        Gain_1 = 0,
-        Gain_2 = 1,
-        Gain_4 = 2,
-        Gain_8 = 3,
-        Gain_16 = 4,
-        Gain_32 = 5,
-        Gain_64 = 6,
+        Gain_1   = 0,
+        Gain_2   = 1,
+        Gain_4   = 2,
+        Gain_8   = 3,
+        Gain_16  = 4,
+        Gain_32  = 5,
+        Gain_64  = 6,
         Gain_128 = 7
     };
 
@@ -48,28 +48,30 @@ class AD7714_ext {
     };
 
     enum ADC_Modes {
-        NormalMode = 0,
-        SelfCalib = 1,
-        ZeroScaleSysCalib = 2,
-        FullScaleSysCalib = 3,
-        SysOffsetCalib = 4,
-        BackgroundCalib = 5,
+        NormalMode         = 0,
+        SelfCalib          = 1,
+        ZeroScaleSysCalib  = 2,
+        FullScaleSysCalib  = 3,
+        SysOffsetCalib     = 4,
+        BackgroundCalib    = 5,
         ZeroScaleSelfCalib = 6,
         FullScaleSelfCalib = 7
     };
 
     enum Control_State {
         OFF = 0,  //
-        ON = 1
+        ON  = 1
     };
 
     enum Polarity {
-        bipolar = 0,  //
+        bipolar  = 0,  //
         unipolar = 1
     };
 
-    explicit AD7714_ext(SPI::Interface& spi_dev, DigitalIO::Interface& pin_DRDY,
-                        DigitalIO::Interface& pin_RESET, DigitalIO::Interface& pin_STANDBY,
+    explicit AD7714_ext(SPI::Interface& spi_dev,
+                        DigitalIO::Interface& pin_DRDY,
+                        DigitalIO::Interface& pin_RESET,
+                        DigitalIO::Interface& pin_STANDBY,
                         DigitalIO::Interface& pin_BUFFER)
         : spi_dev(spi_dev),
           pin_DRDY{pin_DRDY},
@@ -131,17 +133,17 @@ class AD7714_ext {
         writeToCommReg(DATA_REG, true);
 
         if (dataLen == Data_16bit) {
-            libs::array<uint8_t, 2> data;
+            std::array<uint8_t, 2> data;
             spi_dev.read(data);
             libs::Reader reader{data};
             return reader.ReadWordBE();
         } else {  // dataLen == Data_24bit
-            libs::array<uint8_t, 3> data;
+            std::array<uint8_t, 3> data;
             spi_dev.read(data);
 
             uint32_t read = 0;
-            read |= data[0]; read <<= 8;
-            read |= data[1]; read <<= 8;
+            read |= data[0], read <<= 8;
+            read |= data[1], read <<= 8;
             read |= data[2];
 
             return read;
@@ -155,8 +157,7 @@ class AD7714_ext {
         this->waitForDRDY();
     }
 
-    void setFilter(Polarity set_polarity, DataLength data_length,
-                   uint16_t filter) {
+    void setFilter(Polarity set_polarity, DataLength data_length, uint16_t filter) {
         //  filter: 19-4000
         //  f notch = fclk/128/filter
         dataLen = data_length;

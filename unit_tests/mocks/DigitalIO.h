@@ -1,8 +1,8 @@
 #ifndef UNIT_TESTS_MOCKS_DIGITALIO_H_
 #define UNIT_TESTS_MOCKS_DIGITALIO_H_
 
-#include "tests.h"
 #include <hal/hal>
+#include "tests.h"
 
 struct DigtalIOMock : public hal::DigitalIO::Interface {
     void init(const Mode) override {

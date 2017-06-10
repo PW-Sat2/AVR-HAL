@@ -7,7 +7,8 @@ namespace hal {
 
 class ADG709 {
  public:
-    constexpr explicit ADG709(DigitalIO::Interface& pin_A0, DigitalIO::Interface& pin_A1,
+    constexpr explicit ADG709(DigitalIO::Interface& pin_A0,
+                              DigitalIO::Interface& pin_A1,
                               DigitalIO::Interface& pin_EN)
         : pin_A0{pin_A0}, pin_A1{pin_A1}, pin_EN{pin_EN} {
     }

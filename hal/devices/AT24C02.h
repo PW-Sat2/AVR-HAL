@@ -14,15 +14,16 @@ class AT24C02 {
             this->_data[0] = addr;
         }
 
-        libs::span<uint8_t> data;
+        gsl::span<uint8_t> data;
 
      private:
-        libs::array<uint8_t, size+1> _data;
+        std::array<uint8_t, size + 1> _data;
 
         friend class AT24C02;
     };
 
-    AT24C02(I2C::Interface& i2c) : i2c{i2c} {}
+    AT24C02(I2C::Interface& i2c) : i2c{i2c} {
+    }
 
     template<std::size_t size>
     void write(const Data<size>& mem) const {
@@ -31,7 +32,7 @@ class AT24C02 {
 
     template<std::size_t size>
     void read(Data<size>& mem) const {
-        libs::array<uint8_t, 1> tx = {mem._data[0]};
+        std::array<uint8_t, 1> tx = {mem._data[0]};
 
         i2c.writeRead(I2CAddress, tx, mem.data);
     }

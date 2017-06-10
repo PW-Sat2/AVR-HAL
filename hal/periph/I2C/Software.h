@@ -2,15 +2,16 @@
 #define HAL_PERIPH_I2C_SOFTWARE_H_
 
 #include <util/delay.h>
-#include "hal/periph/DigitalIO/Interface.h"
 #include "_details.h"
+#include "hal/periph/DigitalIO/Interface.h"
 
 namespace hal {
 namespace I2C {
 
 class Software : public details::_Interface {
  public:
-    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl) : pin_sda{pin_sda}, pin_scl{pin_scl} {
+    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl)
+        : pin_sda{pin_sda}, pin_scl{pin_scl} {
     }
 
     void init() {
@@ -19,6 +20,14 @@ class Software : public details::_Interface {
         pin_scl.reset();
         pin_sda.reset();
     }
+
+    using Interface::read;
+    using Interface::write;
+    using Interface::writeRead;
+
+ private:
+    DigitalIO::Interface& pin_sda;
+    DigitalIO::Interface& pin_scl;
 
     bool start(uint8_t address, const StartAction start_action) override {
         scl_high();
@@ -114,10 +123,6 @@ class Software : public details::_Interface {
 
         return data;
     }
-
- private:
-    DigitalIO::Interface& pin_sda;
-    DigitalIO::Interface& pin_scl;
 
     void qDelay() {
         _delay_loop_1(3);

@@ -17,7 +17,6 @@ add_hal_executable(${NAME}
         tests/DigitalIO.cpp
         tests/SPI.cpp
         tests/ADC.cpp
-        tests/I2C.cpp
 )
 
 include_directories(.)

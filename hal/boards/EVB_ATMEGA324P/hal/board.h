@@ -40,46 +40,42 @@ namespace pins {
 #undef PD6
 #undef PD7
 
+static constexpr DigitalIO::Interface::Pin PA0 = 37;
+static constexpr DigitalIO::Interface::Pin PA1 = 36;
+static constexpr DigitalIO::Interface::Pin PA2 = 35;
+static constexpr DigitalIO::Interface::Pin PA3 = 34;
+static constexpr DigitalIO::Interface::Pin PA4 = 33;
+static constexpr DigitalIO::Interface::Pin PA5 = 32;
+static constexpr DigitalIO::Interface::Pin PA6 = 31;
+static constexpr DigitalIO::Interface::Pin PA7 = 30;
+static constexpr DigitalIO::Interface::Pin PB0 = 40;
+static constexpr DigitalIO::Interface::Pin PB1 = 41;
+static constexpr DigitalIO::Interface::Pin PB2 = 42;
+static constexpr DigitalIO::Interface::Pin PB3 = 43;
+static constexpr DigitalIO::Interface::Pin PB4 = 44;
+static constexpr DigitalIO::Interface::Pin PB5 = 1;
+static constexpr DigitalIO::Interface::Pin PB6 = 2;
+static constexpr DigitalIO::Interface::Pin PB7 = 3;
+static constexpr DigitalIO::Interface::Pin PD0 = 19;
+static constexpr DigitalIO::Interface::Pin PD1 = 20;
+static constexpr DigitalIO::Interface::Pin PD2 = 21;
+static constexpr DigitalIO::Interface::Pin PD3 = 22;
+static constexpr DigitalIO::Interface::Pin PD4 = 23;
+static constexpr DigitalIO::Interface::Pin PD5 = 34;
+static constexpr DigitalIO::Interface::Pin PD6 = 35;
+static constexpr DigitalIO::Interface::Pin PD7 = 36;
+static constexpr DigitalIO::Interface::Pin PC0 = 9;
+static constexpr DigitalIO::Interface::Pin PC1 = 10;
+static constexpr DigitalIO::Interface::Pin PC2 = 11;
+static constexpr DigitalIO::Interface::Pin PC3 = 12;
+static constexpr DigitalIO::Interface::Pin PC4 = 13;
+static constexpr DigitalIO::Interface::Pin PC5 = 14;
+static constexpr DigitalIO::Interface::Pin PC6 = 15;
+static constexpr DigitalIO::Interface::Pin PC7 = 16;
 
-static constexpr DigitalIO::Pin PA0 = 37;
-static constexpr DigitalIO::Pin PA1 = 36;
-static constexpr DigitalIO::Pin PA2 = 35;
-static constexpr DigitalIO::Pin PA3 = 34;
-static constexpr DigitalIO::Pin PA4 = 33;
-static constexpr DigitalIO::Pin PA5 = 32;
-static constexpr DigitalIO::Pin PA6 = 31;
-static constexpr DigitalIO::Pin PA7 = 30;
-static constexpr DigitalIO::Pin PB0 = 40;
-static constexpr DigitalIO::Pin PB1 = 41;
-static constexpr DigitalIO::Pin PB2 = 42;
-static constexpr DigitalIO::Pin PB3 = 43;
-static constexpr DigitalIO::Pin PB4 = 44;
-static constexpr DigitalIO::Pin PB5 = 1;
-static constexpr DigitalIO::Pin PB6 = 2;
-static constexpr DigitalIO::Pin PB7 = 3;
-static constexpr DigitalIO::Pin PD0 = 19;
-static constexpr DigitalIO::Pin PD1 = 20;
-static constexpr DigitalIO::Pin PD2 = 21;
-static constexpr DigitalIO::Pin PD3 = 22;
-static constexpr DigitalIO::Pin PD4 = 23;
-static constexpr DigitalIO::Pin PD5 = 34;
-static constexpr DigitalIO::Pin PD6 = 35;
-static constexpr DigitalIO::Pin PD7 = 36;
-static constexpr DigitalIO::Pin PC0 = 9;
-static constexpr DigitalIO::Pin PC1 = 10;
-static constexpr DigitalIO::Pin PC2 = 11;
-static constexpr DigitalIO::Pin PC3 = 12;
-static constexpr DigitalIO::Pin PC4 = 13;
-static constexpr DigitalIO::Pin PC5 = 14;
-static constexpr DigitalIO::Pin PC6 = 15;
-static constexpr DigitalIO::Pin PC7 = 16;
+static constexpr DigitalIO::Interface::Pin LED = PB7;
 
-
-static constexpr DigitalIO::Pin LED = PB7;
 }  // namespace pins
-
-constexpr static hal::LED led(pins::LED);
-
 }  // namespace bsp
 }  // namespace hal
 

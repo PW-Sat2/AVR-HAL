@@ -1,5 +1,5 @@
-#include "tests.h"
 #include <cstring>
+#include "tests.h"
 
 TEST_GROUP(fifo);
 
@@ -12,7 +12,8 @@ TEST(fifo, simple) {
 }
 
 struct foo {
-    foo() : i{0} {}
+    foo() : i{0} {
+    }
     // explicit foo(int val) : i{val} {
     // }
     int i;
@@ -36,17 +37,16 @@ TEST(fifo, fill) {
     TEST_ASSERT_EQUAL(fifo.getSize(), 10);
     TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10);
 
-
     for (int i = 0; i < 10; ++i) {
         TEST_ASSERT_FALSE(fifo.isFull());
 
         TEST_ASSERT_TRUE(fifo.append(i));
 
-        TEST_ASSERT_EQUAL(fifo.getLength(), i+1);
+        TEST_ASSERT_EQUAL(fifo.getLength(), i + 1);
         TEST_ASSERT_FALSE(fifo.isEmpty());
         TEST_ASSERT_TRUE(fifo.isNotEmpty());
         TEST_ASSERT_EQUAL(fifo.getSize(), 10);
-        TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10-i-1);
+        TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10 - i - 1);
     }
     TEST_ASSERT_TRUE(fifo.isFull());
     TEST_ASSERT_EQUAL(fifo.getLength(), 10);
@@ -71,9 +71,9 @@ TEST(fifo, fill) {
         TEST_ASSERT_EQUAL(fifo.get(), i);
 
         TEST_ASSERT_FALSE(fifo.isFull());
-        TEST_ASSERT_EQUAL(fifo.getLength(), 10-1-i);
+        TEST_ASSERT_EQUAL(fifo.getLength(), 10 - 1 - i);
         TEST_ASSERT_EQUAL(fifo.getSize(), 10);
-        TEST_ASSERT_EQUAL(fifo.getFreeSpace(), i+1);
+        TEST_ASSERT_EQUAL(fifo.getFreeSpace(), i + 1);
     }
 
     TEST_ASSERT_FALSE(fifo.isFull());
@@ -83,8 +83,6 @@ TEST(fifo, fill) {
     TEST_ASSERT_EQUAL(fifo.getSize(), 10);
     TEST_ASSERT_EQUAL(fifo.getFreeSpace(), 10);
 }
-
-
 
 TEST(fifo, pingpong) {
     FIFO_data<int, 11> fifo;

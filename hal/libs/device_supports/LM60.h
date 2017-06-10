@@ -5,9 +5,9 @@ namespace hal {
 namespace libs {
 
 namespace LM60 {
-    static float temperature(float mV) {
-        return (mV - 434)/6.25;
-    }
+static float temperature(float mV) {
+    return (mV - 434) / 6.25;
+}
 }  // namespace LM60
 
 }  // namespace libs

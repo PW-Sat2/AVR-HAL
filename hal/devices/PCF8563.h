@@ -7,19 +7,20 @@ namespace hal {
 
 class PCF8563 {
  public:
-    PCF8563(I2C::Interface& i2c) : i2c{i2c} {}
+    PCF8563(I2C::Interface& i2c) : i2c{i2c} {
+    }
 
     enum class ClockStatus {
         STOPPED = 0,
-        RUNNING = 1
+        RUNNING = 1,
     };
 
     enum class SquareOutput {
         SQW_DISABLE = 0b00000000,
-        SQW_32KHZ = 0b10000000,
-        SQW_1024HZ = 0b10000001,
-        SQW_32HZ = 0b10000010,
-        SQW_1HZ = 0b10000011
+        SQW_32KHZ   = 0b10000000,
+        SQW_1024HZ  = 0b10000001,
+        SQW_32HZ    = 0b10000010,
+        SQW_1HZ     = 0b10000011
     };
 
     struct Time {
@@ -35,12 +36,13 @@ class PCF8563 {
         uint16_t year;
     };
     void clear_status() const {
-        libs::array<const uint8_t, 3> data = {Registers::CONTROL_STATUS_1, 0x00, 0x00};
+        std::array<const uint8_t, 3> data = {
+            Registers::CONTROL_STATUS_1, 0x00, 0x00};
         i2c.write(_addr, data);
     }
 
     void set_date_time(Date date, Time time) const {
-        uint8_t century_years = date.year/100;
+        uint8_t century_years = date.year / 100;
         uint8_t month_century = decToBcd(date.month);
 
         if (20 == century_years) {
@@ -49,38 +51,36 @@ class PCF8563 {
             month_century |= (1 << 7);
         }
 
-        libs::array<const uint8_t, 8> data = {
-            Registers::VL_SECONDS,
-            decToBcd(time.seconds),
-            decToBcd(time.minutes),
-            decToBcd(time.hours),
-            decToBcd(date.day),
-            decToBcd(date.weekday),
-            month_century,
-            decToBcd(date.year%100)
-        };
+        std::array<const uint8_t, 8> data = {Registers::VL_SECONDS,
+                                             decToBcd(time.seconds),
+                                             decToBcd(time.minutes),
+                                             decToBcd(time.hours),
+                                             decToBcd(date.day),
+                                             decToBcd(date.weekday),
+                                             month_century,
+                                             decToBcd(date.year % 100)};
 
         i2c.write(_addr, data);
     }
 
     void set_square_output(SquareOutput frequency) const {
-        libs::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
-                                              static_cast<uint8_t>(frequency)};
+        std::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
+                                             static_cast<uint8_t>(frequency)};
         i2c.write(_addr, data);
     }
 
-    ClockStatus get_date_time(Date &date, Time &time) const {
-        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
-        libs::array<uint8_t, 7> data;
+    ClockStatus get_date_time(Date& date, Time& time) const {
+        std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
+        std::array<uint8_t, 7> data;
         i2c.writeRead(_addr, tx, data);
 
-        time.hours = bcdToDec(data[2] & 0x3F);
+        time.hours   = bcdToDec(data[2] & 0x3F);
         time.minutes = bcdToDec(data[1] & 0x7F);
         time.seconds = bcdToDec(data[0] & 0x7F);
 
-        date.day = bcdToDec(data[3] & 0x3F);
+        date.day     = bcdToDec(data[3] & 0x3F);
         date.weekday = bcdToDec(data[4] & 0x07);
-        date.month = bcdToDec(data[5] & 0x1F);
+        date.month   = bcdToDec(data[5] & 0x1F);
 
         if (data[5] & 0x80) {
             date.year = 1900 + bcdToDec(data[6]);
@@ -96,8 +96,8 @@ class PCF8563 {
     }
 
     ClockStatus getClockStatus() const {
-        libs::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
-        libs::array<uint8_t, 1> data;
+        std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
+        std::array<uint8_t, 1> data;
         i2c.writeRead(_addr, tx, data);
 
         if (data[0] & 0x80) {
@@ -111,31 +111,31 @@ class PCF8563 {
     enum Registers {
         CONTROL_STATUS_1 = 0x00,
         CONTROL_STATUS_2 = 0x01,
-        VL_SECONDS = 0x02,
-        MINUTES = 0x03,
-        HOURS = 0x04,
-        DAYS = 0x05,
-        WEEKDAYS = 0x06,
-        CENTURY_MONTHS = 0x07,
-        YEARS = 0x08,
-        MINUTE_ALARM = 0x09,
-        HOUR_ALARM = 0x0A,
-        DAY_ALARM = 0x0B,
-        WEEKDAY_ALARM = 0x0C,
-        CLKOUT_CTRL = 0x0D,
-        TIMER_CTRL = 0x0E,
-        TIMER = 0x0F
+        VL_SECONDS       = 0x02,
+        MINUTES          = 0x03,
+        HOURS            = 0x04,
+        DAYS             = 0x05,
+        WEEKDAYS         = 0x06,
+        CENTURY_MONTHS   = 0x07,
+        YEARS            = 0x08,
+        MINUTE_ALARM     = 0x09,
+        HOUR_ALARM       = 0x0A,
+        DAY_ALARM        = 0x0B,
+        WEEKDAY_ALARM    = 0x0C,
+        CLKOUT_CTRL      = 0x0D,
+        TIMER_CTRL       = 0x0E,
+        TIMER            = 0x0F,
     };
 
     I2C::Interface& i2c;
     I2C::Interface::Address _addr = 0x51;
 
     uint8_t decToBcd(uint8_t val) const {
-        return ((val/10*16) + (val%10));
+        return ((val / 10 * 16) + (val % 10));
     }
 
     uint8_t bcdToDec(uint8_t val) const {
-        return ((val/16*10) + (val%16));
+        return ((val / 16 * 10) + (val % 16));
     }
 };
 

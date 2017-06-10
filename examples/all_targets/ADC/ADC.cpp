@@ -3,18 +3,19 @@
 using hal::Analog::InternalADC;
 using hal::Serial0;
 
-
 volatile uint8_t flag = 0;
 volatile int x;
 
 ISR(ADC_vect) {
-    x = InternalADC::read_nowait();
+    x    = InternalADC::read_nowait();
     flag = 1;
 }
 
-
 int main() {
-    Serial0.init(115200, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
+
     InternalADC::init(InternalADC::Prescaler::DIV_128,
                       InternalADC::Reference::AVcc);
 

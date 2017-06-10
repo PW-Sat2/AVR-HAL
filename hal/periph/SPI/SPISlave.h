@@ -2,45 +2,45 @@
 #define HAL_PERIPH_SPI_SPISLAVE_H_
 
 #include <avr/io.h>
-#include "hal/mcu.h"
 #include "hal/libs.h"
+#include "hal/mcu.h"
 
 namespace hal {
 
 class SPISlave {
  public:
     enum class Polarity : int {
-        idle_low = 0,
-        idle_high = 1
+        idle_low  = 0,
+        idle_high = 1,
     };
 
     enum class Phase : int {
-        leading_sample = 0,
-        trailing_sample = 1
+        leading_sample  = 0,
+        trailing_sample = 1,
     };
 
     enum class DataOrder : int {
         MSB_first = 0,
-        LSB_first = 1
+        LSB_first = 1,
     };
 
     enum class ClockDivisor : int {
-        DIV_4 = 0,
-        DIV_16 = 1,
-        DIV_64 = 2,
-        DIV_128 = 3
+        DIV_4   = 0,
+        DIV_16  = 1,
+        DIV_64  = 2,
+        DIV_128 = 3,
     };
 
-    void init(const Polarity polarity, const Phase phase,
-                  const DataOrder data_order) {
+    void
+    init(const Polarity polarity, const Phase phase, const DataOrder data_order) {
         pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
         pin_sck.init(DigitalIO::Interface::Mode::INPUT);
         pin_ss.init(DigitalIO::Interface::Mode::INPUT);
         pin_miso.init(DigitalIO::Interface::Mode::OUTPUT);
 
-        SPCR = (1 << SPE) |
-               (static_cast<uint8_t>(phase) << CPHA) |
-               (static_cast<uint8_t>(polarity) << CPOL) |
+        SPCR = (1 << SPE) |                                //
+               (static_cast<uint8_t>(phase) << CPHA) |     //
+               (static_cast<uint8_t>(polarity) << CPOL) |  //
                (static_cast<uint8_t>(data_order) << DORD);
     }
 

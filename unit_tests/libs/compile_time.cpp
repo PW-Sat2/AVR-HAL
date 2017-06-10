@@ -1,8 +1,8 @@
 #include <cmath>
 #include <cstdio>
 
-#include "unity.h"
 #include "../tests.h"
+#include "unity.h"
 
 TEST_GROUP(compile_time);
 
@@ -10,7 +10,8 @@ using namespace hal::libs;
 
 template<int base, int exp>
 struct test {
-    static const bool value = ((power<base, exp>::value == std::pow(base, exp)) && test<base, exp-1>::value);
+    static const bool value = ((power<base, exp>::value == std::pow(base, exp)) &&
+                               test<base, exp - 1>::value);
 };
 
 template<int base>
@@ -28,7 +29,6 @@ TEST(compile_time, pow) {
     now = test<11, 6>::value;
     TEST_ASSERT_EQUAL(now, true);
 }
-
 
 template<int exp, int size, uint64_t value>
 void power_of_twoTest() {
@@ -73,10 +73,10 @@ void bit_maskTest(uint8_t size, uint64_t value) {
 }
 
 TEST(compile_time, bit_mask_at_zero) {
-    bit_maskTest<0,  0> (1, 0);
-    bit_maskTest<0,  3> (1, 0b111);
-    bit_maskTest<0,  4> (1, 0b1111);
-    bit_maskTest<0,  8> (1, 0xFFU);
+    bit_maskTest<0, 0>(1, 0);
+    bit_maskTest<0, 3>(1, 0b111);
+    bit_maskTest<0, 4>(1, 0b1111);
+    bit_maskTest<0, 8>(1, 0xFFU);
     bit_maskTest<0, 16>(2, 0xFFFF);
     bit_maskTest<0, 24>(4, 0xFFFFFF);
     bit_maskTest<0, 32>(4, 0xFFFFFFFF);
@@ -87,22 +87,22 @@ TEST(compile_time, bit_mask_at_zero) {
 }
 
 TEST(compile_time, bit_mask) {
-    bit_maskTest<1,  1> (1,                                                  0b10);
-    bit_maskTest<1,  2> (1,                                                 0b110);
-    bit_maskTest<5,  2> (1,                                            0b110'0000);
-    bit_maskTest<5,  3> (1,                                           0b1110'0000);
-    bit_maskTest<7,  3> (2,                                        0b11'1000'0000);
-    bit_maskTest<13, 2> (2,                                  0b110'0000'0000'0000);
-    bit_maskTest<13, 3> (2,                                 0b1110'0000'0000'0000);
-    bit_maskTest<13, 4> (4,                               0b1'1110'0000'0000'0000);
-    bit_maskTest<14, 3> (4,                               0b1'1100'0000'0000'0000);
-    bit_maskTest<14, 10> (4,                      0b1111'1111'1100'0000'0000'0000);
-    bit_maskTest<17, 10> (4,                  0b111'1111'1110'0000'0000'0000'0000);
-    bit_maskTest<17, 15> (4,            0b1111'1111'1111'1110'0000'0000'0000'0000UL);
-    bit_maskTest<17, 16> (8,          0b1'1111'1111'1111'1110'0000'0000'0000'0000UL);
-    bit_maskTest<18, 15> (8,          0b1'1111'1111'1111'1100'0000'0000'0000'0000UL);
-    bit_maskTest<17, 20> (8,     0b1'1111'1111'1111'1111'1110'0000'0000'0000'0000UL);
-    bit_maskTest<18, 21> (8,   0b111'1111'1111'1111'1111'1100'0000'0000'0000'0000UL);
+    bit_maskTest<1, 1>(1, 0b10);
+    bit_maskTest<1, 2>(1, 0b110);
+    bit_maskTest<5, 2>(1, 0b110'0000);
+    bit_maskTest<5, 3>(1, 0b1110'0000);
+    bit_maskTest<7, 3>(2, 0b11'1000'0000);
+    bit_maskTest<13, 2>(2, 0b110'0000'0000'0000);
+    bit_maskTest<13, 3>(2, 0b1110'0000'0000'0000);
+    bit_maskTest<13, 4>(4, 0b1'1110'0000'0000'0000);
+    bit_maskTest<14, 3>(4, 0b1'1100'0000'0000'0000);
+    bit_maskTest<14, 10>(4, 0b1111'1111'1100'0000'0000'0000);
+    bit_maskTest<17, 10>(4, 0b111'1111'1110'0000'0000'0000'0000);
+    bit_maskTest<17, 15>(4, 0b1111'1111'1111'1110'0000'0000'0000'0000UL);
+    bit_maskTest<17, 16>(8, 0b1'1111'1111'1111'1110'0000'0000'0000'0000UL);
+    bit_maskTest<18, 15>(8, 0b1'1111'1111'1111'1100'0000'0000'0000'0000UL);
+    bit_maskTest<17, 20>(8, 0b1'1111'1111'1111'1111'1110'0000'0000'0000'0000UL);
+    bit_maskTest<18, 21>(8, 0b111'1111'1111'1111'1111'1100'0000'0000'0000'0000UL);
 }
 
 template<int start, int length, int size>
@@ -117,16 +117,16 @@ void test_read_with_bit_mask(uint64_t value, uint64_t result) {
 TEST(compile_time, read_with_bit_mask) {
     constexpr uint32_t x = 0b01011101101011110100010000111010;
 
-    test_read_with_bit_mask< 0, 0, 1>(x, 0);
-    test_read_with_bit_mask< 1, 0, 1>(x, 0);
-    test_read_with_bit_mask< 2, 0, 1>(x, 0);
-    test_read_with_bit_mask< 3, 0, 1>(x, 0);
-    test_read_with_bit_mask< 4, 0, 1>(x, 0);
-    test_read_with_bit_mask< 5, 0, 1>(x, 0);
-    test_read_with_bit_mask< 6, 0, 1>(x, 0);
-    test_read_with_bit_mask< 7, 0, 1>(x, 0);
-    test_read_with_bit_mask< 8, 0, 1>(x, 0);
-    test_read_with_bit_mask< 9, 0, 1>(x, 0);
+    test_read_with_bit_mask<0, 0, 1>(x, 0);
+    test_read_with_bit_mask<1, 0, 1>(x, 0);
+    test_read_with_bit_mask<2, 0, 1>(x, 0);
+    test_read_with_bit_mask<3, 0, 1>(x, 0);
+    test_read_with_bit_mask<4, 0, 1>(x, 0);
+    test_read_with_bit_mask<5, 0, 1>(x, 0);
+    test_read_with_bit_mask<6, 0, 1>(x, 0);
+    test_read_with_bit_mask<7, 0, 1>(x, 0);
+    test_read_with_bit_mask<8, 0, 1>(x, 0);
+    test_read_with_bit_mask<9, 0, 1>(x, 0);
     test_read_with_bit_mask<10, 0, 1>(x, 0);
     test_read_with_bit_mask<11, 0, 1>(x, 0);
     test_read_with_bit_mask<12, 0, 1>(x, 0);
@@ -172,16 +172,16 @@ TEST(compile_time, read_with_bit_mask) {
     test_read_with_bit_mask<12, 1, 1>(x, 0);
     test_read_with_bit_mask<11, 1, 1>(x, 0);
     test_read_with_bit_mask<10, 1, 1>(x, 1);
-    test_read_with_bit_mask< 9, 1, 1>(x, 0);
-    test_read_with_bit_mask< 8, 1, 1>(x, 0);
-    test_read_with_bit_mask< 7, 1, 1>(x, 0);
-    test_read_with_bit_mask< 6, 1, 1>(x, 0);
-    test_read_with_bit_mask< 5, 1, 1>(x, 1);
-    test_read_with_bit_mask< 4, 1, 1>(x, 1);
-    test_read_with_bit_mask< 3, 1, 1>(x, 1);
-    test_read_with_bit_mask< 2, 1, 1>(x, 0);
-    test_read_with_bit_mask< 1, 1, 1>(x, 1);
-    test_read_with_bit_mask< 0, 1, 1>(x, 0);
+    test_read_with_bit_mask<9, 1, 1>(x, 0);
+    test_read_with_bit_mask<8, 1, 1>(x, 0);
+    test_read_with_bit_mask<7, 1, 1>(x, 0);
+    test_read_with_bit_mask<6, 1, 1>(x, 0);
+    test_read_with_bit_mask<5, 1, 1>(x, 1);
+    test_read_with_bit_mask<4, 1, 1>(x, 1);
+    test_read_with_bit_mask<3, 1, 1>(x, 1);
+    test_read_with_bit_mask<2, 1, 1>(x, 0);
+    test_read_with_bit_mask<1, 1, 1>(x, 1);
+    test_read_with_bit_mask<0, 1, 1>(x, 0);
 
     test_read_with_bit_mask<0, 5, 1>(x, 0b11010);
     test_read_with_bit_mask<1, 5, 1>(x, 0b11101);

@@ -46,14 +46,11 @@
 namespace hal {
 namespace libs {
 
-template <class T>
+template<class T>
 class FIFO {
  public:
-    constexpr FIFO(T *const data, size_t size) noexcept : dataTab(data),
-                                                          size(size),
-                                                          writePos(0),
-                                                          readPos(0),
-                                                          count(0) {
+    constexpr FIFO(T* const data, size_t size) noexcept
+        : dataTab(data), size(size), writePos(0), readPos(0), count(0) {
     }
     bool append(T data) noexcept __attribute__((always_inline)) {
         if (isFull() == false) {
@@ -64,12 +61,13 @@ class FIFO {
     }
     void append_unsafe(T data) noexcept __attribute__((always_inline)) {
         count++;
-        writePos = (writePos + 1) % size;
+        writePos          = (writePos + 1) % size;
         dataTab[writePos] = data;
     }
-    size_t write(const T *data, size_t size) noexcept {
+    size_t write(const T* data, size_t size) noexcept {
         if (isFull() == false) {
-            if (size > getFreeSpace()) size = getFreeSpace();
+            if (size > getFreeSpace())
+                size = getFreeSpace();
             // calculate space of first part
             size_t firstPart = this->size - writePos - 1;
 
@@ -78,8 +76,7 @@ class FIFO {
                 writePos += size;
             } else {
                 memcpy(dataTab + writePos + 1, data, firstPart * sizeof(T));
-                memcpy(dataTab, data + firstPart,
-                       (size - firstPart) * sizeof(T));
+                memcpy(dataTab, data + firstPart, (size - firstPart) * sizeof(T));
                 writePos = size - firstPart - 1;
             }
 
@@ -88,9 +85,10 @@ class FIFO {
         }
         return 0;
     }
-    size_t read(T *data, size_t size) noexcept {
+    size_t read(T* data, size_t size) noexcept {
         if (isEmpty() == false) {
-            if (size > getLength()) size = getLength();
+            if (size > getLength())
+                size = getLength();
             // calculate first part size
             size_t firstPart = this->size - readPos - 1;
 
@@ -99,8 +97,7 @@ class FIFO {
                 readPos += size;
             } else {
                 memcpy(data, dataTab + readPos + 1, firstPart * sizeof(T));
-                memcpy(data + firstPart, dataTab,
-                       (size - firstPart) * sizeof(T));
+                memcpy(data + firstPart, dataTab, (size - firstPart) * sizeof(T));
                 readPos = size - firstPart - 1;
             }
 
@@ -114,16 +111,17 @@ class FIFO {
      * This function return pointer to begin of data that can be read and size
      * of data in one memory chunk
      */
-    size_t getContinousPart(const T *&begin) const noexcept {
+    size_t getContinousPart(const T*& begin) const noexcept {
         // calculate end address
-        /*const T **/ begin = getDataPointer();
-        const T *end = &dataTab[size];
+        /*const T **/ begin  = getDataPointer();
+        const T* end         = &dataTab[size];
         size_t continousPart = end - begin;
-        if (continousPart > getLength()) continousPart = getLength();
+        if (continousPart > getLength())
+            continousPart = getLength();
         return continousPart;
     }
 
-    size_t getEmptyContinousPart(const T *&begin) const noexcept {
+    size_t getEmptyContinousPart(const T*& begin) const noexcept {
         // calculate end address
         /*const T **/
         if (isFull()) {
@@ -131,12 +129,13 @@ class FIFO {
         }
 
         size_t tmp_writePos = (writePos + 1) % size;
-        begin = &dataTab[tmp_writePos];
+        begin               = &dataTab[tmp_writePos];
 
-        const T *end = &dataTab[size];
+        const T* end         = &dataTab[size];
         size_t continousPart = end - begin;
 
-        if (continousPart > getFreeSpace()) continousPart = getFreeSpace();
+        if (continousPart > getFreeSpace())
+            continousPart = getFreeSpace();
         return continousPart;
     }
 
@@ -162,7 +161,7 @@ class FIFO {
         return dataTab[readPos];
     }
 
-    size_t copyTo(T *data, size_t maxDataSize) noexcept {
+    size_t copyTo(T* data, size_t maxDataSize) noexcept {
         size_t dataToCopy;
         if (maxDataSize >= getLength()) {
             dataToCopy = getLength();
@@ -176,8 +175,7 @@ class FIFO {
             memcpy(data, getDataPointer(), dataToCopy * sizeof(T));
         } else {
             memcpy(data, getDataPointer(), firstPart * sizeof(T));
-            memcpy(data + firstPart, dataTab,
-                   (dataToCopy - firstPart) * sizeof(T));
+            memcpy(data + firstPart, dataTab, (dataToCopy - firstPart) * sizeof(T));
         }
 
         return dataToCopy;
@@ -194,8 +192,8 @@ class FIFO {
     }
     void flush() noexcept __attribute__((always_inline)) {
         writePos = 0;
-        readPos = 0;
-        count = 0;
+        readPos  = 0;
+        count    = 0;
     }
     // todo optimalize
     size_t getLength() const noexcept __attribute__((always_inline)) {
@@ -207,8 +205,8 @@ class FIFO {
     size_t getFreeSpace() const noexcept __attribute__((always_inline)) {
         return getSize() - getLength();
     }
-    size_t moveWritePointer(size_t positions) noexcept
-        __attribute__((always_inline)) {
+    size_t
+    moveWritePointer(size_t positions) noexcept __attribute__((always_inline)) {
         if (positions > getFreeSpace()) {
             positions = getFreeSpace();
         }
@@ -218,37 +216,37 @@ class FIFO {
     }
 
  private:
-    T *const dataTab;
+    T* const dataTab;
     const size_t size;
     volatile size_t writePos, readPos, count;
 
  public:
-    T *getDataPointer() noexcept {
+    T* getDataPointer() noexcept {
         return &dataTab[(readPos + 1) % size];
     }
 
-    T *getWritePointer() noexcept {
+    T* getWritePointer() noexcept {
         return &dataTab[(writePos + 1) % size];
     }
 
-    T *getBufferPointer() noexcept {
+    T* getBufferPointer() noexcept {
         return dataTab;
     }
 
-    const T *getDataPointer() const noexcept {
+    const T* getDataPointer() const noexcept {
         return &dataTab[(readPos + 1) % size];
     }
 
-    const T *getWritePointer() const noexcept {
+    const T* getWritePointer() const noexcept {
         return &dataTab[(writePos + 1) % size];
     }
 
-    const T *getBufferPointer() const noexcept {
+    const T* getBufferPointer() const noexcept {
         return dataTab;
     }
 };
 
-template <class T, size_t size>
+template<class T, size_t size>
 class FIFO_data : public FIFO<T> {
  public:
     FIFO_data() : FIFO<T>(data, size) {
@@ -260,6 +258,5 @@ class FIFO_data : public FIFO<T> {
 
 }  // namespace libs
 }  // namespace hal
-
 
 #endif  // HAL_LIBS_FIFO_H_

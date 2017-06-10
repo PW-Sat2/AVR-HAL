@@ -43,13 +43,12 @@ class Watchdog {
 #elif defined(MCUCSR)
         libs::clear_bit<WDRF>(MCUCSR);
 #else
-    #error "Investigate watchdog!"
+#error "Investigate watchdog!"
 #endif
 
         wdt_disable();
     }
 };
-
 
 }  // namespace hal
 

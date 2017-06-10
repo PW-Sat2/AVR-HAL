@@ -1,5 +1,5 @@
-#include "unity.h"
 #include "tests.h"
+#include "unity.h"
 
 #include "mocks/SPI.h"
 
@@ -11,7 +11,7 @@ using namespace hal::libs;
 struct MockAD5641 : public EmptySPIMock {
     uint16_t expect;
 
-    void write(hal::libs::span<const uint8_t> output) override {
+    void write(gsl::span<const uint8_t> output) override {
         TEST_ASSERT_EQUAL(2, output.size());
         Reader reader{output};
         TEST_ASSERT_EQUAL(expect, reader.ReadWordBE());
@@ -41,6 +41,6 @@ TEST(AD5641, overflow) {
     MockAD5641 mock;
     AD5641 ad5641{mock};
 
-    mock.expect = 0x3FFF; ad5641.write(0x4000);
-    mock.expect = 0x3FFF; ad5641.write(0xFFFF);
+    mock.expect = 0x3FFF, ad5641.write(0x4000);
+    mock.expect = 0x3FFF, ad5641.write(0xFFFF);
 }

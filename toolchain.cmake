@@ -39,7 +39,7 @@ set(ENABLE_HAL_STD TRUE)
 
 set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
 set (CXXWARN "-Wall -Wextra -Werror")
-set (CTUNING "-DNDEBUG -Os -fomit-frame-pointer -ffunction-sections -fdata-sections -flto")
+set (CTUNING "-Os -fomit-frame-pointer -ffunction-sections -fdata-sections -flto")
 set (CWORKAROUNDS "-Wno-format")
 set (CMCU "-mmcu=${GCC_TARGET} -DF_CPU=${F_CPU}L")
 

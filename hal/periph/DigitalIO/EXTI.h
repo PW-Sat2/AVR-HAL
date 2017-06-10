@@ -9,9 +9,9 @@ namespace ExternalInterrupt {
 
 enum class Mode : uint8_t {
     level_low = 0,
-    change = 1,
-    falling = 2,
-    rising = 3
+    change    = 1,
+    falling   = 2,
+    rising    = 3,
 };
 
 template<uint8_t interrupt_nr>
@@ -26,15 +26,15 @@ class Line {
         disable();
 
         if (interrupt_nr < 4) {
-            libs::write_mask<2*interrupt_nr, 2>(EICRA, mode);
+            libs::write_mask<2 * interrupt_nr, 2>(EICRA, mode);
         } else {
 #ifdef EICRB
-            libs::write_mask(2*(interrupt_nr-4), 2, EICRB, mode);
+            libs::write_mask(2 * (interrupt_nr - 4), 2, EICRB, mode);
 #endif
         }
         libs::set_bit<interrupt_nr>(EIMSK);
 #else
-    #error Sorry, EXTI on this MCU is not implemented!
+#error Sorry, EXTI on this MCU is not implemented!
 #endif
     }
 

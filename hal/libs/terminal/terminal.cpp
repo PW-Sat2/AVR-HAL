@@ -2,10 +2,11 @@
 #include <string.h>
 #include <cstdio>
 
-static void parseCommandLine(char line[], char** commandName, char** arguments,
+static void parseCommandLine(char line[],
+                             char** commandName,
+                             char** arguments,
                              uint16_t* argc,
-                             uint8_t maxArgsCount  //
-                             ) {
+                             uint8_t maxArgsCount) {
     *argc = 0;
 
     char* ptr;
@@ -44,7 +45,6 @@ void Terminal::SendPrefix() {
     std::printf("\n>");
 }
 
-void Terminal::SetCommandList(
-    hal::libs::span<const TerminalCommandDescription> commands) {
+void Terminal::SetCommandList(gsl::span<const TerminalCommandDescription> commands) {
     this->_commandList = commands;
 }

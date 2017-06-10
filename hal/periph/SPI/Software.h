@@ -4,26 +4,24 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "hal/periph/DigitalIO/Interface.h"
-#include "hal/mcu.h"
 #include "hal/libs.h"
+#include "hal/mcu.h"
+#include "hal/periph/DigitalIO/Interface.h"
 
 #include "Interface.h"
 
 namespace hal {
 namespace SPI {
 
-template<SPI::Polarity polarity,
-         SPI::Phase phase>
+template<SPI::Polarity polarity, SPI::Phase phase>
 class Software : public details::BlockTransfer {
  public:
     Software(DigitalIO::Interface& pin_mosi,
              DigitalIO::Interface& pin_miso,
              DigitalIO::Interface& pin_sck,
-             DigitalIO::Interface& pin_ss) : BlockTransfer{pin_ss},
-                                             pin_mosi{pin_mosi},
-                                             pin_miso{pin_miso},
-                                             pin_sck{pin_sck} {}
+             DigitalIO::Interface& pin_ss)
+        : BlockTransfer{pin_ss}, pin_mosi{pin_mosi}, pin_miso{pin_miso}, pin_sck{pin_sck} {
+    }
 
     void init() {
         pin_miso.init(DigitalIO::Interface::Mode::INPUT_PULLUP);

@@ -8,19 +8,18 @@ using namespace hal::libs;
 Writer::Writer() : _position(0), _isValid(false) {
 }
 
-Writer::Writer(hal::libs::span<std::uint8_t> view) {
+Writer::Writer(gsl::span<std::uint8_t> view) {
     this->Initialize(std::move(view));
 }
 
-void Writer::Initialize(hal::libs::span<std::uint8_t> view) {
+void Writer::Initialize(gsl::span<std::uint8_t> view) {
     this->_buffer = view;
     this->Reset();
 }
 
 bool Writer::UpdateState(std::uint8_t requestedSize) {
     if (this->_isValid) {
-        this->_isValid =
-            (this->_position + requestedSize) <= this->_buffer.size();
+        this->_isValid = (this->_position + requestedSize) <= this->_buffer.size();
     }
 
     return this->_isValid;
@@ -43,7 +42,7 @@ bool Writer::WriteWordLE(std::uint16_t word) {
     if (!this->UpdateState(2)) {
         return false;
     } else {
-        this->_buffer[this->_position] = word & 0xff;
+        this->_buffer[this->_position]     = word & 0xff;
         this->_buffer[this->_position + 1] = (word >> 8) & 0xff;
         this->_position += 2;
         return true;
@@ -58,7 +57,7 @@ bool Writer::WriteDoubleWordLE(uint32_t word) {
     if (!this->UpdateState(4)) {
         return false;
     } else {
-        this->_buffer[this->_position] = word & 0xff;
+        this->_buffer[this->_position]     = word & 0xff;
         this->_buffer[this->_position + 1] = (word >> 8) & 0xff;
         this->_buffer[this->_position + 2] = (word >> 16) & 0xff;
         this->_buffer[this->_position + 3] = (word >> 24) & 0xff;
@@ -75,7 +74,7 @@ bool Writer::WriteQuadWordLE(uint64_t word) {
     if (!this->UpdateState(8)) {
         return false;
     } else {
-        this->_buffer[this->_position] = word & 0xff;
+        this->_buffer[this->_position]     = word & 0xff;
         this->_buffer[this->_position + 1] = (word >> 8) & 0xff;
         this->_buffer[this->_position + 2] = (word >> 16) & 0xff;
         this->_buffer[this->_position + 3] = (word >> 24) & 0xff;
@@ -88,21 +87,20 @@ bool Writer::WriteQuadWordLE(uint64_t word) {
     }
 }
 
-bool Writer::WriteArray(hal::libs::span<const uint8_t> buffer) {
+bool Writer::WriteArray(gsl::span<const uint8_t> buffer) {
     if (!this->UpdateState(buffer.size())) {
         return false;
     } else {
-        std::copy(buffer.begin(), buffer.end(),
-                  this->_buffer.begin() + this->_position);
+        std::copy(
+            buffer.begin(), buffer.end(), this->_buffer.begin() + this->_position);
 
         this->_position += buffer.size();
         return true;
     }
 }
 
-hal::libs::span<std::uint8_t> Writer::Reserve(std::size_t count) {
-    count =
-        std::min<std::size_t>(count, this->_buffer.size() - this->_position);
+gsl::span<std::uint8_t> Writer::Reserve(std::size_t count) {
+    count = std::min<std::size_t>(count, this->_buffer.size() - this->_position);
 
     auto s = this->_buffer.subspan(this->_position, count);
 
@@ -112,7 +110,7 @@ hal::libs::span<std::uint8_t> Writer::Reserve(std::size_t count) {
     return s;
 }
 
-hal::libs::span<std::uint8_t> Writer::Capture() {
+gsl::span<std::uint8_t> Writer::Capture() {
     return this->_buffer.subspan(0, this->_position);
 }
 

@@ -1,14 +1,21 @@
 #include <hal/hal>
 #include "tests.h"
 
-__extension__ typedef int __guard __attribute__((mode (__DI__)));
+using hal::Serial0;
 
-extern "C" int __cxa_guard_acquire(__guard *);
-extern "C" void __cxa_guard_release(__guard *);
-extern "C" void __cxa_guard_abort(__guard *);
-int __cxa_guard_acquire(__guard *g) {return !*reinterpret_cast<char *>(g);}
-void __cxa_guard_release(__guard *g) {*reinterpret_cast<char *>(g) = 1;}
-void __cxa_guard_abort(__guard *) {}
+__extension__ typedef int __guard __attribute__((mode(__DI__)));
+
+extern "C" int __cxa_guard_acquire(__guard*);
+extern "C" void __cxa_guard_release(__guard*);
+extern "C" void __cxa_guard_abort(__guard*);
+int __cxa_guard_acquire(__guard* g) {
+    return !*reinterpret_cast<char*>(g);
+}
+void __cxa_guard_release(__guard* g) {
+    *reinterpret_cast<char*>(g) = 1;
+}
+void __cxa_guard_abort(__guard*) {
+}
 
 typedef void (*fptr)();
 
@@ -24,7 +31,9 @@ fptr add_test_group(void (*fun)(), bool get) {
 }
 
 int main() {
-    hal::Serial0.init(9600, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     while (true) {
         auto fun = add_test_group(nullptr, true);

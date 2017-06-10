@@ -83,7 +83,7 @@ private:
 
 #    if defined (_STLP_USE_NO_IOSTREAMS) && !defined (__BUILDING_STLPORT)
        // if not linking to the lib, expose implementation of members here
-#      include <stl/_stdexcept_base.c>
+//#      include <stl/_stdexcept_base.c>
 #    endif
 
 #    if defined (_STLP_DO_WARNING_POP)

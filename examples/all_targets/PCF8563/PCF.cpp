@@ -1,7 +1,11 @@
 #include <hal/hal>
 
+using hal::Serial0;
+
 int main() {
-    hal::Serial0.init(4800, hal::STDIO::ENABLE);
+    Serial0.init(115200);
+    Serial0.redirect_stdio();
+    Serial0.redirect_stderr();
 
     hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
     hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;
@@ -10,7 +14,6 @@ int main() {
     i2c.init();
 
     hal::PCF8563 rtc{i2c};
-
 
     if (hal::PCF8563::ClockStatus::STOPPED == rtc.getClockStatus()) {
         printf("Clock is not working, setting time!\r\n");
@@ -27,8 +30,13 @@ int main() {
     while (true) {
         if (hal::PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
-                time.hours, time.minutes, time.seconds,
-                date.day, date.month, date.year, date.weekday);
+                   time.hours,
+                   time.minutes,
+                   time.seconds,
+                   date.day,
+                   date.month,
+                   date.year,
+                   date.weekday);
         } else {
             printf("RTC clock is not working...\r\n");
         }
