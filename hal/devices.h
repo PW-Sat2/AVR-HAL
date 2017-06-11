@@ -10,6 +10,7 @@
 #include "hal/devices/ADG849.h"
 #include "hal/devices/ADXRS453.h"
 #include "hal/devices/AT24C02.h"
+#include "hal/devices/DAC121.h"
 #include "hal/devices/DAC1220.h"
 #include "hal/devices/FPF270x.h"
 #include "hal/devices/LED.h"

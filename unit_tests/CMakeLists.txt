@@ -34,6 +34,7 @@ add_hal_executable(unit_tests
     drivers/ADG708.cpp
     drivers/ADG709.cpp
     drivers/ADG849.cpp
+    drivers/DAC121.cpp
     drivers/FPF270x.cpp
     drivers/LED.cpp
     drivers/TMP121.cpp
