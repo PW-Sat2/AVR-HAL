@@ -116,7 +116,7 @@ macro(add_hal_executable target_name)
 	)
 
 	add_custom_target(${target_name}.sim
-		COMMAND ${SIMAVR} -m ${SIMAVR_TARGET} ${elf_file}
+		COMMAND ${SIMAVR} -m ${SIMAVR_TARGET} ${elf_file} -v -v -v
 		DEPENDS ${target_name}.build
 	)
 
