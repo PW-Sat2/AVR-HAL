@@ -23,14 +23,14 @@ find_program(CMAKE_MAKE_PROGRAM NAMES make)
 find_program(AVRDUDE NAMES avrdude)
 find_program(PICOCOM NAMES picocom)
 
-find_program(SIMULAVR NAMES simulavr)
+find_program(SIMAVR NAMES simavr)
 
 CMAKE_FORCE_C_COMPILER(${CC} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CXX} GNU)
 
 message(STATUS "Using HAL from ${CMAKE_CURRENT_LIST_DIR}")
 message(STATUS "Using C compiler from ${CMAKE_C_COMPILER}")
-message(STATUS "SimulAVR: ${SIMULAVR}")
+message(STATUS "Simavr: ${SIMAVR}")
 message(STATUS "PicoCOM: ${PICOCOM}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
@@ -116,7 +116,7 @@ macro(add_hal_executable target_name)
 	)
 
 	add_custom_target(${target_name}.sim
-		COMMAND ${SIMULAVR} -d ${SIMULAVR_TARGET} -f ${elf_file} -W 0xC6,- -R 0x22,- -T exit
+		COMMAND ${SIMAVR} -m ${SIMAVR_TARGET} ${elf_file} -v -v -v
 		DEPENDS ${target_name}.build
 	)
 

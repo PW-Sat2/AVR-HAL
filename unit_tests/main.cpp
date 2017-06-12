@@ -1,3 +1,4 @@
+#include <avr/sleep.h>
 #include <hal/hal>
 #include "tests.h"
 
@@ -42,4 +43,7 @@ int main() {
         }
         fun();
     }
+
+    cli();
+    sleep_mode();
 }

@@ -26,7 +26,7 @@ template<typename T>
 class EepromStorage : details::AddressCounter {
  public:
     constexpr EepromStorage()
-        : eeprom_ptr(getPointerFromAddess(getAndIncreaseBy(size))) {
+        : eeprom_ptr(get_pointer_from_addess(getAndIncreaseBy(size))) {
     }
 
     T read() const {
@@ -48,7 +48,7 @@ class EepromStorage : details::AddressCounter {
     }
 
  private:
-    void* getPointerFromAddess(size_t address) {
+    void* get_pointer_from_addess(size_t address) {
         return reinterpret_cast<void*>(address);
     }
 
