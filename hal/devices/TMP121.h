@@ -41,7 +41,7 @@ class TMP121 {
      * @see #read
      * @return Converted temperature to Celsius.
      */
-    float readCelsius() {
+    float read_celsius() {
         return static_cast<float>(read()) * 0.0625;
     }
 

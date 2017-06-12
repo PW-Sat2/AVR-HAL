@@ -34,7 +34,7 @@ class Hardware : public details::_Interface {
 
     using Interface::read;
     using Interface::write;
-    using Interface::writeRead;
+    using Interface::write_read;
 
  private:
     template<uint32_t frequency>
