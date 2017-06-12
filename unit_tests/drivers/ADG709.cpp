@@ -39,7 +39,7 @@ TEST(ADG709, disable) {
 
     set_expect(a0, a1, en, 0xFF);
     adg.disable();
-    
+
     adg.select(ADG709::Channel::S1);
     adg.select(ADG709::Channel::S2);
     adg.select(ADG709::Channel::S3);
