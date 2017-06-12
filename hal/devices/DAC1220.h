@@ -41,12 +41,12 @@ class DAC1220 {
     explicit DAC1220(SPI::Interface& spi_dev) : spi_dev{spi_dev} {
     }
 
-    void writeToCommandReg(Calibration CRST,
-                           DataLength RES,
-                           DataFormat DF,
-                           FilterOut DISF,
-                           DataOrder MSB,
-                           Mode MD) {
+    void write_to_command_reg(Calibration CRST,
+                              DataLength RES,
+                              DataFormat DF,
+                              FilterOut DISF,
+                              DataOrder MSB,
+                              Mode MD) {
         uint8_t CommandRegMSB = 0;
         // ADPT
         CommandRegMSB |= (DISF << 7);
@@ -75,7 +75,7 @@ class DAC1220 {
         this->spi_dev.write(arr);
     }
 
-    void WriteToOutput(uint16_t RawValue) {
+    void write_to_output(uint16_t RawValue) {
         std::array<uint8_t, 4> arr;
         libs::Writer writer{arr};
         writer.WriteByte(0b01000000);

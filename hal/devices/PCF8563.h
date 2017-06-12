@@ -43,7 +43,7 @@ class PCF8563 {
 
     void set_date_time(Date date, Time time) const {
         uint8_t century_years = date.year / 100;
-        uint8_t month_century = decToBcd(date.month);
+        uint8_t month_century = dec_to_bcd(date.month);
 
         if (20 == century_years) {
             month_century &= ~(1 << 7);
@@ -52,13 +52,13 @@ class PCF8563 {
         }
 
         std::array<const uint8_t, 8> data = {Registers::VL_SECONDS,
-                                             decToBcd(time.seconds),
-                                             decToBcd(time.minutes),
-                                             decToBcd(time.hours),
-                                             decToBcd(date.day),
-                                             decToBcd(date.weekday),
+                                             dec_to_bcd(time.seconds),
+                                             dec_to_bcd(time.minutes),
+                                             dec_to_bcd(time.hours),
+                                             dec_to_bcd(date.day),
+                                             dec_to_bcd(date.weekday),
                                              month_century,
-                                             decToBcd(date.year % 100)};
+                                             dec_to_bcd(date.year % 100)};
 
         i2c.write(_addr, data);
     }
@@ -72,7 +72,7 @@ class PCF8563 {
     ClockStatus get_date_time(Date& date, Time& time) const {
         std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         std::array<uint8_t, 7> data;
-        i2c.writeRead(_addr, tx, data);
+        i2c.write_read(_addr, tx, data);
 
         time.hours   = bcdToDec(data[2] & 0x3F);
         time.minutes = bcdToDec(data[1] & 0x7F);
@@ -95,10 +95,10 @@ class PCF8563 {
         }
     }
 
-    ClockStatus getClockStatus() const {
+    ClockStatus get_clock_status() const {
         std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         std::array<uint8_t, 1> data;
-        i2c.writeRead(_addr, tx, data);
+        i2c.write_read(_addr, tx, data);
 
         if (data[0] & 0x80) {
             return ClockStatus::STOPPED;
@@ -130,7 +130,7 @@ class PCF8563 {
     I2C::Interface& i2c;
     I2C::Interface::Address _addr = 0x51;
 
-    uint8_t decToBcd(uint8_t val) const {
+    uint8_t dec_to_bcd(uint8_t val) const {
         return ((val / 10 * 16) + (val % 10));
     }
 

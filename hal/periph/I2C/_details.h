@@ -26,9 +26,9 @@ class _Interface : public Interface {
         stop();
     }
 
-    void writeRead(uint8_t address,
-                   gsl::span<const uint8_t> output,
-                   gsl::span<uint8_t> input) override {
+    void write_read(uint8_t address,
+                    gsl::span<const uint8_t> output,
+                    gsl::span<uint8_t> input) override {
         start(address, StartAction::write);
         raw_write(output);
         start(address, StartAction::read);

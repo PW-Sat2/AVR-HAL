@@ -68,10 +68,10 @@ class AD7714 {
         : spi_dev(spi), pin_DRDY{pin_DRDY} {
     }
 
-    uint8_t changeChannel(ADC_Channels channel) {
+    uint8_t change_channel(ADC_Channels channel) {
         actual_channel = channel;
-        writeToCommReg(COMM_REG, true);
-        this->waitForDRDY();
+        write_to_comm_reg(COMM_REG, true);
+        this->wait_for_DRDY();
         return spi_dev.transfer(0);
     }
 
@@ -79,7 +79,7 @@ class AD7714 {
         return (!(this->pin_DRDY.read()));
     }
 
-    void waitForDRDY() {
+    void wait_for_DRDY() {
         while (!data_available()) {
         }
     }
@@ -88,14 +88,14 @@ class AD7714 {
         this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
     }
 
-    void writeToCommReg(ADC_Registers reg, bool read) const {
+    void write_to_comm_reg(ADC_Registers reg, bool read) const {
         uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
         spi_dev.transfer(out);
     }
 
     uint32_t read_data() {
-        waitForDRDY();
-        writeToCommReg(DATA_REG, true);
+        wait_for_DRDY();
+        write_to_comm_reg(DATA_REG, true);
 
         std::array<uint8_t, 3> data;
         spi_dev.read(data);
@@ -108,23 +108,23 @@ class AD7714 {
         return read;
     }
 
-    void writeToModeReg(ADC_Modes mode, ADC_Gain gain) {
-        writeToCommReg(MODE_REG, false);
+    void writeto_mode_reg(ADC_Modes mode, ADC_Gain gain) {
+        write_to_comm_reg(MODE_REG, false);
         uint8_t data = (mode << 5) | (gain << 2);
         spi_dev.transfer(data);
-        this->waitForDRDY();
+        this->wait_for_DRDY();
     }
 
-    void setFilter(Polarity set_polarity, uint16_t filter) {
+    void set_filter(Polarity set_polarity, uint16_t filter) {
         //  filter: 19-4000
         //  f notch = fclk/128/filter
-        writeToCommReg(FILTER_HIGH_REG, false);
+        write_to_comm_reg(FILTER_HIGH_REG, false);
         uint8_t val = (static_cast<bool>(set_polarity) << 7) |  //
                       (DataLength::Data_24bit << 6) |           //
                       (1 << 5) |                                //
                       (filter >> 8);
         spi_dev.transfer(val);
-        writeToCommReg(FILTER_LOW_REG, false);
+        write_to_comm_reg(FILTER_LOW_REG, false);
         val = (filter & 0xFF);
         spi_dev.transfer(val);
     }
