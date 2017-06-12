@@ -56,15 +56,15 @@ TEST(ADG709, enabled) {
 
     adg.enable();
 
-    set_expect(a0, a1, en,static_cast<uint8_t>(ADG709::Channel::S1));
+    set_expect(a0, a1, en, static_cast<uint8_t>(ADG709::Channel::S1));
     adg.select(ADG709::Channel::S1);
 
-    set_expect(a0, a1, en,static_cast<uint8_t>(ADG709::Channel::S2));
+    set_expect(a0, a1, en, static_cast<uint8_t>(ADG709::Channel::S2));
     adg.select(ADG709::Channel::S2);
 
-    set_expect(a0, a1, en,static_cast<uint8_t>(ADG709::Channel::S3));
+    set_expect(a0, a1, en, static_cast<uint8_t>(ADG709::Channel::S3));
     adg.select(ADG709::Channel::S3);
 
-    set_expect(a0, a1, en,static_cast<uint8_t>(ADG709::Channel::S4));
+    set_expect(a0, a1, en, static_cast<uint8_t>(ADG709::Channel::S4));
     adg.select(ADG709::Channel::S4);
 }
