@@ -40,7 +40,7 @@ class TPS3813 {
     }
 
  private:
-    DigitalIO::Interface &pin_WDI;
+    DigitalIO::Interface& pin_WDI;
 };
 
 }  // namespace devices
