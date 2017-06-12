@@ -4,6 +4,7 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
 
 /*!
  * TPS3813 Processor Supervisory Circuit with Window-Watchdog Timer driver.
@@ -42,6 +43,7 @@ class TPS3813 {
     DigitalIO::Interface &pin_WDI;
 };
 
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_TPS3813_H_

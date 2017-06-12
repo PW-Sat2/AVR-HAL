@@ -36,6 +36,7 @@ add_hal_executable(unit_tests
     drivers/FPF270x.cpp
     drivers/LED.cpp
     drivers/TMP121.cpp
+    drivers/TPS3813.cpp
 
     drivers/devices_compilation.cpp
 
