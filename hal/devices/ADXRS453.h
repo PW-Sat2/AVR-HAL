@@ -22,11 +22,11 @@ class ADXRS453 {
     constexpr ADXRS453(SPI::Interface& spi) : spi(spi) {
     }
 
-    bool deviceStatus() const {
+    bool device_status() const {
         bool status = true;
 
         /* Read the value of the ADXRS453 ID register. */
-        uint16_t sensorID = this->getRegister(RegisterMap::PID);
+        uint16_t sensorID = this->get_register(RegisterMap::PID);
 
         if ((sensorID >> 8) != 0x52) {
             status = false;
@@ -35,7 +35,7 @@ class ADXRS453 {
         return status;
     }
 
-    uint32_t getSensorData() const {
+    uint32_t get_sensor_data() const {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0]    = (1 << 5);
@@ -64,8 +64,8 @@ class ADXRS453 {
         return registerValue;
     }
 
-    float getRate() const {
-        uint16_t registerValue = this->getRegister(RegisterMap::RATE);
+    float get_rate() const {
+        uint16_t registerValue = this->get_register(RegisterMap::RATE);
 
         // If data received is in positive degree range
         float rate = 0.0;
@@ -81,10 +81,10 @@ class ADXRS453 {
         return rate;
     }
 
-    float getTemperature() const {
+    float get_temperature() const {
         uint32_t registerValue = 0;
         float temperature      = 0;
-        registerValue          = getRegister(RegisterMap::TEMP);
+        registerValue          = get_register(RegisterMap::TEMP);
 
         if ((registerValue >> 6) > 0x31F) {
             registerValue = (registerValue >> 6) - 0x31F;
@@ -97,7 +97,7 @@ class ADXRS453 {
         return temperature;
     }
 
-    uint16_t getRegister(const uint8_t registerAddress) const {
+    uint16_t get_register(const uint8_t registerAddress) const {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0] = (1 << 7) | (registerAddress >> 7);
@@ -128,8 +128,8 @@ class ADXRS453 {
     }
 
  private:
-    void
-    setRegisterValue(const uint8_t registerAddress, uint16_t registerValue) const {
+    void set_register_value(const uint8_t registerAddress,
+                            uint16_t registerValue) const {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
         uint32_t command                  = 0;
 

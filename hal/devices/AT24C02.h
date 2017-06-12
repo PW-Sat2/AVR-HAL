@@ -34,7 +34,7 @@ class AT24C02 {
     void read(Data<size>& mem) const {
         std::array<uint8_t, 1> tx = {mem._data[0]};
 
-        i2c.writeRead(I2CAddress, tx, mem.data);
+        i2c.write_read(I2CAddress, tx, mem.data);
     }
 
  private:

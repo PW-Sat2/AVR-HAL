@@ -23,7 +23,7 @@ class Software : public details::_Interface {
 
     using Interface::read;
     using Interface::write;
-    using Interface::writeRead;
+    using Interface::write_read;
 
  private:
     DigitalIO::Interface& pin_sda;
