@@ -4,9 +4,21 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
 
 class ADG708 {
  public:
+    enum class Channel : uint8_t {
+        S1 = 0,
+        S2 = 1,
+        S3 = 2,
+        S4 = 3,
+        S5 = 4,
+        S6 = 5,
+        S7 = 6,
+        S8 = 7
+    };
+
     constexpr explicit ADG708(DigitalIO::Interface& pin_A0,
                               DigitalIO::Interface& pin_A1,
                               DigitalIO::Interface& pin_A2,
@@ -31,16 +43,17 @@ class ADG708 {
         this->pin_EN.reset();
     }
 
-    void select(uint8_t channel) const {
-        this->pin_A0.write(static_cast<bool>(channel & 0b001));
-        this->pin_A1.write(static_cast<bool>(channel & 0b010));
-        this->pin_A2.write(static_cast<bool>(channel & 0b100));
+    void select(Channel channel) const {
+        this->pin_A0.write(libs::read_bit<0>(static_cast<uint8_t>(channel)));
+        this->pin_A1.write(libs::read_bit<1>(static_cast<uint8_t>(channel)));
+        this->pin_A2.write(libs::read_bit<2>(static_cast<uint8_t>(channel)));
     }
 
  private:
     DigitalIO::Interface &pin_A0, &pin_A1, &pin_A2, &pin_EN;
 };
 
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_ADG708_H_
