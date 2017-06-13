@@ -3,6 +3,9 @@ if(BOARD)
 
     set(NAME hal_board)
     add_library(${NAME} INTERFACE)
+    target_sources(${NAME} INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}/${BOARD}/hal/board.h
+    )
 
     target_include_directories(${NAME} INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/${BOARD}

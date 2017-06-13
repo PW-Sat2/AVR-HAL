@@ -8,6 +8,11 @@
 namespace hal {
 
 class SPISlave {
+    using pin_mosi = DigitalIO::GPIO<mcu::pin_mosi>;
+    using pin_miso = DigitalIO::GPIO<mcu::pin_miso>;
+    using pin_sck  = DigitalIO::GPIO<mcu::pin_sck>;
+    using pin_ss   = DigitalIO::GPIO<mcu::pin_ss>;
+
  public:
     enum class Polarity : int {
         idle_low  = 0,
@@ -33,10 +38,10 @@ class SPISlave {
 
     void
     init(const Polarity polarity, const Phase phase, const DataOrder data_order) {
-        pin_mosi.init(DigitalIO::Mode::INPUT);
-        pin_sck.init(DigitalIO::Mode::INPUT);
-        pin_ss.init(DigitalIO::Mode::INPUT);
-        pin_miso.init(DigitalIO::Mode::OUTPUT);
+        pin_mosi::init(DigitalIO::Mode::INPUT);
+        pin_sck::init(DigitalIO::Mode::INPUT);
+        pin_ss::init(DigitalIO::Mode::INPUT);
+        pin_miso::init(DigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |                                //
                (static_cast<uint8_t>(phase) << CPHA) |     //
@@ -76,12 +81,6 @@ class SPISlave {
     void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
-
- private:
-    DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
-    DigitalIO::GPIO<mcu::pin_miso> pin_miso;
-    DigitalIO::GPIO<mcu::pin_sck> pin_sck;
-    DigitalIO::GPIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace hal

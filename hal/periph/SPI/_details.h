@@ -13,7 +13,7 @@ constexpr static DigitalIO::Pin NoChipSelect = 0xFF;
 namespace details {
 
 template<typename GPIO, typename T>
-class BlockTransfer : public Interface {
+class BlockTransfer {
  public:
     BlockTransfer() {
         GPIO::init(DigitalIO::Mode::OUTPUT);

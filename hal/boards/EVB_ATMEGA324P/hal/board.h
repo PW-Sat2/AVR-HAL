@@ -40,42 +40,42 @@ namespace pins {
 #undef PD6
 #undef PD7
 
-static constexpr DigitalIO::Pin PA0 = 37;
-static constexpr DigitalIO::Pin PA1 = 36;
-static constexpr DigitalIO::Pin PA2 = 35;
-static constexpr DigitalIO::Pin PA3 = 34;
-static constexpr DigitalIO::Pin PA4 = 33;
-static constexpr DigitalIO::Pin PA5 = 32;
-static constexpr DigitalIO::Pin PA6 = 31;
-static constexpr DigitalIO::Pin PA7 = 30;
-static constexpr DigitalIO::Pin PB0 = 40;
-static constexpr DigitalIO::Pin PB1 = 41;
-static constexpr DigitalIO::Pin PB2 = 42;
-static constexpr DigitalIO::Pin PB3 = 43;
-static constexpr DigitalIO::Pin PB4 = 44;
-static constexpr DigitalIO::Pin PB5 = 1;
-static constexpr DigitalIO::Pin PB6 = 2;
-static constexpr DigitalIO::Pin PB7 = 3;
-static constexpr DigitalIO::Pin PD0 = 19;
-static constexpr DigitalIO::Pin PD1 = 20;
-static constexpr DigitalIO::Pin PD2 = 21;
-static constexpr DigitalIO::Pin PD3 = 22;
-static constexpr DigitalIO::Pin PD4 = 23;
-static constexpr DigitalIO::Pin PD5 = 34;
-static constexpr DigitalIO::Pin PD6 = 35;
-static constexpr DigitalIO::Pin PD7 = 36;
-static constexpr DigitalIO::Pin PC0 = 9;
-static constexpr DigitalIO::Pin PC1 = 10;
-static constexpr DigitalIO::Pin PC2 = 11;
-static constexpr DigitalIO::Pin PC3 = 12;
-static constexpr DigitalIO::Pin PC4 = 13;
-static constexpr DigitalIO::Pin PC5 = 14;
-static constexpr DigitalIO::Pin PC6 = 15;
-static constexpr DigitalIO::Pin PC7 = 16;
+using PA0 = DigitalIO::GPIO<37>;
+using PA1 = DigitalIO::GPIO<36>;
+using PA2 = DigitalIO::GPIO<35>;
+using PA3 = DigitalIO::GPIO<34>;
+using PA4 = DigitalIO::GPIO<33>;
+using PA5 = DigitalIO::GPIO<32>;
+using PA6 = DigitalIO::GPIO<31>;
+using PA7 = DigitalIO::GPIO<30>;
+using PB0 = DigitalIO::GPIO<40>;
+using PB1 = DigitalIO::GPIO<41>;
+using PB2 = DigitalIO::GPIO<42>;
+using PB3 = DigitalIO::GPIO<43>;
+using PB4 = DigitalIO::GPIO<44>;
+using PB5 = DigitalIO::GPIO<1>;
+using PB6 = DigitalIO::GPIO<2>;
+using PB7 = DigitalIO::GPIO<3>;
+using PD0 = DigitalIO::GPIO<19>;
+using PD1 = DigitalIO::GPIO<20>;
+using PD2 = DigitalIO::GPIO<21>;
+using PD3 = DigitalIO::GPIO<22>;
+using PD4 = DigitalIO::GPIO<23>;
+using PD5 = DigitalIO::GPIO<34>;
+using PD6 = DigitalIO::GPIO<35>;
+using PD7 = DigitalIO::GPIO<36>;
+using PC0 = DigitalIO::GPIO<9>;
+using PC1 = DigitalIO::GPIO<10>;
+using PC2 = DigitalIO::GPIO<11>;
+using PC3 = DigitalIO::GPIO<12>;
+using PC4 = DigitalIO::GPIO<13>;
+using PC5 = DigitalIO::GPIO<14>;
+using PC6 = DigitalIO::GPIO<15>;
+using PC7 = DigitalIO::GPIO<16>;
 
-static constexpr DigitalIO::Pin LED = PB7;
 
 }  // namespace pins
+using LED = devices::LED::LED<pins::PB7>;
 }  // namespace bsp
 }  // namespace hal
 

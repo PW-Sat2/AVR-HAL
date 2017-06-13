@@ -46,7 +46,7 @@ class Hardware : public details::_Interface<Hardware> {
         TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
 
-    static bool start(uint8_t address, const StartAction start_action) {
+    static bool start(Address address, const StartAction start_action) {
         uint8_t twst;
         TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
         wait_for_finish();

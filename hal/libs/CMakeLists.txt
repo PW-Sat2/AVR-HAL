@@ -4,12 +4,19 @@ add_subdirectory(terminal)
 
 add_library(${NAME} STATIC
     reader.cpp
+    reader.h
     writer.cpp
+    writer.h
+
+    bit_operations.h
+    compile_time.h
+    fifo.h
 )
 
 target_include_directories(${NAME} PUBLIC
     ../../
 )
+target_link_libraries(${NAME} terminal)
 
 if(ENABLE_HAL_STD)
     message(STATUS "Using hal std library")

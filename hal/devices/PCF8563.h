@@ -128,7 +128,7 @@ class PCF8563 {
         TIMER            = 0x0F,
     };
 
-    static constexpr I2C::Interface::Address _addr = 0x51;
+    static constexpr I2C::Address _addr = 0x51;
 
     static uint8_t dec_to_bcd(uint8_t val) {
         return ((val / 10 * 16) + (val % 10));

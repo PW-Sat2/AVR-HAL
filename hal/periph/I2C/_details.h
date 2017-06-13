@@ -11,7 +11,7 @@ namespace I2C {
 namespace details {
 
 template<typename T>
-class _Interface : public Interface {
+class _Interface {
  public:
     static void write(Address address, gsl::span<const uint8_t> data) {
         T::start(address, StartAction::write);

@@ -42,7 +42,7 @@ class AT24C02 {
     }
 
  private:
-    static constexpr I2C::Interface::Address I2CAddress = 0x50;
+    static constexpr I2C::Address I2CAddress = 0x50;
 };
 
 }  // namespace AT24C02

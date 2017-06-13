@@ -3,12 +3,19 @@
 
 #include "hal/periph/DigitalIO/PeriphDescriptors.h"
 
-#include "Interface.h"
 #include "hal/libs.h"
 #include "hal/mcu.h"
 
 namespace hal {
 namespace DigitalIO {
+
+using Pin = uint8_t;
+
+enum class Mode {
+    INPUT,
+    OUTPUT,
+    INPUT_PULLUP,
+};
 
 template<int pin_nr>
 class GPIO {
@@ -23,8 +30,7 @@ class GPIO {
     static_assert(PINx != 0, "Incorrect pin!");
     static_assert(pin <= 7, "Incorrect pin!");
 
-    GPIO()      = delete;
-    GPIO(GPIO&) = delete;
+    GPIO() = delete;
 
     static constexpr inline void init(const Mode mode) {
         pinmode(mode);

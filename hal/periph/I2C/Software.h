@@ -3,7 +3,7 @@
 
 #include <util/delay.h>
 #include "_details.h"
-#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/periph/DigitalIO/GPIO.h"
 
 namespace hal {
 namespace I2C {
@@ -30,7 +30,7 @@ class Software : public details::_Interface<Software<pin_sda, pin_scl>> {
     using Acknowledge =
         typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl>>::Acknowledge;
 
-    static bool start(uint8_t address, const StartAction start_action) {
+    static bool start(Address address, const StartAction start_action) {
         scl_high();
         hDelay();
 

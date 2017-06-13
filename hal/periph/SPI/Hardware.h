@@ -6,7 +6,7 @@
 
 #include "hal/libs.h"
 #include "hal/mcu.h"
-#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/periph/DigitalIO/GPIO.h"
 
 #include "_details.h"
 

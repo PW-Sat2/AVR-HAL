@@ -4,7 +4,7 @@
 #include <hal/hal>
 #include "tests.h"
 
-struct EmptySPIMock : public hal::SPI::Interface {
+struct EmptySPIMock {
     uint8_t transfer(uint8_t) {
         TEST_FAIL();
         return 0;
