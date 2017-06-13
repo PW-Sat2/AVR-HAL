@@ -33,6 +33,7 @@ TEST(TPS3813, init) {
     TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
     TEST_ASSERT_TRUE(wdi.mode.isEmpty());
 
+    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
     TEST_ASSERT_FALSE(wdi.value.get());
     TEST_ASSERT_TRUE(wdi.value.isEmpty());
 }
@@ -41,19 +42,21 @@ TEST(TPS3813, kick) {
     hal::devices::TPS3813<pulse_time> watchdog{wdi};
 
     watchdog.init();
-    TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
-    TEST_ASSERT_TRUE(wdi.mode.isEmpty());
 
+    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
     TEST_ASSERT_FALSE(wdi.value.get());
     TEST_ASSERT_TRUE(wdi.value.isEmpty());
 
-
     watchdog.kick();
-    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
 
+    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
     TEST_ASSERT_TRUE(wdi.value.get());
     TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
 
     TEST_ASSERT_FALSE(wdi.value.get());
     TEST_ASSERT_TRUE(wdi.value.isEmpty());
+
+    TEST_ASSERT_TRUE(wdi.mode.isNotEmpty());
+    TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
+    TEST_ASSERT_TRUE(wdi.mode.isEmpty());
 }
