@@ -5,7 +5,6 @@
 
 namespace hal {
 namespace devices {
-namespace LED {
 
 template<typename led_pin>
 class LED {
@@ -31,7 +30,6 @@ class LED {
     }
 };
 
-}  // namespace LED
 }  // namespace devices
 }  // namespace hal
 

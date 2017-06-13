@@ -75,7 +75,7 @@ using PC7 = DigitalIO::GPIO<16>;
 
 
 }  // namespace pins
-using LED = devices::LED::LED<pins::PB7>;
+using LED = devices::LED<pins::PB7>;
 }  // namespace bsp
 }  // namespace hal
 

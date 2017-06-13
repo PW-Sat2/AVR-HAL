@@ -5,7 +5,6 @@
 
 namespace hal {
 namespace devices {
-namespace FPF270x {
 
 template<typename pin_on, typename pin_flag, typename pin_pgood>
 class FPF270x {
@@ -33,7 +32,6 @@ class FPF270x {
     }
 };
 
-}  // namespace FPF270x
 }  // namespace devices
 }  // namespace hal
 

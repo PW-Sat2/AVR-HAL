@@ -80,7 +80,7 @@ using A15 = DigitalIO::GPIO<82>;
 
 }  // namespace pins
 
-using LED = devices::LED::LED<pins::D13>;
+using LED = devices::LED<pins::D13>;
 }  // namespace bsp
 }  // namespace hal
 

@@ -117,7 +117,7 @@ using PF0 = DigitalIO::GPIO<61>;
 
 
 }  // namespace pins
-using LED = devices::LED::LED<pins::PA7>;
+using LED = devices::LED<pins::PA7>;
 }  // namespace bsp
 }  // namespace hal
 

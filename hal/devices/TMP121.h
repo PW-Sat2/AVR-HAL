@@ -5,7 +5,6 @@
 
 namespace hal {
 namespace devices {
-namespace TMP121 {
 
 /*!
  * TMP121 temperature sensor driver.
@@ -41,7 +40,6 @@ class TMP121 {
     }
 };
 
-}  // namespace TMP121
 }  // namespace devices
 }  // namespace hal
 

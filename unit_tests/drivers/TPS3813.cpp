@@ -26,7 +26,7 @@ decltype(TPS3813Mock::value) TPS3813Mock::value;
 constexpr int pulse_time = 10;
 
 TEST(TPS3813, init) {
-    hal::devices::TPS3813::TPS3813<TPS3813Mock, pulse_time> watchdog;
+    hal::devices::TPS3813<TPS3813Mock, pulse_time> watchdog;
 
     watchdog.init();
     TEST_ASSERT_TRUE(TPS3813Mock::mode.isNotEmpty());
@@ -39,7 +39,7 @@ TEST(TPS3813, init) {
 }
 
 TEST(TPS3813, kick) {
-    hal::devices::TPS3813::TPS3813<TPS3813Mock, pulse_time> watchdog;
+    hal::devices::TPS3813<TPS3813Mock, pulse_time> watchdog;
 
     watchdog.init();
 
