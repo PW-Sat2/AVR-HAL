@@ -8,12 +8,7 @@ namespace devices {
 
 class ADG709 {
  public:
-    enum class Channel : uint8_t {
-        S1 = 0,
-        S2 = 1,
-        S3 = 2,
-        S4 = 3
-    };
+    enum class Channel : uint8_t { S1 = 0, S2 = 1, S3 = 2, S4 = 3 };
 
     constexpr explicit ADG709(DigitalIO::Interface& pin_A0,
                               DigitalIO::Interface& pin_A1,
