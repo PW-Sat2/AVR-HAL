@@ -39,7 +39,7 @@ class DAC1220 {
         Clear = 1
     };
 
-    void write_to_command_reg(Calibration CRST,
+    static void write_to_command_reg(Calibration CRST,
                               DataLength RES,
                               DataFormat DF,
                               FilterOut DISF,
@@ -73,7 +73,7 @@ class DAC1220 {
         SPI::write(arr);
     }
 
-    void write_to_output(uint16_t RawValue) {
+    static void write_to_output(uint16_t RawValue) {
         std::array<uint8_t, 4> arr;
         libs::Writer writer{arr};
         writer.WriteByte(0b01000000);

@@ -19,7 +19,7 @@ class ADG849 : public ADG849_ {
      * It sets DigitalIO IN pin as OUTPUT.
      * @param default_channel sets multiplexer channel after initialization
      */
-    void init(Channel default_channel) const {
+    static void init(Channel default_channel) {
         select(default_channel);
         pin_IN::init(DigitalIO::Mode::OUTPUT);
     }
@@ -28,7 +28,7 @@ class ADG849 : public ADG849_ {
      * Function sets desired mux channel.
      * @param channel Channel to set active mux channel
      */
-    void select(Channel channel) const {
+    static void select(Channel channel) {
         pin_IN::write(static_cast<bool>(channel));
     }
 };

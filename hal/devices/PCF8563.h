@@ -36,13 +36,13 @@ struct PCF8563_ {
 template<typename i2c>
 class PCF8563 : public PCF8563_ {
  public:
-    void clear_status() const {
+    static void clear_status() {
         std::array<const uint8_t, 3> data = {
             Registers::CONTROL_STATUS_1, 0x00, 0x00};
         i2c::write(_addr, data);
     }
 
-    void set_date_time(Date date, Time time) const {
+    static void set_date_time(Date date, Time time) {
         uint8_t century_years = date.year / 100;
         uint8_t month_century = dec_to_bcd(date.month);
 
@@ -64,13 +64,13 @@ class PCF8563 : public PCF8563_ {
         i2c::write(_addr, data);
     }
 
-    void set_square_output(SquareOutput frequency) const {
+    static void set_square_output(SquareOutput frequency) {
         std::array<const uint8_t, 2> data = {Registers::CLKOUT_CTRL,
                                              static_cast<uint8_t>(frequency)};
         i2c::write(_addr, data);
     }
 
-    ClockStatus get_date_time(Date& date, Time& time) const {
+    static ClockStatus get_date_time(Date& date, Time& time) {
         std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         std::array<uint8_t, 7> data;
         i2c::write_read(_addr, tx, data);
@@ -96,7 +96,7 @@ class PCF8563 : public PCF8563_ {
         }
     }
 
-    ClockStatus get_clock_status() const {
+    static ClockStatus get_clock_status() {
         std::array<uint8_t, 1> tx = {Registers::VL_SECONDS};
         std::array<uint8_t, 1> data;
         i2c::write_read(_addr, tx, data);
@@ -128,13 +128,13 @@ class PCF8563 : public PCF8563_ {
         TIMER            = 0x0F,
     };
 
-    I2C::Interface::Address _addr = 0x51;
+    static constexpr I2C::Interface::Address _addr = 0x51;
 
-    uint8_t dec_to_bcd(uint8_t val) const {
+    static uint8_t dec_to_bcd(uint8_t val) {
         return ((val / 10 * 16) + (val % 10));
     }
 
-    uint8_t bcdToDec(uint8_t val) const {
+    static uint8_t bcdToDec(uint8_t val) {
         return ((val / 16 * 10) + (val % 16));
     }
 };

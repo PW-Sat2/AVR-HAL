@@ -24,25 +24,22 @@ struct LEDMock : public DigtalIOMock<LEDMock> {
 uint8_t LEDMock::expect;
 
 TEST(LED, write) {
-    LEDMock mock;
-    LED<decltype(mock)> led{mock};
-    mock.expect = 0, led.write(false);
-    mock.expect = 1, led.write(true);
+    LED<LEDMock> led;
+    LEDMock::expect = 0, led.write(false);
+    LEDMock::expect = 1, led.write(true);
 }
 
 TEST(LED, setReset) {
-    LEDMock mock;
-    LED<decltype(mock)> led{mock};
-    mock.expect = 0, led.write(false);
-    mock.expect = 1, led.on();
-    mock.expect = 0, led.off();
+    LED<LEDMock> led;
+    LEDMock::expect = 0, led.write(false);
+    LEDMock::expect = 1, led.on();
+    LEDMock::expect = 0, led.off();
 }
 
 TEST(LED, toggle) {
-    LEDMock mock;
-    LED<decltype(mock)> led{mock};
-    mock.expect = 0, led.write(false);
-    mock.expect = 0xFF, led.toggle();
-    mock.expect = 0xFF, led.toggle();
-    mock.expect = 0xFF, led.toggle();
+    LED<LEDMock> led;
+    LEDMock::expect = 0, led.write(false);
+    LEDMock::expect = 0xFF, led.toggle();
+    LEDMock::expect = 0xFF, led.toggle();
+    LEDMock::expect = 0xFF, led.toggle();
 }

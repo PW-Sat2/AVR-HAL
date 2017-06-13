@@ -20,11 +20,11 @@ class ADXRS453 {
         SN_LOW  = 0x10
     };
 
-    bool device_status() const {
+    static bool device_status() {
         bool status = true;
 
         /* Read the value of the ADXRS453 ID register. */
-        uint16_t sensorID = this->get_register(RegisterMap::PID);
+        uint16_t sensorID = get_register(RegisterMap::PID);
 
         if ((sensorID >> 8) != 0x52) {
             status = false;
@@ -33,7 +33,7 @@ class ADXRS453 {
         return status;
     }
 
-    uint32_t get_sensor_data() const {
+    static uint32_t get_sensor_data() {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0]    = (1 << 5);
@@ -62,8 +62,8 @@ class ADXRS453 {
         return registerValue;
     }
 
-    float get_rate() const {
-        uint16_t registerValue = this->get_register(RegisterMap::RATE);
+    static float get_rate() {
+        uint16_t registerValue = get_register(RegisterMap::RATE);
 
         // If data received is in positive degree range
         float rate = 0.0;
@@ -79,7 +79,7 @@ class ADXRS453 {
         return rate;
     }
 
-    float get_temperature() const {
+    static float get_temperature() {
         uint32_t registerValue = 0;
         float temperature      = 0;
         registerValue          = get_register(RegisterMap::TEMP);
@@ -95,7 +95,7 @@ class ADXRS453 {
         return temperature;
     }
 
-    uint16_t get_register(const uint8_t registerAddress) const {
+    static uint16_t get_register(const uint8_t registerAddress) {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
         dataBuffer[0] = (1 << 7) | (registerAddress >> 7);
@@ -126,8 +126,8 @@ class ADXRS453 {
     }
 
  private:
-    void set_register_value(const uint8_t registerAddress,
-                            uint16_t registerValue) const {
+    static void set_register_value(const uint8_t registerAddress,
+                            uint16_t registerValue) {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
         uint32_t command                  = 0;
 

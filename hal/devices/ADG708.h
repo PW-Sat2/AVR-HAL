@@ -25,7 +25,7 @@ template <typename pin_A0,
     typename pin_EN>
 class ADG708 : public ADG708_ {
  public:
-    void init() const {
+    static void init() {
         pin_A0::init(DigitalIO::Mode::OUTPUT);
         pin_A1::init(DigitalIO::Mode::OUTPUT);
         pin_A2::init(DigitalIO::Mode::OUTPUT);
@@ -34,15 +34,15 @@ class ADG708 : public ADG708_ {
         disable();
     }
 
-    void enable() const {
+    static void enable() {
         pin_EN::set();
     }
 
-    void disable() const {
+    static void disable() {
         pin_EN::reset();
     }
 
-    void select(Channel channel) const {
+    static void select(Channel channel) {
         pin_A0::write(libs::read_bit<0>(static_cast<uint8_t>(channel)));
         pin_A1::write(libs::read_bit<1>(static_cast<uint8_t>(channel)));
         pin_A2::write(libs::read_bit<2>(static_cast<uint8_t>(channel)));

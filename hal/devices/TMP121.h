@@ -16,7 +16,7 @@ class TMP121 {
      * After conversion de-asserts the device and puts it in free-running mode.
      * @return Read data from the device (13 bit value)
      */
-    int16_t read() {
+    static int16_t read() {
         std::array<uint8_t, 2> arr;
         SPI::read(arr);
 
@@ -34,7 +34,7 @@ class TMP121 {
      * @see #read
      * @return Converted temperature to Celsius.
      */
-    float read_celsius() {
+    static float read_celsius() {
         return static_cast<float>(read()) * 0.0625;
     }
 };

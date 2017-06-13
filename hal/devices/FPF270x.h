@@ -12,25 +12,25 @@ template <typename pin_on,
     >
 class FPF270x {
  public:
-    void init() {
+    static void init() {
         pin_on::init(DigitalIO::Mode::OUTPUT);
         pin_flag::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_pgood::init(DigitalIO::Mode::INPUT_PULLUP);
     }
 
-    void on() {
+    static void on() {
         pin_on::reset();
     }
 
-    void off() {
+    static void off() {
         pin_on::set();
     }
 
-    bool error_occured() {
+    static bool error_occured() {
         return pin_flag::read();
     }
 
-    bool power_good() {
+    static bool power_good() {
         return pin_pgood::read();
     }
 };

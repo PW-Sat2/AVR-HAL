@@ -21,7 +21,7 @@ class TPS3813 {
      * Initializes device.
      * Has to be invoked before use of the device.
      */
-    void init() const {
+    static void init() {
         pin_WDI::init(hal::DigitalIO::Mode::OUTPUT);
         pin_WDI::reset();
     }
@@ -30,7 +30,7 @@ class TPS3813 {
      * Method to kick watchdog timer.
      * Sends a pulse to device of specified time.
      */
-    void kick() const {
+    static void kick() {
         pin_WDI::set();
         _delay_us(pulse_time_us);
         pin_WDI::reset();

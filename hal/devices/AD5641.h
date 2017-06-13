@@ -9,7 +9,7 @@ namespace hal {
 template<typename SPI>
 class AD5641 {
  public:
-    void write(uint16_t data_lsb) {
+    static void write(uint16_t data_lsb) {
         if (data_lsb >= libs::power_of_two<14>()) {
             data_lsb = libs::power_of_two<14>() - 1;
         }

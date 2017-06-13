@@ -41,7 +41,7 @@ class ADC12x {
      * @param channel Channel to set after current read operation
      * @return Measurement of previously selected channel
      */
-    uint16_t read_and_change_channel(Channel channel) {
+    static uint16_t read_and_change_channel(Channel channel) {
         const std::array<uint8_t, 2> data_out = {static_cast<uint8_t>(channel), 0};
         std::array<uint8_t, 2> data_read;
 

@@ -6,7 +6,10 @@
 
 namespace hal {
 
-template<typename GPIO, typename SPI>
+template<typename pin_DRDY,
+    typename pin_RESET,
+    typename pin_STANDBY,
+    typename pin_BUFFER, typename SPI>
 class AD7714_ext {
  public:
     enum ADC_Registers {
@@ -69,16 +72,6 @@ class AD7714_ext {
         unipolar = 1
     };
 
-    explicit AD7714_ext(GPIO& pin_DRDY,
-                        GPIO& pin_RESET,
-                        GPIO& pin_STANDBY,
-                        GPIO& pin_BUFFER)
-        : pin_DRDY{pin_DRDY},
-          pin_RESET{pin_RESET},
-          pin_STANDBY{pin_STANDBY},
-          pin_BUFFER{pin_BUFFER} {
-    }
-
     uint8_t change_channel(ADC_Channels channel) {
         actual_channel = channel;
         write_to_comm_reg(COMM_REG, true);
@@ -87,7 +80,7 @@ class AD7714_ext {
     }
 
     bool data_available() {
-        return (!(this->pin_DRDY.read()));
+        return (!(pin_DRDY::read()));
     }
 
     void wait_for_DRDY() {
@@ -96,17 +89,17 @@ class AD7714_ext {
     }
 
     void reset() const {
-        this->pin_RESET.reset();
+        pin_RESET::reset();
         _delay_ms(10);
-        this->pin_RESET.set();
+        pin_RESET::set();
         _delay_ms(10);
     }
 
     void init() const {
-        this->pin_DRDY.init(DigitalIO::Mode::INPUT);
-        this->pin_RESET.init(DigitalIO::Mode::OUTPUT);
-        this->pin_STANDBY.init(DigitalIO::Mode::OUTPUT);
-        this->pin_BUFFER.init(DigitalIO::Mode::OUTPUT);
+        pin_DRDY::init(DigitalIO::Mode::INPUT);
+        pin_RESET::init(DigitalIO::Mode::OUTPUT);
+        pin_STANDBY::init(DigitalIO::Mode::OUTPUT);
+        pin_BUFFER::init(DigitalIO::Mode::OUTPUT);
 
         this->reset();
         this->buffer(ON);
@@ -114,12 +107,12 @@ class AD7714_ext {
     }
 
     void power_mode(Control_State status) const {
-        pin_STANDBY.write(static_cast<bool>(status));
+        pin_STANDBY::write(static_cast<bool>(status));
         _delay_ms(10);
     }
 
     void buffer(Control_State buff_stat) const {
-        pin_BUFFER.write(static_cast<bool>(buff_stat));
+        pin_BUFFER::write(static_cast<bool>(buff_stat));
     }
 
     void write_to_comm_reg(ADC_Registers reg, bool read) const {
@@ -173,7 +166,6 @@ class AD7714_ext {
  private:
     ADC_Channels actual_channel;
     DataLength data_length;
-    GPIO &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 
 }  // namespace hal

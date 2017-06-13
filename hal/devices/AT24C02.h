@@ -30,12 +30,12 @@ template<typename i2c>
 class AT24C02 : public AT24C02_ {
  public:
     template<std::size_t size>
-    void write(const Data<size>& mem) const {
+    static void write(const Data<size>& mem) {
         i2c::write(I2CAddress, mem._data);
     }
 
     template<std::size_t size>
-    void read(Data<size>& mem) const {
+    static void read(Data<size>& mem) {
         std::array<uint8_t, 1> tx = {mem._data[0]};
 
         i2c::write_read(I2CAddress, tx, mem.data);
