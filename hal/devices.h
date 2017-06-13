@@ -15,5 +15,6 @@
 #include "hal/devices/LED.h"
 #include "hal/devices/PCF8563.h"
 #include "hal/devices/TMP121.h"
+#include "hal/devices/TPS3813.h"
 
 #endif  // HAL_DEVICES_H_
