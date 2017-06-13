@@ -8,7 +8,8 @@ namespace devices {
 
 /*!
  * TPS3813 Processor Supervisory Circuit with Window-Watchdog Timer driver.
- * @tparam pulse_time_us Duration of a kick pulse in microseconds (max. 768 us / F_CPU in MHz).
+ * @tparam pulse_time_us Duration of a kick pulse in microseconds
+ * (max. 768 us / F_CPU in MHz).
  */
 template<int pulse_time_us>
 class TPS3813 {
@@ -17,7 +18,8 @@ class TPS3813 {
      * Default ctor.
      * @param pin_WDI GPIO device used to kick watchdog.
      */
-    constexpr explicit TPS3813(DigitalIO::Interface& pin_WDI) : pin_WDI{pin_WDI} {
+    constexpr explicit TPS3813(DigitalIO::Interface& pin_WDI)
+        : pin_WDI{pin_WDI} {
     }
 
     /*!
