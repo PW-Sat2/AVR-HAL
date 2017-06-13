@@ -4,10 +4,10 @@ TEST_GROUP(ADC);
 
 using namespace hal;
 
-DigitalIO::GPIO<mcu::pin_sck> pin;
+using pin = DigitalIO::GPIO<mcu::pin_sck>;
 
 TEST(ADC, just_pullup) {
-    pin.init(DigitalIO::Mode::INPUT_PULLUP);
+    pin::init(DigitalIO::Mode::INPUT_PULLUP);
     Analog::InternalADC::init(Analog::InternalADC::Prescaler::DIV_128,
                               Analog::InternalADC::Reference::AVcc);
     Analog::AnalogGPIO analogGPIO(Analog::InternalADC::Input::ADC0);
@@ -18,18 +18,18 @@ TEST(ADC, just_pullup) {
 }
 
 TEST(ADC, output) {
-    pin.init(DigitalIO::Mode::OUTPUT);
+    pin::init(DigitalIO::Mode::OUTPUT);
 
     Analog::InternalADC::init(Analog::InternalADC::Prescaler::DIV_128,
                               Analog::InternalADC::Reference::AVcc);
     Analog::AnalogGPIO analogGPIO(Analog::InternalADC::Input::ADC0);
 
-    pin.set();
+    pin::set();
     if (analogGPIO.read() < 800) {
         TEST_FAIL();
     }
 
-    pin.reset();
+    pin::reset();
     if (analogGPIO.read() > 300) {
         TEST_FAIL();
     }
