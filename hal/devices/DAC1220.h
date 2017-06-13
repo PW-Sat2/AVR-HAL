@@ -5,6 +5,7 @@
 
 namespace hal {
 
+template <typename SPI>
 class DAC1220 {
  public:
     enum DataLength {
@@ -38,9 +39,6 @@ class DAC1220 {
         Clear = 1
     };
 
-    explicit DAC1220(SPI::Interface& spi_dev) : spi_dev{spi_dev} {
-    }
-
     void write_to_command_reg(Calibration CRST,
                               DataLength RES,
                               DataFormat DF,
@@ -72,7 +70,7 @@ class DAC1220 {
         std::array<uint8_t, 3> arr = {0b00100100,     //
                                       CommandRegMSB,  //
                                       CommandRegLSB};
-        this->spi_dev.write(arr);
+        SPI::write(arr);
     }
 
     void write_to_output(uint16_t RawValue) {
@@ -82,11 +80,8 @@ class DAC1220 {
         writer.WriteWordLE(RawValue);
         writer.WriteByte(0);
 
-        this->spi_dev.write(arr);
+        SPI::write(arr);
     }
-
- private:
-    SPI::Interface& spi_dev;
 };
 
 }  // namespace hal

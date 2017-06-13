@@ -6,7 +6,7 @@
 
 namespace hal {
 
-template<typename GPIO>
+template<typename GPIO, typename SPI>
 class AD7714_ext {
  public:
     enum ADC_Registers {
@@ -69,13 +69,11 @@ class AD7714_ext {
         unipolar = 1
     };
 
-    explicit AD7714_ext(SPI::Interface& spi_dev,
-                        GPIO& pin_DRDY,
+    explicit AD7714_ext(GPIO& pin_DRDY,
                         GPIO& pin_RESET,
                         GPIO& pin_STANDBY,
                         GPIO& pin_BUFFER)
-        : spi_dev(spi_dev),
-          pin_DRDY{pin_DRDY},
+        : pin_DRDY{pin_DRDY},
           pin_RESET{pin_RESET},
           pin_STANDBY{pin_STANDBY},
           pin_BUFFER{pin_BUFFER} {
@@ -85,7 +83,7 @@ class AD7714_ext {
         actual_channel = channel;
         write_to_comm_reg(COMM_REG, true);
         this->wait_for_DRDY();
-        return spi_dev.transfer(0);
+        return SPI::transfer(0);
     }
 
     bool data_available() {
@@ -126,7 +124,7 @@ class AD7714_ext {
 
     void write_to_comm_reg(ADC_Registers reg, bool read) const {
         uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
-        spi_dev.transfer(out);
+        SPI::transfer(out);
     }
 
     uint32_t read_data() {
@@ -135,12 +133,12 @@ class AD7714_ext {
 
         if (data_length == Data_16bit) {
             std::array<uint8_t, 2> data;
-            spi_dev.read(data);
+            SPI::read(data);
             libs::Reader reader{data};
             return reader.ReadWordBE();
         } else {  // data_length == Data_24bit
             std::array<uint8_t, 3> data;
-            spi_dev.read(data);
+            SPI::read(data);
 
             uint32_t read = 0;
             read |= data[0], read <<= 8;
@@ -154,7 +152,7 @@ class AD7714_ext {
     void writeto_mode_reg(ADC_Modes mode, ADC_Gain gain) {
         write_to_comm_reg(MODE_REG, false);
         uint8_t data = (mode << 5) | (gain << 2);
-        spi_dev.transfer(data);
+        SPI::transfer(data);
         this->wait_for_DRDY();
     }
 
@@ -166,16 +164,15 @@ class AD7714_ext {
         write_to_comm_reg(FILTER_HIGH_REG, false);
         uint8_t val = (static_cast<bool>(set_polarity) << 7) |
                       (data_length << 6) | (1 << 5) | (filter >> 8);
-        spi_dev.transfer(val);
+        SPI::transfer(val);
         write_to_comm_reg(FILTER_LOW_REG, false);
         val = (filter & 0xFF);
-        spi_dev.transfer(val);
+        SPI::transfer(val);
     }
 
  private:
     ADC_Channels actual_channel;
     DataLength data_length;
-    SPI::Interface& spi_dev;
     GPIO &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 

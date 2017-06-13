@@ -55,9 +55,16 @@ template<typename GPIO,
          SPI::Polarity polarity,              //
          SPI::Phase phase,                    //
          SPI::DataOrder data_order>
-class Hardware : public details::BlockTransfer<GPIO> {
+class Hardware : public details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order> > {
  public:
-    void init() {
+    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::read;
+    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::write;
+    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::transfer;
+
+    Hardware() = delete;
+    Hardware(Hardware&) = delete;
+
+    static void init() {
         hal::DigitalIO::GPIO<mcu::pin_mosi>::init(DigitalIO::Mode::OUTPUT);
         hal::DigitalIO::GPIO<mcu::pin_sck>::init(DigitalIO::Mode::OUTPUT);
         hal::DigitalIO::GPIO<mcu::pin_ss>::init(DigitalIO::Mode::OUTPUT);
@@ -70,36 +77,36 @@ class Hardware : public details::BlockTransfer<GPIO> {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
-    uint8_t transfer(const uint8_t data) override {
+    static uint8_t transfer(const uint8_t data) {
         write_data_nowait(data);
         wait_for_transmission_complete();
         return get_data_nowait();
     }
 
-    void disable() {
+    static void disable() {
         SPCR = 0;
     }
 
-    void wait_for_transmission_complete() {
+    static void wait_for_transmission_complete() {
         while (!is_transmission_complete()) {
         }
     }
 
-    bool is_transmission_complete() {
+    static bool is_transmission_complete() {
         return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
 
-    void write_data_nowait(uint8_t data) {
+    static void write_data_nowait(uint8_t data) {
         SPDR = data;
     }
 
-    uint8_t get_data_nowait() {
+    static uint8_t get_data_nowait() {
         return SPDR;
     }
 
-    void enable_interrupt() {
+    static void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
 };

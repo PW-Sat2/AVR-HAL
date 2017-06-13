@@ -18,9 +18,17 @@ template<typename pin_mosi,
     typename pin_sck,
     typename pin_ss,
     SPI::Polarity polarity, SPI::Phase phase>
-class Software : public details::BlockTransfer<pin_ss> {
+class Software : public details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>> {
  public:
-    void init() {
+    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::write;
+    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::read;
+    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::transfer;
+
+    Software() = delete;
+    Software(Software&) = delete;
+    Software(Software&&) = delete;
+
+    static void init() {
         pin_miso::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_mosi::init(DigitalIO::Mode::OUTPUT);
         pin_sck::init(DigitalIO::Mode::OUTPUT);
@@ -32,13 +40,13 @@ class Software : public details::BlockTransfer<pin_ss> {
         }
     }
 
-    void disable() {
+    static void disable() {
         pin_miso::init(DigitalIO::Mode::INPUT);
         pin_mosi::init(DigitalIO::Mode::INPUT);
         pin_sck::init(DigitalIO::Mode::INPUT);
     }
 
-    uint8_t transfer(const uint8_t data) override {
+    static uint8_t transfer(const uint8_t data) {
         if (phase == SPI::Phase::leading_sample) {
             return shift_leading_sample(data);
         } else {
@@ -46,7 +54,7 @@ class Software : public details::BlockTransfer<pin_ss> {
         }
     }
 
-    uint8_t shift_trailing_sample(const uint8_t data) {
+    static uint8_t shift_trailing_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
@@ -60,7 +68,7 @@ class Software : public details::BlockTransfer<pin_ss> {
         return output;
     }
 
-    uint8_t shift_leading_sample(const uint8_t data) {
+    static uint8_t shift_leading_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
@@ -75,15 +83,15 @@ class Software : public details::BlockTransfer<pin_ss> {
     }
 
  private:
-    bool sample_phase() {
+    static bool sample_phase() {
         return pin_miso::read();
     }
 
-    void output_phase(bool value) {
+    static void output_phase(bool value) {
         pin_mosi::write(value);
     }
 
-    void delay() {
+    static void delay() {
         _delay_us(10);
     }
 };

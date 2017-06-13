@@ -5,7 +5,7 @@
 
 namespace hal {
 
-template <typename GPIO>
+template <typename pin_DRDY, typename SPI>
 class AD7714 {
  public:
     enum ADC_Registers {
@@ -65,15 +65,11 @@ class AD7714 {
         unipolar = 1
     };
 
-    explicit AD7714(SPI::Interface& spi, GPIO& pin_DRDY)
-        : spi_dev(spi), pin_DRDY{pin_DRDY} {
-    }
-
     uint8_t change_channel(ADC_Channels channel) {
         actual_channel = channel;
         write_to_comm_reg(COMM_REG, true);
         this->wait_for_DRDY();
-        return spi_dev.transfer(0);
+        return SPI::transfer(0);
     }
 
     bool data_available() {
@@ -91,7 +87,7 @@ class AD7714 {
 
     void write_to_comm_reg(ADC_Registers reg, bool read) const {
         uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
-        spi_dev.transfer(out);
+        SPI::transfer(out);
     }
 
     uint32_t read_data() {
@@ -99,7 +95,7 @@ class AD7714 {
         write_to_comm_reg(DATA_REG, true);
 
         std::array<uint8_t, 3> data;
-        spi_dev.read(data);
+        SPI::read(data);
 
         uint32_t read = 0;
         read |= data[0], read <<= 8;
@@ -112,7 +108,7 @@ class AD7714 {
     void writeto_mode_reg(ADC_Modes mode, ADC_Gain gain) {
         write_to_comm_reg(MODE_REG, false);
         uint8_t data = (mode << 5) | (gain << 2);
-        spi_dev.transfer(data);
+        SPI::transfer(data);
         this->wait_for_DRDY();
     }
 
@@ -124,17 +120,14 @@ class AD7714 {
                       (DataLength::Data_24bit << 6) |           //
                       (1 << 5) |                                //
                       (filter >> 8);
-        spi_dev.transfer(val);
+        SPI::transfer(val);
         write_to_comm_reg(FILTER_LOW_REG, false);
         val = (filter & 0xFF);
-        spi_dev.transfer(val);
+        SPI::transfer(val);
     }
 
  private:
     ADC_Channels actual_channel;
-
-    SPI::Interface& spi_dev;
-    GPIO& pin_DRDY;
 };
 
 }  // namespace hal

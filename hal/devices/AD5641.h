@@ -9,9 +9,6 @@ namespace hal {
 template<typename SPI>
 class AD5641 {
  public:
-    constexpr AD5641(SPI& device) : spi_dev(device) {
-    }
-
     void write(uint16_t data_lsb) {
         if (data_lsb >= libs::power_of_two<14>()) {
             data_lsb = libs::power_of_two<14>() - 1;
@@ -21,11 +18,8 @@ class AD5641 {
         libs::Writer writer{data};
         writer.WriteLowerBytesBE(data_lsb, 2);
 
-        spi_dev.write(data);
+        SPI::write(data);
     }
-
- private:
-    SPI& spi_dev;
 };
 
 }  // namespace hal

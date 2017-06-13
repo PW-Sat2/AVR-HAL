@@ -4,19 +4,18 @@ using hal::Serial0;
 
 using gpio = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
 
-hal::SPI::Hardware<gpio,
+using spi = hal::SPI::Hardware<gpio,
                    hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
                    hal::SPI::Polarity::idle_high,
                    hal::SPI::Phase::leading_sample,
-                   hal::SPI::DataOrder::LSB_first>
-    spi;
+                   hal::SPI::DataOrder::LSB_first>;
 
 int main() {
     Serial0.init(115200);
     Serial0.redirect_stderr();
 
-    spi.init();
-    hal::ADXRS453 gyro1(spi);
+    spi::init();
+    hal::ADXRS453<spi> gyro1;
 
     hal::Serial0.printf("Start \r\n");
 
