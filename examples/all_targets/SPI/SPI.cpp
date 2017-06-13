@@ -5,17 +5,21 @@ using namespace hal;
 using pin_ss = hal::DigitalIO::GPIO<hal::mcu::pin_ss>;
 
 using spi_hard = hal::SPI::Hardware<pin_ss,
-                   SPI::HardwareClockDivisor::SPIHard_DIV_4,
-                   SPI::Polarity::idle_high,
-                   SPI::Phase::leading_sample,
-                   SPI::DataOrder::LSB_first>;
+                                    SPI::HardwareClockDivisor::SPIHard_DIV_4,
+                                    SPI::Polarity::idle_high,
+                                    SPI::Phase::leading_sample,
+                                    SPI::DataOrder::LSB_first>;
 
 using pin_mosi = hal::DigitalIO::GPIO<hal::mcu::pin_mosi>;
 using pin_miso = hal::DigitalIO::GPIO<hal::mcu::pin_miso>;
-using pin_sck = hal::DigitalIO::GPIO<hal::mcu::pin_sck>;
+using pin_sck  = hal::DigitalIO::GPIO<hal::mcu::pin_sck>;
 
-using spi_soft = hal::SPI::Software<pin_mosi, pin_miso, pin_sck, pin_ss, SPI::Polarity::idle_high,  //
-                   SPI::Phase::leading_sample>;
+using spi_soft = hal::SPI::Software<pin_mosi,
+                                    pin_miso,
+                                    pin_sck,
+                                    pin_ss,
+                                    SPI::Polarity::idle_high,  //
+                                    SPI::Phase::leading_sample>;
 
 int main() {
     spi_hard::init();

@@ -5,32 +5,9 @@
 #include "hal/periph.h"
 
 namespace hal {
-namespace drivers {
-
-struct ADC124_ {
-    enum class Channel : uint8_t {
-        IN0 = 0 << 3,
-        IN1 = 1 << 3,
-        IN2 = 2 << 3,
-        IN3 = 3 << 3
-    };
-};
-
-struct ADC128_ {
-    enum class Channel : uint8_t {
-        IN0 = 0 << 3,
-        IN1 = 1 << 3,
-        IN2 = 2 << 3,
-        IN3 = 3 << 3,
-        IN4 = 4 << 3,
-        IN5 = 5 << 3,
-        IN6 = 6 << 3,
-        IN7 = 7 << 3
-    };
-};
+namespace devices {
 
 namespace details {
-
 template<typename Channel, typename SPI>
 class ADC12x {
  public:
@@ -53,16 +30,38 @@ class ADC12x {
         return word & libs::bit_mask<0, 12>();
     }
 };
-
 }  // namespace details
 
-template<typename SPI>
-using ADC124 = details::ADC12x<ADC124_::Channel, SPI>;
+
+namespace ADC124 {
+enum class Channel : uint8_t {
+    IN0 = 0 << 3,
+    IN1 = 1 << 3,
+    IN2 = 2 << 3,
+    IN3 = 3 << 3
+};
 
 template<typename SPI>
-using ADC128 = details::ADC12x<ADC128_::Channel, SPI>;
+using ADC124 = details::ADC12x<Channel, SPI>;
+};  // namespace ADC124
 
-}  // namespace drivers
+namespace ADC128 {
+enum class Channel : uint8_t {
+    IN0 = 0 << 3,
+    IN1 = 1 << 3,
+    IN2 = 2 << 3,
+    IN3 = 3 << 3,
+    IN4 = 4 << 3,
+    IN5 = 5 << 3,
+    IN6 = 6 << 3,
+    IN7 = 7 << 3
+};
+
+template<typename SPI>
+using ADC128 = details::ADC12x<Channel, SPI>;
+}  // namespace ADC128
+
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_ADC12X_H_

@@ -22,7 +22,8 @@ struct ADG709Mock : public DigtalIOMock<ADG709Mock<i>> {
         }
     }
 };
-template<int i> uint8_t ADG709Mock<i>::expect;
+template<int i>
+uint8_t ADG709Mock<i>::expect;
 
 using a0 = ADG709Mock<0>;
 using a1 = ADG709Mock<1>;
@@ -41,35 +42,34 @@ static void set_expect(uint8_t output) {
 
 
 TEST(ADG709, disable) {
-    ADG709<a0, a1, en> adg;
+    using adg = ADG709::ADG709<a0, a1, en>;
 
     set_expect(0xFF);
-    adg.disable();
+    adg::disable();
 
-    adg.select(ADG709_::Channel::S1);
-    adg.select(ADG709_::Channel::S2);
-    adg.select(ADG709_::Channel::S3);
-    adg.select(ADG709_::Channel::S4);
+    adg::select(ADG709::Channel::S1);
+    adg::select(ADG709::Channel::S2);
+    adg::select(ADG709::Channel::S3);
+    adg::select(ADG709::Channel::S4);
 }
 
 TEST(ADG709, enabled) {
     set_expect(0xFF);
-    ADG709<a0, a1, en> adg;
+    using adg = ADG709::ADG709<a0, a1, en>;
 
     set_expect(0);
 
-    adg.enable();
+    adg::enable();
 
     set_expect(0);
-    adg.select(ADG709_::Channel::S1);
+    adg::select(ADG709::Channel::S1);
 
     set_expect(1);
-    adg.select(ADG709_::Channel::S2);
+    adg::select(ADG709::Channel::S2);
 
     set_expect(2);
-    adg.select(ADG709_::Channel::S3);
+    adg::select(ADG709::Channel::S3);
 
     set_expect(3);
-    adg.select(ADG709_::Channel::S4);
+    adg::select(ADG709::Channel::S4);
 }
-

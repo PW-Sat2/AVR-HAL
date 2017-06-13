@@ -25,8 +25,10 @@ class Software : public details::_Interface<Software<pin_sda, pin_scl>> {
  private:
     friend class details::_Interface<Software<pin_sda, pin_scl>>;
 
-    using StartAction = typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl> >::StartAction;
-    using Acknowledge = typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl> >::Acknowledge;
+    using StartAction =
+        typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl>>::StartAction;
+    using Acknowledge =
+        typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl>>::Acknowledge;
 
     static bool start(uint8_t address, const StartAction start_action) {
         scl_high();

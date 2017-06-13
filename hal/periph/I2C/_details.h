@@ -28,8 +28,8 @@ class _Interface : public Interface {
     }
 
     static void write_read(uint8_t address,
-                    gsl::span<const uint8_t> output,
-                    gsl::span<uint8_t> input) {
+                           gsl::span<const uint8_t> output,
+                           gsl::span<uint8_t> input) {
         T::start(address, StartAction::write);
         raw_write(output);
         T::start(address, StartAction::read);
@@ -60,10 +60,11 @@ class _Interface : public Interface {
         }
     }
 
-//    virtual bool start(uint8_t address, const StartAction start_action) = 0;
-//    virtual void stop()                                                 = 0;
-//    virtual bool write(const uint8_t data)                              = 0;
-//    virtual uint8_t read(Acknowledge ACK)                               = 0;
+    //    virtual bool start(uint8_t address, const StartAction start_action) =
+    //    0; virtual void stop()
+    //    = 0; virtual bool write(const uint8_t data)
+    //    = 0; virtual uint8_t read(Acknowledge ACK)
+    //    = 0;
 };
 
 }  // namespace details

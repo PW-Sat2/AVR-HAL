@@ -13,19 +13,24 @@
 namespace hal {
 namespace SPI {
 
-template<typename pin_mosi,
-    typename pin_miso,
-    typename pin_sck,
-    typename pin_ss,
-    SPI::Polarity polarity, SPI::Phase phase>
-class Software : public details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>> {
+template<typename pin_mosi, typename pin_miso, typename pin_sck, typename pin_ss, SPI::Polarity polarity, SPI::Phase phase>
+class Software
+    : public details::BlockTransfer<
+          pin_ss,
+          Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>> {
  public:
-    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::write;
-    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::read;
-    using details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::transfer;
+    using details::BlockTransfer<
+        pin_ss,
+        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::write;
+    using details::BlockTransfer<
+        pin_ss,
+        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::read;
+    using details::BlockTransfer<
+        pin_ss,
+        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::transfer;
 
-    Software() = delete;
-    Software(Software&) = delete;
+    Software()           = delete;
+    Software(Software&)  = delete;
     Software(Software&&) = delete;
 
     static void init() {

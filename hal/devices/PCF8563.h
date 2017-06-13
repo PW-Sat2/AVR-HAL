@@ -4,37 +4,37 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace PCF8563 {
 
-struct PCF8563_ {
-    enum class ClockStatus {
-        STOPPED = 0,
-        RUNNING = 1,
-    };
+enum class ClockStatus {
+    STOPPED = 0,
+    RUNNING = 1,
+};
 
-    enum class SquareOutput {
-        SQW_DISABLE = 0b00000000,
-        SQW_32KHZ = 0b10000000,
-        SQW_1024HZ = 0b10000001,
-        SQW_32HZ = 0b10000010,
-        SQW_1HZ = 0b10000011
-    };
+enum class SquareOutput {
+    SQW_DISABLE = 0b00000000,
+    SQW_32KHZ   = 0b10000000,
+    SQW_1024HZ  = 0b10000001,
+    SQW_32HZ    = 0b10000010,
+    SQW_1HZ     = 0b10000011
+};
 
-    struct Time {
-        uint8_t hours;
-        uint8_t minutes;
-        uint8_t seconds;
-    };
+struct Time {
+    uint8_t hours;
+    uint8_t minutes;
+    uint8_t seconds;
+};
 
-    struct Date {
-        uint8_t day;
-        uint8_t weekday;
-        uint8_t month;
-        uint16_t year;
-    };
+struct Date {
+    uint8_t day;
+    uint8_t weekday;
+    uint8_t month;
+    uint16_t year;
 };
 
 template<typename i2c>
-class PCF8563 : public PCF8563_ {
+class PCF8563 {
  public:
     static void clear_status() {
         std::array<const uint8_t, 3> data = {
@@ -138,7 +138,8 @@ class PCF8563 : public PCF8563_ {
         return ((val / 16 * 10) + (val % 16));
     }
 };
-
+}  // namespace PCF8563
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_PCF8563_H_

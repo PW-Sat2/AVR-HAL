@@ -5,6 +5,7 @@
 
 namespace hal {
 namespace devices {
+namespace TPS3813 {
 
 /*!
  * TPS3813 Processor Supervisory Circuit with Window-Watchdog Timer driver.
@@ -37,6 +38,7 @@ class TPS3813 {
     }
 };
 
+}  // namespace TPS3813
 }  // namespace devices
 }  // namespace hal
 

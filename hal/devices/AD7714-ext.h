@@ -5,73 +5,72 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace AD7714_ext {
 
-template<typename pin_DRDY,
-    typename pin_RESET,
-    typename pin_STANDBY,
-    typename pin_BUFFER, typename SPI>
+enum ADC_Registers {
+    COMM_REG             = 0,
+    MODE_REG             = 1,
+    FILTER_HIGH_REG      = 2,
+    FILTER_LOW_REG       = 3,
+    TEST_REG             = 4,
+    DATA_REG             = 5,
+    ZERO_SCALE_CALIB_REG = 6,
+    FULL_SCALE_CALIB_REG = 7
+};
+
+enum ADC_Channels {
+    AIN1_CH   = 0,
+    AIN2_CH   = 1,
+    AIN3_CH   = 2,
+    AIN4_CH   = 3,
+    AIN5_CH   = 6,
+    AIN1_2_CH = 4,
+    AIN3_4_CH = 5,
+    AIN5_6_CH = 6,
+    TEST_CH   = 7
+};
+
+enum ADC_Gain {
+    Gain_1   = 0,
+    Gain_2   = 1,
+    Gain_4   = 2,
+    Gain_8   = 3,
+    Gain_16  = 4,
+    Gain_32  = 5,
+    Gain_64  = 6,
+    Gain_128 = 7
+};
+
+enum DataLength {
+    Data_24bit = 1,  //
+    Data_16bit = 0
+};
+
+enum ADC_Modes {
+    NormalMode         = 0,
+    SelfCalib          = 1,
+    ZeroScaleSysCalib  = 2,
+    FullScaleSysCalib  = 3,
+    SysOffsetCalib     = 4,
+    BackgroundCalib    = 5,
+    ZeroScaleSelfCalib = 6,
+    FullScaleSelfCalib = 7
+};
+
+enum Control_State {
+    OFF = 0,  //
+    ON  = 1
+};
+
+enum Polarity {
+    bipolar  = 0,  //
+    unipolar = 1
+};
+
+template<typename pin_DRDY, typename pin_RESET, typename pin_STANDBY, typename pin_BUFFER, typename SPI>
 class AD7714_ext {
  public:
-    enum ADC_Registers {
-        COMM_REG             = 0,
-        MODE_REG             = 1,
-        FILTER_HIGH_REG      = 2,
-        FILTER_LOW_REG       = 3,
-        TEST_REG             = 4,
-        DATA_REG             = 5,
-        ZERO_SCALE_CALIB_REG = 6,
-        FULL_SCALE_CALIB_REG = 7
-    };
-
-    enum ADC_Channels {
-        AIN1_CH   = 0,
-        AIN2_CH   = 1,
-        AIN3_CH   = 2,
-        AIN4_CH   = 3,
-        AIN5_CH   = 6,
-        AIN1_2_CH = 4,
-        AIN3_4_CH = 5,
-        AIN5_6_CH = 6,
-        TEST_CH   = 7
-    };
-
-    enum ADC_Gain {
-        Gain_1   = 0,
-        Gain_2   = 1,
-        Gain_4   = 2,
-        Gain_8   = 3,
-        Gain_16  = 4,
-        Gain_32  = 5,
-        Gain_64  = 6,
-        Gain_128 = 7
-    };
-
-    enum DataLength {
-        Data_24bit = 1,  //
-        Data_16bit = 0
-    };
-
-    enum ADC_Modes {
-        NormalMode         = 0,
-        SelfCalib          = 1,
-        ZeroScaleSysCalib  = 2,
-        FullScaleSysCalib  = 3,
-        SysOffsetCalib     = 4,
-        BackgroundCalib    = 5,
-        ZeroScaleSelfCalib = 6,
-        FullScaleSelfCalib = 7
-    };
-
-    enum Control_State {
-        OFF = 0,  //
-        ON  = 1
-    };
-
-    enum Polarity {
-        bipolar  = 0,  //
-        unipolar = 1
-    };
-
     uint8_t change_channel(ADC_Channels channel) {
         actual_channel = channel;
         write_to_comm_reg(COMM_REG, true);
@@ -168,6 +167,8 @@ class AD7714_ext {
     DataLength data_length;
 };
 
+}  // namespace AD7714_ext
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_AD7714_EXT_H_

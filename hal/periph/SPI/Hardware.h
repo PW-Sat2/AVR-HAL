@@ -51,17 +51,22 @@ enum class HardwareClockDivisor {
 };
 
 template<typename GPIO,
-    HardwareClockDivisor clock_divisor,  //
+         HardwareClockDivisor clock_divisor,  //
          SPI::Polarity polarity,              //
          SPI::Phase phase,                    //
          SPI::DataOrder data_order>
-class Hardware : public details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order> > {
+class Hardware
+    : public details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>> {
  public:
     using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::read;
-    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::write;
-    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::transfer;
+    using details::BlockTransfer<
+        GPIO,
+        Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::write;
+    using details::BlockTransfer<
+        GPIO,
+        Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::transfer;
 
-    Hardware() = delete;
+    Hardware()          = delete;
     Hardware(Hardware&) = delete;
 
     static void init() {

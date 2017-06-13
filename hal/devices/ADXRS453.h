@@ -4,22 +4,24 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace ADXRS453 {
+
+enum RegisterMap {
+    RATE    = 0x00,
+    TEMP    = 0x02,
+    LOCST   = 0x04,
+    HICST   = 0x06,
+    QUAD    = 0x08,
+    FAULT   = 0x0A,
+    PID     = 0x0C,
+    SN_HIGH = 0x0E,
+    SN_LOW  = 0x10
+};
 
 template<typename SPI>
 class ADXRS453 {
  public:
-    enum RegisterMap {
-        RATE    = 0x00,
-        TEMP    = 0x02,
-        LOCST   = 0x04,
-        HICST   = 0x06,
-        QUAD    = 0x08,
-        FAULT   = 0x0A,
-        PID     = 0x0C,
-        SN_HIGH = 0x0E,
-        SN_LOW  = 0x10
-    };
-
     static bool device_status() {
         bool status = true;
 
@@ -126,8 +128,8 @@ class ADXRS453 {
     }
 
  private:
-    static void set_register_value(const uint8_t registerAddress,
-                            uint16_t registerValue) {
+    static void
+    set_register_value(const uint8_t registerAddress, uint16_t registerValue) {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
         uint32_t command                  = 0;
 
@@ -153,6 +155,8 @@ class ADXRS453 {
     }
 };
 
+}  // namespace ADXRS453
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_ADXRS453_H_

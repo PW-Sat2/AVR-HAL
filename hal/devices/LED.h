@@ -4,8 +4,10 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace LED {
 
-template <typename led_pin>
+template<typename led_pin>
 class LED {
  public:
     static void init() {
@@ -29,6 +31,8 @@ class LED {
     }
 };
 
+}  // namespace LED
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_LED_H_

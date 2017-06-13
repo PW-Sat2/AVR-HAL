@@ -5,25 +5,21 @@
 
 namespace hal {
 namespace devices {
+namespace ADG708 {
 
-struct ADG708_ {
-    enum class Channel : uint8_t {
-        S1 = 0,
-        S2 = 1,
-        S3 = 2,
-        S4 = 3,
-        S5 = 4,
-        S6 = 5,
-        S7 = 6,
-        S8 = 7
-    };
+enum class Channel : uint8_t {
+    S1 = 0,
+    S2 = 1,
+    S3 = 2,
+    S4 = 3,
+    S5 = 4,
+    S6 = 5,
+    S7 = 6,
+    S8 = 7
 };
 
-template <typename pin_A0,
-    typename pin_A1,
-    typename pin_A2,
-    typename pin_EN>
-class ADG708 : public ADG708_ {
+template<typename pin_A0, typename pin_A1, typename pin_A2, typename pin_EN>
+class ADG708 {
  public:
     static void init() {
         pin_A0::init(DigitalIO::Mode::OUTPUT);
@@ -49,6 +45,7 @@ class ADG708 : public ADG708_ {
     }
 };
 
+}  // namespace ADG708
 }  // namespace devices
 }  // namespace hal
 

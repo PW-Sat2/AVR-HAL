@@ -23,7 +23,7 @@ class GPIO {
     static_assert(PINx != 0, "Incorrect pin!");
     static_assert(pin <= 7, "Incorrect pin!");
 
-    GPIO() = delete;
+    GPIO()      = delete;
     GPIO(GPIO&) = delete;
 
     static constexpr inline void init(const Mode mode) {
@@ -58,8 +58,8 @@ class GPIO {
         }
     }
 
-    static constexpr inline void pinmode(const DigitalIO::Mode mode)
-        __attribute__((always_inline)) {
+    static constexpr inline void
+    pinmode(const DigitalIO::Mode mode) __attribute__((always_inline)) {
         switch (mode) {
             case Mode::OUTPUT:
                 set_bit_dio(DDRx);
@@ -80,11 +80,13 @@ class GPIO {
     }
 
  private:
-    static constexpr inline void set_bit_dio(int reg) __attribute__((always_inline)) {
+    static constexpr inline void
+    set_bit_dio(int reg) __attribute__((always_inline)) {
         libs::set_bit(*((volatile uint8_t*)(reg)), pin);
     }
 
-    static constexpr inline void clear_bit_dio(int reg) __attribute__((always_inline)) {
+    static constexpr inline void
+    clear_bit_dio(int reg) __attribute__((always_inline)) {
         libs::clear_bit(*((volatile uint8_t*)(reg)), pin);
     }
 };

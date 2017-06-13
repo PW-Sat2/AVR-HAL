@@ -15,7 +15,6 @@ namespace I2C {
 
 class Hardware : public details::_Interface<Hardware> {
  public:
-
     template<uint32_t frequency>
     static void init() {
         set_frequency<frequency>();

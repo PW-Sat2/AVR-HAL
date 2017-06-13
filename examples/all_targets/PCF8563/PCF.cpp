@@ -1,6 +1,7 @@
 #include <hal/hal>
 
 using hal::Serial0;
+using namespace hal::devices;
 
 int main() {
     Serial0.init(115200);
@@ -13,9 +14,9 @@ int main() {
     using i2c = hal::I2C::Software<pin_sda, pin_scl>;
     i2c::init();
 
-    hal::PCF8563<i2c> rtc;
+    PCF8563::PCF8563<i2c> rtc;
 
-    if (hal::PCF8563_::ClockStatus::STOPPED == rtc.get_clock_status()) {
+    if (PCF8563::ClockStatus::STOPPED == rtc.get_clock_status()) {
         printf("Clock is not working, setting time!\r\n");
         rtc.clear_status();
         rtc.set_date_time({20, 1, 2, 1994}, {20, 00, 00});
@@ -23,12 +24,12 @@ int main() {
         printf("RTC is working!\r\n");
     }
 
-    rtc.set_square_output(hal::PCF8563_::SquareOutput::SQW_32KHZ);
-    hal::PCF8563_::Date date;
-    hal::PCF8563_::Time time;
+    rtc.set_square_output(PCF8563::SquareOutput::SQW_32KHZ);
+    PCF8563::Date date;
+    PCF8563::Time time;
 
     while (true) {
-        if (hal::PCF8563_::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
+        if (PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
                    time.hours,
                    time.minutes,

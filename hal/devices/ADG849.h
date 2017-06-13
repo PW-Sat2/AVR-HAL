@@ -4,16 +4,17 @@
 #include "hal/periph.h"
 
 namespace hal {
-struct ADG849_ {
-    enum class Channel : bool {
-        S1 = 0,
-        S2 = 1,
-    };
-};
-template <typename pin_IN>
-class ADG849 : public ADG849_ {
- public:
+namespace devices {
+namespace ADG849 {
 
+enum class Channel : bool {
+    S1 = 0,
+    S2 = 1,
+};
+
+template<typename pin_IN>
+class ADG849 {
+ public:
     /*!
      * Function to initialize device.
      * It sets DigitalIO IN pin as OUTPUT.
@@ -33,6 +34,8 @@ class ADG849 : public ADG849_ {
     }
 };
 
+}  // namespace ADG849
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_ADG849_H_

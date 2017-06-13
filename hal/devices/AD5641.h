@@ -5,6 +5,8 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace AD5641 {
 
 template<typename SPI>
 class AD5641 {
@@ -22,6 +24,8 @@ class AD5641 {
     }
 };
 
+}  // namespace AD5641
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_AD5641_H_

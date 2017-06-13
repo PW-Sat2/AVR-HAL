@@ -5,6 +5,7 @@ TEST_GROUP(LED);
 
 using namespace hal;
 using namespace hal::libs;
+using namespace hal::devices;
 
 struct LEDMock : public DigtalIOMock<LEDMock> {
     static void init(const DigitalIO::Mode mode) {
@@ -24,20 +25,20 @@ struct LEDMock : public DigtalIOMock<LEDMock> {
 uint8_t LEDMock::expect;
 
 TEST(LED, write) {
-    LED<LEDMock> led;
+    LED::LED<LEDMock> led;
     LEDMock::expect = 0, led.write(false);
     LEDMock::expect = 1, led.write(true);
 }
 
 TEST(LED, setReset) {
-    LED<LEDMock> led;
+    LED::LED<LEDMock> led;
     LEDMock::expect = 0, led.write(false);
     LEDMock::expect = 1, led.on();
     LEDMock::expect = 0, led.off();
 }
 
 TEST(LED, toggle) {
-    LED<LEDMock> led;
+    LED::LED<LEDMock> led;
     LEDMock::expect = 0, led.write(false);
     LEDMock::expect = 0xFF, led.toggle();
     LEDMock::expect = 0xFF, led.toggle();

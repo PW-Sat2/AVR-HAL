@@ -7,6 +7,7 @@ TEST_GROUP(TMP121);
 
 using namespace hal;
 using namespace hal::libs;
+using namespace hal::devices;
 
 struct MockTMP121 : public EmptySPIMock {
     static uint16_t data;
@@ -22,7 +23,7 @@ uint16_t MockTMP121::data;
 
 TEST(TMP121, ConversionTableFromDatasheet) {
     using mock = MockTMP121;
-    TMP121<mock> tmp;
+    TMP121::TMP121<mock> tmp;
 
     mock::data = 0x4B00;
     TEST_ASSERT_EQUAL_INT(2400, tmp.read());
@@ -59,7 +60,7 @@ TEST(TMP121, ConversionTableFromDatasheet) {
 
 TEST(TMP121, UnknownBitsShouldNotChangeValue) {
     using mock = MockTMP121;
-    TMP121<mock> tmp;
+    TMP121::TMP121<mock> tmp;
 
     uint16_t data = 0x4B00;
     for (int i = 0; i <= 0b111; ++i) {

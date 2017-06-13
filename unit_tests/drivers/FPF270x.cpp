@@ -23,16 +23,18 @@ struct FPF270xMock : public DigtalIOMock<FPF270xMock<i>> {
         return value;
     }
 };
-template<int i> DigitalIO::Mode FPF270xMock<i>::mode;
-template<int i> bool FPF270xMock<i>::value;
+template<int i>
+DigitalIO::Mode FPF270xMock<i>::mode;
+template<int i>
+bool FPF270xMock<i>::value;
 
 
-using on = FPF270xMock<0>;
-using flag = FPF270xMock<1>;
+using on    = FPF270xMock<0>;
+using flag  = FPF270xMock<1>;
 using pgood = FPF270xMock<2>;
 
 TEST(FPF270x, init) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    hal::devices::FPF270x::FPF270x<on, flag, pgood> fpf;
     on::mode = flag::mode = pgood::mode = DigitalIO::Mode::INPUT;
 
     fpf.init();
@@ -42,7 +44,7 @@ TEST(FPF270x, init) {
 }
 
 TEST(FPF270x, on_off) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    hal::devices::FPF270x::FPF270x<on, flag, pgood> fpf;
 
     on::value = true;
     fpf.on();
@@ -56,7 +58,7 @@ TEST(FPF270x, on_off) {
 }
 
 TEST(FPF270x, error) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    hal::devices::FPF270x::FPF270x<on, flag, pgood> fpf;
 
     flag::value = true;
     TEST_ASSERT_TRUE(fpf.error_occured());
@@ -66,7 +68,7 @@ TEST(FPF270x, error) {
 }
 
 TEST(FPF270x, power_good) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    hal::devices::FPF270x::FPF270x<on, flag, pgood> fpf;
 
     pgood::value = true;
     TEST_ASSERT_TRUE(fpf.power_good());

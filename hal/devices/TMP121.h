@@ -4,11 +4,13 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace TMP121 {
 
 /*!
  * TMP121 temperature sensor driver.
  */
-template <typename SPI>
+template<typename SPI>
 class TMP121 {
  public:
     /*!
@@ -39,6 +41,8 @@ class TMP121 {
     }
 };
 
+}  // namespace TMP121
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_TMP121_H_
