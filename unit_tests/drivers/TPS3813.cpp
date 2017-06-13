@@ -29,7 +29,7 @@ TEST(TPS3813, init) {
     hal::devices::TPS3813<pulse_time> watchdog{wdi};
 
     watchdog.init();
-
+    TEST_ASSERT_TRUE(wdi.mode.isNotEmpty());
     TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
     TEST_ASSERT_TRUE(wdi.mode.isEmpty());
 

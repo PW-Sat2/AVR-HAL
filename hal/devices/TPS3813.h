@@ -13,6 +13,9 @@ namespace devices {
  */
 template<uint16_t pulse_time_us>
 class TPS3813 {
+    static_assert(pulse_time_us < (768000000 / F_CPU),
+                  "Pulse duration too long - max. 768 us / F_CPU in MHz");
+
  public:
     /*!
      * Default ctor.
@@ -20,8 +23,6 @@ class TPS3813 {
      */
     constexpr explicit TPS3813(DigitalIO::Interface& pin_WDI)
         : pin_WDI{pin_WDI} {
-    static_assert(pulse_time_us < (768000000 / F_CPU),
-                  "Pulse duration too long - max. 768 us / F_CPU in MHz");
     }
 
     /*!
