@@ -1,40 +1,5 @@
-# Compiled Object files
-*.lo
-*.o
-*.obj
-
-# Compiled Static libraries
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.elf
-*.hex
-
-# Other
-*.map
-
-# Temporary files
-*~
-\#*
-
-tmp/
-Debug/
-
-# Atmel Studio
-*.atsln
-*.atsuo
-*.cppproj
-
-# Eclipse
-.metadata
-.settings
-RemoteSystemsTempFiles
-*.cproject
-*.project
-
-# CLion
-.idea
+tmp
+**/cmake-build-release
+**/cmake-build-debug
+**/.idea
+*.pyc

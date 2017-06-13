@@ -8,10 +8,10 @@ TEST_GROUP(AD5641);
 using namespace hal;
 using namespace hal::libs;
 
-struct MockAD5641 : public EmptySPIMock {
+struct MockAD5641 {
     uint16_t expect;
 
-    void write(gsl::span<const uint8_t> output) override {
+    void write(gsl::span<const uint8_t> output) {
         TEST_ASSERT_EQUAL(2, output.size());
         Reader reader{output};
         TEST_ASSERT_EQUAL(expect, reader.ReadWordBE());
@@ -20,7 +20,7 @@ struct MockAD5641 : public EmptySPIMock {
 
 void AD5641test(uint16_t value) {
     MockAD5641 mock;
-    AD5641 ad5641{mock};
+    AD5641<MockAD5641> ad5641{mock};
 
     mock.expect = value;
     ad5641.write(value);
@@ -39,7 +39,7 @@ TEST(AD5641, edge_cases) {
 
 TEST(AD5641, overflow) {
     MockAD5641 mock;
-    AD5641 ad5641{mock};
+    AD5641<MockAD5641> ad5641{mock};
 
     mock.expect = 0x3FFF, ad5641.write(0x4000);
     mock.expect = 0x3FFF, ad5641.write(0xFFFF);

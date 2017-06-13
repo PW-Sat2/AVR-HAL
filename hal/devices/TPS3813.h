@@ -11,27 +11,19 @@ namespace devices {
  * @tparam pulse_time_us Duration of a kick pulse in microseconds
  * (max. 768 us / F_CPU in MHz).
  */
-template<uint16_t pulse_time_us>
+template<typename pin_WDI, uint16_t pulse_time_us>
 class TPS3813 {
     static_assert(pulse_time_us < (768000000 / F_CPU),
                   "Pulse duration too long - max. 768 us / F_CPU in MHz");
 
  public:
     /*!
-     * Default ctor.
-     * @param pin_WDI GPIO device used to kick watchdog.
-     */
-    constexpr explicit TPS3813(DigitalIO::Interface& pin_WDI)
-        : pin_WDI{pin_WDI} {
-    }
-
-    /*!
      * Initializes device.
      * Has to be invoked before use of the device.
      */
     void init() const {
-        this->pin_WDI.init(hal::DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_WDI.reset();
+        pin_WDI::init(hal::DigitalIO::Mode::OUTPUT);
+        pin_WDI::reset();
     }
 
     /*!
@@ -39,13 +31,10 @@ class TPS3813 {
      * Sends a pulse to device of specified time.
      */
     void kick() const {
-        this->pin_WDI.set();
+        pin_WDI::set();
         _delay_us(pulse_time_us);
-        this->pin_WDI.reset();
+        pin_WDI::reset();
     }
-
- private:
-    DigitalIO::Interface& pin_WDI;
 };
 
 }  // namespace devices

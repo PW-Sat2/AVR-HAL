@@ -5,6 +5,7 @@
 
 namespace hal {
 
+template <typename GPIO>
 class AD7714 {
  public:
     enum ADC_Registers {
@@ -64,7 +65,7 @@ class AD7714 {
         unipolar = 1
     };
 
-    explicit AD7714(SPI::Interface& spi, DigitalIO::Interface& pin_DRDY)
+    explicit AD7714(SPI::Interface& spi, GPIO& pin_DRDY)
         : spi_dev(spi), pin_DRDY{pin_DRDY} {
     }
 
@@ -85,7 +86,7 @@ class AD7714 {
     }
 
     void init() const {
-        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
+        this->pin_DRDY.init(DigitalIO::Mode::INPUT);
     }
 
     void write_to_comm_reg(ADC_Registers reg, bool read) const {
@@ -133,7 +134,7 @@ class AD7714 {
     ADC_Channels actual_channel;
 
     SPI::Interface& spi_dev;
-    DigitalIO::Interface& pin_DRDY;
+    GPIO& pin_DRDY;
 };
 
 }  // namespace hal

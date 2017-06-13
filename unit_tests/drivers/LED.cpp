@@ -6,32 +6,33 @@ TEST_GROUP(LED);
 using namespace hal;
 using namespace hal::libs;
 
-struct LEDMock : public DigtalIOMock {
-    void init(const Mode mode) override {
-        TEST_ASSERT_EQUAL(mode, Mode::OUTPUT);
+struct LEDMock : public DigtalIOMock<LEDMock> {
+    static void init(const DigitalIO::Mode mode) {
+        TEST_ASSERT_EQUAL(mode, DigitalIO::Mode::OUTPUT);
     }
 
-    uint8_t expect;
+    static uint8_t expect;
 
-    void toggle() override {
+    static void toggle() {
         TEST_ASSERT_EQUAL(0xFF, expect);
     }
 
-    void write(bool value) override {
+    static void write(bool value) {
         TEST_ASSERT_EQUAL(expect, value);
     }
 };
+uint8_t LEDMock::expect;
 
 TEST(LED, write) {
     LEDMock mock;
-    LED led{mock};
+    LED<decltype(mock)> led{mock};
     mock.expect = 0, led.write(false);
     mock.expect = 1, led.write(true);
 }
 
 TEST(LED, setReset) {
     LEDMock mock;
-    LED led{mock};
+    LED<decltype(mock)> led{mock};
     mock.expect = 0, led.write(false);
     mock.expect = 1, led.on();
     mock.expect = 0, led.off();
@@ -39,7 +40,7 @@ TEST(LED, setReset) {
 
 TEST(LED, toggle) {
     LEDMock mock;
-    LED led{mock};
+    LED<decltype(mock)> led{mock};
     mock.expect = 0, led.write(false);
     mock.expect = 0xFF, led.toggle();
     mock.expect = 0xFF, led.toggle();

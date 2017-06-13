@@ -7,7 +7,7 @@ using namespace hal;
 DigitalIO::GPIO<mcu::pin_sck> pin;
 
 TEST(ADC, just_pullup) {
-    pin.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+    pin.init(DigitalIO::Mode::INPUT_PULLUP);
     Analog::InternalADC::init(Analog::InternalADC::Prescaler::DIV_128,
                               Analog::InternalADC::Reference::AVcc);
     Analog::AnalogGPIO analogGPIO(Analog::InternalADC::Input::ADC0);
@@ -18,7 +18,7 @@ TEST(ADC, just_pullup) {
 }
 
 TEST(ADC, output) {
-    pin.init(DigitalIO::Interface::Mode::OUTPUT);
+    pin.init(DigitalIO::Mode::OUTPUT);
 
     Analog::InternalADC::init(Analog::InternalADC::Prescaler::DIV_128,
                               Analog::InternalADC::Reference::AVcc);

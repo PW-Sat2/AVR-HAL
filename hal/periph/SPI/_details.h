@@ -8,19 +8,20 @@
 namespace hal {
 namespace SPI {
 
-constexpr static DigitalIO::Interface::Pin NoChipSelect = 0xFF;
+constexpr static DigitalIO::Pin NoChipSelect = 0xFF;
 
 namespace details {
 
+template<typename GPIO>
 class BlockTransfer : public Interface {
  public:
-    BlockTransfer(DigitalIO::Interface& pin_cs) : pin_cs{pin_cs} {
-        pin_cs.init(DigitalIO::Interface::Mode::OUTPUT);
+    BlockTransfer() {
+        GPIO::init(DigitalIO::Mode::OUTPUT);
     }
 
     void
     transfer(gsl::span<const uint8_t> output, gsl::span<uint8_t> input) override {
-        pin_cs.reset();
+        GPIO::reset();
         const uint8_t* out_ptr = output.data();
         uint8_t* in_ptr        = input.data();
         int len                = input.size();
@@ -29,27 +30,24 @@ class BlockTransfer : public Interface {
             in_ptr++;
             out_ptr++;
         }
-        pin_cs.set();
+        GPIO::set();
     }
 
     void write(gsl::span<const uint8_t> output) override {
-        pin_cs.reset();
+        GPIO::reset();
         for (auto&& x : output) {
             static_cast<Interface*>(this)->transfer(x);
         }
-        pin_cs.set();
+        GPIO::set();
     }
 
     void read(gsl::span<uint8_t> input, uint8_t output_value = 0) override {
-        pin_cs.reset();
+        GPIO::reset();
         for (auto& x : input) {
             x = static_cast<Interface*>(this)->transfer(output_value);
         }
-        pin_cs.set();
+        GPIO::set();
     }
-
- private:
-    DigitalIO::Interface& pin_cs;
 };
 
 }  // namespace details

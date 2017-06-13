@@ -2,13 +2,14 @@
 
 using hal::Serial0;
 
-hal::DigitalIO::GPIO<hal::mcu::pin_sda> gpio;
+using gpio = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
 
-hal::SPI::Hardware<hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
+hal::SPI::Hardware<gpio,
+                   hal::SPI::HardwareClockDivisor::SPIHard_DIV_4,
                    hal::SPI::Polarity::idle_high,
                    hal::SPI::Phase::leading_sample,
                    hal::SPI::DataOrder::LSB_first>
-    spi(gpio);
+    spi;
 
 int main() {
     Serial0.init(115200);

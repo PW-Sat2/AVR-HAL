@@ -6,9 +6,10 @@
 
 namespace hal {
 
+template<typename SPI>
 class AD5641 {
  public:
-    constexpr AD5641(hal::SPI::Interface& device) : spi_dev(device) {
+    constexpr AD5641(SPI& device) : spi_dev(device) {
     }
 
     void write(uint16_t data_lsb) {
@@ -24,7 +25,7 @@ class AD5641 {
     }
 
  private:
-    hal::SPI::Interface& spi_dev;
+    SPI& spi_dev;
 };
 
 }  // namespace hal

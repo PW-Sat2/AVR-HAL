@@ -8,17 +8,14 @@
 namespace hal {
 namespace I2C {
 
+template<typename pin_sda, typename pin_scl>
 class Software : public details::_Interface {
  public:
-    Software(DigitalIO::Interface& pin_sda, DigitalIO::Interface& pin_scl)
-        : pin_sda{pin_sda}, pin_scl{pin_scl} {
-    }
-
     void init() {
-        pin_scl.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-        pin_sda.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-        pin_scl.reset();
-        pin_sda.reset();
+        pin_scl::init(DigitalIO::Mode::INPUT_PULLUP);
+        pin_sda::init(DigitalIO::Mode::INPUT_PULLUP);
+        pin_scl::reset();
+        pin_sda::reset();
     }
 
     using Interface::read;
@@ -26,9 +23,6 @@ class Software : public details::_Interface {
     using Interface::write_read;
 
  private:
-    DigitalIO::Interface& pin_sda;
-    DigitalIO::Interface& pin_scl;
-
     bool start(uint8_t address, const StartAction start_action) override {
         scl_high();
         hDelay();
@@ -63,7 +57,7 @@ class Software : public details::_Interface {
             scl_high();
             hDelay();
 
-            while (pin_scl.read() == 0) {
+            while (pin_scl::read() == 0) {
             }
 
             data = data << 1;
@@ -79,7 +73,7 @@ class Software : public details::_Interface {
         scl_high();
         hDelay();
 
-        bool ack = !(pin_sda.read());
+        bool ack = !(pin_sda::read());
 
         scl_low();
         hDelay();
@@ -96,10 +90,10 @@ class Software : public details::_Interface {
             scl_high();
             hDelay();
 
-            while ((pin_scl.read()) == 0) {
+            while ((pin_scl::read()) == 0) {
             }
 
-            if (pin_sda.read()) {
+            if (pin_sda::read()) {
                 data |= (0x80 >> i);
             }
         }
@@ -132,17 +126,17 @@ class Software : public details::_Interface {
     }
 
     void sda_high() __attribute__((always_inline)) {
-        pin_sda.init(DigitalIO::Interface::Mode::INPUT);
+        pin_sda::init(DigitalIO::Mode::INPUT);
     }
     void sda_low() __attribute__((always_inline)) {
-        pin_sda.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_sda::init(DigitalIO::Mode::OUTPUT);
     }
 
     void scl_high() __attribute__((always_inline)) {
-        pin_scl.init(DigitalIO::Interface::Mode::INPUT);
+        pin_scl::init(DigitalIO::Mode::INPUT);
     }
     void scl_low() __attribute__((always_inline)) {
-        pin_scl.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_scl::init(DigitalIO::Mode::OUTPUT);
     }
 };
 

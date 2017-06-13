@@ -6,6 +6,7 @@
 
 namespace hal {
 
+template<typename GPIO>
 class AD7714_ext {
  public:
     enum ADC_Registers {
@@ -69,10 +70,10 @@ class AD7714_ext {
     };
 
     explicit AD7714_ext(SPI::Interface& spi_dev,
-                        DigitalIO::Interface& pin_DRDY,
-                        DigitalIO::Interface& pin_RESET,
-                        DigitalIO::Interface& pin_STANDBY,
-                        DigitalIO::Interface& pin_BUFFER)
+                        GPIO& pin_DRDY,
+                        GPIO& pin_RESET,
+                        GPIO& pin_STANDBY,
+                        GPIO& pin_BUFFER)
         : spi_dev(spi_dev),
           pin_DRDY{pin_DRDY},
           pin_RESET{pin_RESET},
@@ -104,10 +105,10 @@ class AD7714_ext {
     }
 
     void init() const {
-        this->pin_DRDY.init(DigitalIO::Interface::Mode::INPUT);
-        this->pin_RESET.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_STANDBY.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_BUFFER.init(DigitalIO::Interface::Mode::OUTPUT);
+        this->pin_DRDY.init(DigitalIO::Mode::INPUT);
+        this->pin_RESET.init(DigitalIO::Mode::OUTPUT);
+        this->pin_STANDBY.init(DigitalIO::Mode::OUTPUT);
+        this->pin_BUFFER.init(DigitalIO::Mode::OUTPUT);
 
         this->reset();
         this->buffer(ON);
@@ -175,7 +176,7 @@ class AD7714_ext {
     ADC_Channels actual_channel;
     DataLength data_length;
     SPI::Interface& spi_dev;
-    DigitalIO::Interface &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
+    GPIO &pin_DRDY, &pin_RESET, &pin_STANDBY, &pin_BUFFER;
 };
 
 }  // namespace hal

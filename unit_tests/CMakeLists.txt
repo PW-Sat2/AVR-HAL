@@ -8,6 +8,7 @@ project(unit_tests)
 add_subdirectory(unity)
 
 add_subdirectory(../ hal)
+add_subdirectory(../examples/all_targets examples)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error" CACHE STRING "" FORCE)
 

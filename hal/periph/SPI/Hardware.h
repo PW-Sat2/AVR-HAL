@@ -50,19 +50,17 @@ enum class HardwareClockDivisor {
     SPIHard_DIV_128 = 3,
 };
 
-template<HardwareClockDivisor clock_divisor,  //
+template<typename GPIO,
+    HardwareClockDivisor clock_divisor,  //
          SPI::Polarity polarity,              //
          SPI::Phase phase,                    //
          SPI::DataOrder data_order>
-class Hardware : public details::BlockTransfer {
+class Hardware : public details::BlockTransfer<GPIO> {
  public:
-    Hardware(DigitalIO::Interface& pin_cs) : BlockTransfer(pin_cs) {
-    }
-
     void init() {
-        pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
-        pin_ss.init(DigitalIO::Interface::Mode::OUTPUT);
+        hal::DigitalIO::GPIO<mcu::pin_mosi>::init(DigitalIO::Mode::OUTPUT);
+        hal::DigitalIO::GPIO<mcu::pin_sck>::init(DigitalIO::Mode::OUTPUT);
+        hal::DigitalIO::GPIO<mcu::pin_ss>::init(DigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |                                //
                (1 << MSTR) |                               //
@@ -104,11 +102,6 @@ class Hardware : public details::BlockTransfer {
     void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
-
- private:
-    DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
-    DigitalIO::GPIO<mcu::pin_sck> pin_sck;
-    DigitalIO::GPIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace SPI

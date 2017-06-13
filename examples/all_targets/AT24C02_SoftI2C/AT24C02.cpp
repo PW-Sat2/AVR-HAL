@@ -7,10 +7,10 @@ int main() {
     hal::Serial0.redirect_stdio();
     hal::Serial0.redirect_stderr();
 
-    hal::DigitalIO::GPIO<hal::mcu::pin_sda> pin_sda;
-    hal::DigitalIO::GPIO<hal::mcu::pin_scl> pin_scl;
+    using pin_sda = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
+    using pin_scl = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 
-    hal::I2C::Software i2c{pin_sda, pin_scl};
+    hal::I2C::Software<pin_sda, pin_scl> i2c;
 
     hal::AT24C02 memory{i2c};
 

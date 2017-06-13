@@ -22,10 +22,8 @@ class Hardware : public details::_Interface {
     }
 
     void enable_internal_pullups() {
-        DigitalIO::GPIO<mcu::pin_scl> pin_scl;
-        DigitalIO::GPIO<mcu::pin_sda> pin_sda;
-        pin_scl.init(hal::DigitalIO::Interface::Mode::INPUT_PULLUP);
-        pin_sda.init(hal::DigitalIO::Interface::Mode::INPUT_PULLUP);
+        DigitalIO::GPIO<mcu::pin_scl>::init(hal::DigitalIO::Mode::INPUT_PULLUP);
+        DigitalIO::GPIO<mcu::pin_sda>::init(hal::DigitalIO::Mode::INPUT_PULLUP);
     }
 
     void disable() {

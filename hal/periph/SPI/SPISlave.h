@@ -33,10 +33,10 @@ class SPISlave {
 
     void
     init(const Polarity polarity, const Phase phase, const DataOrder data_order) {
-        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
-        pin_ss.init(DigitalIO::Interface::Mode::INPUT);
-        pin_miso.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_mosi.init(DigitalIO::Mode::INPUT);
+        pin_sck.init(DigitalIO::Mode::INPUT);
+        pin_ss.init(DigitalIO::Mode::INPUT);
+        pin_miso.init(DigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |                                //
                (static_cast<uint8_t>(phase) << CPHA) |     //

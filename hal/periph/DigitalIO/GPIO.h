@@ -11,7 +11,7 @@ namespace hal {
 namespace DigitalIO {
 
 template<int pin_nr>
-class GPIO : public Interface {
+class GPIO {
  public:
     constexpr static auto PORTx = mcu::DigitalIOPinMap[pin_nr].PORTx;
     constexpr static auto DDRx  = mcu::DigitalIOPinMap[pin_nr].DDRx;
@@ -23,31 +23,34 @@ class GPIO : public Interface {
     static_assert(PINx != 0, "Incorrect pin!");
     static_assert(pin <= 7, "Incorrect pin!");
 
-    void init(const Mode mode) override {
+    GPIO() = delete;
+    GPIO(GPIO&) = delete;
+
+    static constexpr inline void init(const Mode mode) {
         pinmode(mode);
     }
 
-    void set() {
+    static constexpr inline void set() {
         set_bit_dio(PORTx);
     }
 
-    void reset() {
+    static constexpr inline void reset() {
         clear_bit_dio(PORTx);
     }
 
-    void write(bool value) override {
+    static constexpr inline void write(bool value) {
         if (value) {
-            this->set();
+            set();
         } else {
-            this->reset();
+            reset();
         }
     }
 
-    bool read() override {
+    static constexpr inline bool read() {
         return libs::read_bit(*((volatile uint8_t*)(PINx)), pin);
     }
 
-    void toggle() override {
+    static constexpr inline void toggle() {
         if (read()) {
             reset();
         } else {
@@ -55,7 +58,7 @@ class GPIO : public Interface {
         }
     }
 
-    inline void pinmode(const DigitalIO::Interface::Mode mode) const
+    static constexpr inline void pinmode(const DigitalIO::Mode mode)
         __attribute__((always_inline)) {
         switch (mode) {
             case Mode::OUTPUT:
@@ -77,11 +80,11 @@ class GPIO : public Interface {
     }
 
  private:
-    void set_bit_dio(int reg) const __attribute__((always_inline)) {
+    static constexpr inline void set_bit_dio(int reg) __attribute__((always_inline)) {
         libs::set_bit(*((volatile uint8_t*)(reg)), pin);
     }
 
-    void clear_bit_dio(int reg) const __attribute__((always_inline)) {
+    static constexpr inline void clear_bit_dio(int reg) __attribute__((always_inline)) {
         libs::clear_bit(*((volatile uint8_t*)(reg)), pin);
     }
 };

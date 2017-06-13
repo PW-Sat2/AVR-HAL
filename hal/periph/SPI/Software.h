@@ -13,32 +13,29 @@
 namespace hal {
 namespace SPI {
 
-template<SPI::Polarity polarity, SPI::Phase phase>
-class Software : public details::BlockTransfer {
+template<typename pin_mosi,
+    typename pin_miso,
+    typename pin_sck,
+    typename pin_ss,
+    SPI::Polarity polarity, SPI::Phase phase>
+class Software : public details::BlockTransfer<pin_ss> {
  public:
-    Software(DigitalIO::Interface& pin_mosi,
-             DigitalIO::Interface& pin_miso,
-             DigitalIO::Interface& pin_sck,
-             DigitalIO::Interface& pin_ss)
-        : BlockTransfer{pin_ss}, pin_mosi{pin_mosi}, pin_miso{pin_miso}, pin_sck{pin_sck} {
-    }
-
     void init() {
-        pin_miso.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-        pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_miso::init(DigitalIO::Mode::INPUT_PULLUP);
+        pin_mosi::init(DigitalIO::Mode::OUTPUT);
+        pin_sck::init(DigitalIO::Mode::OUTPUT);
 
         if (polarity == SPI::Polarity::idle_high) {
-            pin_sck.set();
+            pin_sck::set();
         } else {
-            pin_sck.reset();
+            pin_sck::reset();
         }
     }
 
     void disable() {
-        pin_miso.init(DigitalIO::Interface::Mode::INPUT);
-        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
+        pin_miso::init(DigitalIO::Mode::INPUT);
+        pin_mosi::init(DigitalIO::Mode::INPUT);
+        pin_sck::init(DigitalIO::Mode::INPUT);
     }
 
     uint8_t transfer(const uint8_t data) override {
@@ -54,10 +51,10 @@ class Software : public details::BlockTransfer {
         delay();
         for (int8_t i = 7; i >= 0; --i) {
             output_phase(data & (1u << i));
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
             output |= (sample_phase() << i);
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
         }
         return output;
@@ -70,22 +67,20 @@ class Software : public details::BlockTransfer {
             output_phase(data & (1u << i));
             delay();
             output |= (sample_phase() << i);
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
-            pin_sck.toggle();
+            pin_sck::toggle();
         }
         return output;
     }
 
  private:
-    DigitalIO::Interface &pin_mosi, &pin_miso, &pin_sck;
-
     bool sample_phase() {
-        return pin_miso.read();
+        return pin_miso::read();
     }
 
     void output_phase(bool value) {
-        pin_mosi.write(value);
+        pin_mosi::write(value);
     }
 
     void delay() {

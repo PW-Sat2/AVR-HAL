@@ -5,13 +5,14 @@
 
 namespace hal {
 
+template <typename GPIO>
 class LED {
  public:
-    constexpr LED(DigitalIO::Interface& pin) : led_pin{pin} {
+    constexpr LED(GPIO& pin) : led_pin{pin} {
     }
 
     void init() const {
-        led_pin.init(DigitalIO::Interface::Mode::OUTPUT);
+        led_pin.init(DigitalIO::Mode::OUTPUT);
     }
 
     void on() const {
@@ -31,7 +32,7 @@ class LED {
     }
 
  private:
-    DigitalIO::Interface& led_pin;
+    GPIO& led_pin;
 };
 
 }  // namespace hal

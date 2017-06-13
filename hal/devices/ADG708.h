@@ -6,8 +6,7 @@
 namespace hal {
 namespace devices {
 
-class ADG708 {
- public:
+struct ADG708_ {
     enum class Channel : uint8_t {
         S1 = 0,
         S2 = 1,
@@ -18,39 +17,36 @@ class ADG708 {
         S7 = 6,
         S8 = 7
     };
+};
 
-    constexpr explicit ADG708(DigitalIO::Interface& pin_A0,
-                              DigitalIO::Interface& pin_A1,
-                              DigitalIO::Interface& pin_A2,
-                              DigitalIO::Interface& pin_EN)
-        : pin_A0{pin_A0}, pin_A1{pin_A1}, pin_A2{pin_A2}, pin_EN{pin_EN} {
-    }
-
+template <typename pin_A0,
+    typename pin_A1,
+    typename pin_A2,
+    typename pin_EN>
+class ADG708 : public ADG708_ {
+ public:
     void init() const {
-        this->pin_A0.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_A1.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_A2.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_EN.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_A0::init(DigitalIO::Mode::OUTPUT);
+        pin_A1::init(DigitalIO::Mode::OUTPUT);
+        pin_A2::init(DigitalIO::Mode::OUTPUT);
+        pin_EN::init(DigitalIO::Mode::OUTPUT);
 
-        this->disable();
+        disable();
     }
 
     void enable() const {
-        this->pin_EN.set();
+        pin_EN::set();
     }
 
     void disable() const {
-        this->pin_EN.reset();
+        pin_EN::reset();
     }
 
     void select(Channel channel) const {
-        this->pin_A0.write(libs::read_bit<0>(static_cast<uint8_t>(channel)));
-        this->pin_A1.write(libs::read_bit<1>(static_cast<uint8_t>(channel)));
-        this->pin_A2.write(libs::read_bit<2>(static_cast<uint8_t>(channel)));
+        pin_A0::write(libs::read_bit<0>(static_cast<uint8_t>(channel)));
+        pin_A1::write(libs::read_bit<1>(static_cast<uint8_t>(channel)));
+        pin_A2::write(libs::read_bit<2>(static_cast<uint8_t>(channel)));
     }
-
- private:
-    DigitalIO::Interface &pin_A0, &pin_A1, &pin_A2, &pin_EN;
 };
 
 }  // namespace devices
