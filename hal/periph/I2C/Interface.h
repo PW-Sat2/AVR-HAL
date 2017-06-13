@@ -13,11 +13,11 @@ class Interface {
  public:
     using Address = uint8_t;
 
-    virtual void write(uint8_t address, gsl::span<const uint8_t> data) = 0;
-    virtual void read(uint8_t address, gsl::span<uint8_t> data)        = 0;
-    virtual void write_read(uint8_t address,
-                            gsl::span<const uint8_t> output,
-                            gsl::span<uint8_t> input)                  = 0;
+//    virtual void write(uint8_t address, gsl::span<const uint8_t> data) = 0;
+//    virtual void read(uint8_t address, gsl::span<uint8_t> data)        = 0;
+//    virtual void write_read(uint8_t address,
+//                            gsl::span<const uint8_t> output,
+//                            gsl::span<uint8_t> input)                  = 0;
 };
 
 }  // namespace I2C

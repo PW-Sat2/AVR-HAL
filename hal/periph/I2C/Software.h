@@ -9,21 +9,26 @@ namespace hal {
 namespace I2C {
 
 template<typename pin_sda, typename pin_scl>
-class Software : public details::_Interface {
+class Software : public details::_Interface<Software<pin_sda, pin_scl>> {
  public:
-    void init() {
+    static void init() {
         pin_scl::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_sda::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_scl::reset();
         pin_sda::reset();
     }
 
-    using Interface::read;
-    using Interface::write;
-    using Interface::write_read;
+    using typename details::_Interface<Software<pin_sda, pin_scl>>::write;
+    using typename details::_Interface<Software<pin_sda, pin_scl>>::read;
+    using typename details::_Interface<Software<pin_sda, pin_scl>>::write_read;
 
  private:
-    bool start(uint8_t address, const StartAction start_action) override {
+    friend class details::_Interface<Software<pin_sda, pin_scl>>;
+
+    using StartAction = typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl> >::StartAction;
+    using Acknowledge = typename hal::I2C::details::_Interface<hal::I2C::Software<pin_sda, pin_scl> >::Acknowledge;
+
+    static bool start(uint8_t address, const StartAction start_action) {
         scl_high();
         hDelay();
 
@@ -33,7 +38,7 @@ class Software : public details::_Interface {
         return write((address << 1) | static_cast<int>(start_action));
     }
 
-    void stop() override {
+    static void stop() {
         sda_low();
         hDelay();
         scl_high();
@@ -42,7 +47,7 @@ class Software : public details::_Interface {
         hDelay();
     }
 
-    bool write(uint8_t data) override {
+    static bool write(uint8_t data) {
         for (uint8_t i = 0; i < 8; ++i) {
             scl_low();
             qDelay();
@@ -81,7 +86,7 @@ class Software : public details::_Interface {
         return ack;
     }
 
-    uint8_t read(Acknowledge ACK) override {
+    static uint8_t read(Acknowledge ACK) {
         uint8_t data = 0;
 
         for (uint8_t i = 0; i < 8; ++i) {
@@ -118,24 +123,24 @@ class Software : public details::_Interface {
         return data;
     }
 
-    void qDelay() {
+    static void qDelay() {
         _delay_loop_1(3);
     }
-    void hDelay() {
+    static void hDelay() {
         _delay_loop_1(5);
     }
 
-    void sda_high() __attribute__((always_inline)) {
+    static void sda_high() __attribute__((always_inline)) {
         pin_sda::init(DigitalIO::Mode::INPUT);
     }
-    void sda_low() __attribute__((always_inline)) {
+    static void sda_low() __attribute__((always_inline)) {
         pin_sda::init(DigitalIO::Mode::OUTPUT);
     }
 
-    void scl_high() __attribute__((always_inline)) {
+    static void scl_high() __attribute__((always_inline)) {
         pin_scl::init(DigitalIO::Mode::INPUT);
     }
-    void scl_low() __attribute__((always_inline)) {
+    static void scl_low() __attribute__((always_inline)) {
         pin_scl::init(DigitalIO::Mode::OUTPUT);
     }
 };

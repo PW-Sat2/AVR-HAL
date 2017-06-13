@@ -10,13 +10,13 @@ int main() {
     using pin_sda = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
     using pin_scl = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 
-    hal::I2C::Software<pin_sda, pin_scl> i2c;
+    using i2c = hal::I2C::Software<pin_sda, pin_scl>;
+    i2c::init();
 
-    hal::AT24C02 memory{i2c};
+    hal::AT24C02<i2c> memory;
 
-    i2c.init();
 
-    hal::AT24C02::Data<10> mem{0};
+    hal::AT24C02_::Data<10> mem{0};
 
     for (int i = 0; i < 10; ++i) {
         mem.data[i] = i;
@@ -27,7 +27,7 @@ int main() {
     _delay_ms(1000);
 
     while (true) {
-        hal::AT24C02::Data<10> mem_read{0};
+        hal::AT24C02_::Data<10> mem_read{0};
         memory.read(mem_read);
 
         for (const uint8_t x : mem_read.data) {

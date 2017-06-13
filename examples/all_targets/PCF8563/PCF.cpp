@@ -10,12 +10,12 @@ int main() {
     using pin_sda = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
     using pin_scl = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 
-    hal::I2C::Software<pin_sda, pin_scl> i2c;
-    i2c.init();
+    using i2c = hal::I2C::Software<pin_sda, pin_scl>;
+    i2c::init();
 
-    hal::PCF8563 rtc{i2c};
+    hal::PCF8563<i2c> rtc;
 
-    if (hal::PCF8563::ClockStatus::STOPPED == rtc.get_clock_status()) {
+    if (hal::PCF8563_::ClockStatus::STOPPED == rtc.get_clock_status()) {
         printf("Clock is not working, setting time!\r\n");
         rtc.clear_status();
         rtc.set_date_time({20, 1, 2, 1994}, {20, 00, 00});
@@ -23,12 +23,12 @@ int main() {
         printf("RTC is working!\r\n");
     }
 
-    rtc.set_square_output(hal::PCF8563::SquareOutput::SQW_32KHZ);
-    hal::PCF8563::Date date;
-    hal::PCF8563::Time time;
+    rtc.set_square_output(hal::PCF8563_::SquareOutput::SQW_32KHZ);
+    hal::PCF8563_::Date date;
+    hal::PCF8563_::Time time;
 
     while (true) {
-        if (hal::PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
+        if (hal::PCF8563_::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
                    time.hours,
                    time.minutes,

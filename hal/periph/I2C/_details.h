@@ -10,30 +10,31 @@ namespace hal {
 namespace I2C {
 namespace details {
 
+template<typename T>
 class _Interface : public Interface {
  public:
-    void write(uint8_t address, gsl::span<const uint8_t> data) override {
-        start(address, StartAction::write);
+    static void write(Address address, gsl::span<const uint8_t> data) {
+        T::start(address, StartAction::write);
         for (auto i : data) {
-            write(i);
+            T::write(i);
         }
-        stop();
+        T::stop();
     }
 
-    void read(uint8_t address, gsl::span<uint8_t> data) override {
-        start(address, StartAction::read);
+    static void read(uint8_t address, gsl::span<uint8_t> data) {
+        T::start(address, StartAction::read);
         raw_read(data);
-        stop();
+        T::stop();
     }
 
-    void write_read(uint8_t address,
+    static void write_read(uint8_t address,
                     gsl::span<const uint8_t> output,
-                    gsl::span<uint8_t> input) override {
-        start(address, StartAction::write);
+                    gsl::span<uint8_t> input) {
+        T::start(address, StartAction::write);
         raw_write(output);
-        start(address, StartAction::read);
+        T::start(address, StartAction::read);
         raw_read(input);
-        stop();
+        T::stop();
     }
 
  protected:
@@ -47,22 +48,22 @@ class _Interface : public Interface {
         ACK  = 1,
     };
 
-    void raw_write(gsl::span<const uint8_t> data) {
+    static void raw_write(gsl::span<const uint8_t> data) {
         for (auto i : data) {
-            write(i);
+            T::write(i);
         }
     }
 
-    void raw_read(gsl::span<uint8_t> data) {
+    static void raw_read(gsl::span<uint8_t> data) {
         for (size_t i = 0; i < data.size(); ++i) {
-            data[i] = read((i == data.size() - 1) ? NACK : ACK);
+            data[i] = T::read((i == data.size() - 1) ? NACK : ACK);
         }
     }
 
-    virtual bool start(uint8_t address, const StartAction start_action) = 0;
-    virtual void stop()                                                 = 0;
-    virtual bool write(const uint8_t data)                              = 0;
-    virtual uint8_t read(Acknowledge ACK)                               = 0;
+//    virtual bool start(uint8_t address, const StartAction start_action) = 0;
+//    virtual void stop()                                                 = 0;
+//    virtual bool write(const uint8_t data)                              = 0;
+//    virtual uint8_t read(Acknowledge ACK)                               = 0;
 };
 
 }  // namespace details

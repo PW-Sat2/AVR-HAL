@@ -13,35 +13,41 @@
 namespace hal {
 namespace I2C {
 
-class Hardware : public details::_Interface {
+class Hardware : public details::_Interface<Hardware> {
  public:
+
     template<uint32_t frequency>
-    void init() {
+    static void init() {
         set_frequency<frequency>();
         TWCR = (1 << TWEN);
     }
 
-    void enable_internal_pullups() {
+    static void enable_internal_pullups() {
         DigitalIO::GPIO<mcu::pin_scl>::init(hal::DigitalIO::Mode::INPUT_PULLUP);
         DigitalIO::GPIO<mcu::pin_sda>::init(hal::DigitalIO::Mode::INPUT_PULLUP);
     }
 
-    void disable() {
+    static void disable() {
         TWCR = 0;
     }
 
-    using Interface::read;
-    using Interface::write;
-    using Interface::write_read;
+    using typename details::_Interface<Hardware>::write;
+    using typename details::_Interface<Hardware>::write_read;
+    using typename details::_Interface<Hardware>::read;
+
+
+    friend class details::_Interface<Hardware>;
 
  private:
+    using StartAction = typename details::_Interface<Hardware>::StartAction;
+
     template<uint32_t frequency>
-    void set_frequency() {
+    static void set_frequency() {
         TWSR = calc_twps<frequency>::value;
         TWBR = calc_twbr<frequency, calc_twps<frequency>::value>::value;
     }
 
-    bool start(uint8_t address, const StartAction start_action) override {
+    static bool start(uint8_t address, const StartAction start_action) {
         uint8_t twst;
         TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
         wait_for_finish();
@@ -60,13 +66,13 @@ class Hardware : public details::_Interface {
         return true;
     }
 
-    void stop() override {
+    static void stop() {
         TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
         while (TWCR & (1 << TWSTO)) {
         }
     }
 
-    bool write(const uint8_t data) override {
+    static bool write(const uint8_t data) {
         TWDR = data;
         TWCR = (1 << TWINT) | (1 << TWEN);
         wait_for_finish();
@@ -78,13 +84,13 @@ class Hardware : public details::_Interface {
         return 0;
     }
 
-    uint8_t read(Acknowledge ACK) override {
+    static uint8_t read(Acknowledge ACK) {
         TWCR = (1 << TWINT) | (1 << TWEN) | (ACK << TWEA);
         wait_for_finish();
         return TWDR;
     }
 
-    void wait_for_finish() {
+    static void wait_for_finish() {
         while (libs::read_bit(TWCR, TWINT) == false) {
         }
     }
