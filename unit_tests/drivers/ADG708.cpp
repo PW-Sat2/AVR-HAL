@@ -5,6 +5,7 @@ TEST_GROUP(ADG708);
 
 using namespace hal;
 using namespace hal::libs;
+using namespace hal::devices;
 
 struct ADG708Mock : public DigtalIOMock {
     void init(const Mode mode) override {
@@ -39,29 +40,52 @@ void set_expect(ADG708Mock& a0,
 
 TEST(ADG708, disable) {
     ADG708Mock a0, a1, a2, en;
-    hal::ADG708 adg(a0, a1, a2, en);
+    ADG708 adg(a0, a1, a2, en);
 
     set_expect(a0, a1, a2, en, 0xFF);
     adg.disable();
 
-    for (uint16_t x = 0; x <= 0xFF; ++x) {
-        adg.select(x);
-    }
+    adg.select(ADG708::Channel::S1);
+    adg.select(ADG708::Channel::S2);
+    adg.select(ADG708::Channel::S3);
+    adg.select(ADG708::Channel::S4);
+    adg.select(ADG708::Channel::S5);
+    adg.select(ADG708::Channel::S6);
+    adg.select(ADG708::Channel::S7);
+    adg.select(ADG708::Channel::S8);
 }
 
 TEST(ADG708, enabled) {
     ADG708Mock a0, a1, a2, en;
     set_expect(a0, a1, a2, en, 0xFF);
 
-    hal::ADG708 adg(a0, a1, a2, en);
+    ADG708 adg(a0, a1, a2, en);
 
     set_expect(a0, a1, a2, en, 0);
 
     adg.enable();
 
-    for (uint16_t x = 0; x < 9; ++x) {
-        set_expect(a0, a1, a2, en, x);
+    set_expect(a0, a1, a2, en, 0);
+    adg.select(ADG708::Channel::S1);
 
-        adg.select(x);
-    }
+    set_expect(a0, a1, a2, en, 1);
+    adg.select(ADG708::Channel::S2);
+
+    set_expect(a0, a1, a2, en, 2);
+    adg.select(ADG708::Channel::S3);
+
+    set_expect(a0, a1, a2, en, 3);
+    adg.select(ADG708::Channel::S4);
+
+    set_expect(a0, a1, a2, en, 4);
+    adg.select(ADG708::Channel::S5);
+
+    set_expect(a0, a1, a2, en, 5);
+    adg.select(ADG708::Channel::S6);
+
+    set_expect(a0, a1, a2, en, 6);
+    adg.select(ADG708::Channel::S7);
+
+    set_expect(a0, a1, a2, en, 7);
+    adg.select(ADG708::Channel::S8);
 }
