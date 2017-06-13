@@ -26,9 +26,10 @@ class Data {
     friend class AT24C02;
 };
 
+static constexpr I2C::Address I2CAddress = 0x50;
+
 template<typename i2c>
-class AT24C02 {
- public:
+struct AT24C02 {
     template<std::size_t size>
     static void write(const Data<size>& mem) {
         i2c::write(I2CAddress, mem._data);
@@ -40,9 +41,6 @@ class AT24C02 {
 
         i2c::write_read(I2CAddress, tx, mem.data);
     }
-
- private:
-    static constexpr I2C::Address I2CAddress = 0x50;
 };
 
 }  // namespace AT24C02

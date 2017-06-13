@@ -13,8 +13,7 @@ enum class Channel : bool {
 };
 
 template<typename pin_IN>
-class ADG849 {
- public:
+struct ADG849 {
     /*!
      * Function to initialize device.
      * It sets DigitalIO IN pin as OUTPUT.

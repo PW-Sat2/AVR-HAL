@@ -8,7 +8,7 @@ namespace hal {
 namespace devices {
 namespace AD7714_ext {
 
-enum ADC_Registers {
+enum class Registers : std::uint8_t {
     COMM_REG             = 0,
     MODE_REG             = 1,
     FILTER_HIGH_REG      = 2,
@@ -19,7 +19,7 @@ enum ADC_Registers {
     FULL_SCALE_CALIB_REG = 7
 };
 
-enum ADC_Channels {
+enum class Channels : std::uint8_t {
     AIN1_CH   = 0,
     AIN2_CH   = 1,
     AIN3_CH   = 2,
@@ -31,7 +31,7 @@ enum ADC_Channels {
     TEST_CH   = 7
 };
 
-enum ADC_Gain {
+enum class Gain : std::uint8_t {
     Gain_1   = 0,
     Gain_2   = 1,
     Gain_4   = 2,
@@ -42,12 +42,12 @@ enum ADC_Gain {
     Gain_128 = 7
 };
 
-enum DataLength {
-    Data_24bit = 1,  //
-    Data_16bit = 0
+enum class DataLength : std::uint8_t {
+    d24bit = 1,  //
+    d16bit = 0
 };
 
-enum ADC_Modes {
+enum class Modes : std::uint8_t {
     NormalMode         = 0,
     SelfCalib          = 1,
     ZeroScaleSysCalib  = 2,
@@ -58,42 +58,19 @@ enum ADC_Modes {
     FullScaleSelfCalib = 7
 };
 
-enum Control_State {
+enum class ControlState : std::uint8_t {
     OFF = 0,  //
     ON  = 1
 };
 
-enum Polarity {
+enum class Polarity : std::uint8_t {
     bipolar  = 0,  //
     unipolar = 1
 };
 
-template<typename pin_DRDY, typename pin_RESET, typename pin_STANDBY, typename pin_BUFFER, typename SPI>
+template<typename SPI, typename pin_DRDY, typename pin_RESET, typename pin_STANDBY, typename pin_BUFFER>
 class AD7714_ext {
  public:
-    uint8_t change_channel(ADC_Channels channel) {
-        actual_channel = channel;
-        write_to_comm_reg(COMM_REG, true);
-        this->wait_for_DRDY();
-        return SPI::transfer(0);
-    }
-
-    bool data_available() {
-        return (!(pin_DRDY::read()));
-    }
-
-    void wait_for_DRDY() {
-        while (!data_available()) {
-        }
-    }
-
-    void reset() const {
-        pin_RESET::reset();
-        _delay_ms(10);
-        pin_RESET::set();
-        _delay_ms(10);
-    }
-
     void init() const {
         pin_DRDY::init(DigitalIO::Mode::INPUT);
         pin_RESET::init(DigitalIO::Mode::OUTPUT);
@@ -101,29 +78,30 @@ class AD7714_ext {
         pin_BUFFER::init(DigitalIO::Mode::OUTPUT);
 
         this->reset();
-        this->buffer(ON);
-        this->power_mode(OFF);
+        this->buffer(ControlState::ON);
+        this->power_mode(ControlState::OFF);
     }
 
-    void power_mode(Control_State status) const {
+    void power_mode(ControlState status) const {
         pin_STANDBY::write(static_cast<bool>(status));
         _delay_ms(10);
     }
 
-    void buffer(Control_State buff_stat) const {
+    void buffer(ControlState buff_stat) const {
         pin_BUFFER::write(static_cast<bool>(buff_stat));
     }
 
-    void write_to_comm_reg(ADC_Registers reg, bool read) const {
-        uint8_t out = (reg << 4) | (read << 3) | (actual_channel);
-        SPI::transfer(out);
+    uint8_t change_channel(Channels channel) {
+        actual_channel = channel;
+        write_to_comm_reg(Registers::COMM_REG, true);
+        wait_for_DRDY();
+        return SPI::transfer(0);
     }
-
     uint32_t read_data() {
         wait_for_DRDY();
-        write_to_comm_reg(DATA_REG, true);
+        write_to_comm_reg(Registers::DATA_REG, true);
 
-        if (data_length == Data_16bit) {
+        if (data_length == DataLength::d16bit) {
             std::array<uint8_t, 2> data;
             SPI::read(data);
             libs::Reader reader{data};
@@ -141,30 +119,53 @@ class AD7714_ext {
         }
     }
 
-    void writeto_mode_reg(ADC_Modes mode, ADC_Gain gain) {
-        write_to_comm_reg(MODE_REG, false);
-        uint8_t data = (mode << 5) | (gain << 2);
-        SPI::transfer(data);
-        this->wait_for_DRDY();
-    }
-
     void
     set_filter(Polarity set_polarity, DataLength data_length, uint16_t filter) {
         //  filter: 19-4000
         //  f notch = fclk/128/filter
         data_length = data_length;
-        write_to_comm_reg(FILTER_HIGH_REG, false);
-        uint8_t val = (static_cast<bool>(set_polarity) << 7) |
-                      (data_length << 6) | (1 << 5) | (filter >> 8);
+        write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
+        uint8_t val = (static_cast<bool>(set_polarity) << 7) |    //
+                      (static_cast<uint8_t>(data_length) << 6) |  //
+                      (1 << 5) |                                  //
+                      (filter >> 8);
         SPI::transfer(val);
-        write_to_comm_reg(FILTER_LOW_REG, false);
+        write_to_comm_reg(Registers::FILTER_LOW_REG, false);
         val = (filter & 0xFF);
         SPI::transfer(val);
     }
 
  private:
-    ADC_Channels actual_channel;
+    Channels actual_channel;
     DataLength data_length;
+
+    void wait_for_DRDY() {
+        while (pin_DRDY::read()) {
+        }
+    }
+
+    void reset() const {
+        pin_RESET::reset();
+        _delay_ms(10);
+        pin_RESET::set();
+        _delay_ms(10);
+    }
+
+    void write_to_comm_reg(Registers reg, bool read) const {
+        uint8_t out = (static_cast<uint8_t>(reg) << 4) |  //
+                      (read << 3) |                       //
+                      static_cast<uint8_t>(actual_channel);
+        SPI::transfer(out);
+    }
+
+
+    void writeto_mode_reg(Modes mode, Gain gain) {
+        write_to_comm_reg(Registers::MODE_REG, false);
+        uint8_t data = (static_cast<uint8_t>(mode) << 5) |  //
+                       (static_cast<uint8_t>(gain) << 2);   //
+        SPI::transfer(data);
+        this->wait_for_DRDY();
+    }
 };
 
 }  // namespace AD7714_ext

@@ -10,8 +10,7 @@ namespace devices {
  * TMP121 temperature sensor driver.
  */
 template<typename SPI>
-class TMP121 {
- public:
+struct TMP121 {
     /*!
      * Reads data from the sensor in raw integer format.
      * After conversion de-asserts the device and puts it in free-running mode.

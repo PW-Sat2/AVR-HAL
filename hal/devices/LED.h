@@ -7,8 +7,7 @@ namespace hal {
 namespace devices {
 
 template<typename led_pin>
-class LED {
- public:
+struct LED {
     static void init() {
         led_pin::init(DigitalIO::Mode::OUTPUT);
     }

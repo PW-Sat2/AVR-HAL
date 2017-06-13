@@ -97,6 +97,7 @@ class ADXRS453 {
         return temperature;
     }
 
+ private:
     static uint16_t get_register(const uint8_t registerAddress) {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};
 
@@ -127,7 +128,6 @@ class ADXRS453 {
         return registerValue;
     }
 
- private:
     static void
     set_register_value(const uint8_t registerAddress, uint16_t registerValue) {
         std::array<uint8_t, 4> dataBuffer = {0, 0, 0, 0};

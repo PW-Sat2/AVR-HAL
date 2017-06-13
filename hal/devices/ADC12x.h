@@ -9,8 +9,7 @@ namespace devices {
 
 namespace details {
 template<typename Channel, typename SPI>
-class ADC12x {
- public:
+struct ADC12x {
     /*!
      * Function to retrieve data from sensor.
      * It reads data from previously-chosen channel (for first time it is IN0),

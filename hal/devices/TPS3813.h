@@ -12,11 +12,9 @@ namespace devices {
  * (max. 768 us / F_CPU in MHz).
  */
 template<typename pin_WDI, uint16_t pulse_time_us>
-class TPS3813 {
+struct TPS3813 {
     static_assert(pulse_time_us < (768000000 / F_CPU),
                   "Pulse duration too long - max. 768 us / F_CPU in MHz");
-
- public:
     /*!
      * Initializes device.
      * Has to be invoked before use of the device.

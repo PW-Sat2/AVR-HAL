@@ -15,8 +15,7 @@ enum class Channel : uint8_t {
 };
 
 template<typename pin_A0, typename pin_A1, typename pin_EN>
-class ADG709 {
- public:
+struct ADG709 {
     static void init() {
         pin_A0::init(DigitalIO::Mode::OUTPUT);
         pin_A1::init(DigitalIO::Mode::OUTPUT);
