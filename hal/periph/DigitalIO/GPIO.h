@@ -17,83 +17,72 @@ enum class Mode {
     INPUT_PULLUP,
 };
 
-template<int pin_nr>
+template<int pin_nr_>
 class GPIO {
- public:
-    constexpr static auto PORTx = mcu::DigitalIOPinMap[pin_nr].PORTx;
-    constexpr static auto DDRx  = mcu::DigitalIOPinMap[pin_nr].DDRx;
-    constexpr static auto PINx  = mcu::DigitalIOPinMap[pin_nr].PINx;
-    constexpr static auto pin   = mcu::DigitalIOPinMap[pin_nr].pin;
+ private:
+    constexpr static auto PORTxx = mcu::DigitalIOPinMap[pin_nr_].PORTx;
+    constexpr static auto DDRxx  = mcu::DigitalIOPinMap[pin_nr_].DDRx;
+    constexpr static auto PINxx  = mcu::DigitalIOPinMap[pin_nr_].PINx;
+    constexpr static auto pin   = mcu::DigitalIOPinMap[pin_nr_].pin;
 
-    static_assert(PORTx != 0, "Incorrect pin!");
-    static_assert(DDRx != 0, "Incorrect pin!");
-    static_assert(PINx != 0, "Incorrect pin!");
+ public:
+    constexpr static volatile uint8_t* PORTx = (volatile uint8_t*) PORTxx;
+    constexpr static volatile uint8_t* DDRx = (volatile uint8_t*) DDRxx;
+    constexpr static volatile uint8_t* PINx = (volatile uint8_t*) PINxx;
+
+    static_assert(PORTxx != 0, "Incorrect pin!");
+    static_assert(DDRxx != 0, "Incorrect pin!");
+    static_assert(PINxx != 0, "Incorrect pin!");
     static_assert(pin <= 7, "Incorrect pin!");
 
     GPIO() = delete;
+
+    constexpr static auto pin_nr = pin_nr_;
 
     static constexpr inline void init(const Mode mode) {
         pinmode(mode);
     }
 
     static constexpr inline void set() {
-        set_bit_dio(PORTx);
+        libs::set_bit<pin>(*PORTx);
     }
 
     static constexpr inline void reset() {
-        clear_bit_dio(PORTx);
+        libs::clear_bit<pin>(*PORTx);
     }
 
     static constexpr inline void write(bool value) {
-        if (value) {
-            set();
-        } else {
-            reset();
-        }
+        libs::write_bit<pin>(*PORTx, value);
     }
 
     static constexpr inline bool read() {
-        return libs::read_bit(*((volatile uint8_t*)(PINx)), pin);
+        return libs::read_bit<pin>(*PINx);
     }
 
     static constexpr inline void toggle() {
-        if (read()) {
-            reset();
-        } else {
-            set();
-        }
+        libs::set_bit<pin>(*PINx);
     }
+
+ private:
 
     static constexpr inline void
     pinmode(const DigitalIO::Mode mode) __attribute__((always_inline)) {
         switch (mode) {
             case Mode::OUTPUT:
-                set_bit_dio(DDRx);
-                // clear_bit_dio(PORTx);
+                libs::set_bit<pin>(*DDRx);
                 break;
 
             case Mode::INPUT_PULLUP:
-                clear_bit_dio(DDRx);
-                set_bit_dio(PORTx);
+                libs::clear_bit<pin>(*DDRx);
+                libs::set_bit<pin>(*PORTx);
                 break;
 
             case Mode::INPUT:
             default:
-                clear_bit_dio(DDRx);
-                clear_bit_dio(PORTx);
+                libs::clear_bit<pin>(*DDRx);
+                libs::clear_bit<pin>(*PORTx);
                 break;
         }
-    }
-
- private:
-    static constexpr inline void
-    set_bit_dio(int reg) __attribute__((always_inline)) {
-        libs::set_bit(*((volatile uint8_t*)(reg)), pin);
-    }
-
-    static constexpr inline void
-    clear_bit_dio(int reg) __attribute__((always_inline)) {
-        libs::clear_bit(*((volatile uint8_t*)(reg)), pin);
     }
 };
 
