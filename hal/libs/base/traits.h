@@ -1,5 +1,5 @@
-#ifndef LIBS_BASE_INCLUDE_TRAITS_HPP_
-#define LIBS_BASE_INCLUDE_TRAITS_HPP_
+#ifndef HAL_LIBS_BASE_TRAITS_H_
+#define HAL_LIBS_BASE_TRAITS_H_
 
 #pragma once
 
@@ -131,6 +131,6 @@ struct IsValueInList {
 };
 
 /** @} */
-}
+}  // namespace hal
 
-#endif /* LIBS_BASE_INCLUDE_TRAITS_HPP_ */
+#endif  // HAL_LIBS_BASE_TRAITS_H_

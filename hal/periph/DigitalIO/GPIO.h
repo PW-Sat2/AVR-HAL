@@ -23,12 +23,12 @@ class GPIO : libs::PureStatic {
     constexpr static auto PORTxx = mcu::DigitalIOPinMap[pin_nr_].PORTx;
     constexpr static auto DDRxx  = mcu::DigitalIOPinMap[pin_nr_].DDRx;
     constexpr static auto PINxx  = mcu::DigitalIOPinMap[pin_nr_].PINx;
-    constexpr static auto pin   = mcu::DigitalIOPinMap[pin_nr_].pin;
+    constexpr static auto pin    = mcu::DigitalIOPinMap[pin_nr_].pin;
 
  public:
-    constexpr static volatile uint8_t* PORTx = (volatile uint8_t*) PORTxx;
-    constexpr static volatile uint8_t* DDRx = (volatile uint8_t*) DDRxx;
-    constexpr static volatile uint8_t* PINx = (volatile uint8_t*) PINxx;
+    constexpr static volatile uint8_t* PORTx = (volatile uint8_t*)PORTxx;
+    constexpr static volatile uint8_t* DDRx  = (volatile uint8_t*)DDRxx;
+    constexpr static volatile uint8_t* PINx  = (volatile uint8_t*)PINxx;
 
     static_assert(PORTxx != 0, "Incorrect pin!");
     static_assert(DDRxx != 0, "Incorrect pin!");

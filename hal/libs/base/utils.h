@@ -1,5 +1,5 @@
-#ifndef SRC_BASE_UTILS_H
-#define SRC_BASE_UTILS_H
+#ifndef HAL_LIBS_BASE_UTILS_H_
+#define HAL_LIBS_BASE_UTILS_H_
 
 #pragma once
 
@@ -25,7 +25,7 @@ static constexpr inline int ToInt(bool value) {
  * @param[in] value Value
  * @return The same value
  */
-constexpr std::size_t operator "" _Bytes(unsigned long long int value) {
+constexpr std::size_t operator"" _Bytes(unsigned long long int value) {
     return value;
 }
 
@@ -34,7 +34,7 @@ constexpr std::size_t operator "" _Bytes(unsigned long long int value) {
  * @param[in] value Values in kilobytes
  * @return Value in bytes
  */
-constexpr std::size_t operator "" _KB(unsigned long long int value) {
+constexpr std::size_t operator"" _KB(unsigned long long int value) {
     return value * 1024_Bytes;
 }
 
@@ -43,7 +43,7 @@ constexpr std::size_t operator "" _KB(unsigned long long int value) {
  * @param[in] value Values in megabytes
  * @return Value in bytes
  */
-constexpr std::size_t operator "" _MB(unsigned long long int value) {
+constexpr std::size_t operator"" _MB(unsigned long long int value) {
     return value * 1024_KB;
 }
 
@@ -52,7 +52,7 @@ constexpr std::size_t operator "" _MB(unsigned long long int value) {
  * @param[in] value Value in Hz
  * @return the same value
  */
-constexpr std::uint32_t operator "" _Hz(unsigned long long int value) {
+constexpr std::uint32_t operator"" _Hz(unsigned long long int value) {
     return value;
 }
 
@@ -61,7 +61,7 @@ constexpr std::uint32_t operator "" _Hz(unsigned long long int value) {
  * @param[in] value Value in KHz
  * @return Value in Hz
  */
-constexpr std::uint32_t operator "" _KHz(unsigned long long int value) {
+constexpr std::uint32_t operator"" _KHz(unsigned long long int value) {
     return value * 1000_Hz;
 }
 
@@ -70,7 +70,7 @@ constexpr std::uint32_t operator "" _KHz(unsigned long long int value) {
  * @param[in] value Value in MHz
  * @return Value in Hz
  */
-constexpr std::uint32_t operator "" _MHz(unsigned long long int value) {
+constexpr std::uint32_t operator"" _MHz(unsigned long long int value) {
     return value * 1000_KHz;
 }
 
@@ -85,18 +85,18 @@ struct PureStatic {
  * @brief Private-inherit this class to prevent copy-operations
  */
 struct NotCopyable {
-    NotCopyable() = default;
-    NotCopyable(const NotCopyable &arg) = delete;
-    NotCopyable &operator=(const NotCopyable &arg) = delete;
+    NotCopyable()                       = default;
+    NotCopyable(const NotCopyable& arg) = delete;
+    NotCopyable& operator=(const NotCopyable& arg) = delete;
 };
 
 /**
  * @brief Private-inherit this class to prevent move-operations
  */
 struct NotMoveable {
-    NotMoveable() = default;
-    NotMoveable(NotMoveable &&arg) = delete;
-    NotMoveable &operator=(NotMoveable &&arg) = delete;
+    NotMoveable()                  = default;
+    NotMoveable(NotMoveable&& arg) = delete;
+    NotMoveable& operator=(NotMoveable&& arg) = delete;
 };
 
 /**
@@ -119,28 +119,29 @@ class Option {
     }
 
     /**
-     * @brief Factory method that constucts Option instance and its value in place
+     * @brief Factory method that constucts Option instance and its value in
+     * place
      * @param args Arguments passed to constructor of T
      * @return Option instance
      */
     template<typename... Args>
-    static Option<T> Some(Args &&... args) {
+    static Option<T> Some(Args&&... args) {
         return Option<T>(true, std::forward<Args>(args)...);
     }
 
     /**
-      * @brief A flag indicating if this Option instance holds a value.
-      */
+     * @brief A flag indicating if this Option instance holds a value.
+     */
     bool HasValue;
 
     /**
-      * @brief Value held by Option instance if HasValue is true.
-      */
+     * @brief Value held by Option instance if HasValue is true.
+     */
     T Value;
 
  private:
     template<typename... Args>
-    Option(bool hasValue, Args &&... values);
+    Option(bool hasValue, Args&&... values);
 };
 
 template<typename T>
@@ -149,8 +150,8 @@ inline Option<T>::Option() : HasValue(false), Value(T()) {
 
 template<typename T>
 template<typename... Args>
-Option<T>::Option(bool hasValue, Args &&... values) //
-    : HasValue(hasValue),                          //
+Option<T>::Option(bool hasValue, Args&&... values)  //
+    : HasValue(hasValue),                           //
       Value(std::forward<Args>(values)...) {
 }
 
@@ -169,7 +170,7 @@ static inline Option<T> None() {
  * @return Option instance that holds a value.
  */
 template<typename T>
-static inline Option<typename std::remove_reference<T>::type> Some(T &&value) {
+static inline Option<typename std::remove_reference<T>::type> Some(T&& value) {
     using U = typename std::remove_reference<T>::type;
 
     return Option<U>::Some(std::forward<U>(value));
@@ -184,7 +185,7 @@ static inline Option<typename std::remove_reference<T>::type> Some(T &&value) {
  * @retval true lhs is Some and rhs is equal to holded value
  */
 template<typename T>
-static inline bool operator==(const Option<T> &lhs, const T &rhs) {
+static inline bool operator==(const Option<T>& lhs, const T& rhs) {
     if (!lhs.HasValue) {
         return false;
     }
@@ -201,7 +202,7 @@ static inline bool operator==(const Option<T> &lhs, const T &rhs) {
  * @retval true rhs is Some and lhs is equal to holded value
  */
 template<typename T>
-bool operator==(const T &lhs, const Option<T> &rhs) {
+bool operator==(const T& lhs, const Option<T>& rhs) {
     return rhs == lhs;
 }
 
@@ -214,7 +215,7 @@ bool operator==(const T &lhs, const Option<T> &rhs) {
  * @retval false lhs is Some and rhs is equal to holded value
  */
 template<typename T>
-inline bool operator!=(const Option<T> &lhs, const T &rhs) {
+inline bool operator!=(const Option<T>& lhs, const T& rhs) {
     return !(lhs == rhs);
 }
 
@@ -229,7 +230,7 @@ inline bool operator!=(const Option<T> &lhs, const T &rhs) {
  * @retval true when both are Some and underlying values are equal
  */
 template<typename T>
-bool operator==(const Option<T> &lhs, const Option<T> &rhs) {
+bool operator==(const Option<T>& lhs, const Option<T>& rhs) {
     if (lhs.HasValue && rhs.HasValue) {
         return lhs.Value == rhs.Value;
     }
@@ -247,7 +248,7 @@ bool operator==(const Option<T> &lhs, const Option<T> &rhs) {
  * @retval true when both are Some and underlying values are equal
  */
 template<typename T>
-inline bool operator!=(const Option<T> &lhs, const Option<T> &rhs) {
+inline bool operator!=(const Option<T>& lhs, const Option<T>& rhs) {
     return !(lhs == rhs);
 }
 
@@ -300,7 +301,8 @@ constexpr BitValue<Underlying, BitsCount>::operator Underlying() const {
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-constexpr BitValue<Underlying, BitsCount>::BitValue(Underlying v) : _value(v & Mask) {
+constexpr BitValue<Underlying, BitsCount>::BitValue(Underlying v)
+    : _value(v & Mask) {
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
@@ -313,32 +315,38 @@ inline Underlying BitValue<Underlying, BitsCount>::Value() const {
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator<(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator<(BitValue<Underlying, BitsCount>& lhs,
+                      BitValue<Underlying, BitsCount>& rhs) {
     return lhs.Value() < rhs.Value();
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator>(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator>(BitValue<Underlying, BitsCount>& lhs,
+                      BitValue<Underlying, BitsCount>& rhs) {
     return rhs < lhs;
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator<=(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator<=(BitValue<Underlying, BitsCount>& lhs,
+                       BitValue<Underlying, BitsCount>& rhs) {
     return !(lhs > rhs);
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator>=(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator>=(BitValue<Underlying, BitsCount>& lhs,
+                       BitValue<Underlying, BitsCount>& rhs) {
     return !(lhs < rhs);
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator==(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator==(BitValue<Underlying, BitsCount>& lhs,
+                       BitValue<Underlying, BitsCount>& rhs) {
     return lhs.Value() == rhs.Value();
 }
 
 template<typename Underlying, std::uint8_t BitsCount>
-inline bool operator!=(BitValue<Underlying, BitsCount> &lhs, BitValue<Underlying, BitsCount> &rhs) {
+inline bool operator!=(BitValue<Underlying, BitsCount>& lhs,
+                       BitValue<Underlying, BitsCount>& rhs) {
     return !(lhs == rhs);
 }
 
@@ -361,7 +369,8 @@ struct BitSizeOf<T, true> {
     /**
      * @brief This value contanins queried type size in bits.
      */
-    static constexpr std::uint32_t Value = std::numeric_limits<typename std::underlying_type<T>::type>::digits;
+    static constexpr std::uint32_t Value =
+        std::numeric_limits<typename std::underlying_type<T>::type>::digits;
 };
 
 /**
@@ -389,7 +398,7 @@ struct BitSizeOf<BitValue<T, BitCount>, false> {
      */
     static constexpr std::uint32_t Value = BitValue<T, BitCount>::Size;
 };
-}
+}  // namespace details
 
 /**
  * @brief Template variable that holds size of the selected type in bits.
@@ -397,7 +406,8 @@ struct BitSizeOf<BitValue<T, BitCount>, false> {
  */
 template<typename T>
 struct BitLength {
-    constexpr static std::uint32_t value = details::BitSizeOf<T, std::is_enum<T>::value>::Value;
+    constexpr static std::uint32_t value =
+        details::BitSizeOf<T, std::is_enum<T>::value>::Value;
 };
 
 namespace details {
@@ -413,7 +423,8 @@ struct AggregateSize {
     /**
      * @brief This value contains aggregates size in bits of all queried types.
      */
-    static constexpr std::uint32_t value = BitLength<T>::value + AggregateSize<Args...>::value;
+    static constexpr std::uint32_t value =
+        BitLength<T>::value + AggregateSize<Args...>::value;
 };
 
 /**
@@ -429,7 +440,7 @@ struct AggregateSize<T> {
      */
     static constexpr std::uint32_t value = BitLength<T>::value;
 };
-}
+}  // namespace details
 
 /**
  * @brief Template variable that aggregates sizes of all passed types in bits.
@@ -437,11 +448,12 @@ struct AggregateSize<T> {
  */
 template<typename... Args>
 struct Aggregate {
-    constexpr static const std::uint32_t value = details::AggregateSize<Args...>::value;
+    constexpr static const std::uint32_t value =
+        details::AggregateSize<Args...>::value;
 };
 
-}
-}
+}  // namespace libs
+}  // namespace hal
 
 /** @brief 24-bit unsigned integer */
 using uint24_t = hal::libs::BitValue<std::uint32_t, 24>;
@@ -458,4 +470,4 @@ using uint10_t = hal::libs::BitValue<std::uint16_t, 10>;
 /** @brief 7-bit unsigned integer */
 using uint7_t = hal::libs::BitValue<std::uint8_t, 7>;
 
-#endif
+#endif  // HAL_LIBS_BASE_UTILS_H_

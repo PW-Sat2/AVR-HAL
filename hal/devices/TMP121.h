@@ -14,7 +14,8 @@ struct TMP121 : libs::PureStatic {
     /*!
      * Reads data from the sensor in raw integer format.
      * After conversion de-asserts the device and puts it in free-running mode.
-     * @return Read data from the device (13 bit value, signed, 1 LSB = 0.0625 celsius)
+     * @return Read data from the device (13 bit value, signed, 1 LSB = 0.0625
+     * celsius)
      */
     static int16_t read() {
         std::array<uint8_t, 2> arr;

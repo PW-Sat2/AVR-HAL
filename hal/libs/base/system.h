@@ -1,5 +1,5 @@
-#ifndef SRC_SYSTEM_H_
-#define SRC_SYSTEM_H_
+#ifndef HAL_LIBS_BASE_SYSTEM_H_
+#define HAL_LIBS_BASE_SYSTEM_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -47,7 +47,7 @@ constexpr inline std::size_t count_of(T (&)[size]) {
 template<typename Enum>
 constexpr bool has_flag(Enum value, Enum flag) {
     auto valueU = static_cast<typename std::underlying_type<Enum>::type>(value);
-    auto flagU = static_cast<typename std::underlying_type<Enum>::type>(flag);
+    auto flagU  = static_cast<typename std::underlying_type<Enum>::type>(flag);
 
     return (valueU & flagU) == flagU;
 }
@@ -62,4 +62,4 @@ constexpr inline typename std::underlying_type<Enum>::type num(Enum v) {
 }
 
 
-#endif
+#endif  // HAL_LIBS_BASE_SYSTEM_H_

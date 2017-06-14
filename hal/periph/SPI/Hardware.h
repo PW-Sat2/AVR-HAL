@@ -34,8 +34,11 @@ template<typename pin_cs,
          SPI::Phase phase,                    //
          SPI::DataOrder data_order>
 class Hardware
-    : public details::BlockTransfer<pin_cs, Hardware<pin_cs, clock_divisor, polarity, phase, data_order>> {
-    using Base = details::BlockTransfer<pin_cs, Hardware<pin_cs, clock_divisor, polarity, phase, data_order>>;
+    : public details::BlockTransfer<pin_cs,
+                                    Hardware<pin_cs, clock_divisor, polarity, phase, data_order>> {
+    using Base =
+        details::BlockTransfer<pin_cs, Hardware<pin_cs, clock_divisor, polarity, phase, data_order>>;
+
  public:
     using Base::read;
     using Base::write;

@@ -116,15 +116,14 @@ class AD7714 {
 
     void write_to_comm_reg(Registers reg, bool read) const {
         uint8_t out = (num(reg) << 4) |  //
-                      (read << 3) |                       //
+                      (read << 3) |      //
                       num(actual_channel);
         SPI::transfer(out);
     }
 
     void writeto_(Modes mode, Gain gain) {
         write_to_comm_reg(Registers::MODE_REG, false);
-        uint8_t data = (num(mode) << 5) |
-                       (num(gain) << 2);
+        uint8_t data = (num(mode) << 5) | (num(gain) << 2);
         SPI::transfer(data);
         this->wait_for_DRDY();
     }

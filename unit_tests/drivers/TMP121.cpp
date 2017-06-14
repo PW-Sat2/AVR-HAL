@@ -21,7 +21,7 @@ struct MockTMP121 : public EmptySPIMock {
 uint16_t MockTMP121::data;
 
 using mock = MockTMP121;
-using tmp = TMP121<mock>;
+using tmp  = TMP121<mock>;
 
 TEST(TMP121, ConversionTableFromDatasheet) {
     mock::data = 0x4B00;
