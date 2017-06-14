@@ -18,7 +18,7 @@ enum class Mode {
 };
 
 template<int pin_nr_>
-class GPIO {
+class GPIO : libs::PureStatic {
  private:
     constexpr static auto PORTxx = mcu::DigitalIOPinMap[pin_nr_].PORTx;
     constexpr static auto DDRxx  = mcu::DigitalIOPinMap[pin_nr_].DDRx;
@@ -34,8 +34,6 @@ class GPIO {
     static_assert(DDRxx != 0, "Incorrect pin!");
     static_assert(PINxx != 0, "Incorrect pin!");
     static_assert(pin <= 7, "Incorrect pin!");
-
-    GPIO() = delete;
 
     constexpr static auto pin_nr = pin_nr_;
 
@@ -64,7 +62,6 @@ class GPIO {
     }
 
  private:
-
     static constexpr inline void
     pinmode(const DigitalIO::Mode mode) __attribute__((always_inline)) {
         switch (mode) {

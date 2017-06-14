@@ -40,7 +40,6 @@ class Serial {
         uart_output.flags = _FDEV_SETUP_RW;
         stdout            = &uart_output;
         stdin             = &uart_output;
-        stderr            = &uart_output;
     }
 
     void redirect_stderr() const {

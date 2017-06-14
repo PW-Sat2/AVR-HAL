@@ -8,12 +8,8 @@ namespace hal {
 namespace devices {
 
 template<typename SPI>
-struct AD5641 {
-    static void write(uint16_t data_lsb) {
-        if (data_lsb >= libs::power_of_two<14>()) {
-            data_lsb = libs::power_of_two<14>() - 1;
-        }
-
+struct AD5641 : libs::PureStatic {
+    static void write(uint14_t data_lsb) {
         std::array<uint8_t, 2> data;
         libs::Writer writer{data};
         writer.WriteLowerBytesBE(data_lsb, 2);

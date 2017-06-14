@@ -29,7 +29,7 @@ class Data {
 static constexpr I2C::Address I2CAddress = 0x50;
 
 template<typename i2c>
-struct AT24C02 {
+struct AT24C02 : libs::PureStatic {
     template<std::size_t size>
     static void write(const Data<size>& mem) {
         i2c::write(I2CAddress, mem._data);
@@ -37,9 +37,7 @@ struct AT24C02 {
 
     template<std::size_t size>
     static void read(Data<size>& mem) {
-        std::array<uint8_t, 1> tx = {mem._data[0]};
-
-        i2c::write_read(I2CAddress, tx, mem.data);
+        i2c::write_read(I2CAddress, {mem._data[0]}, mem.data);
     }
 };
 

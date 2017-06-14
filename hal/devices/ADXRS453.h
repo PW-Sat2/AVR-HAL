@@ -20,7 +20,7 @@ enum RegisterMap {
 };
 
 template<typename SPI>
-class ADXRS453 {
+class ADXRS453 : libs::PureStatic {
  public:
     static bool device_status() {
         bool status = true;

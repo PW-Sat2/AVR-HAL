@@ -43,6 +43,6 @@ TEST(AD5641, edge_cases) {
 TEST(AD5641, overflow) {
     using ad5641 = AD5641<MockAD5641>;
 
-    MockAD5641::expect = 0x3FFF, ad5641::write(0x4000);
+    MockAD5641::expect = 0, ad5641::write(0x4000);
     MockAD5641::expect = 0x3FFF, ad5641::write(0xFFFF);
 }

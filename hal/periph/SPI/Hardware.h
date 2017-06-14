@@ -28,48 +28,21 @@
 namespace hal {
 namespace SPI {
 
-enum class Polarity : int {
-    idle_low  = 0,
-    idle_high = 1,
-};
-
-enum class Phase : int {
-    leading_sample  = 0,
-    trailing_sample = 1,
-};
-
-enum class DataOrder : int {
-    MSB_first = 0,
-    LSB_first = 1,
-};
-
-enum class HardwareClockDivisor {
-    SPIHard_DIV_4   = 0,
-    SPIHard_DIV_16  = 1,
-    SPIHard_DIV_64  = 2,
-    SPIHard_DIV_128 = 3,
-};
-
-template<typename GPIO,
+template<typename pin_cs,
          HardwareClockDivisor clock_divisor,  //
          SPI::Polarity polarity,              //
          SPI::Phase phase,                    //
          SPI::DataOrder data_order>
 class Hardware
-    : public details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>> {
+    : public details::BlockTransfer<pin_cs, Hardware<pin_cs, clock_divisor, polarity, phase, data_order>> {
+    using Base = details::BlockTransfer<pin_cs, Hardware<pin_cs, clock_divisor, polarity, phase, data_order>>;
  public:
-    using details::BlockTransfer<GPIO, Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::read;
-    using details::BlockTransfer<
-        GPIO,
-        Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::write;
-    using details::BlockTransfer<
-        GPIO,
-        Hardware<GPIO, clock_divisor, polarity, phase, data_order>>::transfer;
-
-    Hardware()          = delete;
-    Hardware(Hardware&) = delete;
+    using Base::read;
+    using Base::write;
+    using Base::transfer;
 
     static void init() {
+        Base::init();
         hal::DigitalIO::GPIO<mcu::pin_mosi>::init(DigitalIO::Mode::OUTPUT);
         hal::DigitalIO::GPIO<mcu::pin_sck>::init(DigitalIO::Mode::OUTPUT);
         hal::DigitalIO::GPIO<mcu::pin_ss>::init(DigitalIO::Mode::OUTPUT);

@@ -11,7 +11,7 @@ namespace I2C {
 namespace details {
 
 template<typename T>
-class _Interface {
+class _Interface : private libs::PureStatic {
  public:
     static void write(Address address, gsl::span<const uint8_t> data) {
         T::start(address, StartAction::write);
@@ -21,13 +21,13 @@ class _Interface {
         T::stop();
     }
 
-    static void read(uint8_t address, gsl::span<uint8_t> data) {
+    static void read(Address address, gsl::span<uint8_t> data) {
         T::start(address, StartAction::read);
         raw_read(data);
         T::stop();
     }
 
-    static void write_read(uint8_t address,
+    static void write_read(Address address,
                            gsl::span<const uint8_t> output,
                            gsl::span<uint8_t> input) {
         T::start(address, StartAction::write);
@@ -59,12 +59,6 @@ class _Interface {
             data[i] = T::read((i == data.size() - 1) ? NACK : ACK);
         }
     }
-
-    //    virtual bool start(uint8_t address, const StartAction start_action) =
-    //    0; virtual void stop()
-    //    = 0; virtual bool write(const uint8_t data)
-    //    = 0; virtual uint8_t read(Acknowledge ACK)
-    //    = 0;
 };
 
 }  // namespace details

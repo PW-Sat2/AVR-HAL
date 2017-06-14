@@ -7,9 +7,9 @@ namespace I2C {
 using Address = uint8_t;
 
 // Interface for I2C:
-//   void write(uint8_t address, gsl::span<const uint8_t> data);
-//   void read(uint8_t address, gsl::span<uint8_t> data);
-//   virtual void write_read(uint8_t address, gsl::span<const uint8_t> output,
+//   void write(Address address, gsl::span<const uint8_t> data);
+//   void read(Address address, gsl::span<uint8_t> data);
+//   virtual void write_read(Address address, gsl::span<const uint8_t> output,
 //   gsl::span<uint8_t> input)
 
 }  // namespace I2C

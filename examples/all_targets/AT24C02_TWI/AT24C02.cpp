@@ -13,7 +13,7 @@ int main() {
     twi::init<10000>();
     twi::enable_internal_pullups();
 
-    AT24C02::AT24C02<twi> memory;
+    using memory = AT24C02::AT24C02<twi>;
 
     AT24C02::Data<10> mem{0};
 
@@ -21,13 +21,13 @@ int main() {
         mem.data[i] = i;
     }
 
-    memory.write(mem);
+    memory::write(mem);
 
     _delay_ms(1000);
 
     while (true) {
         AT24C02::Data<10> mem_read{0};
-        memory.read(mem_read);
+        memory::read(mem_read);
 
         for (const uint8_t x : mem_read.data) {
             printf("%d, ", x);

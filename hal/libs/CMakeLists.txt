@@ -16,14 +16,17 @@ add_library(${NAME} STATIC
 target_include_directories(${NAME} PUBLIC
     ../../
 )
-target_link_libraries(${NAME} terminal)
+
+add_subdirectory(base)
+add_subdirectory(gsl)
+add_subdirectory(gcc_addons)
+
+target_link_libraries(${NAME} terminal hal_gcc_addons gsl)
 
 if(ENABLE_HAL_STD)
     message(STATUS "Using hal std library")
 
     add_subdirectory(std)
-    add_subdirectory(gcc_addons)
     add_subdirectory(std_addons)
-    add_subdirectory(gsl)
-    target_link_libraries(${NAME} hal_stdlib hal_gcc_addons hal_std_addons gsl)
+    target_link_libraries(${NAME} hal_stdlib hal_std_addons)
 endif(ENABLE_HAL_STD)

@@ -15,7 +15,7 @@ enum class Channel : uint8_t {
 };
 
 template<typename pin_A0, typename pin_A1, typename pin_EN>
-struct ADG709 {
+struct ADG709 : libs::PureStatic {
     static void init() {
         pin_A0::init(DigitalIO::Mode::OUTPUT);
         pin_A1::init(DigitalIO::Mode::OUTPUT);
@@ -33,8 +33,8 @@ struct ADG709 {
     }
 
     static void select(Channel channel) {
-        pin_A0::write(libs::read_bit<0>(static_cast<uint8_t>(channel)));
-        pin_A1::write(libs::read_bit<1>(static_cast<uint8_t>(channel)));
+        pin_A0::write(libs::read_bit<0>(num(channel)));
+        pin_A1::write(libs::read_bit<1>(num(channel)));
     }
 };
 

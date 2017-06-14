@@ -77,14 +77,14 @@ class AD7714 {
         pin_DRDY::init(DigitalIO::Mode::INPUT);
     }
 
-    uint32_t read_data() {
+    uint24_t read_data() {
         wait_for_DRDY();
         write_to_comm_reg(Registers::DATA_REG, true);
 
         std::array<uint8_t, 3> data;
         SPI::read(data);
 
-        uint32_t read = 0;
+        uint24_t read = 0;
         read |= data[0], read <<= 8;
         read |= data[1], read <<= 8;
         read |= data[2];
@@ -115,16 +115,16 @@ class AD7714 {
     }
 
     void write_to_comm_reg(Registers reg, bool read) const {
-        uint8_t out = (static_cast<uint8_t>(reg) << 4) |  //
+        uint8_t out = (num(reg) << 4) |  //
                       (read << 3) |                       //
-                      static_cast<uint8_t>(actual_channel);
+                      num(actual_channel);
         SPI::transfer(out);
     }
 
     void writeto_(Modes mode, Gain gain) {
         write_to_comm_reg(Registers::MODE_REG, false);
-        uint8_t data = (static_cast<uint8_t>(mode) << 5) |
-                       (static_cast<uint8_t>(gain) << 2);
+        uint8_t data = (num(mode) << 5) |
+                       (num(gain) << 2);
         SPI::transfer(data);
         this->wait_for_DRDY();
     }

@@ -14,7 +14,7 @@ int main() {
     using i2c = hal::I2C::Software<pin_sda, pin_scl>;
     i2c::init();
 
-    AT24C02::AT24C02<i2c> memory;
+    using memory = AT24C02::AT24C02<i2c>;
 
 
     AT24C02::Data<10> mem{0};
@@ -23,13 +23,13 @@ int main() {
         mem.data[i] = i;
     }
 
-    memory.write(mem);
+    memory::write(mem);
 
     _delay_ms(1000);
 
     while (true) {
         AT24C02::Data<10> mem_read{0};
-        memory.read(mem_read);
+        memory::read(mem_read);
 
         for (const uint8_t x : mem_read.data) {
             printf("%d, ", x);

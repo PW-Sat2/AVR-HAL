@@ -14,22 +14,22 @@ int main() {
     using i2c = hal::I2C::Software<pin_sda, pin_scl>;
     i2c::init();
 
-    PCF8563::PCF8563<i2c> rtc;
+    using rtc = PCF8563::PCF8563<i2c>;
 
-    if (PCF8563::ClockStatus::STOPPED == rtc.get_clock_status()) {
+    if (PCF8563::ClockStatus::STOPPED == rtc::get_clock_status()) {
         printf("Clock is not working, setting time!\r\n");
-        rtc.clear_status();
-        rtc.set_date_time({20, 1, 2, 1994}, {20, 00, 00});
+        rtc::clear_status();
+        rtc::set_date_time({20, 1, 2, 1994}, {20, 00, 00});
     } else {
         printf("RTC is working!\r\n");
     }
 
-    rtc.set_square_output(PCF8563::SquareOutput::SQW_32KHZ);
+    rtc::set_square_output(PCF8563::SquareOutput::SQW_32KHZ);
     PCF8563::Date date;
     PCF8563::Time time;
 
     while (true) {
-        if (PCF8563::ClockStatus::RUNNING == rtc.get_date_time(date, time)) {
+        if (PCF8563::ClockStatus::RUNNING == rtc::get_date_time(date, time)) {
             printf("%02u:%02u:%02u\t%02u-%02u-%4u weekday: %u\r\n",
                    time.hours,
                    time.minutes,

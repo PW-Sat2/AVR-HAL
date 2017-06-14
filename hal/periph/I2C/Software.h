@@ -14,8 +14,6 @@ class Software : public details::_Interface<Software<pin_sda, pin_scl>> {
     static void init() {
         pin_scl::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_sda::init(DigitalIO::Mode::INPUT_PULLUP);
-        pin_scl::reset();
-        pin_sda::reset();
     }
 
     using typename details::_Interface<Software<pin_sda, pin_scl>>::write;

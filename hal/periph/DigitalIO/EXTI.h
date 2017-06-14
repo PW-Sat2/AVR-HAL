@@ -14,14 +14,12 @@ enum class Mode : uint8_t {
     rising    = 3,
 };
 
-template<uint8_t interrupt_nr>
-class Line {
+template<uint8_t interrupt_nr, Mode mode>
+class Line : libs::PureStatic {
  public:
     static_assert(interrupt_nr < 8, "Interrupt lines can be from 0 to 7!");
-    constexpr Line(Mode mode) : mode{mode} {
-    }
 
-    void enable() const {
+    static void enable() {
 #ifdef EIMSK
         disable();
 
@@ -38,12 +36,9 @@ class Line {
 #endif
     }
 
-    void disable() const {
+    static void disable() {
         libs::clear_bit<interrupt_nr>(EIMSK);
     }
-
- private:
-    const Mode mode;
 };
 
 }  // namespace ExternalInterrupt

@@ -39,7 +39,7 @@ enum Calibration {
 };
 
 template<typename SPI>
-class DAC1220 {
+class DAC1220 : libs::PureStatic {
  public:
     static void write_to_command_reg(Calibration CRST,
                                      DataLength RES,

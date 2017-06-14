@@ -9,7 +9,7 @@ namespace devices {
 
 namespace details {
 template<typename Channel, typename SPI>
-struct ADC12x {
+struct ADC12x : libs::PureStatic {
     /*!
      * Function to retrieve data from sensor.
      * It reads data from previously-chosen channel (for first time it is IN0),
@@ -17,16 +17,16 @@ struct ADC12x {
      * @param channel Channel to set after current read operation
      * @return Measurement of previously selected channel
      */
-    static uint16_t read_and_change_channel(Channel channel) {
-        const std::array<uint8_t, 2> data_out = {static_cast<uint8_t>(channel), 0};
+    static uint12_t read_and_change_channel(Channel channel) {
+        const std::array<uint8_t, 2> data_out = {num(channel), 0};
         std::array<uint8_t, 2> data_read;
 
         SPI::transfer(data_out, data_read);
 
         libs::Reader reader{data_read};
-        auto word = reader.ReadWordBE();
+        uint12_t word = reader.ReadWordBE();
 
-        return word & libs::bit_mask<0, 12>();
+        return word;
     }
 };
 }  // namespace details

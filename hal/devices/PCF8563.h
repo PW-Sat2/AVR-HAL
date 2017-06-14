@@ -34,7 +34,7 @@ struct Date {
 };
 
 template<typename i2c>
-class PCF8563 {
+class PCF8563 : libs::PureStatic {
  public:
     static void clear_status() {
         std::array<const uint8_t, 3> data = {
@@ -128,7 +128,7 @@ class PCF8563 {
         TIMER            = 0x0F,
     };
 
-    static constexpr I2C::Address _addr = 0x51;
+    static constexpr uint7_t _addr = 0x51;
 
     static uint8_t dec_to_bcd(uint8_t val) {
         return ((val / 10 * 16) + (val % 10));

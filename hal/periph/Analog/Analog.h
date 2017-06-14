@@ -8,10 +8,8 @@
 namespace hal {
 namespace Analog {
 
-class InternalADC : public mcu::InternalADCMcuSpecific {
+class InternalADC : public mcu::InternalADCMcuSpecific, libs::PureStatic {
  public:
-    InternalADC() = delete;
-
     enum class Prescaler : uint8_t {
         DIV_2   = 0,
         DIV_4   = 2,
@@ -46,13 +44,13 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
         libs::set_bit(ADCSRA, ADEN);
     }
 
-    static uint16_t read() {
+    static uint10_t read() {
         trigger_conversion();
         wait_for_conversion_finish();
         return read_nowait();
     }
 
-    static uint16_t read_nowait() {
+    static uint10_t read_nowait() {
         return ADC;
     }
 
@@ -82,26 +80,21 @@ class InternalADC : public mcu::InternalADCMcuSpecific {
     }
 };
 
-class AnalogGPIO {
+template<InternalADC::Input pin>
+class AnalogGPIO : libs::PureStatic {
  public:
-    explicit constexpr AnalogGPIO(InternalADC::Input pin) : pin{pin} {
-    }
-
-    uint16_t read() const {
-        mcu::InternalADCMux::select(pin);
+    static uint10_t read() {
+        select();
         return InternalADC::read();
     }
 
-    uint16_t read_nowait() const {
+    static uint10_t read_nowait() {
         return InternalADC::read_nowait();
     }
 
-    void select() const {
+    static void select() {
         mcu::InternalADCMux::select(pin);
     }
-
- private:
-    const InternalADC::Input pin;
 };
 
 }  // namespace Analog

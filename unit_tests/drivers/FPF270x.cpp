@@ -34,45 +34,45 @@ using flag  = FPF270xMock<1>;
 using pgood = FPF270xMock<2>;
 
 TEST(FPF270x, init) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    using fpf = hal::devices::FPF270x<on, flag, pgood>;
     on::mode = flag::mode = pgood::mode = DigitalIO::Mode::INPUT;
 
-    fpf.init();
+    fpf::init();
     TEST_ASSERT_EQUAL(DigitalIO::Mode::OUTPUT, on::mode);
     TEST_ASSERT_EQUAL(DigitalIO::Mode::INPUT_PULLUP, flag::mode);
     TEST_ASSERT_EQUAL(DigitalIO::Mode::INPUT_PULLUP, pgood::mode);
 }
 
 TEST(FPF270x, on_off) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    using fpf = hal::devices::FPF270x<on, flag, pgood>;
 
     on::value = true;
-    fpf.on();
+    fpf::on();
     TEST_ASSERT_FALSE(on::value);
 
-    fpf.off();
+    fpf::off();
     TEST_ASSERT_TRUE(on::value);
 
-    fpf.on();
+    fpf::on();
     TEST_ASSERT_FALSE(on::value);
 }
 
 TEST(FPF270x, error) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    using fpf = hal::devices::FPF270x<on, flag, pgood>;
 
     flag::value = true;
-    TEST_ASSERT_TRUE(fpf.error_occured());
+    TEST_ASSERT_TRUE(fpf::error_occured());
 
     flag::value = false;
-    TEST_ASSERT_FALSE(fpf.error_occured());
+    TEST_ASSERT_FALSE(fpf::error_occured());
 }
 
 TEST(FPF270x, power_good) {
-    hal::devices::FPF270x<on, flag, pgood> fpf;
+    using fpf = hal::devices::FPF270x<on, flag, pgood>;
 
     pgood::value = true;
-    TEST_ASSERT_TRUE(fpf.power_good());
+    TEST_ASSERT_TRUE(fpf::power_good());
 
     pgood::value = false;
-    TEST_ASSERT_FALSE(fpf.power_good());
+    TEST_ASSERT_FALSE(fpf::power_good());
 }

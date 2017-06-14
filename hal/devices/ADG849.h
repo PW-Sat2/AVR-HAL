@@ -13,7 +13,7 @@ enum class Channel : bool {
 };
 
 template<typename pin_IN>
-struct ADG849 {
+struct ADG849 : libs::PureStatic {
     /*!
      * Function to initialize device.
      * It sets DigitalIO IN pin as OUTPUT.
@@ -29,7 +29,7 @@ struct ADG849 {
      * @param channel Channel to set active mux channel
      */
     static void select(Channel channel) {
-        pin_IN::write(static_cast<bool>(channel));
+        pin_IN::write(num(channel));
     }
 };
 

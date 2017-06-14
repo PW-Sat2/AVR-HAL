@@ -7,7 +7,7 @@ namespace hal {
 namespace devices {
 
 template<typename pin_on, typename pin_flag, typename pin_pgood>
-struct FPF270x {
+struct FPF270x : libs::PureStatic {
     static void init() {
         pin_on::init(DigitalIO::Mode::OUTPUT);
         pin_flag::init(DigitalIO::Mode::INPUT_PULLUP);

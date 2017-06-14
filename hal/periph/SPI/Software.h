@@ -18,22 +18,16 @@ class Software
     : public details::BlockTransfer<
           pin_ss,
           Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>> {
+    using Base = details::BlockTransfer<
+    pin_ss,
+    Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>;
  public:
-    using details::BlockTransfer<
-        pin_ss,
-        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::write;
-    using details::BlockTransfer<
-        pin_ss,
-        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::read;
-    using details::BlockTransfer<
-        pin_ss,
-        Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>::transfer;
-
-    Software()           = delete;
-    Software(Software&)  = delete;
-    Software(Software&&) = delete;
+    using Base::write;
+    using Base::read;
+    using Base::transfer;
 
     static void init() {
+        Base::init();
         pin_miso::init(DigitalIO::Mode::INPUT_PULLUP);
         pin_mosi::init(DigitalIO::Mode::OUTPUT);
         pin_sck::init(DigitalIO::Mode::OUTPUT);
