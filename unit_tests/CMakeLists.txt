@@ -26,6 +26,7 @@ add_hal_executable(unit_tests
     libs/ReaderTest.cpp
     libs/WriterTest.cpp
     libs/span.cpp
+    libs/std.cpp
     libs/terminal.cpp
 
     drivers/AD5641.cpp
