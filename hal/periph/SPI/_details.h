@@ -7,49 +7,45 @@
 
 namespace hal {
 namespace SPI {
-
-constexpr static DigitalIO::Interface::Pin NoChipSelect = 0xFF;
-
 namespace details {
 
-class BlockTransfer : public Interface {
+template<typename pin_cs, typename T>
+class BlockTransfer : libs::PureStatic {
  public:
-    BlockTransfer(DigitalIO::Interface& pin_cs) : pin_cs{pin_cs} {
-        pin_cs.init(DigitalIO::Interface::Mode::OUTPUT);
+    static void init() {
+        pin_cs::set();
+        pin_cs::init(DigitalIO::Mode::OUTPUT);
     }
 
-    void
-    transfer(gsl::span<const uint8_t> output, gsl::span<uint8_t> input) override {
-        pin_cs.reset();
+    static void
+    transfer(gsl::span<const uint8_t> output, gsl::span<uint8_t> input) {
+        pin_cs::reset();
         const uint8_t* out_ptr = output.data();
         uint8_t* in_ptr        = input.data();
         int len                = input.size();
         while (len--) {
-            (*in_ptr) = static_cast<Interface*>(this)->transfer(*out_ptr);
+            (*in_ptr) = T::transfer(*out_ptr);
             in_ptr++;
             out_ptr++;
         }
-        pin_cs.set();
+        pin_cs::set();
     }
 
-    void write(gsl::span<const uint8_t> output) override {
-        pin_cs.reset();
+    static void write(gsl::span<const uint8_t> output) {
+        pin_cs::reset();
         for (auto&& x : output) {
-            static_cast<Interface*>(this)->transfer(x);
+            T::transfer(x);
         }
-        pin_cs.set();
+        pin_cs::set();
     }
 
-    void read(gsl::span<uint8_t> input, uint8_t output_value = 0) override {
-        pin_cs.reset();
+    static void read(gsl::span<uint8_t> input, uint8_t output_value = 0) {
+        pin_cs::reset();
         for (auto& x : input) {
-            x = static_cast<Interface*>(this)->transfer(output_value);
+            T::transfer(output_value);
         }
-        pin_cs.set();
+        pin_cs::set();
     }
-
- private:
-    DigitalIO::Interface& pin_cs;
 };
 
 }  // namespace details

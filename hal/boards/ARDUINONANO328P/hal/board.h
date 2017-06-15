@@ -7,33 +7,33 @@ namespace hal {
 namespace bsp {
 namespace pins {
 
-static constexpr DigitalIO::Interface::Pin D0  = 30;
-static constexpr DigitalIO::Interface::Pin D1  = 31;
-static constexpr DigitalIO::Interface::Pin D2  = 32;
-static constexpr DigitalIO::Interface::Pin D3  = 1;
-static constexpr DigitalIO::Interface::Pin D4  = 2;
-static constexpr DigitalIO::Interface::Pin D5  = 9;
-static constexpr DigitalIO::Interface::Pin D6  = 10;
-static constexpr DigitalIO::Interface::Pin D7  = 11;
-static constexpr DigitalIO::Interface::Pin D8  = 12;
-static constexpr DigitalIO::Interface::Pin D9  = 13;
-static constexpr DigitalIO::Interface::Pin D10 = 14;
-static constexpr DigitalIO::Interface::Pin D11 = 15;
-static constexpr DigitalIO::Interface::Pin D12 = 16;
-static constexpr DigitalIO::Interface::Pin D13 = 17;
+using D0  = DigitalIO::GPIO<30>;
+using D1  = DigitalIO::GPIO<31>;
+using D2  = DigitalIO::GPIO<32>;
+using D3  = DigitalIO::GPIO<1>;
+using D4  = DigitalIO::GPIO<2>;
+using D5  = DigitalIO::GPIO<9>;
+using D6  = DigitalIO::GPIO<10>;
+using D7  = DigitalIO::GPIO<11>;
+using D8  = DigitalIO::GPIO<12>;
+using D9  = DigitalIO::GPIO<13>;
+using D10 = DigitalIO::GPIO<14>;
+using D11 = DigitalIO::GPIO<15>;
+using D12 = DigitalIO::GPIO<16>;
+using D13 = DigitalIO::GPIO<17>;
 
-static constexpr DigitalIO::Interface::Pin A0 = 23;
-static constexpr DigitalIO::Interface::Pin A1 = 24;
-static constexpr DigitalIO::Interface::Pin A2 = 25;
-static constexpr DigitalIO::Interface::Pin A3 = 26;
-static constexpr DigitalIO::Interface::Pin A4 = 27;
-static constexpr DigitalIO::Interface::Pin A5 = 28;
-static constexpr DigitalIO::Interface::Pin A6 = 19;
-static constexpr DigitalIO::Interface::Pin A7 = 22;
+using A0 = DigitalIO::GPIO<23>;
+using A1 = DigitalIO::GPIO<24>;
+using A2 = DigitalIO::GPIO<25>;
+using A3 = DigitalIO::GPIO<26>;
+using A4 = DigitalIO::GPIO<27>;
+using A5 = DigitalIO::GPIO<28>;
+using A6 = DigitalIO::GPIO<19>;
+using A7 = DigitalIO::GPIO<22>;
 
-static constexpr DigitalIO::Interface::Pin LED = D13;
 
 }  // namespace pins
+using LED = devices::LED<pins::D13>;
 }  // namespace bsp
 }  // namespace hal
 

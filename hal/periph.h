@@ -11,7 +11,6 @@
 
 #include "hal/periph/DigitalIO/EXTI.h"
 #include "hal/periph/DigitalIO/GPIO.h"
-#include "hal/periph/DigitalIO/Interface.h"
 #include "hal/periph/DigitalIO/PeriphDescriptors.h"
 
 #include "hal/periph/MCU/Watchdog.h"

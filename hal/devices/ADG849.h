@@ -4,43 +4,37 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace ADG849 {
 
-class ADG849 {
- public:
-    enum class Channel : bool {
-        S1 = 0,
-        S2 = 1,
-    };
+enum class Channel : bool {
+    S1 = 0,
+    S2 = 1,
+};
 
-    /*!
-     * Default ctor.
-     * @param pin_IN DigitalIO interface to use as IN pin of ADG849
-     */
-    constexpr explicit ADG849(DigitalIO::Interface& pin_IN) : pin_IN{pin_IN} {
-    }
-
+template<typename pin_IN>
+struct ADG849 : libs::PureStatic {
     /*!
      * Function to initialize device.
      * It sets DigitalIO IN pin as OUTPUT.
      * @param default_channel sets multiplexer channel after initialization
      */
-    void init(Channel default_channel) const {
-        this->select(default_channel);
-        this->pin_IN.init(DigitalIO::Interface::Mode::OUTPUT);
+    static void init(Channel default_channel) {
+        select(default_channel);
+        pin_IN::init(DigitalIO::Mode::OUTPUT);
     }
 
     /*!
      * Function sets desired mux channel.
      * @param channel Channel to set active mux channel
      */
-    void select(Channel channel) const {
-        this->pin_IN.write(static_cast<bool>(channel));
+    static void select(Channel channel) {
+        pin_IN::write(num(channel));
     }
-
- private:
-    DigitalIO::Interface& pin_IN;
 };
 
+}  // namespace ADG849
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_ADG849_H_

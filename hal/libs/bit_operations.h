@@ -102,6 +102,11 @@ write_mask(uint8_t start, uint8_t length, T& destination, T2 value) {
     destination |= (static_cast<T>(value) << start);
 }
 
+
+constexpr auto max_value_on_bits(std::uint8_t bitsCount) {
+    return (1 << bitsCount) - 1;
+}
+
 }  // namespace libs
 }  // namespace hal
 

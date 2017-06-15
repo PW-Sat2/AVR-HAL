@@ -4,22 +4,14 @@
 #include <hal/hal>
 #include "tests.h"
 
-struct DigtalIOMock : public hal::DigitalIO::Interface {
-    void init(const Mode) override {
-        TEST_FAIL();
+template<typename T>
+struct DigtalIOMock {
+    static void set() {
+        T::write(1);
     }
 
-    void toggle() override {
-        TEST_FAIL();
-    }
-
-    void write(bool) override {
-        TEST_FAIL();
-    }
-
-    bool read() override {
-        TEST_FAIL();
-        return false;
+    static void reset() {
+        T::write(0);
     }
 };
 

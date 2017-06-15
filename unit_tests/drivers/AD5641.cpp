@@ -7,23 +7,26 @@ TEST_GROUP(AD5641);
 
 using namespace hal;
 using namespace hal::libs;
+using namespace hal::devices;
 
-struct MockAD5641 : public EmptySPIMock {
-    uint16_t expect;
+struct MockAD5641 {
+    static uint16_t expect;
 
-    void write(gsl::span<const uint8_t> output) override {
+    static void write(gsl::span<const uint8_t> output) {
         TEST_ASSERT_EQUAL(2, output.size());
         Reader reader{output};
         TEST_ASSERT_EQUAL(expect, reader.ReadWordBE());
     }
 };
+uint16_t MockAD5641::expect;
+
 
 void AD5641test(uint16_t value) {
-    MockAD5641 mock;
-    AD5641 ad5641{mock};
+    using mock   = MockAD5641;
+    using ad5641 = AD5641<mock>;
 
-    mock.expect = value;
-    ad5641.write(value);
+    mock::expect = value;
+    ad5641::write(value);
 }
 
 TEST(AD5641, writeLowByte) {
@@ -38,9 +41,8 @@ TEST(AD5641, edge_cases) {
 }
 
 TEST(AD5641, overflow) {
-    MockAD5641 mock;
-    AD5641 ad5641{mock};
+    using ad5641 = AD5641<MockAD5641>;
 
-    mock.expect = 0x3FFF, ad5641.write(0x4000);
-    mock.expect = 0x3FFF, ad5641.write(0xFFFF);
+    MockAD5641::expect = 0, ad5641::write(0x4000);
+    MockAD5641::expect = 0x3FFF, ad5641::write(0xFFFF);
 }

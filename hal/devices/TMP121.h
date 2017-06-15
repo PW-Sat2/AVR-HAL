@@ -4,28 +4,22 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
 
 /*!
  * TMP121 temperature sensor driver.
  */
-class TMP121 {
- public:
-    /*!
-     * Default ctor.
-     * SPI device have to support idle-high chip select.
-     * @param spi SPI device to operate on.
-     */
-    constexpr TMP121(SPI::Interface& spi) : spi(spi) {
-    }
-
+template<typename SPI>
+struct TMP121 : libs::PureStatic {
     /*!
      * Reads data from the sensor in raw integer format.
      * After conversion de-asserts the device and puts it in free-running mode.
-     * @return Read data from the device (13 bit value)
+     * @return Read data from the device (13 bit value, signed, 1 LSB = 0.0625
+     * celsius)
      */
-    int16_t read() {
+    static int16_t read() {
         std::array<uint8_t, 2> arr;
-        spi.read(arr);
+        SPI::read(arr);
 
         libs::Reader reader{arr};
         uint16_t sensor_data = reader.ReadWordBE();
@@ -41,14 +35,12 @@ class TMP121 {
      * @see #read
      * @return Converted temperature to Celsius.
      */
-    float read_celsius() {
+    static float read_celsius() {
         return static_cast<float>(read()) * 0.0625;
     }
-
- private:
-    SPI::Interface& spi;
 };
 
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_TMP121_H_

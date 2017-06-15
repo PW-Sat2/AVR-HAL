@@ -6,57 +6,55 @@ TEST_GROUP(TPS3813);
 using namespace hal;
 using namespace hal::libs;
 
-struct TPS3813Mock : public DigtalIOMock {
-    DigitalIO::Interface::Mode mode_buffer[10];
-    FIFO<DigitalIO::Interface::Mode> mode{mode_buffer, 10};
+struct TPS3813Mock : public DigtalIOMock<TPS3813Mock> {
+    static FIFO_data<DigitalIO::Mode, 10> mode;
 
-    bool val_buffer[10];
-    FIFO<bool> value{val_buffer, 10};
+    static FIFO_data<bool, 10> value;
 
-    void init(const Mode mode_) override {
+    static void init(const DigitalIO::Mode mode_) {
         mode.append(mode_);
     }
 
-    void write(bool value_) override {
+    static void write(bool value_) {
         value.append(value_);
     }
 };
+decltype(TPS3813Mock::mode) TPS3813Mock::mode;
+decltype(TPS3813Mock::value) TPS3813Mock::value;
 
-TPS3813Mock wdi;
+
 constexpr int pulse_time = 10;
 
+using watchdog = hal::devices::TPS3813<TPS3813Mock, pulse_time>;
+
 TEST(TPS3813, init) {
-    hal::devices::TPS3813<pulse_time> watchdog{wdi};
+    watchdog::init();
+    TEST_ASSERT_TRUE(TPS3813Mock::mode.isNotEmpty());
+    TEST_ASSERT_EQUAL(DigitalIO::Mode::OUTPUT, TPS3813Mock::mode.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::mode.isEmpty());
 
-    watchdog.init();
-    TEST_ASSERT_TRUE(wdi.mode.isNotEmpty());
-    TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
-    TEST_ASSERT_TRUE(wdi.mode.isEmpty());
-
-    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
-    TEST_ASSERT_FALSE(wdi.value.get());
-    TEST_ASSERT_TRUE(wdi.value.isEmpty());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isNotEmpty());
+    TEST_ASSERT_FALSE(TPS3813Mock::value.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isEmpty());
 }
 
 TEST(TPS3813, kick) {
-    hal::devices::TPS3813<pulse_time> watchdog{wdi};
+    watchdog::init();
 
-    watchdog.init();
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isNotEmpty());
+    TEST_ASSERT_FALSE(TPS3813Mock::value.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isEmpty());
 
-    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
-    TEST_ASSERT_FALSE(wdi.value.get());
-    TEST_ASSERT_TRUE(wdi.value.isEmpty());
+    watchdog::kick();
 
-    watchdog.kick();
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isNotEmpty());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isNotEmpty());
 
-    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
-    TEST_ASSERT_TRUE(wdi.value.get());
-    TEST_ASSERT_TRUE(wdi.value.isNotEmpty());
+    TEST_ASSERT_FALSE(TPS3813Mock::value.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::value.isEmpty());
 
-    TEST_ASSERT_FALSE(wdi.value.get());
-    TEST_ASSERT_TRUE(wdi.value.isEmpty());
-
-    TEST_ASSERT_TRUE(wdi.mode.isNotEmpty());
-    TEST_ASSERT_EQUAL(DigitalIO::Interface::Mode::OUTPUT, wdi.mode.get());
-    TEST_ASSERT_TRUE(wdi.mode.isEmpty());
+    TEST_ASSERT_TRUE(TPS3813Mock::mode.isNotEmpty());
+    TEST_ASSERT_EQUAL(DigitalIO::Mode::OUTPUT, TPS3813Mock::mode.get());
+    TEST_ASSERT_TRUE(TPS3813Mock::mode.isEmpty());
 }

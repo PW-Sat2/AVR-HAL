@@ -19,10 +19,10 @@ int main() {
     Serial0.redirect_stderr();
     printf("INIT!\r\n");
 
-    constexpr Line<0> line(Mode::rising);
-    constexpr Line<1> line2(Mode::rising);
-    line.enable();
-    line2.enable();
+    using line  = Line<0, Mode::rising>;
+    using line2 = Line<1, Mode::rising>;
+    line::enable();
+    line2::enable();
 
     sei();
 

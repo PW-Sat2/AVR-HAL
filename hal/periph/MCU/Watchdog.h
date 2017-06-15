@@ -7,7 +7,7 @@
 
 namespace hal {
 
-class Watchdog {
+class Watchdog : libs::PureStatic {
  public:
     Watchdog() = delete;
 

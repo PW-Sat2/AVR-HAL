@@ -4,36 +4,32 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
 
-class LED {
- public:
-    constexpr LED(DigitalIO::Interface& pin) : led_pin{pin} {
+template<typename led_pin>
+struct LED : libs::PureStatic {
+    static void init() {
+        led_pin::init(DigitalIO::Mode::OUTPUT);
     }
 
-    void init() const {
-        led_pin.init(DigitalIO::Interface::Mode::OUTPUT);
+    static void on() {
+        led_pin::set();
     }
 
-    void on() const {
-        led_pin.set();
+    static void off() {
+        led_pin::reset();
     }
 
-    void off() const {
-        led_pin.reset();
+    static void write(bool state) {
+        led_pin::write(state);
     }
 
-    void write(bool state) const {
-        led_pin.write(state);
+    static void toggle() {
+        led_pin::toggle();
     }
-
-    void toggle() const {
-        led_pin.toggle();
-    }
-
- private:
-    DigitalIO::Interface& led_pin;
 };
 
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_LED_H_

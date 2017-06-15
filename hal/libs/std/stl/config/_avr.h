@@ -27,6 +27,7 @@
 #define _STLP_NO_WCHAR_T  1
 #define _STLP_USE_STATIC_LIB 1
 #define _STLP_USE_STDIO_IO 1
+#define _STLP_UNDERLYING_TYPE(T) __underlying_type(T)
 
 #define _STLP_WEAK __attribute__((weak))
 

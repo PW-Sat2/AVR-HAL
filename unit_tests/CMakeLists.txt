@@ -5,9 +5,9 @@ set(CMAKE_TOOLCHAIN_FILE "../toolchain.cmake")
 
 project(unit_tests)
 
+add_subdirectory(../ hal)
 add_subdirectory(unity)
 
-add_subdirectory(../ hal)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error" CACHE STRING "" FORCE)
 
@@ -26,6 +26,7 @@ add_hal_executable(unit_tests
     libs/ReaderTest.cpp
     libs/WriterTest.cpp
     libs/span.cpp
+    libs/std.cpp
     libs/terminal.cpp
 
     drivers/AD5641.cpp

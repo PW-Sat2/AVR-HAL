@@ -6,42 +6,46 @@
 
 #include "hal/libs.h"
 #include "hal/mcu.h"
-#include "hal/periph/DigitalIO/Interface.h"
+#include "hal/periph/DigitalIO/GPIO.h"
 
 #include "Interface.h"
 
 namespace hal {
 namespace SPI {
 
-template<SPI::Polarity polarity, SPI::Phase phase>
-class Software : public details::BlockTransfer {
- public:
-    Software(DigitalIO::Interface& pin_mosi,
-             DigitalIO::Interface& pin_miso,
-             DigitalIO::Interface& pin_sck,
-             DigitalIO::Interface& pin_ss)
-        : BlockTransfer{pin_ss}, pin_mosi{pin_mosi}, pin_miso{pin_miso}, pin_sck{pin_sck} {
-    }
+template<typename pin_mosi, typename pin_miso, typename pin_sck, typename pin_ss, SPI::Polarity polarity, SPI::Phase phase>
+class Software
+    : public details::BlockTransfer<
+          pin_ss,
+          Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>> {
+    using Base =
+        details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>;
 
-    void init() {
-        pin_miso.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-        pin_mosi.init(DigitalIO::Interface::Mode::OUTPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::OUTPUT);
+ public:
+    using Base::write;
+    using Base::read;
+    using Base::transfer;
+
+    static void init() {
+        Base::init();
+        pin_miso::init(DigitalIO::Mode::INPUT_PULLUP);
+        pin_mosi::init(DigitalIO::Mode::OUTPUT);
+        pin_sck::init(DigitalIO::Mode::OUTPUT);
 
         if (polarity == SPI::Polarity::idle_high) {
-            pin_sck.set();
+            pin_sck::set();
         } else {
-            pin_sck.reset();
+            pin_sck::reset();
         }
     }
 
-    void disable() {
-        pin_miso.init(DigitalIO::Interface::Mode::INPUT);
-        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
+    static void disable() {
+        pin_miso::init(DigitalIO::Mode::INPUT);
+        pin_mosi::init(DigitalIO::Mode::INPUT);
+        pin_sck::init(DigitalIO::Mode::INPUT);
     }
 
-    uint8_t transfer(const uint8_t data) override {
+    static uint8_t transfer(const uint8_t data) {
         if (phase == SPI::Phase::leading_sample) {
             return shift_leading_sample(data);
         } else {
@@ -49,46 +53,44 @@ class Software : public details::BlockTransfer {
         }
     }
 
-    uint8_t shift_trailing_sample(const uint8_t data) {
+    static uint8_t shift_trailing_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
             output_phase(data & (1u << i));
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
             output |= (sample_phase() << i);
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
         }
         return output;
     }
 
-    uint8_t shift_leading_sample(const uint8_t data) {
+    static uint8_t shift_leading_sample(const uint8_t data) {
         uint8_t output = 0;
         delay();
         for (int8_t i = 7; i >= 0; --i) {
             output_phase(data & (1u << i));
             delay();
             output |= (sample_phase() << i);
-            pin_sck.toggle();
+            pin_sck::toggle();
             delay();
-            pin_sck.toggle();
+            pin_sck::toggle();
         }
         return output;
     }
 
  private:
-    DigitalIO::Interface &pin_mosi, &pin_miso, &pin_sck;
-
-    bool sample_phase() {
-        return pin_miso.read();
+    static bool sample_phase() {
+        return pin_miso::read();
     }
 
-    void output_phase(bool value) {
-        pin_mosi.write(value);
+    static void output_phase(bool value) {
+        pin_mosi::write(value);
     }
 
-    void delay() {
+    static void delay() {
         _delay_us(10);
     }
 };

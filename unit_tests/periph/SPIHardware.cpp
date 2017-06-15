@@ -6,19 +6,18 @@ using namespace hal;
 
 TEST_GROUP(SPIHardware);
 
-DigitalIO::GPIO<mcu::pin_ss> gpio;
-DigitalIO::Interface& gpioif = gpio;
+using gpio = DigitalIO::GPIO<mcu::pin_ss>;
 
 TEST(SPIHardware, init) {
     {
-        SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_4,
-                      SPI::Polarity::idle_low,
-                      SPI::Phase::leading_sample,
-                      SPI::DataOrder::MSB_first>
-            spi(gpio);
+        using spi = SPI::Hardware<gpio,
+                                  SPI::HardwareClockDivisor::SPIHard_DIV_4,
+                                  SPI::Polarity::idle_low,
+                                  SPI::Phase::leading_sample,
+                                  SPI::DataOrder::MSB_first>;
 
         SPCR = 0;
-        spi.init();
+        spi::init();
 
         uint8_t expected = (1 << SPE) |   //
                            (1 << MSTR) |  //
@@ -30,14 +29,14 @@ TEST(SPIHardware, init) {
         TEST_ASSERT_EQUAL(expected, SPCR);
     }
     {
-        SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_64,
-                      SPI::Polarity::idle_high,
-                      SPI::Phase::leading_sample,
-                      SPI::DataOrder::MSB_first>
-            spi(gpio);
+        using spi = SPI::Hardware<gpio,
+                                  SPI::HardwareClockDivisor::SPIHard_DIV_64,
+                                  SPI::Polarity::idle_high,
+                                  SPI::Phase::leading_sample,
+                                  SPI::DataOrder::MSB_first>;
 
         SPCR = 0;
-        spi.init();
+        spi::init();
 
         uint8_t expected = (1 << SPE) |   //
                            (1 << MSTR) |  //
@@ -49,14 +48,14 @@ TEST(SPIHardware, init) {
         TEST_ASSERT_EQUAL(expected, SPCR);
     }
     {
-        SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_16,
-                      SPI::Polarity::idle_low,
-                      SPI::Phase::trailing_sample,
-                      SPI::DataOrder::MSB_first>
-            spi(gpio);
+        using spi = SPI::Hardware<gpio,
+                                  SPI::HardwareClockDivisor::SPIHard_DIV_16,
+                                  SPI::Polarity::idle_low,
+                                  SPI::Phase::trailing_sample,
+                                  SPI::DataOrder::MSB_first>;
 
         SPCR = 0;
-        spi.init();
+        spi::init();
 
         uint8_t expected = (1 << SPE) |   //
                            (1 << MSTR) |  //
@@ -68,14 +67,14 @@ TEST(SPIHardware, init) {
         TEST_ASSERT_EQUAL(expected, SPCR);
     }
     {
-        SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_128,
-                      SPI::Polarity::idle_high,
-                      SPI::Phase::leading_sample,
-                      SPI::DataOrder::LSB_first>
-            spi(gpio);
+        using spi = SPI::Hardware<gpio,
+                                  SPI::HardwareClockDivisor::SPIHard_DIV_128,
+                                  SPI::Polarity::idle_high,
+                                  SPI::Phase::leading_sample,
+                                  SPI::DataOrder::LSB_first>;
 
         SPCR = 0;
-        spi.init();
+        spi::init();
 
         uint8_t expected = (1 << SPE) |   //
                            (1 << MSTR) |  //
@@ -89,25 +88,25 @@ TEST(SPIHardware, init) {
 }
 
 TEST(SPIHardware, transferCompletes) {
-    SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_128,
-                  SPI::Polarity::idle_high,
-                  SPI::Phase::leading_sample,
-                  SPI::DataOrder::LSB_first>
-        spi(gpio);
+    using spi = SPI::Hardware<gpio,
+                              SPI::HardwareClockDivisor::SPIHard_DIV_128,
+                              SPI::Polarity::idle_high,
+                              SPI::Phase::leading_sample,
+                              SPI::DataOrder::LSB_first>;
 
-    spi.init();
-    spi.transfer(0xAA);
+    spi::init();
+    spi::transfer(0xAA);
 }
 
 TEST(SPIHardware, disable) {
-    SPI::Hardware<SPI::HardwareClockDivisor::SPIHard_DIV_128,
-                  SPI::Polarity::idle_high,
-                  SPI::Phase::leading_sample,
-                  SPI::DataOrder::LSB_first>
-        spi(gpio);
+    using spi = SPI::Hardware<gpio,
+                              SPI::HardwareClockDivisor::SPIHard_DIV_128,
+                              SPI::Polarity::idle_high,
+                              SPI::Phase::leading_sample,
+                              SPI::DataOrder::LSB_first>;
 
-    spi.init();
+    spi::init();
     TEST_ASSERT_NOT_EQUAL(0, SPCR);
-    spi.disable();
+    spi::disable();
     TEST_ASSERT_EQUAL(0, SPCR);
 }

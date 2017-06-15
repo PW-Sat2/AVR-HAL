@@ -6,38 +6,29 @@
 namespace hal {
 namespace devices {
 
-class FPF270x {
- public:
-    constexpr FPF270x(DigitalIO::Interface& pin_on,
-                      DigitalIO::Interface& pin_flag,
-                      DigitalIO::Interface& pin_pgood)
-        : pin_on{pin_on}, pin_flag{pin_flag}, pin_pgood{pin_pgood} {
+template<typename pin_on, typename pin_flag, typename pin_pgood>
+struct FPF270x : libs::PureStatic {
+    static void init() {
+        pin_on::init(DigitalIO::Mode::OUTPUT);
+        pin_flag::init(DigitalIO::Mode::INPUT_PULLUP);
+        pin_pgood::init(DigitalIO::Mode::INPUT_PULLUP);
     }
 
-    void init() {
-        this->pin_on.init(DigitalIO::Interface::Mode::OUTPUT);
-        this->pin_flag.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
-        this->pin_pgood.init(DigitalIO::Interface::Mode::INPUT_PULLUP);
+    static void on() {
+        pin_on::reset();
     }
 
-    void on() {
-        this->pin_on.reset();
+    static void off() {
+        pin_on::set();
     }
 
-    void off() {
-        this->pin_on.set();
+    static bool error_occured() {
+        return pin_flag::read();
     }
 
-    bool error_occured() {
-        return this->pin_flag.read();
+    static bool power_good() {
+        return pin_pgood::read();
     }
-
-    bool power_good() {
-        return this->pin_pgood.read();
-    }
-
- private:
-    DigitalIO::Interface &pin_on, &pin_flag, &pin_pgood;
 };
 
 }  // namespace devices

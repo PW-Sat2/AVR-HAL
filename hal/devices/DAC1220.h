@@ -4,49 +4,49 @@
 #include "hal/periph.h"
 
 namespace hal {
+namespace devices {
+namespace DAC1220 {
 
-class DAC1220 {
+enum DataLength {
+    Data_20bit = 1,  //
+    Data_16bit = 0
+};
+
+enum Mode {
+    NormalMode = 0,  //
+    SelfCalib  = 1,
+    Sleep      = 2
+};
+
+enum DataOrder {
+    MSB_first = 0,  //
+    LSB_first = 1
+};
+
+enum FilterOut {
+    AdaptiveFilter = 0,  //
+    DefaultCuttOff = 1
+};
+
+enum DataFormat {
+    TwosCompement = 0,  //
+    Binary        = 1
+};
+
+enum Calibration {
+    Leave = 0,  //
+    Clear = 1
+};
+
+template<typename SPI>
+class DAC1220 : libs::PureStatic {
  public:
-    enum DataLength {
-        Data_20bit = 1,  //
-        Data_16bit = 0
-    };
-
-    enum Mode {
-        NormalMode = 0,  //
-        SelfCalib  = 1,
-        Sleep      = 2
-    };
-
-    enum DataOrder {
-        MSB_first = 0,  //
-        LSB_first = 1
-    };
-
-    enum FilterOut {
-        AdaptiveFilter = 0,  //
-        DefaultCuttOff = 1
-    };
-
-    enum DataFormat {
-        TwosCompement = 0,  //
-        Binary        = 1
-    };
-
-    enum Calibration {
-        Leave = 0,  //
-        Clear = 1
-    };
-
-    explicit DAC1220(SPI::Interface& spi_dev) : spi_dev{spi_dev} {
-    }
-
-    void write_to_command_reg(Calibration CRST,
-                              DataLength RES,
-                              DataFormat DF,
-                              FilterOut DISF,
-                              DataOrder MSB,
-                              Mode MD) {
+    static void write_to_command_reg(Calibration CRST,
+                                     DataLength RES,
+                                     DataFormat DF,
+                                     FilterOut DISF,
+                                     DataOrder MSB,
+                                     Mode MD) {
         uint8_t CommandRegMSB = 0;
         // ADPT
         CommandRegMSB |= (DISF << 7);
@@ -72,23 +72,22 @@ class DAC1220 {
         std::array<uint8_t, 3> arr = {0b00100100,     //
                                       CommandRegMSB,  //
                                       CommandRegLSB};
-        this->spi_dev.write(arr);
+        SPI::write(arr);
     }
 
-    void write_to_output(uint16_t RawValue) {
+    static void write_to_output(uint16_t RawValue) {
         std::array<uint8_t, 4> arr;
         libs::Writer writer{arr};
         writer.WriteByte(0b01000000);
         writer.WriteWordLE(RawValue);
         writer.WriteByte(0);
 
-        this->spi_dev.write(arr);
+        SPI::write(arr);
     }
-
- private:
-    SPI::Interface& spi_dev;
 };
 
+}  // namespace DAC1220
+}  // namespace devices
 }  // namespace hal
 
 #endif  // HAL_DEVICES_DAC1220_H_

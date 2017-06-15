@@ -7,7 +7,12 @@
 
 namespace hal {
 
-class SPISlave {
+class SPISlave : libs::PureStatic {
+    using pin_mosi = DigitalIO::GPIO<mcu::pin_mosi>;
+    using pin_miso = DigitalIO::GPIO<mcu::pin_miso>;
+    using pin_sck  = DigitalIO::GPIO<mcu::pin_sck>;
+    using pin_ss   = DigitalIO::GPIO<mcu::pin_ss>;
+
  public:
     enum class Polarity : int {
         idle_low  = 0,
@@ -31,12 +36,12 @@ class SPISlave {
         DIV_128 = 3,
     };
 
-    void
+    static void
     init(const Polarity polarity, const Phase phase, const DataOrder data_order) {
-        pin_mosi.init(DigitalIO::Interface::Mode::INPUT);
-        pin_sck.init(DigitalIO::Interface::Mode::INPUT);
-        pin_ss.init(DigitalIO::Interface::Mode::INPUT);
-        pin_miso.init(DigitalIO::Interface::Mode::OUTPUT);
+        pin_mosi::init(DigitalIO::Mode::INPUT);
+        pin_sck::init(DigitalIO::Mode::INPUT);
+        pin_ss::init(DigitalIO::Mode::INPUT);
+        pin_miso::init(DigitalIO::Mode::OUTPUT);
 
         SPCR = (1 << SPE) |                                //
                (static_cast<uint8_t>(phase) << CPHA) |     //
@@ -44,44 +49,38 @@ class SPISlave {
                (static_cast<uint8_t>(data_order) << DORD);
     }
 
-    void disable() {
+    static void disable() {
         SPCR = 0;
     }
 
-    uint8_t shift(const uint8_t data) {
+    static uint8_t shift(const uint8_t data) {
         write_data_nowait(data);
         wait_for_transmission_complete();
         return get_data_nowait();
     }
 
-    void wait_for_transmission_complete() {
+    static void wait_for_transmission_complete() {
         while (!is_transmission_complete()) {
         }
     }
 
-    bool is_transmission_complete() {
+    static bool is_transmission_complete() {
         return (libs::read_bit(SPSR, SPIF) == true);
     }
 
     // functions for interrupt-driven usage
 
-    void write_data_nowait(uint8_t data) {
+    static void write_data_nowait(uint8_t data) {
         SPDR = data;
     }
 
-    uint8_t get_data_nowait() {
+    static uint8_t get_data_nowait() {
         return SPDR;
     }
 
-    void enable_interrupt() {
+    static void enable_interrupt() {
         libs::set_bit(SPCR, SPIE);
     }
-
- private:
-    DigitalIO::GPIO<mcu::pin_mosi> pin_mosi;
-    DigitalIO::GPIO<mcu::pin_miso> pin_miso;
-    DigitalIO::GPIO<mcu::pin_sck> pin_sck;
-    DigitalIO::GPIO<mcu::pin_ss> pin_ss;
 };
 
 }  // namespace hal
