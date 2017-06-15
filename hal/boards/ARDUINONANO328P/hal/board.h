@@ -1,6 +1,7 @@
 #ifndef HAL_BOARDS_ARDUINONANO328P_HAL_BOARD_H_
 #define HAL_BOARDS_ARDUINONANO328P_HAL_BOARD_H_
 
+#include "hal/devices.h"
 #include "hal/periph.h"
 
 namespace hal {
