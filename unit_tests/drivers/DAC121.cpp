@@ -16,7 +16,7 @@ struct DAC121Mock : public EmptySPIMock {
         Reader reader_in{in};
         word = reader_in.ReadWordBE();
 
-        mode = (word >> 12) & 0xF;
+        mode  = (word >> 12) & 0xF;
         value = word & 0xFFF;
     }
 
@@ -96,4 +96,3 @@ TEST(DAC121, fullRange) {
         TEST_ASSERT_EQUAL_INT(0x0, mock.mode);
     }
 }
-
