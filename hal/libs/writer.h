@@ -28,14 +28,14 @@ class Writer final {
     Writer();
 
     /**
-     * @brief Initializes generic buffer reader.
+     * @brief Initializes generic buffer writer.
      *
      * @param[in] view Window into memory buffer to which the data is written.
      */
     Writer(gsl::span<std::uint8_t> view);
 
     /**
-     * @brief Initializes generic buffer writter.
+     * @brief Initializes generic buffer writer.
      *
      * @param[in] view Window into memory buffer to which the data is written.
      */
@@ -50,7 +50,7 @@ class Writer final {
     inline bool Status() const;
 
     /**
-     * @brief Returns the number of not bytes already written to the buffer.
+     * @brief Returns the number of bytes already written to the buffer.
      * @return Number of bytes already written to the buffer.
      */
     inline std::uint16_t GetDataLength() const;
@@ -74,8 +74,8 @@ class Writer final {
 
     /**
      * @brief Writes single 16 bit word with little-endian memory orientation to
-     * the buffer
-     * and advances the current buffer position to the next unused byte.
+     * the buffer and advances the current buffer position to the next unused
+     * byte.
      * @param[in] word Word that should be added to writer output using little
      * endian byte ordering.
      * @return Operation status.
@@ -83,9 +83,19 @@ class Writer final {
     bool WriteWordLE(std::uint16_t word);
 
     /**
+     * @brief Writes single 16 bit word with big-endian memory orientation to
+     * the buffer and advances the current buffer position to the next unused
+     * byte.
+     * @param[in] word Word that should be added to writer output using big
+     * endian byte ordering.
+     * @return Operation status.
+     */
+    bool WriteWordBE(std::uint16_t word);
+
+    /**
      * @brief Writes single 32 bit word with little-endian memory orientation to
-     * the buffer
-     * and advances the current buffer position to the next unused byte.
+     * the buffer and advances the current buffer position to the next unused
+     * byte.
      * @param[in] dword Doubleword that should be added to writer output using
      * little endian byte ordering.
      * @return Operation status.
@@ -94,9 +104,8 @@ class Writer final {
 
     /**
      * @brief Writes single 16 bit signed value with little-endian memory
-     * orientation to the buffer
-     * and advances the current buffer position to the next unused byte.
-     * Value is written in 2's complement notation.
+     * orientation to the buffer and advances the current buffer position to the
+     * next unused byte. Value is written in 2's complement notation.
      * @param[in] word Word that should be added to writer output using little
      * endian byte ordering.
      * @return Operation status.
@@ -105,8 +114,8 @@ class Writer final {
 
     /**
      * @brief Writes single 64 bit word with little-endian memory orientation to
-     * the buffer
-     * and advances the current buffer position to the next unused byte.
+     * the buffer and advances the current buffer position to the next unused
+     * byte.
      * @param[in] dword Quadword that should be added to writer output using
      * little endian byte ordering.
      * @return Operation status.
@@ -115,9 +124,8 @@ class Writer final {
 
     /**
      * @brief Writes single 32 bit signed value with little-endian memory
-     * orientation to the buffer
-     * and advances the current buffer position to the next unused byte.
-     * Value is written in 2's complement notation.
+     * orientation to the buffer and advances the current buffer position to the
+     * next unused byte. Value is written in 2's complement notation.
      * @param[in] dword Doubleword that should be added to writer output using
      * little endian byte ordering.
      * @return Operation status.
@@ -156,6 +164,11 @@ class Writer final {
      */
     gsl::span<std::uint8_t> Capture();
 
+    /**
+     * @brief Resets reader to the initial state.
+     */
+    void Reset();
+
  private:
     /**
      * @brief Updates internal writer status
@@ -164,11 +177,6 @@ class Writer final {
      * @retval false Write operation cannot be performed
      */
     bool UpdateState(std::uint8_t requestedSize);
-
-    /**
-     * @brief Resets reader to the initial state.
-     */
-    inline void Reset();
 
     /**
      * @brief Pointer to the buffer in memory.
@@ -191,13 +199,18 @@ class Writer final {
     bool _isValid;
 };
 
+inline void Writer::Initialize(gsl::span<std::uint8_t> view) {
+    this->_buffer = view;
+    this->Reset();
+}
+
 inline bool Writer::Status() const {
     return this->_isValid;
 }
 
 inline void Writer::Reset() {
     this->_position = 0;
-    this->_isValid  = this->_buffer.size() > 0;
+    this->_isValid  = this->_buffer.length() > 0;
 }
 
 inline uint16_t Writer::GetDataLength() const {
