@@ -1,6 +1,7 @@
 #ifndef HAL_BOARDS_EVB_ATMEGA324P_HAL_BOARD_H_
 #define HAL_BOARDS_EVB_ATMEGA324P_HAL_BOARD_H_
 
+#include "hal/devices.h"
 #include "hal/periph.h"
 
 namespace hal {

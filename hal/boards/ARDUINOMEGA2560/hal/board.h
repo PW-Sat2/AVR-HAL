@@ -1,7 +1,9 @@
 #ifndef HAL_BOARDS_ARDUINOMEGA2560_HAL_BOARD_H_
 #define HAL_BOARDS_ARDUINOMEGA2560_HAL_BOARD_H_
 
+#include "hal/devices.h"
 #include "hal/periph.h"
+
 namespace hal {
 namespace bsp {
 namespace pins {
