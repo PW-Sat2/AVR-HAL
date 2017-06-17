@@ -22,10 +22,10 @@ int main() {
     InternalADC::enable_interrupt();
     sei();
 
-    hal::cpu::set_sleep_mode(hal::cpu::SleepModes::ADC_Noise_Reduction);
-    hal::cpu::sleep_enable();
+    set_sleep_mode(SLEEP_MODE_ADC);
+    sleep_enable();
     while (true) {
-        hal::cpu::sleep_cpu();  // triggers ADC conversion
+        sleep_cpu();
         printf("read: %d\r\n", x);
     }
 }
