@@ -35,8 +35,6 @@ message(STATUS "PicoCOM: ${PICOCOM}")
 
 set(AVR_LINKER_LIBS "-lc -lm -lgcc")
 
-set(ENABLE_HAL_STD TRUE)
-
 set (CWARN "-Wall -Wstrict-prototypes -Wextra -Werror")
 set (CXXWARN "-Wall -Wextra -Werror")
 set (CTUNING "-Os -fomit-frame-pointer -ffunction-sections -fdata-sections -flto")

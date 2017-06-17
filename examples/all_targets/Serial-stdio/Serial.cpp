@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <hal/hal>
 
 using hal::Serial0;
