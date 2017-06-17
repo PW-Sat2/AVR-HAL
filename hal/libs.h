@@ -8,6 +8,7 @@
 #include "libs/compile_time.h"
 #include "libs/fifo.h"
 #include "libs/reader.h"
+#include "libs/simavr.h"
 #include "libs/writer.h"
 
 #endif  // HAL_LIBS_H_
