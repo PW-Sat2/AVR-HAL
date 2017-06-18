@@ -7,7 +7,7 @@ Reader::Reader() : position(0), isValid(false) {
 }
 
 Reader::Reader(gsl::span<const uint8_t> view) {
-    Initialize(view);
+    Initialize(std::move(view));
 }
 
 bool Reader::UpdateState(uint16_t requestedSize) {
@@ -36,7 +36,7 @@ uint8_t Reader::ReadByte() {
     }
 }
 
-uint8_t Reader::ReadByteBCD(uint8_t upperNibbleMask) {
+uint8_t Reader::ReadByteBCD(std::uint8_t upperNibbleMask) {
     uint8_t bcdByte = ReadByte();
     return ((bcdByte & upperNibbleMask) >> 4) * 10 + (bcdByte & 0x0F);
 }
@@ -134,7 +134,7 @@ uint64_t Reader::ReadQuadWordLE() {
 
 gsl::span<const uint8_t> Reader::ReadArray(uint16_t length) {
     if (!UpdateState(length)) {
-        return gsl::span<const uint8_t>();
+        return gsl::span<const std::uint8_t>();
     } else {
         return this->buffer.subspan(this->position - length, length);
     }

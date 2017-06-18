@@ -12,21 +12,17 @@ Writer::Writer(gsl::span<std::uint8_t> view) {
     this->Initialize(std::move(view));
 }
 
-void Writer::Initialize(gsl::span<std::uint8_t> view) {
-    this->_buffer = view;
-    this->Reset();
-}
-
 bool Writer::UpdateState(std::uint8_t requestedSize) {
     if (this->_isValid) {
-        this->_isValid = (this->_position + requestedSize) <= this->_buffer.size();
+        this->_isValid =
+            (this->_position + requestedSize) <= this->_buffer.length();
     }
 
     return this->_isValid;
 }
 
 std::int32_t Writer::RemainingSize() const {
-    return this->_buffer.size() - this->_position;
+    return this->_buffer.length() - this->_position;
 }
 
 bool Writer::WriteByte(std::uint8_t byte) {
@@ -44,6 +40,17 @@ bool Writer::WriteWordLE(std::uint16_t word) {
     } else {
         this->_buffer[this->_position]     = word & 0xff;
         this->_buffer[this->_position + 1] = (word >> 8) & 0xff;
+        this->_position += 2;
+        return true;
+    }
+}
+
+bool Writer::WriteWordBE(std::uint16_t word) {
+    if (!this->UpdateState(2)) {
+        return false;
+    } else {
+        this->_buffer[this->_position]     = (word >> 8) & 0xff;
+        this->_buffer[this->_position + 1] = word & 0xff;
         this->_position += 2;
         return true;
     }
@@ -88,13 +95,13 @@ bool Writer::WriteQuadWordLE(uint64_t word) {
 }
 
 bool Writer::WriteArray(gsl::span<const uint8_t> buffer) {
-    if (!this->UpdateState(buffer.size())) {
+    if (!this->UpdateState(buffer.length())) {
         return false;
     } else {
         std::copy(
             buffer.begin(), buffer.end(), this->_buffer.begin() + this->_position);
 
-        this->_position += buffer.size();
+        this->_position += buffer.length();
         return true;
     }
 }
