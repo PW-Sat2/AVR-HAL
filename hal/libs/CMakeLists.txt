@@ -11,6 +11,7 @@ add_library(${NAME} STATIC
     bit_operations.h
     compile_time.h
     fifo.h
+    simavr.h
 )
 
 target_include_directories(${NAME} PUBLIC
