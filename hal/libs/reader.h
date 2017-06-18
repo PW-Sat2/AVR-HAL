@@ -1,8 +1,6 @@
 #ifndef HAL_LIBS_READER_H_
 #define HAL_LIBS_READER_H_
 
-#pragma once
-
 #include <cstdint>
 #include <gsl/gsl>
 
@@ -80,30 +78,29 @@ class Reader final {
      * @param[in] upperNibbleMask mask used for byte's upper nibble.
      * @return Read byte.
      */
-    uint8_t ReadByteBCD(uint8_t upperNibbleMask);
+    uint8_t ReadByteBCD(std::uint8_t upperNibbleMask);
 
     /**
      * @brief Read single 16 bit word with little-endian memory orientation from
-     * the buffer
-     * and advance the current buffer position to the next unread byte.
+     * the buffer and advance the current buffer position to the next unread
+     * byte.
      * @return Read word.
      */
     uint16_t ReadWordLE();
 
     /**
      * @brief Read single 16 bit word with little-endian memory orientation from
-     * the buffer,
-     * convert it into signed value and advance the current buffer position to
-     * the next unread byte.
-     * Value is read assuming 2's complement notation.
+     * the buffer, convert it into signed value and advance the current buffer
+     * position to the next unread byte. Value is read assuming 2's complement
+     * notation.
      * @return Read signed word value.
      */
     int16_t ReadSignedWordLE();
 
     /**
      * @brief Read single 16 bit word with big-endian memory orientation from
-     * the buffer
-     * and advance the current buffer position to the next unread byte.
+     * the buffer and advance the current buffer position to the next unread
+     * byte.
      * @return Read word.
      */
     uint16_t ReadWordBE();
@@ -112,32 +109,31 @@ class Reader final {
      * @brief Read single 16 bit word with big-endian memory orientation from
      * the buffer
      * and advance the current buffer position to the next unread byte.
-     * @return Read word.
+     * @return Read signed word value.
      */
     int16_t ReadSignedWordBE();
 
     /**
      * @brief Read single 32 bit word with little-endian memory orientation from
-     * the buffer
-     * and advance the current buffer position to the next unread byte.
+     * the buffer and advance the current buffer position to the next unread
+     * byte.
      * @return Read double word.
      */
     uint32_t ReadDoubleWordLE();
 
     /**
      * @brief Read single 32 bit word with little-endian memory orientation from
-     * the buffer,
-     * convert it into signed value and advance the current buffer position to
-     * the next unread byte.
-     * Value is read assuming 2's complement notation.
+     * the buffer, convert it into signed value and advance the current buffer
+     * position to the next unread byte. Value is read assuming 2's complement
+     * notation.
      * @return Read signed double word value.
      */
     int32_t ReadSignedDoubleWordLE();
 
     /**
      * @brief Read single 32 bit word with big-endian memory orientation from
-     * the buffer
-     * and advance the current buffer position to the next unread byte.
+     * the buffer and advance the current buffer position to the next unread
+     * byte.
      * @return Read double word.
      */
     uint32_t ReadDoubleWordBE();
@@ -152,8 +148,8 @@ class Reader final {
 
     /**
      * @brief Read single 64 bit word with little-endian memory orientation from
-     * the buffer
-     * and advance the current buffer position to the next unread byte.
+     * the buffer and advance the current buffer position to the next unread
+     * byte.
      * @return Read double word.
      */
     uint64_t ReadQuadWordLE();
@@ -162,10 +158,9 @@ class Reader final {
      * @brief Read the requested number of bytes from the buffer.
      *
      * This method does not perform any operation/transformation on the data it
-     * only ensures that
-     * there are requested number of bytes available in the buffer and advances
-     * the current
-     * buffer position to the first byte beyond the requested block.
+     * only ensures that there are requested number of bytes available in the
+     * buffer and advances the current buffer position to the first byte beyond
+     * the requested block.
      * @param[in] length Size in bytes of the requested data block.
      * @return Pointer to the first byte of the requested memory block.
      */

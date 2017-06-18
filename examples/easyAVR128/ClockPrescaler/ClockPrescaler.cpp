@@ -18,10 +18,4 @@ int main() {
         printf("X\r\n");
         _delay_ms(100);
     }
-
-    hal::cpu::sleep_enable();
-
-    while (true) {
-        hal::cpu::sleep_cpu();
-    }
 }
