@@ -46,7 +46,7 @@ struct DAC121 : libs::PureStatic {
     }
 };
 
-}; // namespace DAC121
+};  // namespace DAC121
 }  // namespace devices
 }  // namespace hal
 
