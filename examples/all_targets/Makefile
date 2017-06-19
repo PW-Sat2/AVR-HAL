@@ -30,7 +30,7 @@ EVB_ATMEGA324P: cmake-build-EVB_ATMEGA324P
 
 cmake-build-EVB_ATMEGA644P:
 	mkdir $@
-EVB_MEGA644P: cmake-build-EVB_MEGA644P
+EVB_ATMEGA644P: cmake-build-EVB_ATMEGA644P
 	cmake -Bcmake-build-$@ -H. -G "Unix Makefiles" -DBOARD=$@
 	make -C cmake-build-$@ -j5
 
