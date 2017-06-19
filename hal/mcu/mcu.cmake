@@ -33,6 +33,11 @@ set(          GCC_TARGET_ATMEGA324P_44    atmega324p)
 set(      AVRDUDE_TARGET_ATMEGA324P_44    m324pa)
 set(       SIMAVR_TARGET_ATMEGA324P_44    atmega324p)
 
+set(            includes_ATMEGA1284P_44    atmega164p_324p_644p_44)
+set(          GCC_TARGET_ATMEGA1284P_44    atmega1284p)
+set(      AVRDUDE_TARGET_ATMEGA1284P_44    m1284p)
+set(       SIMAVR_TARGET_ATMEGA1284P_44    atmega1284p)
+
 set(        includes_ATMEGA328P_TQFP32    atmega328p_tqfp32)
 set(      GCC_TARGET_ATMEGA328P_TQFP32    atmega328p)
 set(  AVRDUDE_TARGET_ATMEGA328P_TQFP32    m328p)
