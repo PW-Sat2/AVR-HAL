@@ -1,4 +1,4 @@
-all: ARDUINOMEGA2560 ARDUINONANO328P EASYAVR128 EVB_ATMEGA324P EVB_MEGA644P EVB_ATMEGA1284P
+all: ARDUINOMEGA2560 ARDUINONANO328P EASYAVR128 EVB_ATMEGA324P EVB_ATMEGA644P EVB_ATMEGA1284P
 
 cmake-build-ARDUINOMEGA2560:
 	mkdir $@
@@ -28,15 +28,15 @@ EVB_ATMEGA324P: cmake-build-EVB_ATMEGA324P
 	make -C cmake-build-$@ -j5
 
 
-cmake-build-EVB_MEGA644P:
+cmake-build-EVB_ATMEGA644P:
 	mkdir $@
 EVB_MEGA644P: cmake-build-EVB_MEGA644P
 	cmake -Bcmake-build-$@ -H. -G "Unix Makefiles" -DBOARD=$@
 	make -C cmake-build-$@ -j5
 
-cmake-build-EVB_MEGA1284P:
+cmake-build-EVB_ATMEGA1284P:
 	mkdir $@
-EVB_MEGA1284P: cmake-build-EVB_MEGA1284P
+EVB_ATMEGA1284P: cmake-build-EVB_ATMEGA1284P
 	cmake -Bcmake-build-$@ -H. -G "Unix Makefiles" -DBOARD=$@
 	make -C cmake-build-$@ -j5
 
