@@ -1,6 +1,7 @@
 #ifndef HAL_DEVICES_AD7714_H_
 #define HAL_DEVICES_AD7714_H_
 
+#include <hal/hal>
 #include "hal/periph.h"
 
 namespace hal {
@@ -52,11 +53,6 @@ enum class Modes : std::uint8_t {
     FullScaleSelfCalib = 7
 };
 
-enum class Control_State : std::uint8_t {
-    OFF = 0,  //
-    ON  = 1
-};
-
 enum class Polarity : std::uint8_t {
     bipolar  = 0,  //
     unipolar = 1
@@ -84,12 +80,12 @@ class AD7714 {
         std::array<uint8_t, 3> data;
         SPI::read(data);
 
-        uint24_t read = 0;
+        uint32_t read = 0;
         read |= data[0], read <<= 8;
         read |= data[1], read <<= 8;
         read |= data[2];
 
-        return read;
+        return static_cast<uint24_t>(read);
     }
 
     void set_filter(Polarity polarity, uint16_t filter) {
@@ -106,6 +102,13 @@ class AD7714 {
         SPI::transfer(val);
     }
 
+    void set_mode(Modes mode, Gain gain) {
+        write_to_comm_reg(Registers::MODE_REG, false);
+        uint8_t data = (num(mode) << 5) | (num(gain) << 2);
+        SPI::transfer(data);
+        this->wait_for_DRDY();
+    }
+
  private:
     Channels actual_channel;
 
@@ -119,13 +122,6 @@ class AD7714 {
                       (read << 3) |      //
                       num(actual_channel);
         SPI::transfer(out);
-    }
-
-    void writeto_(Modes mode, Gain gain) {
-        write_to_comm_reg(Registers::MODE_REG, false);
-        uint8_t data = (num(mode) << 5) | (num(gain) << 2);
-        SPI::transfer(data);
-        this->wait_for_DRDY();
     }
 };
 
