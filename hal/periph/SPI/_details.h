@@ -42,7 +42,7 @@ class BlockTransfer : libs::PureStatic {
     static void read(gsl::span<uint8_t> input, uint8_t output_value = 0) {
         pin_cs::reset();
         for (auto& x : input) {
-            T::transfer(output_value);
+            x = T::transfer(output_value);
         }
         pin_cs::set();
     }
