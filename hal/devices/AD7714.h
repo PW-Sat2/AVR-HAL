@@ -8,7 +8,7 @@ namespace hal {
 namespace devices {
 namespace AD7714 {
 
-enum class Registers : std::uint8_t {
+enum class Registers : std::uint8_t  {
     COMM_REG             = 0,
     MODE_REG             = 1,
     FILTER_HIGH_REG      = 2,
@@ -16,10 +16,10 @@ enum class Registers : std::uint8_t {
     TEST_REG             = 4,
     DATA_REG             = 5,
     ZERO_SCALE_CALIB_REG = 6,
-    FULL_SCALE_CALIB_REG = 7
+    FULL_SCALE_CALIB_REG = 7,
 };
 
-enum class Channels : std::uint8_t {
+enum class Channels : std::uint8_t  {
     AIN1_CH   = 0,
     AIN2_CH   = 1,
     AIN3_CH   = 2,
@@ -28,100 +28,99 @@ enum class Channels : std::uint8_t {
     AIN1_2_CH = 4,
     AIN3_4_CH = 5,
     AIN5_6_CH = 6,
-    TEST_CH   = 7
+    TEST_CH   = 7,
 };
 
-enum class Gain : std::uint8_t {
-    Gain_1   = 0,
-    Gain_2   = 1,
-    Gain_4   = 2,
-    Gain_8   = 3,
-    Gain_16  = 4,
-    Gain_32  = 5,
-    Gain_64  = 6,
-    Gain_128 = 7
+enum class Gain : std::uint8_t  {
+    GAIN_1   = 0,
+    GAIN_2   = 1,
+    GAIN_4   = 2,
+    GAIN_8   = 3,
+    GAIN_16  = 4,
+    GAIN_32  = 5,
+    GAIN_64  = 6,
+    GAIN_128 = 7,
 };
 
-enum class Modes : std::uint8_t {
-    NormalMode         = 0,
-    SelfCalib          = 1,
-    ZeroScaleSysCalib  = 2,
-    FullScaleSysCalib  = 3,
-    SysOffsetCalib     = 4,
-    BackgroundCalib    = 5,
-    ZeroScaleSelfCalib = 6,
-    FullScaleSelfCalib = 7
+enum class Modes : std::uint8_t  {
+    NORMAL_MODE             = 0,
+    SELF_CALIB              = 1,
+    ZERO_SCALE_SYS_CALIB    = 2,
+    FULL_SCALE_SYS_CALIB    = 3,
+    SYS_OFFSET_CALIB        = 4,
+    BACKGROUND_CALIB        = 5,
+    ZERO_SCALE_SELF_CALIB   = 6,
+    FULL_SCALE_SELF_CALIB   = 7,
 };
 
 enum class Polarity : std::uint8_t {
-    bipolar  = 0,  //
-    unipolar = 1
+    BIPOLAR  = 0,
+    UNIPOLAR = 1,
 };
 
-template<typename SPI, typename pin_DRDY>
+template<typename spi_dev, typename pin_DRDY>
 class AD7714 {
  public:
-    uint8_t change_channel(Channels channel) {
-        actual_channel = channel;
+    std::uint8_t change_channel(Channels channel) {
+        this->actual_channel = channel;
         write_to_comm_reg(Registers::COMM_REG, true);
         this->wait_for_DRDY();
-        return SPI::transfer(0);
+
+        std::uint8_t data;
+        spi_dev::read(data);
+        return data;
     }
 
 
     void init() const {
-        pin_DRDY::init(DigitalIO::Mode::INPUT);
+      pin_DRDY::init(DigitalIO::Mode::INPUT);
     }
+
 
     uint24_t read_data() {
         wait_for_DRDY();
         write_to_comm_reg(Registers::DATA_REG, true);
 
-        std::array<uint8_t, 3> data;
-        SPI::read(data);
-
         uint32_t read = 0;
-        read |= data[0], read <<= 8;
-        read |= data[1], read <<= 8;
-        read |= data[2];
-
+        std::array<std::uint8_t, 3> data;
+        spi_dev::read(data);
+            read = (static_cast<uint32_t>(data[0]) << 16);
+            read |= (static_cast<uint32_t>(data[1]) << 8);
+            read |= (static_cast<uint32_t>(data[2]));
         return static_cast<uint24_t>(read);
     }
 
-    void set_filter(Polarity polarity, uint16_t filter) {
-        //  filter: 19-4000
-        //  f notch = fclk/128/filter
-        write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
-        uint8_t val = (static_cast<std::uint8_t>(polarity) << 7) |  //
-                      (1 << 6) |                                    //
-                      (1 << 5) |                                    //
-                      (filter >> 8);
-        SPI::transfer(val);
-        write_to_comm_reg(Registers::FILTER_LOW_REG, false);
-        val = (filter & 0xFF);
-        SPI::transfer(val);
-    }
 
     void set_mode(Modes mode, Gain gain) {
-        write_to_comm_reg(Registers::MODE_REG, false);
-        uint8_t data = (num(mode) << 5) | (num(gain) << 2);
-        SPI::transfer(data);
-        this->wait_for_DRDY();
+      write_to_comm_reg(Registers::MODE_REG, false);
+      std::uint8_t data = (static_cast<std::uint8_t>(mode) << 5) | (static_cast<std::uint8_t>(gain) << 2);
+      spi_dev::write(data);
+      this->wait_for_DRDY();
+    }
+
+
+    void set_filter(Polarity set_polarity, uint16_t filter) {
+      //  filter: 19-4000
+      //  f notch = fclk/128/filter
+      write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
+      std::uint8_t val = (static_cast<std::uint8_t>(set_polarity) << 7) | (1 << 6) | (1 << 5) | libs::read_mask<7, 4>(static_cast<uint16_t>(filter));
+      spi_dev::write(val);
+
+      write_to_comm_reg(Registers::FILTER_LOW_REG, false);
+      val = libs::read_mask<0, 8>(static_cast<std::uint8_t>(filter));
+      spi_dev::write(val);
     }
 
  private:
     Channels actual_channel;
 
     void wait_for_DRDY() {
-        while (pin_DRDY::read()) {
-        }
+      while (pin_DRDY::read()) {}
     }
 
     void write_to_comm_reg(Registers reg, bool read) const {
-        uint8_t out = (num(reg) << 4) |  //
-                      (read << 3) |      //
-                      num(actual_channel);
-        SPI::transfer(out);
+      std::uint8_t out = (static_cast<std::uint8_t>(reg) << 4) | (static_cast<std::uint8_t>(read) << 3) | (static_cast<std::uint8_t>(actual_channel));
+      spi_dev::write(out);
     }
 };
 
