@@ -61,14 +61,13 @@ enum class Polarity : std::uint8_t {
 template<typename spi_dev, typename pin_DRDY>
 class AD7714 {
  public:
-    std::uint8_t change_channel(Channels channel) {
+    void change_channel(Channels channel) {
         this->actual_channel = channel;
         write_to_comm_reg(Registers::COMM_REG, true);
-        this->wait_for_DRDY();
 
-        std::uint8_t data;
-        spi_dev::read(data);
-        return data;
+        //std::uint8_t data;
+        //spi_dev::read(data);
+        //return data;
     }
 
 
@@ -99,7 +98,6 @@ class AD7714 {
       write_to_comm_reg(Registers::MODE_REG, false);
       std::uint8_t data = (static_cast<std::uint8_t>(mode) << 5) | (static_cast<std::uint8_t>(gain) << 2);
       spi_dev::write(data);
-      this->wait_for_DRDY();
     }
 
 
