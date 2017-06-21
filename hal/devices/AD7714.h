@@ -77,8 +77,7 @@ class AD7714 {
     }
 
 
-    uint24_t read_data() {
-        wait_for_DRDY();
+    uint24_t read_data_no_wait() {
         write_to_comm_reg(Registers::DATA_REG, true);
 
         uint32_t read = 0;
@@ -88,6 +87,11 @@ class AD7714 {
             read |= (static_cast<uint32_t>(data[1]) << 8);
             read |= (static_cast<uint32_t>(data[2]));
         return static_cast<uint24_t>(read);
+    }
+
+    uint24_t read_data() {
+        this->wait_for_DRDY();
+        return this->read_data_no_wait();
     }
 
 
@@ -111,11 +115,16 @@ class AD7714 {
       spi_dev::write(val);
     }
 
+    bool data_ready() {
+        return !pin_DRDY::read();
+    }
+
  private:
     Channels actual_channel;
 
     void wait_for_DRDY() {
-      while (pin_DRDY::read()) {}
+        while (pin_DRDY::read()) {
+        }
     }
 
     void write_to_comm_reg(Registers reg, bool read) const {
