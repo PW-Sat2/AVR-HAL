@@ -65,9 +65,8 @@ class AD7714 {
         this->actual_channel = channel;
         write_to_comm_reg(Registers::COMM_REG, true);
 
-        //std::uint8_t data;
-        //spi_dev::read(data);
-        //return data;
+        std::uint8_t data;
+        spi_dev::read(data);
     }
 
 
