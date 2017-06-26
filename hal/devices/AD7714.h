@@ -8,7 +8,7 @@ namespace hal {
 namespace devices {
 namespace AD7714 {
 
-enum class Registers : std::uint8_t  {
+enum class Registers : std::uint8_t {
     COMM_REG             = 0,
     MODE_REG             = 1,
     FILTER_HIGH_REG      = 2,
@@ -19,7 +19,7 @@ enum class Registers : std::uint8_t  {
     FULL_SCALE_CALIB_REG = 7,
 };
 
-enum class Channels : std::uint8_t  {
+enum class Channels : std::uint8_t {
     AIN1_CH   = 0,
     AIN2_CH   = 1,
     AIN3_CH   = 2,
@@ -31,7 +31,7 @@ enum class Channels : std::uint8_t  {
     TEST_CH   = 7,
 };
 
-enum class Gain : std::uint8_t  {
+enum class Gain : std::uint8_t {
     GAIN_1   = 0,
     GAIN_2   = 1,
     GAIN_4   = 2,
@@ -42,15 +42,15 @@ enum class Gain : std::uint8_t  {
     GAIN_128 = 7,
 };
 
-enum class Modes : std::uint8_t  {
-    NORMAL_MODE             = 0,
-    SELF_CALIB              = 1,
-    ZERO_SCALE_SYS_CALIB    = 2,
-    FULL_SCALE_SYS_CALIB    = 3,
-    SYS_OFFSET_CALIB        = 4,
-    BACKGROUND_CALIB        = 5,
-    ZERO_SCALE_SELF_CALIB   = 6,
-    FULL_SCALE_SELF_CALIB   = 7,
+enum class Modes : std::uint8_t {
+    NORMAL_MODE           = 0,
+    SELF_CALIB            = 1,
+    ZERO_SCALE_SYS_CALIB  = 2,
+    FULL_SCALE_SYS_CALIB  = 3,
+    SYS_OFFSET_CALIB      = 4,
+    BACKGROUND_CALIB      = 5,
+    ZERO_SCALE_SELF_CALIB = 6,
+    FULL_SCALE_SELF_CALIB = 7,
 };
 
 enum class Polarity : std::uint8_t {
@@ -71,7 +71,7 @@ class AD7714 {
 
 
     void init() const {
-      pin_DRDY::init(DigitalIO::Mode::INPUT);
+        pin_DRDY::init(DigitalIO::Mode::INPUT);
     }
 
 
@@ -81,9 +81,9 @@ class AD7714 {
         uint32_t read = 0;
         std::array<std::uint8_t, 3> data;
         spi_dev::read(data);
-            read = (static_cast<uint32_t>(data[0]) << 16);
-            read |= (static_cast<uint32_t>(data[1]) << 8);
-            read |= (static_cast<uint32_t>(data[2]));
+        read = (static_cast<uint32_t>(data[0]) << 16);
+        read |= (static_cast<uint32_t>(data[1]) << 8);
+        read |= (static_cast<uint32_t>(data[2]));
         return static_cast<uint24_t>(read);
     }
 
@@ -94,22 +94,25 @@ class AD7714 {
 
 
     void set_mode(Modes mode, Gain gain) {
-      write_to_comm_reg(Registers::MODE_REG, false);
-      std::uint8_t data = (static_cast<std::uint8_t>(mode) << 5) | (static_cast<std::uint8_t>(gain) << 2);
-      spi_dev::write(data);
+        write_to_comm_reg(Registers::MODE_REG, false);
+        std::uint8_t data = (static_cast<std::uint8_t>(mode) << 5) |
+                            (static_cast<std::uint8_t>(gain) << 2);
+        spi_dev::write(data);
     }
 
 
     void set_filter(Polarity set_polarity, uint16_t filter) {
-      //  filter: 19-4000
-      //  f notch = fclk/128/filter
-      write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
-      std::uint8_t val = (static_cast<std::uint8_t>(set_polarity) << 7) | (1 << 6) | (1 << 5) | libs::read_mask<7, 4>(static_cast<uint16_t>(filter));
-      spi_dev::write(val);
+        //  filter: 19-4000
+        //  f notch = fclk/128/filter
+        write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
+        std::uint8_t val = (static_cast<std::uint8_t>(set_polarity) << 7) |
+                           (1 << 6) | (1 << 5) |
+                           libs::read_mask<7, 4>(static_cast<uint16_t>(filter));
+        spi_dev::write(val);
 
-      write_to_comm_reg(Registers::FILTER_LOW_REG, false);
-      val = libs::read_mask<0, 8>(static_cast<std::uint8_t>(filter));
-      spi_dev::write(val);
+        write_to_comm_reg(Registers::FILTER_LOW_REG, false);
+        val = libs::read_mask<0, 8>(static_cast<std::uint8_t>(filter));
+        spi_dev::write(val);
     }
 
     bool data_ready() {
@@ -125,8 +128,10 @@ class AD7714 {
     }
 
     void write_to_comm_reg(Registers reg, bool read) const {
-      std::uint8_t out = (static_cast<std::uint8_t>(reg) << 4) | (static_cast<std::uint8_t>(read) << 3) | (static_cast<std::uint8_t>(actual_channel));
-      spi_dev::write(out);
+        std::uint8_t out = (static_cast<std::uint8_t>(reg) << 4) |
+                           (static_cast<std::uint8_t>(read) << 3) |
+                           (static_cast<std::uint8_t>(actual_channel));
+        spi_dev::write(out);
     }
 };
 
