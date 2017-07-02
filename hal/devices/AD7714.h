@@ -94,25 +94,26 @@ class AD7714 {
     }
 
 
-    void set_mode(Modes mode, Gain gain) {
+    void set_mode(const Modes mode, const Gain gain) {
         write_to_comm_reg(Registers::MODE_REG, false);
         std::uint8_t data = (static_cast<std::uint8_t>(mode) << 5) |
                             (static_cast<std::uint8_t>(gain) << 2);
         spi_dev::write(data);
     }
 
+    template<uint16_t filter>
+    void set_filter(const Polarity set_polarity) {
+        static_assert((filter >= 19) && (filter <= 4000),
+                  "Allowed filter value is 19 - 4000");
 
-    void set_filter(Polarity set_polarity, uint16_t filter) {
-        //  filter: 19-4000
-        //  f notch = fclk/128/filter
         write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
         std::uint8_t val = (static_cast<std::uint8_t>(set_polarity) << 7) |
                            (1 << 6) | (1 << 5) |
-                           libs::read_mask<7, 4>(static_cast<uint16_t>(filter));
+                           libs::read_mask<7, 4>(filter);
         spi_dev::write(val);
 
         write_to_comm_reg(Registers::FILTER_LOW_REG, false);
-        val = libs::read_mask<0, 8>(static_cast<std::uint8_t>(filter));
+        val = libs::read_mask<0, 8>(filter);
         spi_dev::write(val);
     }
 
@@ -129,7 +130,7 @@ class AD7714 {
         }
     }
 
-    void write_to_comm_reg(Registers reg, bool read) const {
+    void write_to_comm_reg(const Registers reg, const bool read) const {
         std::uint8_t out = (static_cast<std::uint8_t>(reg) << 4) |
                            (static_cast<std::uint8_t>(read) << 3) |
                            (static_cast<std::uint8_t>(actual_channel));

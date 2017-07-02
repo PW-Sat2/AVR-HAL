@@ -27,7 +27,7 @@ int main() {
     while (true) {
         ext_adc.change_channel(AD7714::Channels::AIN3_4_CH);
         hal::Serial0.printf("Channel changed\r\n");
-        ext_adc.set_filter(AD7714::Polarity::UNIPOLAR, 4000);
+        ext_adc.set_filter<4000>(AD7714::Polarity::UNIPOLAR);
         hal::Serial0.printf("Filter set\r\n");
         ext_adc.set_mode(AD7714::Modes::SELF_CALIB, AD7714::Gain::GAIN_1);
         hal::Serial0.printf("Calibration started\r\n");
