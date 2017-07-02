@@ -1,7 +1,6 @@
 #ifndef HAL_DEVICES_AD7714_H_
 #define HAL_DEVICES_AD7714_H_
 
-#include <hal/hal>
 #include "hal/periph.h"
 
 namespace hal {
@@ -81,7 +80,7 @@ class AD7714 {
         std::array<std::uint8_t, 3> data;
         spi_dev::read(data);
 
-        uint32_t read = 0;
+        std::uint32_t read = 0;
         read |= data[0], read <<= 8;
         read |= data[1], read <<= 8;
         read |= data[2];
@@ -96,7 +95,7 @@ class AD7714 {
         spi_dev::write(data);
     }
 
-    template<uint16_t filter>
+    template<std::uint16_t filter>
     void set_filter(const Polarity set_polarity) {
         static_assert((filter >= 19) && (filter <= 4000),
                       "Allowed filter value is 19 - 4000");
