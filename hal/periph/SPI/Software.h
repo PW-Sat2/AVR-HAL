@@ -22,9 +22,9 @@ class Software
         details::BlockTransfer<pin_ss, Software<pin_mosi, pin_miso, pin_sck, pin_ss, polarity, phase>>;
 
  public:
-    using Base::write;
     using Base::read;
     using Base::transfer;
+    using Base::write;
 
     static void init() {
         Base::init();

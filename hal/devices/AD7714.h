@@ -99,12 +99,11 @@ class AD7714 {
     template<uint16_t filter>
     void set_filter(const Polarity set_polarity) {
         static_assert((filter >= 19) && (filter <= 4000),
-                  "Allowed filter value is 19 - 4000");
+                      "Allowed filter value is 19 - 4000");
 
         write_to_comm_reg(Registers::FILTER_HIGH_REG, false);
         std::uint8_t val = (static_cast<std::uint8_t>(set_polarity) << 7) |
-                           (1 << 6) | (1 << 5) |
-                           libs::read_mask<7, 4>(filter);
+                           (1 << 6) | (1 << 5) | libs::read_mask<7, 4>(filter);
         spi_dev::write(val);
 
         write_to_comm_reg(Registers::FILTER_LOW_REG, false);

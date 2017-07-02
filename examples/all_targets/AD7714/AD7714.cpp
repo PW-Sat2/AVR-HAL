@@ -3,7 +3,7 @@
 using hal::Serial0;
 using namespace hal::devices;
 
-using cs = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
+using cs       = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
 using DDRY_pin = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 
 using spi = hal::SPI::Hardware<cs,
@@ -32,7 +32,8 @@ int main() {
         ext_adc.set_mode(AD7714::Modes::SELF_CALIB, AD7714::Gain::GAIN_1);
         hal::Serial0.printf("Calibration started\r\n");
 
-        while (!ext_adc.data_ready()) {}
+        while (!ext_adc.data_ready()) {
+        }
         hal::Serial0.printf("ADC ready\r\n");
 
         uint24_t data = ext_adc.read_data_no_wait();

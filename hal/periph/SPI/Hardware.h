@@ -41,8 +41,8 @@ class Hardware
 
  public:
     using Base::read;
-    using Base::write;
     using Base::transfer;
+    using Base::write;
 
     static void init() {
         Base::init();
