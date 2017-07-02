@@ -88,11 +88,6 @@ class AD7714 {
         return static_cast<uint24_t>(read);
     }
 
-    uint24_t read_data() {
-        this->wait_for_DRDY();
-        return this->read_data_no_wait();
-    }
-
 
     void set_mode(const Modes mode, const Gain gain) {
         write_to_comm_reg(Registers::MODE_REG, false);
@@ -124,11 +119,6 @@ class AD7714 {
 
  private:
     Channels actual_channel;
-
-    void wait_for_DRDY() {
-        while (pin_DRDY::read()) {
-        }
-    }
 
     void write_to_comm_reg(const Registers reg, const bool read) const {
         std::uint8_t out = (static_cast<std::uint8_t>(reg) << 4) |
