@@ -107,6 +107,16 @@ constexpr auto max_value_on_bits(std::uint8_t bitsCount) {
     return (1 << bitsCount) - 1;
 }
 
+
+template<typename T>
+constexpr std::uint8_t low_byte(T value) {
+    return value & 0xFFu;
+}
+
+constexpr std::uint8_t high_byte(std::uint16_t value) {
+    return (value >> 8);
+}
+
 }  // namespace libs
 }  // namespace hal
 
