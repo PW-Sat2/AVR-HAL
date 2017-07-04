@@ -107,14 +107,30 @@ constexpr auto max_value_on_bits(std::uint8_t bitsCount) {
     return (1 << bitsCount) - 1;
 }
 
-
+/*!
+ * Take the lowest byte of numeric value.
+ * @tparam T type of the value
+ * @param value
+ * @return Lowest byte of \ref value
+ */
 template<typename T>
 constexpr std::uint8_t low_byte(T value) {
     return value & 0xFFu;
 }
 
-constexpr std::uint8_t high_byte(std::uint16_t value) {
-    return (value >> 8);
+/*!
+ * Take the highest byte of numeric value.
+ * Defined only on arithmetic, unsigned values.
+ * @tparam T tyoe of the value
+ * @param value
+ * @return Highest byte of \ref value
+ */
+template<typename T>
+constexpr std::uint8_t high_byte(T value) {
+    static_assert(std::is_arithmetic<T>() && std::is_unsigned<T>(),
+                  "needs to be arithmetic type!");
+    constexpr auto shift = 8 * (sizeof(T) - 1);
+    return (value >> shift);
 }
 
 }  // namespace libs
