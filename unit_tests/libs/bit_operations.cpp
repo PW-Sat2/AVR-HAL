@@ -268,3 +268,39 @@ TEST(bit_operations, read_bit_template) {
     TEST_ASSERT_EQUAL(read_bit<0>(val3), 0);
     TEST_ASSERT_EQUAL(read_bit<31>(val3), 1);
 }
+
+TEST(bit_operations, low_byte) {
+    TEST_ASSERT_EQUAL_HEX32(0xBC, low_byte(0xBC));
+    TEST_ASSERT_EQUAL_HEX32(0xAD, low_byte(0xBCAD));
+    TEST_ASSERT_EQUAL_HEX32(0x12, low_byte(0xBCAD12));
+    TEST_ASSERT_EQUAL_HEX32(0x58, low_byte(0xBCAD1258));
+    TEST_ASSERT_EQUAL_HEX32(0x47, low_byte(0xBCAD125847));
+    TEST_ASSERT_EQUAL_HEX32(0x9F, low_byte(0xBCAD1258479F));
+    TEST_ASSERT_EQUAL_HEX32(0xE7, low_byte(0xBCAD1258479FE7));
+    TEST_ASSERT_EQUAL_HEX32(0x5A, low_byte(0xBCAD1258479FE75A));
+
+    constexpr uint16_t val = 0x18FB;
+    TEST_ASSERT_EQUAL_HEX32(0xFB, low_byte(val));
+
+    constexpr uint32_t val2 = 0x12345678;
+    TEST_ASSERT_EQUAL_HEX32(0x78, low_byte(val2));
+}
+
+template<typename T, T value, uint8_t result>
+void test_high_byte() {
+    TEST_ASSERT_EQUAL_HEX32(result, high_byte(value));
+}
+
+TEST(bit_operations, high_byte) {
+    test_high_byte<uint8_t, 1, 1>();
+    test_high_byte<uint8_t, 0x75, 0x75>();
+
+    test_high_byte<uint8_t, 0xBC, 0xBC>();
+    test_high_byte<uint16_t, 0xADBC, 0xAD>();
+    test_high_byte<uint32_t, 0x12ADBC, 0x00>();
+    test_high_byte<uint32_t, 0x5812ADBC, 0x58>();
+    test_high_byte<uint64_t, 0x475812ADBC, 0x00>();
+    test_high_byte<uint64_t, 0xE79F5812ADBC, 0x00>();
+    test_high_byte<uint64_t, 0x4BE79F5812ADBC, 0x00>();
+    test_high_byte<uint64_t, 0x5A4BE79F5812ADBC, 0x5A>();
+}
