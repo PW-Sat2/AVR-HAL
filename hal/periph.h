@@ -16,6 +16,7 @@
 
 #include "hal/periph/MCU/Watchdog.h"
 #include "hal/periph/MCU/eeprom.h"
+#include "hal/periph/MCU/sleep.h"
 
 #include "hal/periph/SPI/Hardware.h"
 #include "hal/periph/SPI/Interface.h"

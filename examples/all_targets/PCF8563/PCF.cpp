@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 using namespace hal::devices;
 
@@ -41,6 +42,6 @@ int main() {
         } else {
             printf("RTC clock is not working...\r\n");
         }
-        _delay_ms(1000);
+        hal::sleep_for(1000ms);
     }
 }

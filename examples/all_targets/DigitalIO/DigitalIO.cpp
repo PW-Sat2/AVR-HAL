@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using pin2 = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 
 int main() {
@@ -12,10 +13,10 @@ int main() {
         pin2::set();
         pin2::reset();
 
-        _delay_ms(200);
+        hal::sleep_for(200ms);
         bool pin_state = pin3::read();
         pin2::write(pin_state);
         pin2::toggle();
-        _delay_ms(200);
+        hal::sleep_for(200ms);
     }
 }

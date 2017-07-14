@@ -1,16 +1,17 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 using namespace hal::DigitalIO::ExternalInterrupt;
 
 ISR(INT0_vect) {
     printf("a");
-    _delay_ms(10);
+    hal::sleep_for(10ms);
 }
 
 ISR(INT1_vect) {
     printf("b");
-    _delay_ms(10);
+    hal::sleep_for(10ms);
 }
 
 int main() {

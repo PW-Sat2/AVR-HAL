@@ -1,5 +1,7 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
+
 void hal::TWISlave::callbackRx() {
     printf("callbackRx!: %d\n", TWISlave::rx_buffer_cnt);
     for (int i = 0; i < TWISlave::rx_buffer_cnt; ++i) {
@@ -24,6 +26,6 @@ int main() {
         hal::TWISlave::tx_buffer[i] = 10 + i;
     }
     while (true) {
-        _delay_ms(10);
+        hal::sleep_for(10ms);
     }
 }

@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 using hal::devices::ADXRS453::ADXRS453;
 
@@ -32,6 +33,6 @@ int main() {
         hal::Serial0.printf("Rate = %f;\t", rate);
         hal::Serial0.printf("Sensor data = %ul\r\n", sensor_data);
 
-        _delay_ms(500);
+        hal::sleep_for(500ms);
     }
 }

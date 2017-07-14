@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using twi = hal::I2C::Hardware;
 
 int main() {
@@ -11,6 +12,6 @@ int main() {
         twi::write(0xAA, arr);
         twi::read(0xAB, arr);
         twi::write_read(0xAC, arr, arr);
-        _delay_ms(10);
+        hal::sleep_for(10ms);
     }
 }

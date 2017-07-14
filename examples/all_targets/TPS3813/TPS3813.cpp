@@ -1,5 +1,7 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
+
 using kick_pin1 = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
 using WDT_1     = hal::devices::TPS3813<kick_pin1, 10>;
 
@@ -13,6 +15,6 @@ int main() {
     while (true) {
         WDT_1::kick();
         WDT_2::kick();
-        _delay_ms(1000);
+        hal::sleep_for(1000ms);
     }
 }

@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 
 ISR(TIMER0_OVF_vect) {
@@ -20,6 +21,6 @@ int main() {
         static int counter = 0;
         hal::Serial0.printf("Counter value = %d\r\n", counter++);
 
-        _delay_ms(200);
+        hal::sleep_for(200ms);
     }
 }

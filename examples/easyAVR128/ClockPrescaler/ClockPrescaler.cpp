@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 
 int main() {
@@ -9,13 +10,13 @@ int main() {
 
     for (int i = 0; i < 10; ++i) {
         printf("X\r\n");
-        _delay_ms(100);
+        hal::sleep_for(100ms);
     }
 
     hal::cpu::set_clock_divider<10>();
 
     for (int i = 0; i < 10; ++i) {
         printf("X\r\n");
-        _delay_ms(100);
+        hal::sleep_for(100ms);
     }
 }

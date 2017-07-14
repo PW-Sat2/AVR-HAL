@@ -1,8 +1,10 @@
 #include <hal/hal>
 #include "hal/board.h"
 
+using namespace std::chrono_literals;
+
 int main() {
     while (true) {
-        _delay_ms(100);
+        hal::sleep_for(100ms);
     }
 }

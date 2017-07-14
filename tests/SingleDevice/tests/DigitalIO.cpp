@@ -2,6 +2,7 @@
 
 TEST_GROUP(DigtalIO);
 
+using namespace std::chrono_literals;
 using namespace hal;
 using namespace hal::DigitalIO;
 
@@ -16,14 +17,14 @@ static void reset() {
 TEST(DigitalIO, pullups) {
     mosi::init(Mode::INPUT);
     miso::init(Mode::INPUT_PULLUP);
-    _delay_ms(10);
+    hal::sleep_for(10ms);
 
     TEST_ASSERT_EQUAL_UINT8(true, mosi::read());
     TEST_ASSERT_EQUAL_UINT8(true, miso::read());
 
     mosi::init(Mode::INPUT_PULLUP);
     miso::init(Mode::INPUT);
-    _delay_ms(10);
+    hal::sleep_for(10ms);
 
     TEST_ASSERT_EQUAL_UINT8(true, mosi::read());
     TEST_ASSERT_EQUAL_UINT8(true, miso::read());

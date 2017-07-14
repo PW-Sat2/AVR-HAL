@@ -1,5 +1,7 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
+
 int main() {
     using pin_sda = hal::DigitalIO::GPIO<hal::mcu::pin_sda>;
     using pin_scl = hal::DigitalIO::GPIO<hal::mcu::pin_scl>;
@@ -13,6 +15,6 @@ int main() {
         i2c::write(0xAA, arr);
         i2c::read(0xAB, arr);
         i2c::write_read(0xAC, arr, arr);
-        _delay_ms(10);
+        hal::sleep_for(10ms);
     }
 }

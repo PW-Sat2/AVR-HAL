@@ -1,5 +1,6 @@
 #include <hal/hal>
 
+using namespace std::chrono_literals;
 using hal::Serial0;
 using namespace hal::devices;
 
@@ -25,7 +26,7 @@ int main() {
 
     memory::write(mem);
 
-    _delay_ms(1000);
+    hal::sleep_for(1000ms);
 
     while (true) {
         AT24C02::Data<10> mem_read{0};
@@ -35,6 +36,6 @@ int main() {
             printf("%d, ", x);
         }
         printf("\r\n");
-        _delay_ms(100);
+        hal::sleep_for(100ms);
     }
 }
