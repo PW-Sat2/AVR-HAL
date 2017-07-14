@@ -154,3 +154,33 @@ TEST(DigitalIO, operationsDoesNotChangeMode) {
 
 #undef CHECK_DDR
 }
+
+
+TEST(DigitalIO, dummy_init) {
+    using pin = DigitalIO::Dummy<>;
+    pin::init(DigitalIO::Mode::INPUT);
+    pin::init(DigitalIO::Mode::INPUT_PULLUP);
+    pin::init(DigitalIO::Mode::OUTPUT);
+}
+
+TEST(DigitalIO, dummy_output) {
+    using pin = DigitalIO::Dummy<>;
+
+    pin::set();
+    pin::reset();
+    pin::write(true);
+    pin::write(false);
+    pin::toggle();
+}
+
+
+TEST(DigitalIO, dummy_input) {
+    using pin_default = DigitalIO::Dummy<>;
+    TEST_ASSERT_FALSE(pin_default::read());
+
+    using pin_false = DigitalIO::Dummy<false>;
+    TEST_ASSERT_FALSE(pin_false::read());
+
+    using pin_true = DigitalIO::Dummy<true>;
+    TEST_ASSERT_TRUE(pin_true::read());
+}

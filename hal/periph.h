@@ -9,6 +9,7 @@
 #include "hal/periph/I2C/Interface.h"
 #include "hal/periph/I2C/Software.h"
 
+#include "hal/periph/DigitalIO/Dummy.h"
 #include "hal/periph/DigitalIO/EXTI.h"
 #include "hal/periph/DigitalIO/GPIO.h"
 #include "hal/periph/DigitalIO/PeriphDescriptors.h"
