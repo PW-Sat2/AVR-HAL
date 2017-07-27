@@ -44,6 +44,9 @@ set (CMCU "-mmcu=${GCC_TARGET} -DF_CPU=${F_CPU}L")
 set (CMAKE_C_FLAGS "-std=gnu11 ${CMCU} ${CWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
 set (CMAKE_CXX_FLAGS "-std=gnu++1y ${CMCU} -fno-exceptions ${CXXWARN} ${CTUNING} ${CWORKAROUNDS}" CACHE STRING "" FORCE)
 
+set (CMAKE_CXX_FLAGS_DEBUG "-g" CACHE STRING "" FORCE)
+set (CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG" CACHE STRING "" FORCE)
+
 set (TERMINAL_PORT "" CACHE STRING "Port for terminal operations")
 set (TERMINAL_BAUD "" CACHE STRING "Baudrate for terminal operations")
 set (TERMINAL_PICOCOM_OPTIONS -l --imap lfcrlf --omap crlf CACHE STRING "Options for picocom")
