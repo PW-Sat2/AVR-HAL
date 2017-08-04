@@ -340,8 +340,45 @@ struct ExecutorMark {
 bool ExecutorMark::status;
 FIFO_data<int, 5> ExecutorMark::fifo;
 
+TEST(compile_time, for_each_tuple_type) {
+    // empty
+    for_each_tuple_type<ExecutorMark::Exec, std::tuple<>>();
+
+    // 1 element
+    TypeCheckExecution<10>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_tuple_type<ExecutorMark::Exec, std::tuple<TypeCheckExecution<10>>>();
+
+    ExecutorMark::check<10>();
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+
+    // 5 elements
+    TypeCheckExecution<0>::executed   = true;
+    TypeCheckExecution<100>::executed = true;
+    TypeCheckExecution<7>::executed   = true;
+    TypeCheckExecution<53>::executed  = true;
+    TypeCheckExecution<157>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_tuple_type<ExecutorMark::Exec,
+                        std::tuple<TypeCheckExecution<0>,
+                                   TypeCheckExecution<100>,
+                                   TypeCheckExecution<7>,
+                                   TypeCheckExecution<53>,
+                                   TypeCheckExecution<157>>>();
+
+    ExecutorMark::check<0, 100, 7, 53, 157>();
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<100>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<7>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<53>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<157>::executed);
+}
+
+
 TEST(compile_time, for_each_type) {
-    // 1 element - variadic
+    // 1 element
     TypeCheckExecution<0>::executed = true;
 
     ExecutorMark::status = false;
@@ -350,16 +387,7 @@ TEST(compile_time, for_each_type) {
     TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
     ExecutorMark::check<0>();
 
-    // 1 element - tuple
-    TypeCheckExecution<10>::executed = true;
-
-    ExecutorMark::status = false;
-    for_each_type<ExecutorMark::Exec, std::tuple<TypeCheckExecution<10>>>();
-
-    ExecutorMark::check<10>();
-    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
-
-    // 5 elements - variadic
+    // 5 elements
     TypeCheckExecution<0>::executed   = true;
     TypeCheckExecution<100>::executed = true;
     TypeCheckExecution<7>::executed   = true;
@@ -373,28 +401,6 @@ TEST(compile_time, for_each_type) {
                   TypeCheckExecution<7>,
                   TypeCheckExecution<53>,
                   TypeCheckExecution<157>>();
-
-    ExecutorMark::check<0, 100, 7, 53, 157>();
-    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
-    TEST_ASSERT_FALSE(TypeCheckExecution<100>::executed);
-    TEST_ASSERT_FALSE(TypeCheckExecution<7>::executed);
-    TEST_ASSERT_FALSE(TypeCheckExecution<53>::executed);
-    TEST_ASSERT_FALSE(TypeCheckExecution<157>::executed);
-
-    // 5 elements - tuple
-    TypeCheckExecution<0>::executed   = true;
-    TypeCheckExecution<100>::executed = true;
-    TypeCheckExecution<7>::executed   = true;
-    TypeCheckExecution<53>::executed  = true;
-    TypeCheckExecution<157>::executed = true;
-
-    ExecutorMark::status = false;
-    for_each_type<ExecutorMark::Exec,
-                  std::tuple<TypeCheckExecution<0>,
-                             TypeCheckExecution<100>,
-                             TypeCheckExecution<7>,
-                             TypeCheckExecution<53>,
-                             TypeCheckExecution<157>>>();
 
     ExecutorMark::check<0, 100, 7, 53, 157>();
     TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);

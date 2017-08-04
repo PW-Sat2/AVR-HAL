@@ -70,14 +70,15 @@ struct is_specialization_of<Template<Args...>, Template> : std::true_type {};
 namespace details {
 template<template<typename> typename Exec, typename Tuple>
 struct ForEach {
-    static void for_each_type(std::integer_sequence<std::size_t>) {
+    static void for_each_tuple_type(std::integer_sequence<std::size_t>) {
     }
 
     template<std::size_t Head, std::size_t... Tail>
-    static void for_each_type(std::integer_sequence<std::size_t, Head, Tail...>) {
+    static void
+    for_each_tuple_type(std::integer_sequence<std::size_t, Head, Tail...>) {
         Exec<typename std::tuple_element<Head, Tuple>::type>::run();
 
-        for_each_type(std::integer_sequence<std::size_t, Tail...>());
+        for_each_tuple_type(std::integer_sequence<std::size_t, Tail...>());
     }
 };
 }  // namespace details
@@ -87,30 +88,24 @@ struct ForEach {
  * @tparam Exec Execution policy, template structure with run() method.
  * @tparam Tuple Tuple to iterate over.
  */
-template<template<typename> typename Exec,
-         typename Tuple,
-         std::enable_if_t<hal::libs::is_specialization_of<Tuple, std::tuple>::value, int> = 0>
-void for_each_type() {
-    details::ForEach<Exec, Tuple>::for_each_type(
+template<template<typename> typename Exec, typename Tuple>
+void for_each_tuple_type() {
+    details::ForEach<Exec, Tuple>::for_each_tuple_type(
         std::make_integer_sequence<std::size_t, std::tuple_size<Tuple>::value>());
 }
 template<template<typename> typename Exec>
-void for_each_type() {
+void for_each_tuple_type() {
 }
 
 /*!
  * This function will invoke Exec<T>::run() for every type T in Variadic
  * Template list.
  * @tparam Exec Execution policy, template structure with run() method.
- * @tparam Head First element
- * @tparam Tail Tail elements
+ * @tparam Types Types to iterate over.
  */
-template<template<typename> typename Exec,
-         typename Head,
-         typename... Tail,
-         std::enable_if_t<!hal::libs::is_specialization_of<Head, std::tuple>::value, int> = 0>
+template<template<typename> typename Exec, typename... Types>
 void for_each_type() {
-    for_each_type<Exec, std::tuple<Head, Tail...>>();
+    for_each_tuple_type<Exec, std::tuple<Types...>>();
 }
 
 
