@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstdio>
+#include <queue>
 
 #include "../tests.h"
 #include "unity.h"
@@ -258,4 +259,153 @@ TEST(compile_time, write_bit) {
     x = 0xFFFFFFFF;
     write_bit<31>(x, 0);
     TEST_ASSERT_EQUAL(0x7FFFFFFFUL, x);
+}
+
+template<typename T, uint64_t value>
+void test_type_for_value() {
+    static_assert(std::is_same<type_for_value<value>, T>::value,
+                  "type_for_value failed!");
+}
+
+TEST(compile_time, type_for_value) {
+    test_type_for_value<uint8_t, 0>();
+    test_type_for_value<uint8_t, 1>();
+    test_type_for_value<uint8_t, 0xFF>();
+
+    test_type_for_value<uint16_t, 0x100>();
+    test_type_for_value<uint16_t, 0xFFFF>();
+
+    test_type_for_value<uint32_t, 0x10000>();
+    test_type_for_value<uint32_t, 0xFFFFFFFF>();
+
+    test_type_for_value<uint64_t, 0x100000000>();
+    test_type_for_value<uint64_t, 0xFFFFFFFFFFFFFFFF>();
+}
+
+
+TEST(compile_time, is_specialization_of) {
+    static_assert(is_specialization_of<std::tuple<>, std::tuple>::value, "");
+    static_assert(is_specialization_of<std::tuple<int>, std::tuple>::value, "");
+    static_assert(
+        is_specialization_of<std::tuple<int, float>, std::tuple>::value, "");
+
+    static_assert(!is_specialization_of<int, std::tuple>::value, "");
+    static_assert(!is_specialization_of<std::true_type, std::tuple>::value, "");
+
+    static_assert(is_specialization_of<std::vector<int>, std::vector>::value, "");
+
+    static_assert(!is_specialization_of<std::vector<float>, std::queue>::value, "");
+}
+
+template<int tag>
+struct TypeCheckExecution {
+    static bool executed;
+    static constexpr auto id = tag;
+};
+template<int tag>
+bool TypeCheckExecution<tag>::executed;
+
+
+struct ExecutorMark {
+    static bool status;
+    static FIFO_data<int, 5> fifo;
+
+    template<typename T>
+    struct Exec {
+        static void run() {
+            T::executed = status;
+            fifo.append(T::id);
+        }
+    };
+
+    template<typename>
+    static void check() {
+        TEST_ASSERT_EQUAL(0, fifo.getLength());
+    }
+
+    template<typename XX, int Head, int... T>
+    static void check() {
+        TEST_ASSERT_EQUAL(sizeof...(T) + 1, fifo.getLength());
+        TEST_ASSERT_EQUAL(Head, fifo.get());
+        check<XX, T...>();
+    }
+
+    template<int Head, int... T>
+    static void check() {
+        TEST_ASSERT_EQUAL(sizeof...(T) + 1, fifo.getLength());
+        TEST_ASSERT_EQUAL(Head, fifo.get());
+        check<void, T...>();
+    }
+};
+bool ExecutorMark::status;
+FIFO_data<int, 5> ExecutorMark::fifo;
+
+TEST(compile_time, for_each_tuple_type) {
+    // empty
+    for_each_tuple_type<ExecutorMark::Exec, std::tuple<>>();
+
+    // 1 element
+    TypeCheckExecution<10>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_tuple_type<ExecutorMark::Exec, std::tuple<TypeCheckExecution<10>>>();
+
+    ExecutorMark::check<10>();
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+
+    // 5 elements
+    TypeCheckExecution<0>::executed   = true;
+    TypeCheckExecution<100>::executed = true;
+    TypeCheckExecution<7>::executed   = true;
+    TypeCheckExecution<53>::executed  = true;
+    TypeCheckExecution<157>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_tuple_type<ExecutorMark::Exec,
+                        std::tuple<TypeCheckExecution<0>,
+                                   TypeCheckExecution<100>,
+                                   TypeCheckExecution<7>,
+                                   TypeCheckExecution<53>,
+                                   TypeCheckExecution<157>>>();
+
+    ExecutorMark::check<0, 100, 7, 53, 157>();
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<100>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<7>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<53>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<157>::executed);
+}
+
+
+TEST(compile_time, for_each_type) {
+    // 1 element
+    TypeCheckExecution<0>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_type<ExecutorMark::Exec, TypeCheckExecution<0>>();
+
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+    ExecutorMark::check<0>();
+
+    // 5 elements
+    TypeCheckExecution<0>::executed   = true;
+    TypeCheckExecution<100>::executed = true;
+    TypeCheckExecution<7>::executed   = true;
+    TypeCheckExecution<53>::executed  = true;
+    TypeCheckExecution<157>::executed = true;
+
+    ExecutorMark::status = false;
+    for_each_type<ExecutorMark::Exec,
+                  TypeCheckExecution<0>,
+                  TypeCheckExecution<100>,
+                  TypeCheckExecution<7>,
+                  TypeCheckExecution<53>,
+                  TypeCheckExecution<157>>();
+
+    ExecutorMark::check<0, 100, 7, 53, 157>();
+    TEST_ASSERT_FALSE(TypeCheckExecution<0>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<100>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<7>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<53>::executed);
+    TEST_ASSERT_FALSE(TypeCheckExecution<157>::executed);
 }
