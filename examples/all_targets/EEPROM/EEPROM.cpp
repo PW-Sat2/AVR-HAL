@@ -2,7 +2,8 @@
 
 using namespace hal;
 
-static EepromStorage<int> eepromVariable;
+int EEMEM eepromVariable_storage = 10;
+EepromWrapper<int> eepromVariable{eepromVariable_storage};
 
 int main() {
     Serial0.init(115200);
