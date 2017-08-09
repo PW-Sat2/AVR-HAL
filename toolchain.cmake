@@ -56,6 +56,7 @@ macro(add_hal_executable target_name)
 	set(elf_file ${target_name}.elf)
 	set(map_file ${target_name}.map)
 	set(hex_file ${target_name}.hex)
+	set(eep_file ${target_name}.eep)
 	set(lst_file ${target_name}.lst)
 
 	# create elf file
@@ -86,6 +87,13 @@ macro(add_hal_executable target_name)
 			${CMAKE_OBJCOPY} -j .text -j .data -O ihex ${elf_file} ${hex_file}
 		DEPENDS ${target}
 	)
+	# create eep file
+	add_custom_command(
+		OUTPUT ${eep_file}
+		COMMAND
+			${CMAKE_OBJCOPY} -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex ${elf_file} ${eep_file}
+		DEPENDS ${target}
+	)
 	add_custom_command(
 		OUTPUT "print-size-${target}"
 		COMMAND
@@ -97,7 +105,7 @@ macro(add_hal_executable target_name)
 	add_custom_target(
 		${target_name}.build
 		ALL
-		DEPENDS ${hex_file} ${lst_file} "print-size-${target}"
+		DEPENDS ${hex_file} ${lst_file} ${eep_file} "print-size-${target}"
 	)
 	set_target_properties(
 		${target_name}.build
@@ -106,14 +114,23 @@ macro(add_hal_executable target_name)
 	)
 
 	# flash command
-	add_custom_command(
-		OUTPUT "${hex_file}.flash"
-		COMMAND
+	if(LOAD_EEPROM)
+		add_custom_command(
+			OUTPUT ${hex_file}.flash
+			COMMAND
+				${AVRDUDE} -c${AVRDUDE_TOOL} -p${AVRDUDE_TARGET} ${AVRDUDE_OPTIONS} -U flash:w:${hex_file} -U eeprom:w:${eep_file}
+		)
+	else()
+		add_custom_command(
+			OUTPUT ${hex_file}.flash
+			COMMAND
 			${AVRDUDE} -c${AVRDUDE_TOOL} -p${AVRDUDE_TARGET} ${AVRDUDE_OPTIONS} -U flash:w:${hex_file}
-	)
+		)
+	endif()
+
 	add_custom_target(
-		"${target_name}.flash"
-		DEPENDS ${target_name}.build "${hex_file}.flash"
+		${target_name}.flash
+		DEPENDS ${target_name}.build ${hex_file}.flash
 	)
 
 	add_custom_target(${target_name}.sim
