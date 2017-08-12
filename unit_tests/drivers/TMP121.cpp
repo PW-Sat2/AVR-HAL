@@ -23,6 +23,14 @@ uint16_t MockTMP121::data;
 using mock = MockTMP121;
 using tmp  = TMP121<mock>;
 
+TEST(TMP121, raw_read) {
+    for (uint16_t i :
+         {0xFFFFu, 0x4B00u, 0x3E80u, 0x0C80u, 0x0008u, 0u, 0xFFF8u, 0xF380u, 0xE480u}) {
+        mock::data = i;
+        TEST_ASSERT_EQUAL_INT(i >> 3, tmp::read_raw());
+    }
+}
+
 TEST(TMP121, ConversionTableFromDatasheet) {
     mock::data = 0x4B00;
     TEST_ASSERT_EQUAL_INT(2400, tmp::read());

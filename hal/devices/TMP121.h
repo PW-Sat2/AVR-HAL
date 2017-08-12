@@ -12,18 +12,30 @@ namespace devices {
 template<typename SPI>
 struct TMP121 : libs::PureStatic {
     /*!
-     * Reads data from the sensor in raw integer format.
+     * Reads data from the sensor in raw format.
      * After conversion de-asserts the device and puts it in free-running mode.
-     * @return Read data from the device (13 bit value, signed, 1 LSB = 0.0625
-     * celsius)
+     * @return Read data from the device (13 bit, unsigned,
+     * 2's complement form).
      */
-    static int16_t read() {
+    static uint13_t read_raw() {
         std::array<uint8_t, 2> arr;
         SPI::read(arr);
 
         libs::Reader reader{arr};
         uint16_t sensor_data = reader.ReadWordBE();
         sensor_data >>= 3;
+
+        return sensor_data;
+    }
+
+    /*!
+     * Reads data from the sensor in raw integer format.
+     * After conversion de-asserts the device and puts it in free-running mode.
+     * @return Read data from the device (13 bit value, signed,
+     * 1 LSB = 0.0625 celsius)
+     */
+    static int16_t read() {
+        uint16_t sensor_data = read_raw();
 
         uint16_t mask = libs::power_of_two<12>();
 
