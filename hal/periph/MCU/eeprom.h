@@ -7,53 +7,61 @@
 
 namespace hal {
 
-namespace details {
-class AddressCounter {
- public:
-    static size_t getAndIncreaseBy(size_t c) {
-        auto now = counter;
-        counter += c;
-        return now;
-    }
-
- private:
-    static size_t counter;
-};
-
-}  // namespace details
-
+/*!
+ * EEPROM memory wrapper.
+ * For given type T and object in eeprom memory it will ease access to
+ * underlying type.
+ * @tparam T Type of underlying object
+ */
 template<typename T>
-class EepromStorage : details::AddressCounter {
+class EepromWrapper {
  public:
-    constexpr EepromStorage()
-        : eeprom_ptr(get_pointer_from_addess(getAndIncreaseBy(size))) {
+    /*!
+     * Constructor. Provide object defined with EEMEM attribute (placed in
+     * EEPROM memory).
+     * @param data_eeprom Object to wrap
+     */
+    explicit constexpr EepromWrapper(T& data_eeprom)
+        : eeprom_ptr{&data_eeprom} {
     }
 
+    /*!
+     * Read data from EEPROM.
+     * @return Data read from EEPROM.
+     */
     T read() const {
         T data;
-        this->read(gsl::make_span(&data, size));
+        read(gsl::make_span(&data, size));
         return data;
     }
 
+    /*!
+     * Read data from EEPROM. Allows reads without .read() method
+     * @return Data read from EEPROM.
+     */
     operator T() const {
         return this->read();
     }
 
+    /*!
+     * Write data to EEPROM object.
+     * @param data Data to write
+     */
     void write(const T& data) const {
-        this->write(gsl::make_span(&data, size));
+        write(gsl::make_span(&data, size));
     }
 
+    /*!
+     * Write data to EEPROM object.
+     * @param data Data to write
+     */
     void operator=(const T& data) const {
         this->write(data);
     }
 
  private:
-    void* get_pointer_from_addess(size_t address) {
-        return reinterpret_cast<void*>(address);
-    }
-
     void read(gsl::span<T> data_out) const {
-        eeprom_read_block(static_cast<void*>(data_out.begin()), eeprom_ptr, size);
+        eeprom_read_block(data_out.begin(), eeprom_ptr, size);
     }
     void write(gsl::span<const T> data_in) const {
         eeprom_write_block(data_in.begin(), eeprom_ptr, size);

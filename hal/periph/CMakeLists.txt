@@ -6,7 +6,6 @@ file(GLOB_RECURSE HAL_PERIPH_SOURCES
 
 add_library(${NAME} STATIC
     ${HAL_PERIPH_SOURCES}
-    MCU/eeprom.cpp
 )
 
 
