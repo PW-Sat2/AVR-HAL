@@ -464,6 +464,9 @@ using uint14_t = hal::libs::BitValue<std::uint16_t, 14>;
 /** @brief 12-bit unsigned integer */
 using uint12_t = hal::libs::BitValue<std::uint16_t, 12>;
 
+/** @brief 13-bit unsigned integer */
+using uint13_t = hal::libs::BitValue<std::uint16_t, 13>;
+
 /** @brief 10-bit unsigned integer */
 using uint10_t = hal::libs::BitValue<std::uint16_t, 10>;
 
