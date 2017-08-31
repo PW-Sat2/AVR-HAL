@@ -8,7 +8,7 @@
 namespace hal {
 namespace Analog {
 
-class InternalADC : public mcu::InternalADCMcuSpecific, libs::PureStatic {
+class InternalADC : public mcu::InternalADCMcuSpecific {
  public:
     enum class Prescaler : uint8_t {
         DIV_2   = 0,
