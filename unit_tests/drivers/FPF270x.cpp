@@ -61,10 +61,10 @@ TEST(FPF270x, error) {
     using fpf = hal::devices::FPF270x<on, flag, pgood>;
 
     flag::value = true;
-    TEST_ASSERT_TRUE(fpf::error_occured());
+    TEST_ASSERT_FALSE(fpf::error_occured());
 
     flag::value = false;
-    TEST_ASSERT_FALSE(fpf::error_occured());
+    TEST_ASSERT_TRUE(fpf::error_occured());
 }
 
 TEST(FPF270x, power_good) {
