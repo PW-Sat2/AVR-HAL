@@ -23,7 +23,7 @@ struct FPF270x : libs::PureStatic {
     }
 
     static bool error_occured() {
-        return pin_flag::read();
+        return !pin_flag::read();
     }
 
     static bool power_good() {
