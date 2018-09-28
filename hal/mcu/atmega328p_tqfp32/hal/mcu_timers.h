@@ -22,9 +22,9 @@ class Timer0 {
     enum class Mode : uint8_t { Normal = 0 };
 
     static void init(Prescaler prescaler, Mode mode) {
-        TCCR0A = (static_cast<uint8_t>(mode) & 0b001 << WGM00) |
-                 (static_cast<uint8_t>(mode) & 0b010 << WGM01);
-        TCCR0B = (static_cast<uint8_t>(mode) & 0b100 << WGM02) |
+        TCCR0A = (hal::libs::read_bit<0>(static_cast<uint8_t>(mode)) << WGM00) |
+                 (hal::libs::read_bit<1>(static_cast<uint8_t>(mode)) << WGM01);
+        TCCR0B = (hal::libs::read_bit<2>(static_cast<uint8_t>(mode)) << WGM02) |
                  static_cast<uint8_t>(prescaler);
     }
 

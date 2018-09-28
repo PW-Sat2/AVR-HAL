@@ -27,8 +27,8 @@ class Timer0 {
     };
 
     static void init(Prescaler prescaler, Mode mode) {
-        TCCR0 = (static_cast<uint8_t>(mode) & 0b01 << WGM00) |
-                (static_cast<uint8_t>(mode) & 0b10 << WGM01) |
+        TCCR0 = (hal::libs::read_bit<0>(static_cast<uint8_t>(mode)) << WGM00) |
+                (hal::libs::read_bit<1>(static_cast<uint8_t>(mode)) << WGM01) |
                 static_cast<uint8_t>(prescaler);
     }
 
@@ -198,8 +198,8 @@ class Timer2 {
     };
 
     static void init(Prescaler prescaler, Mode mode) {
-        TCCR2 = (static_cast<uint8_t>(mode) & 0b01 << WGM20) |
-                (static_cast<uint8_t>(mode) & 0b10 << WGM21) |
+        TCCR2 = (hal::libs::read_bit<0>(static_cast<uint8_t>(mode)) << WGM20) |
+                (hal::libs::read_bit<1>(static_cast<uint8_t>(mode)) << WGM21) |
                 static_cast<uint8_t>(prescaler);
     }
 
